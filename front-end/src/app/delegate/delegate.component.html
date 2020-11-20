@@ -1,0 +1,164 @@
+<app-header></app-header>
+<!-- Page Content -->
+<div class="page-content">
+    <app-top-header></app-top-header>
+    <div class="page-inner no-page-title">
+        <div class="page-title">
+            <!-- <a routerLink="/add/plan"   class="btn btn-success m-b-sm pull-right"   ><i class="fa fa-plus"></i>&nbsp;Add New Plan</a> -->
+            <select class="form-control pull-right" (change)="getplanid(selectField.value);" style="width: 17%;" #selectField>
+                <option  value="">Select Plan</option>
+                <option *ngFor="let plan of plans;let i=index"  value="{{plan._id}}">{{plan.short_name}}</option>
+            </select>
+            <h3 class="breadcrumb-header">Delegate Plans</h3>
+        </div>
+
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog" style="min-width: 880px;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Delegate {{goalname}}</h4>
+                    </div>
+                    <div class="modal-body">
+
+                        <div class="table-responsive" style="height: 250px;overflow:auto;" id="style-2">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Delegated User</th>
+                                        <th>Percentage</th>
+                                        <th>User</th>
+                                        <th>Status</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngIf="goaldelegatedata.length==0">
+                                        <td style="text-align: center;" colspan="5"> No Data Available</td>
+                                    </tr>
+                                    <tr *ngFor="let p of goaldelegatedata ; let i=index">
+                                        <th scope="row">{{i+1}}</th>
+                                        <td>{{p.child_user_id.first_name}} {{p.child_user_id.last_name}}</td>
+                                        <td>{{p.percentage}}%</td>
+                                        <td>{{p.user_id.first_name}} {{p.user_id.last_name}}</td>
+                                        <td *ngIf="p.is_accept==0" class="text-warning">Pending</td>
+                                        <td *ngIf="p.is_accept==1" class="text-success">Accept</td>
+                                        <td *ngIf="p.is_accept==2" class="text-danger">Reject</td>
+
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <form id="add-row-form" action="javascript:void(0);" [formGroup]="DelegateForm">
+                            <div class="form-group">
+
+                                <label>Child User</label>
+                                <select class="form-control" formControlName="child_user_id" style="padding: 0px 0px!important" [ngClass]="{ 'is-invalid': submitted && f.child_user_id.errors }">
+                                        <option value="">Select Child User</option>
+                                        <option  *ngFor="let child of childuser;"  value="{{child._id}}">{{child.first_name}} {{child.last_name}}</option>
+                                    
+                                    </select>
+                                <div *ngIf="submitted && f.child_user_id.errors" class="invalid-feedback">
+                                    <div *ngIf="f.child_user_id.errors.required">Please Select Child User</div>
+                                </div>
+
+                            </div>
+                            <div class="form-group">
+                                <label>Percentage</label>
+                                <input type="number" autocomplete="off" formControlName="percentage" id="position-input" class="form-control" placeholder="Percentage" [ngClass]="{ 'is-invalid': submitted && f.percentage.errors }">
+                                <div *ngIf="submitted && f.percentage.errors" class="invalid-feedback">
+                                    <div *ngIf="f.percentage.errors.required">Percentage is required</div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Description</label>
+                                <textarea type="text" formControlName="description" class="form-control" placeholder="Description" [ngClass]="{ 'is-invalid': submitted && f.description.errors }"></textarea>
+                                <div *ngIf="submitted && f.description.errors" class="invalid-feedback">
+                                    <div *ngIf="f.description.errors.required">Description is required</div>
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-success" (click)="SaveDelegate()">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <div class="panel-body">
+                <div class="panel panel-cutom-blue">
+                    <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="display table table-data-width">
+                        <thead>
+                            <tr>
+                                <th class="prioritize-blue">Delegate</th>
+                                <th class="prioritize-blue">Delegation (%)</th>
+                                <th class="prioritize-blue">Priority</th>
+                                <th class="prioritize-blue">(G) Short Name</th>
+                                <th class="prioritize-blue">Start Date</th>
+                                <th class="prioritize-blue">End Date</th>
+                                <th class="prioritize-blue">Creator</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let p of goals; let i=index">
+                                <td>
+                                    <button class="btn btn-success" (click)="goaldelegate(p._id,p.short_name)">Delegate</button>
+                                </td>
+                                <td>{{ p.delegate_percentage }} %</td>
+                                <td>{{ p.prioritize }}</td>
+                                <td>(G) {{ p.short_name }}</td>
+                                <td>{{ p.start_date | prioritizegoaldate }}</td>
+                                <td>{{ p.end_date | prioritizegoaldate}}</td>
+                                <td>{{ p.user_id.first_name }} {{ p.user_id.last_name }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <div class="page-title">
+                <h3 class="breadcrumb-header">Delegated Goals</h3>
+            </div>
+            <div class="panel-body">
+                <div class="panel panel-cutom-blue">
+                    <table class="display table table-data-width">
+                        <thead>
+                            <tr>
+                                <th class="prioritize-blue">(P) Short name</th>
+                                <th class="prioritize-blue">(G) Short Name</th>
+                                <th class="prioritize-blue">Percentage</th>
+                                <th class="prioritize-blue">Creator</th>
+                                <th class="prioritize-blue">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngIf="delegategoals.length==0">
+                                <td style="text-align: center;" colspan="5"> No Data Available</td>
+                            </tr>
+                            <tr *ngFor="let delegates of delegategoals ; let i=index">
+                                <td>{{ delegates.plan_id.short_name }}</td>
+                                <td>{{ delegates.goal_id.short_name }}</td>
+                                <td>{{ delegates.percentage }}</td>
+                                <td>{{ delegates.user_id.first_name }} {{ delegates.user_id.last_name }}</td>
+                                <td>
+                                    <a style="cursor: pointer;" data-toggle="tooltip" title="Accept" (click)="changegoaldelegatestatus(delegates._id,1)"><img src="assets/images/avatars/correct.png"></a>&nbsp;
+                                    <a style="cursor: pointer;" data-toggle="tooltip" title="Reject" (click)="changegoaldelegatestatus(delegates._id,2)"><img src="assets/images/avatars/quit.png"></a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <app-footer></app-footer>
+
+</div>

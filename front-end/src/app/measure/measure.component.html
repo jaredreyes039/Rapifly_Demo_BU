@@ -1,0 +1,84 @@
+<app-header></app-header>
+<!-- Page Content -->
+<div class="page-content">
+    <app-top-header></app-top-header>
+    <div class="page-inner no-page-title">
+        <div class="panel-body mb-10">
+            <div class="page-title">
+                <h3>Measure Dashboard</h3>
+            </div>
+        </div>
+        <div class="panel-body">
+            <div class="panel panel-cutom-blue">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group col-md-5">&nbsp;</div>
+                        <div class="form-group col-md-3">
+                            <input class="form-control" placeholder="From Date" (click)="[fd.toggle()]" name="dp" [(ngModel)]="fromDate" ngbDatepicker #fd="ngbDatepicker" autocomplete="off">
+                        </div>
+                        <div class="form-group col-md-3">
+                            <input class="form-control" placeholder="To Date" (click)="[td.toggle()]" name="dp" [(ngModel)]="toDate" ngbDatepicker #td="ngbDatepicker" autocomplete="off">
+                        </div>
+                        <div class="form-group col-md-1">
+                            <button type="button" (click)="onChangeDate()" class="btn btn-warning">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div *ngIf="isDetailsFound">
+                        <div class="col-md-4" *ngFor="let plan of planDetails;">
+                            <div class="custom-panel">
+                                <div class="custom-panel-heading custom-panel-blue">
+                                    <h4 class="custom-panel-title">
+                                        {{plan.plan.short_name}}
+                                    </h4>
+                                </div>
+                                <div class="custom-panel-body">
+                                    <table class="custom-panel-table custom-panel-blue-table">
+                                        <col>
+                                        <col>
+                                        <tbody>
+                                            <tr>
+                                                <td>Matric Type</td>
+                                                <td>% Percentage (Completion)</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Actual Expected</td>
+                                                <td>: {{ plan.goal.plan_expected }}%</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Actual Revenue</td>
+                                                <td>: {{ plan.goal.plan_revenue }}%</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div *ngIf="!isDetailsFound">
+                        <div class="col-md-12 text-center">
+                            <h4>Plan details has not been found.</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="page-title">
+                    <h3>Goal Summary Chart</h3>
+                </div>
+            </div>
+            <div class="panel panel-cutom-blue">
+                <div class="row">
+                    <div class="col-md-6">
+                        <rg-gauge-chart [canvasWidth]="canvasWidth" [needleValue]="needleValue" [centralLabel]="centralLabel" [options]="options" [name]="name" [bottomLabel]="bottomLabel"></rg-gauge-chart>
+                    </div>
+                    <div class="col-md-6">
+                        <rg-gauge-chart [canvasWidth]="canvasWidth" [needleValue]="review_needleValue" [centralLabel]="centralLabel" [options]="review_options" [name]="review_name" [bottomLabel]="review_bottomLabel"></rg-gauge-chart>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <app-footer></app-footer>
+</div>

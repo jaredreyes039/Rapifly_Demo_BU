@@ -1,0 +1,46 @@
+<app-header></app-header>
+
+<!-- Page Content -->
+<div class="page-content">
+    <app-top-header></app-top-header>
+
+    <div class="page-inner no-page-title">
+        <div class="page-title">
+            <a routerLink="/qa/forms/add" class="btn btn-success m-b-sm pull-right"><i class="fa fa-plus"></i>&nbsp;QA Form</a>
+            <h3 class="breadcrumb-header">QA Forms</h3>
+        </div>
+        <div class="panel panel-cutom-blue">
+            <div class="panel-body">
+                <div class="row col-md-12">
+                    <div class="table-responsive">
+                        <table id="example" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="display table table-data-width">
+                            <thead>
+                                <tr>
+                                    <th>Form Name</th>
+                                    <th>Plan Name</th>
+                                    <th>Created By</th>
+                                    <th>Created at</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let form of forms; let i=index;">
+                                    <td>{{ form.form_name }}</td>
+                                    <td>{{ form.plan_id.short_name }}</td>
+                                    <td>{{ form.user_id.first_name }} {{ form.user_id.last_name }}</td>
+                                    <td>{{ form.created_at | date: 'yyyy-MM-dd h:mm:ss a' }}</td>
+                                    <td>
+                                        <!-- <button routerLink="/qa/forms/edit/{{form._id}}" [disabled]="form.user_id._id != currentUserId" class="btn btn-warning" title="Edit Form"><i class="fa fa-pencil"></i></button>&nbsp; -->
+                                        <button routerLink="/qa/forms/result/{{form._id}}" [disabled]="form.user_id._id != currentUserId" class="btn btn-primary" title="Results"><i class="fa fa-files-o"></i></button>&nbsp;
+                                        <button routerLink="/qa/forms/fill-up/{{form._id}}" [disabled]="form.user_id._id == currentUserId" class="btn btn-info" title="Fill-up Form"><i class="fa fa-reply"></i></button>
+                                    </td> 
+                                </tr>
+                            </tbody> 
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <app-footer></app-footer>
+</div>

@@ -1,0 +1,98 @@
+<app-header></app-header>
+
+<!-- Page Content -->
+<div class="page-content">
+    <app-top-header></app-top-header>
+
+    <div class="page-inner no-page-title">
+        <div class="page-title">
+            <a routerLink="/invite/user" class="btn btn-success m-b-sm pull-right"><i class="fa fa-user-plus"></i>&nbsp;Invite User</a>
+            <h3 class="breadcrumb-header">Users</h3>
+        </div>
+        <div class="panel panel-cutom-blue">
+            <div class="panel-body">
+                <div class="col-md-12" *ngIf="currentuser.role == 'User'">
+                    <a [routerLink]="['/item-plans-details']" [queryParams]="{stage:'user'}" class="btn btn-warning m-b-sm pull-right"><i class="fa fa-arrow-left"></i>&nbsp;Back</a>
+                </div>
+                <div class="row col-md-12">
+                    <div class="table-responsive">
+                        <table id="example" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="display table table-data-width">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Designation</th>
+                                    <th>Created at</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let user of users; let i=index;">
+                                    <td>
+                                        <img [hidden]="!user.avatar_url" [src]="user.avatar_url" class="img-circle">
+                                        <img [hidden]="user.avatar_url" src="/assets/images/avatars/default-avatar.png" class="img-circle">
+                                    </td>
+                                    <td>{{ user.user.first_name }} {{ user.user.last_name }}</td>
+                                    <td>{{ user.user.email }}</td>
+                                    <td>{{ (user.designation && user.designation.designation) ? user.designation.designation : 'N/A' }}</td>
+                                    <td>{{ user.user.created_at | date: 'yyyy-MM-dd h:mm:ss a' }}</td>
+                                    <td>
+                                        <label class="switch">
+                                        <input type="checkbox" (change)="updateUserStatus($event, user.user._id)" checked="{{ (user.user.status == 1) ? 'checked' : '' }}">
+                                        <span class="slider round"></span>
+                                      </label>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-warning" (click)="changeDesignation(user)" title="Assign & Update {{ user.user.first_name }} {{ user.user.last_name }}'s Designation"><i class="fa fa-cog"></i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <form id="change-designation-form" [formGroup]="changeDesignationForm">
+            <div class="modal fade" id="changeDesignationModal" tabindex="-1" role="dialog" aria-labelledby="changeDesignationModalLabel" aria-hidden="true">
+                <div class="modal-dialog" style="min-width: 400px;">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="changeDesignationModalLabel">Assign and Change Designation</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="form-group col-md-12">
+                                    <label class="col-md-3 control-label">Email</label>
+                                    <div class="col-md-9">
+                                        <input type="email" class="form-control" value="{{(changeRequestUser && changeRequestUser.user.first_name && changeRequestUser.user.last_name) ? changeRequestUser.user.first_name + ' ' + changeRequestUser.user.last_name : '' }}">
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-12">
+                                    <label class="col-md-3 control-label">Designation</label>
+                                    <div class="col-sm-9">
+                                        <select class="form-control" formControlName="hierarchy_id" id="hierarchy_id" [ngClass]="{ 'is-invalid': isChangeDesignationFormValid && formVal.hierarchy_id.errors }">
+                                            <option value="">Select Designation</option>
+                                            <option *ngFor="let desg of designations;" value="{{desg._id}}">{{ desg.designation }}</option>
+                                        </select>
+                                        <div *ngIf="isChangeDesignationFormValid && formVal.hierarchy_id.errors" class="invalid-feedback">
+                                            <div *ngIf="formVal.hierarchy_id.errors.required">Please select any organization</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                    <button type="submit" (click)="submit()" class="btn btn-success">Save</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <app-footer></app-footer>
+</div>

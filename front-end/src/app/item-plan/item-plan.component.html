@@ -1,0 +1,1199 @@
+<app-header></app-header>
+
+<!-- Page Content -->
+<div class="page-content">
+    <app-top-header></app-top-header>
+
+    <div class="page-inner no-page-title">
+        <div class="page-title">
+            <!-- <a routerLink="/item-plans/add" class="btn btn-success m-b-sm pull-right"><i class="fa fa-plus"></i>&nbsp;Add New
+                Plan</a> -->
+            <a routerLink="/item-plans-details" class="btn btn-success m-b-sm pull-right"><i class="fa fa-arrow-left"></i>&nbsp;Back</a>
+            <h3 class="breadcrumb-header">Plan Details</h3>
+        </div>
+
+        <div class="panel panel-cutom-blue">
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="display table table-data-width">
+                        <thead>
+                            <tr>
+                                <th class="prioritize-blue">Short Name</th>
+                                <th class="prioritize-blue">Long name</th>
+                                <th class="prioritize-blue">Startdate</th>
+                                <th class="prioritize-blue">End date</th>
+                                <th class="prioritize-blue">Security</th>
+                                <th class="prioritize-blue">Creator</th>
+                                <th class="prioritize-blue">Status</th>
+                                <th class="prioritize-blue">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let p of plans; let i=index">
+                                <td><a (click)="openPlanShareModal(p)" class="cursor-pointor">{{ p.short_name }}</a>
+                                </td>
+                                <td>{{ p.long_name }}</td>
+                                <td>{{ p.start_date | itemplandate }}</td>
+                                <td>{{ p.end_date | itemplandate }}</td>
+                                <td>{{ p.security == 1 ? "Shared" : "Private" }}</td>
+                                <td>{{ p.user_id.first_name }} {{ p.user_id.last_name }}</td>
+                                <td>
+                                    <label class="switch">
+                                        <input type="checkbox" (change)="updateplanStatus($event, p._id)"
+                                            checked="{{ (p.status == 0) ? 'checked' : '' }}">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </td>
+                                <td>
+                                    <!-- <button class="btn btn-xs btn-primary" (click)="openEditModal(p)"><i class="fa fa-pencil"></i></button> -->
+                                    <a [routerLink]="['/item-plan', p._id]" class="btn btn-xs btn-primary" (click)="openEditModal(p)"><i class="fa fa-pencil"></i></a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Start Plan Chat Modal -->
+        <div class="popup" *ngIf="isOpenModal">
+            <div class="popup-inner">
+                <div class="header">
+                    <div class="col-md-6 left-header">
+                        <a *ngIf="!can_share_plan" class="pull-right cursor-pointor opacity" title="Share plan with users and user groups"><img src="/assets/images/ic_add.png"></a>
+                        <a *ngIf="can_share_plan" class="pull-right cursor-pointor" title="Share plan with users and user groups" (click)="openAddUsersAndUserGroupModal()"><img src="/assets/images/ic_add.png"></a>
+                    </div>
+                    <div class="col-md-6 right-header">
+                        <div class="pull-left text-left">
+                            <b>Created</b><br>
+                            <span *ngIf="sharedPlanDetails && sharedPlanDetails.created_at">{{ sharedPlanDetails.created_at | date:"MMM d y, h:mm a" }}</span>
+                        </div>
+                        <!-- <a class="pull-right cursor-pointor" (click)="closeModal()"><img src="/assets/images/ic_close.png"></a> -->
+                        <a class="pull-right cursor-pointor" [routerLink]="['/item-plans-details']" [queryParams]="{phase:'B', planId: sharedPlanDetails._id}"><img src="/assets/images/ic_close.png"></a>
+                    </div>
+                    <!-- <div class="col-md-3 c-m-b-header">
+                        <a class="pull-left cursor-pointor" title="Add Opportunity and Problems" (click)="openAddOpportunityAndProblemModal()">
+                            <img src="/assets/images/ic_add.png">
+                        </a>
+                        <h4 class="col-md-10">Challange Management</h4>
+                        <a class="pull-right cursor-pointor" (click)="closeModal()"><img src="/assets/images/ic_close.png"></a>
+                    </div> -->
+                </div>
+                <div class="content">
+                    <div class="col-md-6 left-content" id="details-div">
+                        <div class="row">
+                            <div class="col-md-12 text-left details-sec mb-10">
+                                <h4>{{ (sharedPlanDetails && sharedPlanDetails.short_name) ? sharedPlanDetails.short_name : '' }}
+                                </h4>
+                            </div>
+                            <div class="col-md-12 text-left details-sec mb-10">
+                                <label>Description</label>
+                                <textarea *ngIf="can_share_plan" (input)="updatePlanDescription($event)" class="disc-p">{{ (sharedPlanDetails && sharedPlanDetails.description) ? sharedPlanDetails.description : '' }}</textarea>
+                                <div *ngIf="!can_share_plan" class="disc-p">
+                                    {{ (sharedPlanDetails && sharedPlanDetails.description) ? sharedPlanDetails.description : '' }}
+                                </div>
+                            </div>
+                            <div class="col-md-12 text-left details-sec mb-10">
+                                <label>Motivation</label>
+                                <textarea *ngIf="can_share_plan" (input)="updatePlanMotivation($event)" class="disc-p">{{ (sharedPlanDetails && sharedPlanDetails.motivation) ? sharedPlanDetails.motivation : '' }}</textarea>
+                                <div *ngIf="!can_share_plan" class="disc-p">
+                                    {{ (sharedPlanDetails && sharedPlanDetails.motivation) ? sharedPlanDetails.motivation : '' }}
+                                </div>
+                            </div>
+                            <div class="col-md-12 mb-10 details-sec">
+                                <div class="mb-10">
+                                    <label class="pull-left">Goals</label>
+                                    <div class="text-right">
+                                        <button title="Add Goals" *ngIf="can_share_plan" (click)="addGoal('goal')" class="btn btn-warning"><i class="fa fa-plus"></i>&nbsp;Goal</button>
+                                    </div>
+                                </div>
+                                <table class="goal-table table-hover" *ngIf="goalDetails && goalDetails.length > 0">
+                                    <tbody>
+                                        <tr>
+                                            <td class="text-bold">Name</td>
+                                            <td class="text-bold">Start Date</td>
+                                            <td class="text-bold">End Date</td>
+                                        </tr>
+                                        <tr *ngFor="let goal of goalDetails;" (click)="openGoalModal(goal, sharedPlanDetails)">
+                                            <td>{{ goal.short_name }}</td>
+                                            <td>{{ goal.start_date | date: 'dd-MM-yyyy' }}</td>
+                                            <td>{{ goal.end_date | date: 'dd-MM-yyyy' }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-md-12 mb-10 details-sec">
+                                <div class="mb-10">
+                                    <div>
+                                        <label class="pull-left">Strategies</label>
+                                    </div>
+                                    <div class="text-right">
+                                        <button title="Add Strategy" *ngIf="can_share_plan" (click)="addGoal('strategy')" class="btn btn-vimeo"><i
+                                                class="fa fa-plus"></i>&nbsp;Strategy</button>
+                                    </div>
+                                </div>
+                                <table class="goal-table table-hover" *ngIf="strategiesDetails && strategiesDetails.length > 0">
+                                    <tbody>
+                                        <tr>
+                                            <td class="text-bold">Name</td>
+                                            <td class="text-bold">Start Date</td>
+                                            <td class="text-bold">End Date</td>
+                                        </tr>
+                                        <tr *ngFor="let strategy of strategiesDetails;" (click)="openStrategyModal(strategy, sharedPlanDetails)">
+                                            <td>{{ strategy.short_name }}</td>
+                                            <td>{{ strategy.start_date | date: 'dd-MM-yyyy' }}</td>
+                                            <td>{{ strategy.end_date | date: 'dd-MM-yyyy' }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-md-12 mb-10 details-sec">
+                                <div class="col-md-12 mb-10 p-0">
+                                    <label class="pull-left">Fields</label>
+                                </div>
+                                <div *ngFor="let parentplan of sharedPlanDetails | keyvalue ">
+                                    <div class="row pb-10" [hidden]="parentplan.key == '_id' || parentplan.key == '__v' || parentplan.key == 'created_at' || parentplan.key == 'plan_id' || parentplan.key == 'description' || parentplan.key == 'selected_user_group' || parentplan.key == 'selected_users' || parentplan.key == 'share_users' || parentplan.key == 'shared_plan_users' || parentplan.key == 'shared_permission_users' || parentplan.key == 'user_group_id' || parentplan.key == 'user_id' || parentplan.key == 'status' || parentplan.key == 'numbers' || parentplan.key == 'motivation' ">
+                                        <div *ngIf="parentplan.key=='start_date' || parentplan.key=='end_date' ">
+                                            <div class="col-md-4 text-blue text-left">{{textDecoration(parentplan.key)}}
+                                            </div>
+                                            <div class="col-md-8 text-white text-left">: {{parentplan.value | itemplanitemdate }}</div>
+                                        </div>
+
+                                        <div *ngIf="parentplan.key !='start_date' && parentplan.key !='end_date' && parentplan.key !='security'">
+                                            <div class="col-md-4 text-blue text-left">{{textDecoration(parentplan.key)}}
+                                            </div>
+                                            <div class="col-md-8 text-white text-left">: {{parentplan.value }}</div>
+                                        </div>
+
+                                        <div *ngIf="parentplan.key=='security' ">
+                                            <div class="col-md-4 text-blue text-left">{{textDecoration(parentplan.key)}}
+                                            </div>
+                                            <div class="col-md-8 text-white text-left" *ngIf="parentplan.value==0 ">: Private
+                                            </div>
+                                            <div class="col-md-8 text-white text-left" *ngIf="parentplan.value==1 ">: Shared </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 mb-10 details-sec" *ngIf="planAttachments && planAttachments.length > 0">
+                            <label class="pull-left mb-10">Attachments</label>
+                            <div class="row col-md-12">
+                                <div class="col-md-3 attachment-box" *ngFor="let file of planAttachments;let i = index;">
+                                    <img *ngIf="isImage(file.attachment)" [src]="file.attachment_url" alt="{{ file.attachment }}">
+                                    <img *ngIf="!isImage(file.attachment)" src="/assets/images/folder.jpg" alt="{{ file.attachment }}">
+                                    <div class="box-content">
+                                        <ul class="icon">
+                                            <li><a [href]="file.attachment_url" class="cursor-pointor" title="{{ file.attachment }}" target="_blank" download><i
+                                                        class="fa fa-download"></i></a></li>
+                                            <li *ngIf="isImage(file.attachment)">
+                                                <a (click)="openImage(file.attachment_url)" class="cursor-pointor">
+                                                    <i class="fa fa-eye"></i>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a (click)="removeAttachment(file._id)" class="cursor-pointor">
+                                                    <i class="fa fa-trash"></i>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 right-content">
+                        <div class="chat-div" id="chat-div">
+                            <div class="row" id="plan-chat-attachment-div">
+                                <div *ngFor="let chat of userPlanChats;">
+                                    <div class="col-md-12 left-side pull-left text-left pb-10" *ngIf="!checkCurrentUser(chat.sender_id)">
+                                        <div class="col-md-12 text-left">
+                                            <p>{{ chat.sender_name }}</p>
+                                        </div>
+                                        <div class="col-md-2 text-center">
+                                            <span *ngIf="!chat.avatar_url" class="recive-chat-box-span">{{ getShortName(chat.sender_name) }}</span>
+                                            <img *ngIf="chat.avatar_url" [src]="chat.avatar_url" class="chat-avatar">
+                                        </div>
+                                        <div class="col-md-8 p-0">
+                                            <p class="chat-time-text">
+                                                {{ chat.created_at | date: 'dd MMMM yyyy, h:mm a' }}</p>
+                                            <div class="col-md-12 text-left p-0" *ngIf="chat.message">
+                                                <p class="chat-message receive">{{ chat.message }}</p>
+                                            </div>
+                                            <div class="col-md-12 text-left p-0" *ngIf="chat.chat_attachment_urls && chat.chat_attachment_urls.length > 0">
+                                                <ul class="ul-new-cust">
+                                                    <li *ngFor="let file of chat.chat_attachment_urls">
+                                                        <a [href]="file.url" download target="_blank">
+                                                            <img *ngIf="!isImage(file.file_name)" src="/assets/images/files-download.png" title="{{ file.file_name }}" alt="{{ file.file_name }}" class="attachment-icon">
+                                                            <img *ngIf="isImage(file.file_name)" [src]="file.url" title="{{ file.file_name }}" alt="{{ file.file_name }}" class="attachment-icon">
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 right-size pull-right text-right pb-10" *ngIf="checkCurrentUser(chat.sender_id)">
+                                        <div class="col-md-12">
+                                            <div class="col-md-7 pull-right pull-right">
+                                                <p class="chat-time-text">
+                                                    {{ chat.created_at | date: 'dd MMMM yyyy, h:mm a' }}</p>
+                                            </div>
+                                            <div class="col-md-8 pull-right" *ngIf="chat.message">
+                                                <p class="chat-message send">{{ chat.message }}</p>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <ul class="ul-new-cust ul-cust-right" *ngIf="chat.chat_attachment_urls && chat.chat_attachment_urls.length > 0">
+                                                    <li *ngFor="let file of chat.chat_attachment_urls">
+                                                        <a [href]="file.url" download target="_blank">
+                                                            <img *ngIf="!isImage(file.file_name)" src="/assets/images/files-download.png" title="{{ file.file_name }}" alt="{{ file.file_name }}" class="attachment-icon">
+                                                            <img *ngIf="isImage(file.file_name)" [src]="file.url" title="{{ file.file_name }}" alt="{{ file.file_name }}" class="attachment-icon">
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row cust-list-inner-fx" *ngIf="chatAttachment && chatAttachment.length > 0">
+                            <div class="files-list col-md-3" *ngFor="let file of chatAttachment; let i=index;">
+                                <div class="files-list-inner cust-list-inner">
+                                    <p> {{ file.name }} </p>
+                                    <button class="btn btn-danger delete-file" (click)="deleteAttachment(i)">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <div class="col-md-3 c-m-b-content">
+                        <div class="challange-div">
+                            <div class="challange-section">
+                                <div class="upper-section">
+                                    <div class="upper-header-section">
+                                        Opportunity
+                                    </div>
+                                    <div class="upper-content" id="upper-content">
+                                        <div class="col-md-12" *ngFor="let element of opportunityProblems">
+                                            <p class="chat-message opportunity cursor-pointor" (click)="openChallangeChatModel(element)" *ngIf="element.challange == 'Opportunity'">
+                                                {{ element.description }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="lower-section">
+                                    <div class="lower-header-section">
+                                        Problem
+                                    </div>
+                                    <div class="lower-content" id="lower-content">
+                                        <div class="col-md-12" *ngFor="let element of opportunityProblems">
+                                            <p class="chat-message problem cursor-pointor" *ngIf="element.challange == 'Problem'" (click)="openChallangeChatModel(element)">
+                                                {{ element.description }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div> -->
+                </div>
+                <div class="footer">
+                    <div class="col-md-6 left-footer">
+                        <div class="file-upload" *ngIf="can_share_plan">
+                            <div class="file-upload__label" (click)="fileInput.click()" appDragDrop (onFileDropped)="uploadFile($event)">
+                                <img src="/assets/images/ic_browse.svg"> Drop files here to attach or
+                                <span>browse</span>
+                                <input class="file-upload__input" multiple type="file" #fileInput (change)="uploadFile($event.target.files)">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 right-footer">
+                        <div class="col-md-10 p-0">
+                            <textarea class="form-control custom-textarea" id="plan-message" (keyup.enter)="sendMessage()" placeholder="Add Comment"></textarea>
+                        </div>
+                        <div class="col-md-2 p-0">
+                            <div class="col-md-12 p-0 ml-5">
+                                <button class="btn btn-warning" (click)="sendMessage()">
+                                    <i class="fa fa-paper-plane"></i>
+                                </button>&nbsp;
+                                <label for="upload-attachments" class="attachment-label">
+                                    <img src="../../assets/images/ic_attech.png">
+                                    <input type="file" multiple class="hidden" id="upload-attachments"
+                                        (change)="sendAttachment($event.target.files)">
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <div class="col-md-3 c-m-b-footer">
+
+                    </div> -->
+                </div>
+            </div>
+        </div>
+        <!-- Start Plan Chat Modal -->
+
+        <!-- Start Add/Change Users and User Group Modal -->
+        <div class="modal fade dark-theme-modal" id="addChangeUserAndGroup" tabindex="-1" role="dialog" aria-labelledby="addChangeUserAndGroupTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content modal-dark">
+                    <div class="modal-header">
+                        <h5 class="modal-title text-white" id="exampleModalLongTitle">Add/Change Users Or User Group
+                        </h5>
+                    </div>
+                    <div class="modal-body goal-modal-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Select User Groups: </label>
+                                    <ng-select [items]="userGroups" multiple="true" bindLabel="group_name" name="user_group_id" placeholder="Select User Group" appendTo="body" [(ngModel)]="selectedUserGroups" (change)="onChangeUserGroups($event)">
+                                    </ng-select>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Select Users: </label>
+                                    <ng-select class="cust-select-add" [items]="users" bindLabel="name" placeholder="Select User" name="users" appendTo="body" multiple="true" [(ngModel)]="selected" (change)="onChangeUsers($event)">
+                                    </ng-select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Add/Change Users and User Group Modal -->
+        <!-- End New Plan Chat Modal -->
+
+        <!-- Image Lightbox -->
+        <div class="modal fade" id="viewImage" tabindex="-1" role="dialog" aria-labelledby="viewImageTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div>
+                        <a class="cursor-pointor close-popup-icon" (click)="closeImageModal()"><i
+                                class="fa fa-times"></i></a>
+                        <img [src]="imageUrl" class="image-size">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Image Lightbox -->
+
+        <!-- Confirm Modal -->
+        <div class="modal fade" id="deleteAttachmentConfirm" tabindex="-1" role="dialog" aria-labelledby="deleteAttachmentConfirmTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Delete Attachment</h5>
+                    </div>
+                    <div class="modal-body">
+                        <h5>Are you sure you want to remove this attachment?</h5>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-success" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-danger" (click)="confirmRemoveAttachment()">Confirm</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Confirm Modal -->
+
+        <!-- Download Attachment Modal -->
+        <div class="modal fade" id="downloadAttachment" tabindex="-1" role="dialog" aria-labelledby="downloadAttachmentTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">
+                            {{ (chat_attachment_name && chat_attachment_name != '') ? chat_attachment_name : '' }}</h5>
+                    </div>
+                    <div class="modal-body mb-10">
+                        <div class="col-md-12 text-center">
+                            <img *ngIf="chat_attachment_name && isImage(chat_attachment_name)" [src]="chat_attachment_url" class="attachment-file">
+                            <img src="/assets/images/folder.jpg" class="attachment-image" *ngIf="chat_attachment_name && !isImage(chat_attachment_name)">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="{{ (chat_attachment_url) ? chat_attachment_url : '' }}" class="btn btn-primary mt-10" target="_blank"><i class="fa fa-download"></i></a>&nbsp;
+                        <button type="button" class="btn btn-danger mt-10" data-dismiss="modal"><i
+                                class="fa fa-times"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Confirm Modal -->
+
+        <!-- Start Goal Modal -->
+        <div class="popup" *ngIf="isOpenGoalModal">
+            <div class="popup-inner">
+                <div class="header">
+                    <div class="col-md-6 left-header details-sec">
+                        <h4 class="text-left">
+                            {{ (sharedPlanDetails && sharedPlanDetails.short_name) ? sharedPlanDetails.short_name : '' }}
+                        </h4>
+                    </div>
+                    <div class="col-md-6 right-header">
+                        <div class="pull-left text-left">
+                            <b>Created</b><br>
+                            <span *ngIf="selectedGoal && selectedGoal.created_at">{{ selectedGoal.created_at | date:"MMM d y, h:mm a" }}</span>
+                        </div>
+                        <a class="pull-right cursor-pointor" (click)="closeGoalModal()"><img src="/assets/images/ic_close.png"></a>
+                    </div>
+                </div>
+                <div class="content">
+                    <div class="col-md-6 left-content" id="details-div">
+                        <div class="row">
+                            <div class="col-md-12 text-left mb-20" *ngIf="goalAndChildGoals && goalAndChildGoals.length > 0">
+                                <span (click)="changeGoalModal(goal, i)" [ngClass]="{'nav-box cursor-pointor': goal.id != selectedGoal._id, 'current-nav-box': goal.id == selectedGoal._id}" *ngFor="let goal of goalAndChildGoals; let i = index;">
+                                    {{goal.name}}
+                                </span>
+                            </div>
+                            <div class="col-md-12 text-left details-sec mb-10">
+                                <h4>{{ (selectedGoal && selectedGoal.short_name) ? selectedGoal.short_name : '' }}</h4>
+                            </div>
+                            <div class="col-md-12 text-left details-sec mb-10">
+                                <label>Description</label>
+                                <div>
+                                    <textarea class="disc-p" disabled placeholder="Description">{{ (selectedGoal && selectedGoal.description) ? selectedGoal.description : '' }}</textarea>
+                                </div>
+                            </div>
+                            <div class="col-md-12 mb-10 details-sec">
+                                <div class="col-md-12 mb-10">
+                                    <label class="pull-left">Fields</label>
+                                </div>
+                                <div *ngFor="let goal of selectedGoal | keyvalue ">
+                                    <div class="col-md-6 row pb-10 " [hidden]="goal.key == '_id' || goal.key == '__v' || goal.key == 'created_at' || goal.key == 'plan_id' || goal.key == 'description' || goal.key == 'deactivate' || goal.key == 'is_countdown_update' || goal.key == 'prioritize' || goal.key == 'propose' || goal.key == 'select' || goal.key == 'shared_users' || goal.key == 'user_id' || goal.key == 'status' || goal.key == 'numbers' || goal.key == 'votedown' || goal.key == 'voteup' || goal.key == 'parent_goal_id' ">
+                                        <div *ngIf="goal.key=='start_date' || goal.key=='end_date' ">
+                                            <div class="col-md-6 text-blue text-left">{{textDecoration(goal.key)}}</div>
+                                            <div class="col-md-6 text-white text-left">: {{goal.value | itemplanitemdate }}</div>
+                                        </div>
+
+                                        <div *ngIf="goal.key !='start_date' && goal.key !='end_date' && goal.key !='security'">
+                                            <div class="col-md-6 text-blue text-left">{{textDecoration(goal.key)}}</div>
+                                            <div class="col-md-6 text-white text-left">: {{goal.value }}</div>
+                                        </div>
+
+                                        <div *ngIf="goal.key=='security' ">
+                                            <div class="col-md-6 text-blue text-left">{{textDecoration(goal.key)}}</div>
+                                            <div class="col-md-6 text-white text-left" *ngIf="goal.value==0 ">: Private
+                                            </div>
+                                            <div class="col-md-6 text-white text-left" *ngIf="goal.value==1 ">: Shared
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 mb-10 details-sec">
+                                <div class="col-md-12 mb-10">
+                                    <label class="pull-left">Sub Goals</label>
+                                    <button title="Add Goals" *ngIf="can_share_plan" (click)="addGoal('goal')" class="btn btn-warning pull-right"><i class="fa fa-plus"></i>&nbsp;Sub
+                                        Goal</button>
+                                </div>
+                                <table class="goal-table table-hover" *ngIf="childGoals && childGoals.length > 0">
+                                    <tbody>
+                                        <tr>
+                                            <td class="text-bold">Name</td>
+                                            <td class="text-bold">Start Date</td>
+                                            <td class="text-bold">End Date</td>
+                                        </tr>
+                                        <tr *ngFor="let goal of childGoals;" (click)="openGoalModal(goal, sharedPlanDetails)">
+                                            <td>{{ goal.short_name }}</td>
+                                            <td>{{ goal.start_date | date: 'dd-MM-yyyy' }}</td>
+                                            <td>{{ goal.end_date | date: 'dd-MM-yyyy' }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="col-md-12 mb-10 details-sec" *ngIf="goalAttachments && goalAttachments.length > 0">
+                            <label class="pull-left mb-10">Attachments</label>
+                            <div class="row col-md-12">
+                                <div class="col-md-3 attachment-box" *ngFor="let file of goalAttachments;let i = index;">
+                                    <img *ngIf="isImage(file.attachment)" [src]="file.attachment_url" alt="{{file.attachment}}">
+                                    <img *ngIf="!isImage(file.attachment)" src="/assets/images/folder.jpg" alt="{{file.attachment}}">
+
+                                    <div class="box-content">
+                                        <ul class="icon">
+                                            <li><a [href]="file.attachment_url" class="cursor-pointor" title="{{ file.attachment }}" target="_blank" download><i
+                                                        class="fa fa-download"></i></a></li>
+                                            <li *ngIf="isImage(file.attachment)"><a (click)="openImage(file.attachment_url)" class="cursor-pointor"><i
+                                                        class="fa fa-eye"></i></a></li>
+                                            <li><a (click)="deleteGoalAttachment(file._id, file.goal_id)" class="cursor-pointor"><i class="fa fa-trash"></i></a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 right-content">
+                        <div class="chat-div" id="goal-chat-div">
+                            <div class="row" id="goal-chat-attachment-div">
+                                <div *ngFor="let chat of userGoalChats;">
+                                    <div class="col-md-12 left-side pull-left text-left pb-10" *ngIf="!checkCurrentUser(chat.sender_id)">
+                                        <div class="col-md-12 text-left">
+                                            <p>{{ chat.sender_name }}</p>
+                                        </div>
+                                        <div class="col-md-1 text-center">
+                                            <span *ngIf="!chat.avatar_url" class="recive-chat-box-span">{{ getShortName(chat.sender_name) }}</span>
+                                            <img *ngIf="chat.avatar_url" [src]="chat.avatar_url" class="chat-avatar">
+                                        </div>
+                                        <div class="col-md-8">
+                                            <p class="chat-time-text">
+                                                {{ chat.created_at | date: 'dd MMMM yyyy, h:mm a' }}</p>
+                                            <div class="col-md-12 text-left p-0" *ngIf="chat.message">
+                                                <p class="chat-message receive">{{ chat.message }}</p>
+                                            </div>
+                                            <div class="col-md-12 text-left p-0" *ngIf="chat.chat_attachment_urls && chat.chat_attachment_urls.length > 0">
+                                                <ul class="ul-new-cust">
+                                                    <li *ngFor="let file of chat.chat_attachment_urls">
+                                                        <a [href]="file.url" download target="_blank">
+                                                            <img *ngIf="!isImage(file.file_name)" src="/assets/images/files-download.png" title="{{ file.file_name }}" alt="{{ file.file_name }}" class="attachment-icon">
+                                                            <img *ngIf="isImage(file.file_name)" [src]="file.url" title="{{ file.file_name }}" alt="{{ file.file_name }}" class="attachment-icon">
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 right-size pull-right text-right pb-10" *ngIf="checkCurrentUser(chat.sender_id)">
+                                        <div class="col-md-12">
+                                            <div class="col-md-7 pull-right pull-right">
+                                                <p class="chat-time-text">
+                                                    {{ chat.created_at | date: 'dd MMMM yyyy, h:mm a' }}</p>
+                                            </div>
+                                            <div class="col-md-8 pull-right" *ngIf="chat.message">
+                                                <p class="chat-message send">{{ chat.message }}</p>
+                                            </div>
+                                            <div class="col-md-12" *ngIf="chat.chat_attachment_urls && chat.chat_attachment_urls.length > 0">
+                                                <ul class="ul-new-cust">
+                                                    <li *ngFor="let file of chat.chat_attachment_urls">
+                                                        <a [href]="file.url" download target="_blank">
+                                                            <img *ngIf="!isImage(file.file_name)" src="/assets/images/files-download.png" title="{{ file.file_name }}" alt="{{ file.file_name }}" class="attachment-icon">
+                                                            <img *ngIf="isImage(file.file_name)" [src]="file.url" title="{{ file.file_name }}" alt="{{ file.file_name }}" class="attachment-icon">
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row cust-list-inner-fx" *ngIf="goalChatAttachment && goalChatAttachment.length > 0">
+                            <div class="files-list col-md-3" *ngFor="let file of goalChatAttachment; let i=index;">
+                                <div class="files-list-inner cust-list-inner">
+                                    <p> {{ file.name }} </p>
+                                    <button class="btn btn-danger delete-file" (click)="deleteGoalUploadedAttachment(i)">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="footer">
+                    <div class="col-md-6 left-footer">
+                        <div class="file-upload">
+                            <div class="file-upload__label" (click)="fileInput.click()" appDragDrop (onFileDropped)="uploadGoalAttachment($event)">
+                                <img src="/assets/images/ic_browse.svg"> Drop files here to attach or
+                                <span>browse</span>
+                                <input class="file-upload__input" multiple type="file" #fileInput (change)="uploadGoalAttachment($event.target.files)">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 right-footer">
+                        <form [formGroup]="sendGoalMessageForm">
+                            <div class="col-md-12 p-0">
+                                <textarea class="form-control custom-textarea" (keyup.enter)="sendGoalMessage()" formControlName="message" id="goal-message" placeholder="Add Comment"></textarea>
+                            </div>
+                            <div class="col-md-12 mt-5">
+                                <button class="btn btn-warning ml-5 pull-right" (click)="sendGoalMessage()">Comment</button>&nbsp;
+                                <label for="goal-chat-upload-attachments" class="attachment-label">
+                                    <img src="../../assets/images/ic_attech.png">
+                                    <input type="file" multiple class="hidden" id="goal-chat-upload-attachments"
+                                        (change)="sendGoalAttachment($event.target.files)">
+                                </label>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Goal Modal -->
+
+        <!-- Start Strategy Modal -->
+        <div class="popup" *ngIf="isOpenStrategyModal">
+            <div class="popup-inner">
+                <div class="header">
+                    <div class="col-md-6 left-header details-sec">
+                        <h4 class="text-left">
+                            {{ (sharedPlanDetails && sharedPlanDetails.short_name) ? sharedPlanDetails.short_name : '' }}
+                        </h4>
+                    </div>
+                    <div class="col-md-6 right-header">
+                        <div class="pull-left text-left">
+                            <b>Created</b><br>
+                            <span *ngIf="selectedStrategy && selectedStrategy.created_at">{{ selectedStrategy.created_at | date:"MMM d y, h:mm a" }}</span>
+                        </div>
+                        <a class="pull-right cursor-pointor" (click)="closeStrategyModal()"><img src="/assets/images/ic_close.png"></a>
+                    </div>
+                </div>
+                <div class="content">
+                    <div class="col-md-6 left-content" id="details-div">
+                        <div class="row">
+                            <div class="col-md-12 text-left details-sec mb-10">
+                                <h4>{{ (selectedStrategy && selectedStrategy.short_name) ? selectedStrategy.short_name : '' }}
+                                </h4>
+                            </div>
+                            <div class="col-md-12 text-left details-sec mb-10">
+                                <label>Description</label>
+                                <div>
+                                    <textarea class="disc-p" disabled placeholder="Description">{{ (selectedStrategy && selectedStrategy.description) ? selectedStrategy.description : '' }}</textarea>
+                                </div>
+                            </div>
+                            <div class="col-md-12 mb-10 details-sec">
+                                <div class="col-md-12 mb-10">
+                                    <label class="pull-left">Fields</label>
+                                </div>
+                                <div *ngFor="let strategy of selectedStrategy | keyvalue ">
+                                    <div class="col-md-6 row pb-10 " [hidden]="strategy.key == '_id' || strategy.key == '__v' || strategy.key == 'created_at' || strategy.key == 'plan_id' || strategy.key == 'description' || strategy.key == 'deactivate' || strategy.key == 'is_countdown_update' || strategy.key == 'prioritize' || strategy.key == 'propose' || strategy.key == 'select' || strategy.key == 'shared_users' || strategy.key == 'user_id' || strategy.key == 'status' || strategy.key == 'numbers' || strategy.key == 'votedown' || strategy.key == 'voteup' ">
+                                        <div *ngIf="strategy.key=='start_date' || strategy.key=='end_date' ">
+                                            <div class="col-md-6 text-blue text-left">{{textDecoration(strategy.key)}}
+                                            </div>
+                                            <div class="col-md-6 text-white text-left">: {{strategy.value | itemplanitemdate }}</div>
+                                        </div>
+
+                                        <div *ngIf="strategy.key !='start_date' && strategy.key !='end_date' && strategy.key !='security'">
+                                            <div class="col-md-6 text-blue text-left">{{textDecoration(strategy.key)}}
+                                            </div>
+                                            <div class="col-md-6 text-white text-left">: {{strategy.value }}</div>
+                                        </div>
+
+                                        <div *ngIf="strategy.key=='security' ">
+                                            <div class="col-md-6 text-blue text-left">{{textDecoration(strategy.key)}}
+                                            </div>
+                                            <div class="col-md-6 text-white text-left" *ngIf="strategy.value==0 ">: Private
+                                            </div>
+                                            <div class="col-md-6 text-white text-left" *ngIf="strategy.value==1 ">: Shared </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 mb-10 details-sec" *ngIf="strategyAttachments && strategyAttachments.length > 0">
+                            <label class="pull-left mb-10">Attachments</label>
+                            <div class="row col-md-12">
+                                <div class="col-md-3 attachment-box" *ngFor="let file of strategyAttachments;let i = index;">
+                                    <img *ngIf="isImage(file.attachment)" [src]="file.attachment_url" alt="{{file.attachment}}">
+                                    <img *ngIf="!isImage(file.attachment)" src="/assets/images/folder.jpg" alt="{{file.attachment}}">
+
+                                    <div class="box-content">
+                                        <ul class="icon">
+                                            <li><a [href]="file.attachment_url" class="cursor-pointor" title="{{ file.attachment }}" target="_blank" download><i
+                                                        class="fa fa-download"></i></a></li>
+                                            <li *ngIf="isImage(file.attachment)"><a (click)="openImage(file.attachment_url)" class="cursor-pointor"><i
+                                                        class="fa fa-eye"></i></a></li>
+                                            <li><a (click)="deleteStrategyAttachment(file._id, file.strategy_id)" class="cursor-pointor"><i class="fa fa-trash"></i></a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 right-content">
+                        <div class="chat-div" id="strategy-chat-div">
+                            <div class="row" id="strategy-chat-attachment-div">
+                                <div *ngFor="let chat of userStrategyChats;">
+                                    <div class="col-md-12 left-side pull-left text-left pb-10" *ngIf="!checkCurrentUser(chat.sender_id)">
+                                        <div class="col-md-12 text-left">
+                                            <p>{{ chat.sender_name }}</p>
+                                        </div>
+                                        <div class="col-md-1 text-center">
+                                            <span *ngIf="!chat.avatar_url" class="recive-chat-box-span">{{ getShortName(chat.sender_name) }}</span>
+                                            <img *ngIf="chat.avatar_url" [src]="chat.avatar_url" class="chat-avatar">
+                                        </div>
+                                        <div class="col-md-8">
+                                            <p class="chat-time-text">
+                                                {{ chat.created_at | date: 'dd MMMM yyyy, h:mm a' }}</p>
+                                            <div class="col-md-12 text-left p-0" *ngIf="chat.message">
+                                                <p class="chat-message receive">{{ chat.message }}</p>
+                                            </div>
+                                            <div class="col-md-12 text-left p-0" *ngIf="chat.chat_attachment_urls && chat.chat_attachment_urls.length > 0">
+                                                <ul class="ul-new-cust">
+                                                    <li *ngFor="let file of chat.chat_attachment_urls">
+                                                        <a [href]="file.url" download target="_blank">
+                                                            <img *ngIf="!isImage(file.file_name)" src="/assets/images/files-download.png" title="{{ file.file_name }}" alt="{{ file.file_name }}" class="attachment-icon">
+                                                            <img *ngIf="isImage(file.file_name)" [src]="file.url" title="{{ file.file_name }}" alt="{{ file.file_name }}" class="attachment-icon">
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 right-size pull-right text-right pb-10" *ngIf="checkCurrentUser(chat.sender_id)">
+                                        <div class="col-md-12">
+                                            <div class="col-md-7 pull-right pull-right">
+                                                <p class="chat-time-text">
+                                                    {{ chat.created_at | date: 'dd MMMM yyyy, h:mm a' }}</p>
+                                            </div>
+                                            <div class="col-md-8 pull-right" *ngIf="chat.message">
+                                                <p class="chat-message send">{{ chat.message }}</p>
+                                            </div>
+                                            <div class="col-md-12" *ngIf="chat.chat_attachment_urls && chat.chat_attachment_urls.length > 0">
+                                                <ul class="ul-new-cust">
+                                                    <li *ngFor="let file of chat.chat_attachment_urls">
+                                                        <a [href]="file.url" download target="_blank">
+                                                            <img *ngIf="!isImage(file.file_name)" src="/assets/images/files-download.png" title="{{ file.file_name }}" alt="{{ file.file_name }}" class="attachment-icon">
+                                                            <img *ngIf="isImage(file.file_name)" [src]="file.url" title="{{ file.file_name }}" alt="{{ file.file_name }}" class="attachment-icon">
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row cust-list-inner-fx" *ngIf="strategyChatAttachment && strategyChatAttachment.length > 0">
+                            <div class="files-list col-md-3" *ngFor="let file of strategyChatAttachment; let i=index;">
+                                <div class="files-list-inner cust-list-inner">
+                                    <p> {{ file.name }} </p>
+                                    <button class="btn btn-danger delete-file" (click)="deleteStrategyUploadedAttachment(i)">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="footer">
+                    <div class="col-md-6 left-footer">
+                        <div class="file-upload">
+                            <div class="file-upload__label" (click)="fileInput.click()" appDragDrop (onFileDropped)="uploadStrategyAttachment($event)">
+                                <img src="/assets/images/ic_browse.svg"> Drop files here to attach or
+                                <span>browse</span>
+                                <input class="file-upload__input" multiple type="file" #fileInput (change)="uploadStrategyAttachment($event.target.files)">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 right-footer">
+                        <form [formGroup]="sendStrategyMessageForm">
+                            <div class="col-md-12 p-0">
+                                <textarea class="form-control custom-textarea" (keyup.enter)="sendStrategyMessage()" formControlName="message" id="goal-message" placeholder="Add Comment"></textarea>
+                            </div>
+                            <div class="col-md-12 mt-5">
+                                <button class="btn btn-warning ml-5 pull-right" (click)="sendStrategyMessage()">Comment</button>&nbsp;
+                                <label for="goal-chat-upload-attachments" class="attachment-label">
+                                    <img src="../../assets/images/ic_attech.png">
+                                    <input type="file" multiple class="hidden" id="goal-chat-upload-attachments"
+                                        (change)="sendStrategyAttachment($event.target.files)">
+                                </label>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Strategy Modal -->
+
+        <!-- Start Add Goal Modal -->
+        <div class="modal fade dark-theme-modal" id="addGoalModal" tabindex="-1" role="dialog" aria-labelledby="addGoalModalTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title text-white pull-left" id="exampleModalLongTitle">Add {{ planItemModalTitle }}</h5>
+                        <button type="button" class="btn btn-warning pull-right" (click)="openFormControlModal()"><i
+                                class="fa fa-plus"></i>&nbsp; Form Controls</button>
+                    </div>
+                    <form id="add-row-form" class="p-3" [formGroup]="goalForm">
+                        <div class="modal-body goal-modal-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Short Name<span>*</span></label>
+                                        <input type="text" id="position-input" [(ngModel)]="goalForm.value.short_name" formControlName="short_name" class="form-control" placeholder="Short name" [ngClass]="{ 'is-invalid': isGoalFormSubmitted && f.short_name.errors }" autocomplete="off">
+                                        <div *ngIf="isGoalFormSubmitted && f.short_name.errors" class="invalid-feedback">
+                                            <div *ngIf="f.short_name.errors.required">Short name is required</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Long Name<span>*</span></label>
+                                        <input type="text" id="long_name" [(ngModel)]="goalForm.value.long_name" formControlName="long_name" class="form-control" placeholder="Long name" [ngClass]="{ 'is-invalid': isGoalFormSubmitted && f.long_name.errors }" autocomplete="off">
+                                        <div *ngIf="isGoalFormSubmitted && f.long_name.errors" class="invalid-feedback">
+                                            <div *ngIf="f.long_name.errors.required">Long name is required</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Start Date<span>*</span></label>
+                                    <div class="input-group input-append bootstrap-datepicker">
+                                        <input type="text" id="date-input5" [(ngModel)]="goalForm.value.start_date" formControlName="start_date" class="form-control date-picker" placeholder="Start Date" autocomplete="off">
+                                        <span style="background-color: #8869c2;" class="input-group-addon add-on"><i
+                                                class="fa fa-calendar"></i></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label>End Date<span>*</span></label>
+                                    <div class="input-group input-append bootstrap-datepicker">
+                                        <input type="text" id="date-input6" [(ngModel)]="goalForm.value.end_date" formControlName="end_date" class="form-control date-picker" placeholder="End Date" autocomplete="off">
+                                        <span style="background-color: #8869c2;" class="input-group-addon add-on"><i
+                                                class="fa fa-calendar"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-10 form-group">
+                                <label>Description</label>
+                                <textarea type="text" formControlName="description" [(ngModel)]="goalForm.value.description" class="form-control" placeholder="Description"></textarea>
+                                <div *ngIf="isGoalFormSubmitted && f.description.errors" class="invalid-feedback">
+                                    <div *ngIf="f.description.errors.required">Description is required</div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 form-group">
+                                    <label>Revenue Target</label>
+                                    <input type="number" onwheel="this.blur()" min="1" [(ngModel)]="goalForm.value.revenue_target" formControlName="revenue_target" class="form-control" placeholder="Revenue Target">
+                                    <div *ngIf="isGoalFormSubmitted && f.revenue_target.errors" class="invalid-feedback">
+                                        <div *ngIf="f.revenue_target.errors.required">Revenue Target is required</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label>Expected Target</label>
+                                    <input type="number" onwheel="this.blur()" min="1" [(ngModel)]="goalForm.value.expected_target" formControlName="expected_target" class="form-control" placeholder="Expected Target">
+                                    <div *ngIf="isGoalFormSubmitted && f.expected_target.errors" class="invalid-feedback">
+                                        <div *ngIf="f.expected_target.errors.required">Expected Target is required</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" *ngIf="goalControls && goalControls.length > 0">
+                                <div *ngFor="let element of goalControls;">
+                                    <div class="form-group col-md-6">
+                                        <div *ngIf="(element.type=='text');">
+                                            <label>{{textDecoration(element.name)}}<span
+                                                    *ngIf="element.required=='true'">*</span></label>
+                                            <input type="text" formControlName="{{element.name}}" class="form-control" placeholder="Enter {{textDecoration(element.name)}}" autocomplete="off" required="{{element.required}}" [ngClass]="{ 'is-invalid': isGoalFormSubmitted && f[element.name].errors }">
+                                            <div *ngIf="isGoalFormSubmitted && f[element.name].errors" class="invalid-feedback">
+                                                <div *ngIf="f[element.name].errors.required" class="error">
+                                                    {{textDecoration(element.name)}} is required</div>
+                                            </div>
+                                        </div>
+                                        <div *ngIf="(element.type=='number');">
+                                            <label>{{textDecoration(element.name)}}<span
+                                                    *ngIf="element.required=='true'">*</span></label>
+                                            <input type="number" formControlName="{{element.name}}" class="form-control" placeholder="Enter {{textDecoration(element.name)}}" autocomplete="off" required="{{element.required}}" [ngClass]="{ 'is-invalid': isGoalFormSubmitted && f[element.name].errors }">
+                                            <div *ngIf="isGoalFormSubmitted && f[element.name].errors" class="invalid-feedback">
+                                                <div *ngIf="f[element.name].errors.required" class="error">
+                                                    {{textDecoration(element.name)}} is required</div>
+                                            </div>
+                                        </div>
+                                        <div *ngIf="(element.type=='select')">
+                                            <label>{{textDecoration(element.name)}}<span
+                                                    *ngIf="element.required=='true'">*</span></label>
+                                            <select class="form-control" formControlName="{{element.name}}" #selectField required="{{element.required}}" [ngClass]="{ 'is-invalid': isGoalFormSubmitted && f[element.name].errors }">
+                                                <option value="">Select {{textDecoration(element.name)}}</option>
+                                                <option *ngFor="let plan of element.option" value="{{plan.id}}">
+                                                    {{plan.id}}</option>
+                                            </select>
+                                            <div *ngIf="isGoalFormSubmitted && f[element.name].errors" class="invalid-feedback">
+                                                <div *ngIf="f[element.name].errors.required" class="error">
+                                                    {{textDecoration(element.name)}} is required</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-success" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-danger" (click)="onGoalSubmit()">Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- End Add Goal Modal -->
+
+        <!-- Add Dynamic Form Fields Modal -->
+        <div class="modal fade" id="addFormControlToGoal" tabindex="-1" role="dialog" aria-labelledby="addFormControlToGoalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content">
+                    <form>
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                    aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="addFormControlToGoalLabel">Add form controls to goal</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="">
+                                <div class="col-md-12 mb-10">
+                                    <button type="button" class="btn btn-default pull-right" (click)="onAddNewControl()">Add Field</button>
+                                </div>
+                                <div *ngFor="let control of formField; index as i;" class="row">
+                                    <div class="form-group col-md-3">
+                                        <input type="text" id="data{{i}}" (input)="setControlLabel($event.target.value,i)" class="form-control" placeholder="Name Of FormControl" autocomplete="off">
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <select class="form-control" (change)="getSelectOptions($event,i)">
+                                            <option value="">Select FormControl</option>
+                                            <option value="text">Text</option>
+                                            <option value="number">Number</option>
+                                            <option value="select">Select</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <select class="form-control" (input)="setRequiredValue($event.target.value,i)">
+                                            <option value="">Select Required</option>
+                                            <option value="true">True</option>
+                                            <option value="false">False</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-2" *ngIf="control.option && control.option.length == 0">
+                                        <button class="btn btn-primary" (click)="addControlSelectOptions(i)">Add
+                                            option</button>
+                                    </div>
+                                    <div class="form-group col-md-2" *ngIf="control.option && control.option.length > 0">
+                                        <button class="btn btn-primary" (click)="addControlSelectOptions(i)">Modify
+                                            option</button>
+                                    </div>
+                                    <div class="form-group col-md-1">
+                                        <button class="btn btn-danger" [disabled]="this.formField.length == 1" (click)="onRemoveFormControl(i)"><i class="fa fa-times"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-success" (click)="saveControlFields()">Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- Close Dynamic Form Fields Modal -->
+
+        <!-- Start Add Form Select Box Option Modal -->
+        <div class="modal fade" id="addSelectOptions" tabindex="-1" role="dialog" aria-labelledby="addSelectOptionsLabel" aria-hidden="true">
+            <div class="modal-dialog" style="min-width: 480px;">
+                <div class="modal-content ">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="addSelectOptionsLabel">Add Option</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div>
+                            <button type="button" class="btn btn-default m-b-xxs" (click)="onAddOption()">Add new
+                                Option</button>
+                        </div>
+                        <input type="hidden" value="" id="controlid">
+                        <div *ngFor="let option of selectoption; index as i;">
+                            <div class="form-group" style="padding: 3px;margin: 0;">
+                                <input type="text" id="data{{i}}" style="width:300px;display: inline;" [ngModelOptions]="{standalone: true}" [(ngModel)]="option.id" class="form-control" placeholder="Name Of FormControl" autocomplete="off">
+                                <button class="btn btn-danger" style="margin: 4px;height: 33px;margin-bottom: 8px" (click)="removeoption(i)">X</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-success" (click)="saveOption()">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Close Add Form Select Box Option Modal -->
+
+        <!-- Add Challange Management Modal -->
+        <div class="modal fade" id="addOpportunityAndProblemModal" tabindex="-1" role="dialog" aria-labelledby="addOpportunityAndProblemModal" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <form [formGroup]="changeForm">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                    aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="addOpportunityAndProblemModal">Add Challange</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="form-group col-md-12">
+                                    <label>Challange</label>
+                                    <select class="form-control" formControlName="challange" [ngClass]="{ 'is-invalid': isChangeFormFormValid && change.challange.errors }">
+                                        <option value="">Select Challange</option>
+                                        <option value="Opportunity">Opportunity</option>
+                                        <option value="Problem">Problem</option>
+                                    </select>
+                                    <div *ngIf="isChangeFormFormValid && change.challange.errors" class="invalid-feedback">
+                                        <label *ngIf="change.challange.errors.required" class="error">Challange is
+                                            required</label>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-12">
+                                    <label>Description</label>
+                                    <textarea class="form-control" placeholder="Description" formControlName="description" [ngClass]="{ 'is-invalid': isChangeFormFormValid && change.description.errors }"></textarea>
+                                    <div *ngIf="isChangeFormFormValid && change.description.errors" class="invalid-feedback">
+                                        <label *ngIf="change.description.errors.required" class="error">Description is
+                                            required</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-success" (click)="submitOpportunityAndProblem()">Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- Close Opportunities and Problem Modal -->
+
+        <!-- Start Challange Management Modal -->
+        <div class="popup" *ngIf="isOpenChallangeManagementModal">
+            <div class="popup-inner">
+                <div class="header">
+                    <div class="col-md-6 left-header details-sec">
+                        <h4 class="text-left">
+                            {{ (challangeDetails && challangeDetails.challange) ? challangeDetails.challange : '' }}
+                        </h4>
+                    </div>
+                    <div class="col-md-6 right-header">
+                        <div class="pull-left text-left">
+                            <b>Created</b><br>
+                            <span *ngIf="challangeDetails && challangeDetails.created_at">{{ challangeDetails.created_at | date:"MMM d y, h:mm a" }}</span>
+                        </div>
+                        <a class="pull-right cursor-pointor" (click)="closeChallangeModal()"><img src="/assets/images/ic_close.png"></a>
+                    </div>
+                </div>
+                <div class="content">
+                    <div class="col-md-6 left-content" id="details-div">
+                        <div class="row">
+                            <div class="col-md-12 text-left details-sec mb-10">
+                                <label>Description</label>
+                                <div>
+                                    <textarea class="disc-p" disabled placeholder="Description">{{ (challangeDetails && challangeDetails.description) ? challangeDetails.description : '' }}</textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 mb-10 details-sec" *ngIf="challangeAttachments && challangeAttachments.length > 0">
+                            <label class="pull-left mb-10">Attachments</label>
+                            <div class="row col-md-12">
+                                <div class="col-md-3 attachment-box" *ngFor="let file of challangeAttachments;let i = index;">
+                                    <img *ngIf="isImage(file.attachment)" [src]="file.attachment_url" alt="{{file.attachment}}">
+                                    <img *ngIf="!isImage(file.attachment)" src="/assets/images/folder.jpg" alt="{{file.attachment}}">
+
+                                    <div class="box-content">
+                                        <ul class="icon">
+                                            <li><a [href]="file.attachment_url" class="cursor-pointor" title="{{ file.attachment }}" target="_blank" download><i
+                                                        class="fa fa-download"></i></a></li>
+                                            <li *ngIf="isImage(file.attachment)"><a (click)="openImage(file.attachment_url)" class="cursor-pointor"><i
+                                                        class="fa fa-eye"></i></a></li>
+                                            <li><a (click)="deleteChallangeAttachment(file._id, file.challange_id)" class="cursor-pointor"><i class="fa fa-trash"></i></a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 right-content">
+                        <div class="chat-div" id="challange-chat-div">
+                            <div class="row" id="challange-chat-attachment-div">
+                                <div *ngFor="let chat of userChallangeChats;">
+                                    <div class="col-md-12 left-side pull-left text-left pb-10" *ngIf="!checkCurrentUser(chat.sender_id)">
+                                        <div class="col-md-12 text-left">
+                                            <p>{{ chat.sender_name }}</p>
+                                        </div>
+                                        <div class="col-md-1 text-center">
+                                            <span *ngIf="!chat.avatar_url" class="recive-chat-box-span">{{ getShortName(chat.sender_name) }}</span>
+                                            <img *ngIf="chat.avatar_url" [src]="chat.avatar_url" class="chat-avatar">
+                                        </div>
+                                        <div class="col-md-8">
+                                            <p class="chat-time-text">
+                                                {{ chat.created_at | date: 'dd MMMM yyyy, h:mm a' }}</p>
+                                            <div class="col-md-12 text-left p-0" *ngIf="chat.message">
+                                                <p class="chat-message receive">{{ chat.message }}</p>
+                                            </div>
+                                            <div class="col-md-12 text-left p-0" *ngIf="chat.chat_attachment_urls && chat.chat_attachment_urls.length > 0">
+                                                <ul class="ul-new-cust">
+                                                    <li *ngFor="let file of chat.chat_attachment_urls">
+                                                        <a [href]="file.url" download target="_blank">
+                                                            <img *ngIf="!isImage(file.file_name)" src="/assets/images/files-download.png" title="{{ file.file_name }}" alt="{{ file.file_name }}" class="attachment-icon">
+                                                            <img *ngIf="isImage(file.file_name)" [src]="file.url" title="{{ file.file_name }}" alt="{{ file.file_name }}" class="attachment-icon">
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 right-size pull-right text-right pb-10" *ngIf="checkCurrentUser(chat.sender_id)">
+                                        <div class="col-md-12">
+                                            <div class="col-md-7 pull-right pull-right">
+                                                <p class="chat-time-text">
+                                                    {{ chat.created_at | date: 'dd MMMM yyyy, h:mm a' }}</p>
+                                            </div>
+                                            <div class="col-md-8 pull-right" *ngIf="chat.message">
+                                                <p class="chat-message send">{{ chat.message }}</p>
+                                            </div>
+                                            <div class="col-md-12" *ngIf="chat.chat_attachment_urls && chat.chat_attachment_urls.length > 0">
+                                                <ul class="ul-new-cust">
+                                                    <li *ngFor="let file of chat.chat_attachment_urls">
+                                                        <a [href]="file.url" download target="_blank">
+                                                            <img *ngIf="!isImage(file.file_name)" src="/assets/images/files-download.png" title="{{ file.file_name }}" alt="{{ file.file_name }}" class="attachment-icon">
+                                                            <img *ngIf="isImage(file.file_name)" [src]="file.url" title="{{ file.file_name }}" alt="{{ file.file_name }}" class="attachment-icon">
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row cust-list-inner-fx" *ngIf="challangeChatAttachment && challangeChatAttachment.length > 0">
+                            <div class="files-list col-md-3" *ngFor="let file of challangeChatAttachment; let i=index;">
+                                <div class="files-list-inner cust-list-inner">
+                                    <p> {{ file.name }} </p>
+                                    <button class="btn btn-danger delete-file" (click)="deleteChallangeUploadedAttachment(i)">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="footer">
+                    <div class="col-md-6 left-footer">
+                        <div class="file-upload">
+                            <div class="file-upload__label" (click)="fileInput.click()" appDragDrop (onFileDropped)="uploadChallangeAttachment($event)">
+                                <img src="/assets/images/ic_browse.svg"> Drop files here to attach or
+                                <span>browse</span>
+                                <input class="file-upload__input" multiple type="file" #fileInput (change)="uploadChallangeAttachment($event.target.files)">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 right-footer">
+                        <form [formGroup]="sendChallangeMessageForm">
+                            <div class="col-md-12 p-0">
+                                <textarea class="form-control custom-textarea" (keyup.enter)="sendChallangeMessage()" formControlName="message" id="goal-message" placeholder="Add Comment"></textarea>
+                            </div>
+                            <div class="col-md-12 mt-5">
+                                <button class="btn btn-warning ml-5 pull-right" (click)="sendChallangeMessage()">Comment</button>&nbsp;
+                                <label for="goal-chat-upload-attachments" class="attachment-label">
+                                    <img src="../../assets/images/ic_attech.png">
+                                    <input type="file" multiple class="hidden" id="goal-chat-upload-attachments"
+                                        (change)="sendChallangeAttachment($event.target.files)">
+                                </label>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Challange Management Modal -->
+    </div>
+
+    <app-footer></app-footer>
+</div>

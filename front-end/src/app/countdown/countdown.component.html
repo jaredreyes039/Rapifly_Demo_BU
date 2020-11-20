@@ -1,0 +1,61 @@
+<app-header></app-header>
+<!-- Page Content -->
+<div class="page-content">
+    <app-top-header></app-top-header>
+    <div class="page-inner no-page-title">
+        <div class="page-title">
+            <!-- <a routerLink="/add/plan"   class="btn btn-success m-b-sm pull-right"   ><i class="fa fa-plus"></i>&nbsp;Add New Plan</a> -->
+            <select class="form-control pull-right" (change)="getplanid(selectField.value);" style="width: 17%;"  #selectField>
+                <option  value="">Select Plan</option>
+                <option *ngFor="let plan of plans;let i=index"  value="{{plan._id}}">{{plan.short_name}}</option>
+            </select>
+            <h3 class="breadcrumb-header">Countdown</h3>
+        </div>
+        
+            <!-- <button type="button" class="btn btn-success m-b-sm pull-right"  data-toggle="modal" (click)="reset()"><i class="fa fa-plus"></i>&nbsp;Add New Plan</button> -->
+        <!-- <div class="panel panel-darkblue">
+            <div class="panel-body"> -->
+                <!-- <div>
+                    <select class="form-control" (change)="getgoal(selectField.value);" style="width: 17%;"  #selectField>
+                        <option  value="">Select Plan</option>
+                        <option *ngFor="let plan of plans" value="{{plan._id}}">{{plan.short_name}}</option>
+                    </select>
+                </div> -->
+           
+                <div class="table-responsive" >
+                   
+                        <div class="panel-body">
+                    <div class="panel panel-cutom-blue">
+                    <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="display table table-data-width">
+                        <thead>
+                            <tr>
+                                
+                                <th class="prioritize-blue">(G) Short Name</th>
+                                <th class="prioritize-blue">Start Date</th>
+                                <th class="prioritize-blue">End Date</th>
+                                <th class="prioritize-blue">Creator</th>
+                                <th class="prioritize-blue">Start Time</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let p of goals ; let i=index">
+                              
+                                <td>(G) {{ p.short_name  }}</td>
+                                <td>{{ p.start_date  | prioritizegoaldate  }}</td>
+                                <td>{{ p.end_date  | prioritizegoaldate}}</td>
+                                <td>{{ p.user_id.first_name }} {{ p.user_id.last_name  }}</td>
+                                <td>{{ p.total_time }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    </div>
+                </div>
+                </div>
+                </div>
+            
+        <!-- </div>
+    </div> -->
+
+<app-footer></app-footer>
+  
+</div>

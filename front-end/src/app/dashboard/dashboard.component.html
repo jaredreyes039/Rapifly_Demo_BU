@@ -1,0 +1,86 @@
+<app-header></app-header>
+
+<!-- Page Content -->
+<div class="page-content">
+    <app-top-header></app-top-header>
+
+    <!-- Page Inner -->
+    <div class="page-inner no-page-title">
+        <div id="main-wrapper">
+            <div class="row">
+                <div class="page-title">
+                    <h3 class="breadcrumb-header">Goals Details</h3>
+                </div>
+                <div class="col-md-3">
+                    <div class="custom-panel custom-panel-blue">
+                        <div class="custom-panel-body">
+                            <img src="/assets/images/dashboard/ic_goal.png">
+                            <span>{{ (goalReport && goalReport.total_goals) ? goalReport.total_goals : 0 }}</span>
+                        </div>
+                        <div class="custom-panel-text text-center">
+                            <p>Total Goals</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="custom-panel custom-panel-orange">
+                        <div class="custom-panel-body">
+                            <img src="/assets/images/dashboard/ic_completed_goal.png">
+                            <span>{{ (goalReport && goalReport.completed_goals) ? goalReport.completed_goals : 0 }}</span>
+                        </div>
+                        <div class="custom-panel-text text-center">
+                            <p>Completed Goals</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="custom-panel custom-panel-pink">
+                        <div class="custom-panel-body">
+                            <img src="/assets/images/dashboard/ic_remaining_goals.png">
+                            <span>{{ (goalReport && goalReport.remaining_goals) ? goalReport.remaining_goals : 0 }}</span>
+                        </div>
+                        <div class="custom-panel-text text-center">
+                            <p>Remaining Goals</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="custom-panel custom-panel-sky-blue">
+                        <div class="custom-panel-body">
+                            <img src="/assets/images/dashboard/ic_overdue_goals.png">
+                            <span>{{ (goalReport && goalReport.overdue_goals) ? goalReport.overdue_goals : 0 }}</span>
+                        </div>
+                        <div class="custom-panel-text text-center">
+                            <p>Overdue Goals</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Row -->
+            <div class="row">
+                <div class="page-title">
+                    <h3 class="breadcrumb-header">Goals Summary Chart</h3>
+                </div>
+                <div class="col-md-12">
+                    <div class="panel panel-darkblue">
+                        <div class="panel-body text-center">
+                            <canvas class="chart-width" *ngIf="isReportAvailable" baseChart [data]="doughnutChartData" [colors]="donutColors" [labels]="doughnutChartLabels" [chartType]="doughnutChartType"></canvas>
+                            <h4 *ngIf="!isReportAvailable">Data not available</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Row -->
+            <div class="row">
+
+            </div>
+            <!-- Row -->
+        </div>
+        <!-- Main Wrapper -->
+    </div>
+    <!-- /Page Inner -->
+
+    <app-footer></app-footer>
+
+</div>
+<!-- /Page Content -->

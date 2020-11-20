@@ -1,0 +1,85 @@
+<!-- Page Container -->
+<div class="page-container register-page">
+
+    <!-- Page Content -->
+    <div class="">
+        <div class="row">
+            <div class="col-md-6 site-wrapper">
+                <div class="row text-center logo-wrapper">
+                    <div class="col-md-12 mb-15">
+                        <h1 class="welcome-text">WELCOME</h1>
+                    </div>
+                    <div class="col-md-12 mb-15">
+                        <img src="../../assets/images/new-theme/logoRapiFly.png" class="logo-style">
+                    </div>
+                    <div class="col-md-12">
+                        <h1 class="title-text">RapiFly</h1>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="col-md-2"></div>
+                <div class="col-md-8">
+                    <div class="row control-style">
+                        <div class="col-md-12 mb-15">
+                            <div class="page-title">
+                                Please login to your account
+                            </div>
+                        </div>
+                        <div class="col-md-12 mb-15">
+                            <span class="terms-and-conditions">
+                            This is a secure site. Please enter your login information or <a class="cursor-pointor" routerLink="/sign-up">click here</a> to register.
+                          </span>
+                            <br>
+                            <span class="terms-and-conditions">
+                                Register in Coach's Corner <a routerLink="/coach/register" >click here</a>
+                            </span>
+                        </div>
+                        <div class="col-md-12 form-wrapper">
+                            <form class="m-t-md" #kform="ngForm" class="m-t-md" [formGroup]="loginForm">
+                                <div class="form-group">
+                                    <label class="custom-label-control">Email</label>
+                                    <input type="email" class="form-control custom-form-control" formControlName="email" placeholder="Email" [ngClass]="{ 'is-invalid': IsLoginFormValid && jval.email.errors }" required autocomplete="off">
+                                    <div *ngIf="IsLoginFormValid && jval.email.errors" class="invalid-feedback">
+                                        <div *ngIf="jval.email.errors.required">Email is required</div>
+                                        <div *ngIf="jval.email.errors.email">Email must be a valid email address</div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="custom-label-control">Password</label>
+                                    <input type="password" name="password" formControlName="password" class="password form-control custom-form-control" placeholder="Password" [ngClass]="{ 'is-invalid': IsLoginFormValid && jval.password.errors }" autocomplete="off" required>
+                                    <div *ngIf="IsLoginFormValid && jval.password.errors" class="invalid-feedback">
+                                        <div *ngIf="jval.password.errors.required">Password is required</div>
+                                        <div *ngIf="jval.password.errors.minlength">Password must be at least 6 characters</div>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-md-6">
+                                        <span class="terms-and-conditions">
+                                          <input type="checkbox" value="1"> Remember Me
+                                        </span>
+                                    </div>
+                                    <div class="col-md-6 text-right">
+                                        <span routerLink="/forgot/password" class="terms-and-conditions cursor-pointor">
+                                          Forgot Password?
+                                      </span>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-md-6 pull-right">
+                                        <button type="submit" (click)="Login(kform)" class="btn btn-success form-submit-button pull-right">Login</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Page Inner -->
+
+        <!-- /Page Inner -->
+    </div>
+    <!-- /Page Content -->
+</div>
+<!-- /Page Container -->

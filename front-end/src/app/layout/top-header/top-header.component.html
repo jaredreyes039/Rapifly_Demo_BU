@@ -1,0 +1,62 @@
+<!-- Page Header -->
+<div class="page-header">
+    <div class="search-form">
+        <form action="#" method="GET">
+            <div class="input-group">
+                <input type="text" name="search" class="form-control search-input" placeholder="Type something...">
+                <span class="input-group-btn">
+                    <button class="btn btn-default" id="close-search" type="button"><i class="icon-close"></i></button>
+                </span>
+            </div>
+        </form>
+    </div>
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <div class="logo-sm">
+                    <a href="javascript:void(0)" id="sidebar-toggle-button"><i class="fa fa-bars"></i></a>
+                    <a class="logo-box" routerLink="/"><span>RapiFly</span></a>
+                </div>
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                        <i class="fa fa-angle-down"></i>
+                    </button>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li *ngIf="currentUser.role == 'User'">
+                        <a routerLink="/item-plans-details" class="logo-home-text">
+                            <img class="logo" src="/assets/images/new-theme/logoRapiFly.png" alt="RapiFly">&nbsp; RapiFly
+                        </a>
+                    </li>
+                    <!-- <li class="collapsed-sidebar-toggle-inv"><a href="javascript:void(0)" id="collapsed-sidebar-toggle-button"><i class="fa fa-bars"></i></a></li> -->
+                    <li *ngIf="currentUser.role == 'Admin'" class="collapsed-sidebar-toggle-inv"><a class="cursor-pointor" (click)="collapseSidebar(isCollapsedSidebar)"><i class="fa fa-bars"></i></a></li>
+                    <!-- <li><a href="javascript:void(0)" id="toggle-fullscreen"><i class="fa fa-expand"></i></a></li> -->
+                    <!-- <li><a href="javascript:void(0)" id="search-button"><i class="fa fa-search"></i></a></li> -->
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <p class="profile-text user-name">{{ userProfile.first_name }} {{ userProfile.last_name }}</p>
+                        <p class="profile-text user-role">{{ (userDesignation && userDesignation != '') ? userDesignation : '---' }}</p>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                            <img *ngIf="avatarUrl" [src]="avatarUrl" alt="" class="img-circle">
+                            <img *ngIf="!avatarUrl" src="/assets/images/avatars/default-avatar.png" alt="" class="img-circle">&nbsp;
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a routerLink="/profile" class="cursor-pointor">Profile</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a (click)="logout()" class="cursor-pointor">Log Out</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container-fluid -->
+    </nav>
+</div>
+<!-- /Page Header -->

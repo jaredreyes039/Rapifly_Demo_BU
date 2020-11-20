@@ -1,0 +1,63 @@
+<app-header></app-header>
+
+<!-- Page Content -->
+<div class="page-content">
+    <app-top-header></app-top-header>
+    <div class="page-inner no-page-title">
+        <div class="page-title">
+            <h3 class="breadcrumb-header">Fill Up Q&A Form</h3>
+        </div>
+
+        <div class="panel panel-darkblue">
+            <div class="panel-body">
+                <h3 class="breadcrumb-header">{{ (formDetail && formDetail.plan_id.short_name) ? formDetail.plan_id.short_name : '' }}</h3>
+                <div *ngIf="formField && formField.length > 0">
+                    <form [formGroup]="qaForm">
+                        <div class="row form-controls-div">
+                            <div *ngFor="let element of formField;">
+                                <div class="form-group col-md-6">
+                                    <div *ngIf="(element.type=='text');">
+                                        <label>{{textDecoration(element.name)}}<span *ngIf="element.required=='true'">*</span></label>
+                                        <input type="text" formControlName="{{element.name}}" class="form-control" placeholder="Enter {{textDecoration(element.name)}}" autocomplete="off" required="{{element.required}}" [ngClass]="{ 'is-invalid': isQAFormSubmitted && f[element.name].errors }">
+                                        <div *ngIf="isQAFormSubmitted && f[element.name].errors" class="invalid-feedback">
+                                            <div *ngIf="f[element.name].errors.required" class="error">{{textDecoration(element.name)}} is required</div>
+                                        </div>
+                                    </div>
+                                    <div *ngIf="(element.type=='number');">
+                                        <label>{{textDecoration(element.name)}}<span *ngIf="element.required=='true'">*</span></label>
+                                        <input type="number" formControlName="{{element.name}}" class="form-control" placeholder="Enter {{textDecoration(element.name)}}" autocomplete="off" required="{{element.required}}" [ngClass]="{ 'is-invalid': isQAFormSubmitted && f[element.name].errors }">
+                                        <div *ngIf="isQAFormSubmitted && f[element.name].errors" class="invalid-feedback">
+                                            <div *ngIf="f[element.name].errors.required" class="error">{{textDecoration(element.name)}} is required</div>
+                                        </div>
+                                    </div>
+                                    <div *ngIf="(element.type=='select')">
+                                        <label>{{textDecoration(element.name)}}<span *ngIf="element.required=='true'">*</span></label>
+                                        <select class="form-control" formControlName="{{element.name}}" #selectField required="{{element.required}}" [ngClass]="{ 'is-invalid': isQAFormSubmitted && f[element.name].errors }">
+                                            <option  value="">Select {{textDecoration(element.name)}}</option>
+                                            <option *ngFor="let plan of element.option" value="{{plan.id}}">{{plan.id}}</option>
+                                        </select>
+                                        <div *ngIf="isQAFormSubmitted && f[element.name].errors" class="invalid-feedback">
+                                            <div *ngIf="f[element.name].errors.required" class="error">{{textDecoration(element.name)}} is required</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-12 text-right">
+                                <button type="submit" class="btn btn-primary" (click)="onSubmit()">Submit</button>&nbsp;
+                                <button type="button" class="btn btn-default" (click)="resetForm()">Reset</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div *ngIf="formField && formField.length == 0" class="row form-controls-div">
+                    <div class="col-md-12 text-center">
+                        <h5>No control found</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <app-footer></app-footer>
+</div>

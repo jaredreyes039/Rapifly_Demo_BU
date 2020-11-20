@@ -1,0 +1,47 @@
+<app-header></app-header>
+
+<!-- Page Content -->
+<div class="page-content">
+    <app-top-header></app-top-header>
+
+    <div class="page-inner no-page-title">
+        <div class="page-title">
+            <a routerLink="/user-groups/add" class="btn btn-success m-b-sm pull-right"><i class="fa fa-plus"></i>&nbsp;User Group</a>
+            <h3 class="breadcrumb-header">User Groups</h3>
+        </div>
+        <div class="panel panel-cutom-blue">
+            <div class="panel-body">
+                <div class="row col-md-12">
+                    <div class="table-responsive">
+                        <table id="example" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="display table table-data-width">
+                            <thead>
+                                <tr>
+                                    <th>Group Name</th>
+                                    <th>Created at</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let group of userGroups; let i=index;">
+                                    <td>{{ group.group_name }}</td>
+                                    <td>{{ group.created_at | date: 'yyyy-MM-dd h:mm:ss a' }}</td>
+                                    <td>
+                                        <label class="switch">
+                                        <input type="checkbox" (change)="updateStatus($event, group._id)" checked="{{ (group.status == 1) ? 'checked' : '' }}">
+                                        <span class="slider round"></span>
+                                      </label>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-warning" routerLink="/user-groups/edit/{{group._id}}" title="Update Group"><i class="fa fa-pencil"></i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <app-footer></app-footer>
+</div>

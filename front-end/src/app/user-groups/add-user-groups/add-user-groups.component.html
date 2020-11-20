@@ -1,0 +1,55 @@
+<app-header></app-header>
+
+<!-- Page Content -->
+<div class="page-content">
+    <app-top-header></app-top-header>
+
+    <div class="page-inner no-page-title">
+        <div class="page-title">
+            <h3 class="breadcrumb-header">{{label}} User Groups</h3>
+        </div>
+
+        <div class="row add-user-cust">
+            <div class="col-md-12">
+                <div class="panel panel-darkblue">
+                    <div class="panel-body">
+                        <form class="form-horizontal" [formGroup]="addUserGroupForm">
+                            <div class="form-group m-t-xs">
+                                <label class="col-sm-12 control-label">Group Name</label>
+                                <div class="col-sm-12">
+                                    <input type="text" class="form-control" placeholder="Group Name" formControlName="group_name" id="group_name" [ngClass]="{ 'is-invalid': isAddUserGroupFormValid && formVal.group_name.errors }">
+                                    <div *ngIf="isAddUserGroupFormValid && formVal.group_name.errors" class="invalid-feedback">
+                                        <div *ngIf="formVal.group_name.errors.required">Group name is required</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group m-t-xs">
+                                <label class="col-sm-12 control-label">Select Users</label>
+                                <div class="col-sm-12">
+                                    <ng-select class="cust-select-add" [items]="items" bindLabel="name" placeholder="Select Users" formControlName="group_members" appendTo="body" multiple="true" [(ngModel)]="selected" (change)="onChange($event)">
+                                    </ng-select>
+                                </div>
+                            </div>
+                            <div class="form-group m-t-xs">
+                                <label class="col-sm-12 control-label">Description</label>
+                                <div class="col-sm-12">
+                                    <textarea class="form-control" placeholder="Description" formControlName="description" id="description" [ngClass]="{ 'is-invalid': isAddUserGroupFormValid && formVal.description.errors }"></textarea>
+                                    <div *ngIf="isAddUserGroupFormValid && formVal.description.errors" class="invalid-feedback">
+                                        <div *ngIf="formVal.description.errors.required">Description is required</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-12 text-right">
+                                    <button type="submit" (click)="submit()" class="btn btn-success horizontal-form-button">{{buttonLabel}}</button>&nbsp;
+                                    <button type="reset" class="btn btn-default horizontal-form-button">Cancel</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <app-footer></app-footer>
+</div>

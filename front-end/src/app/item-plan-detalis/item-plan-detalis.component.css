@@ -1,0 +1,671 @@
+.btn-space {
+    margin-right: 15px;
+}
+
+
+/* Remove default bullets */
+
+ul,
+#myUL {
+    list-style-type: none;
+}
+
+
+/* Remove margins and padding from the parent ul */
+
+#myUL {
+    margin: 0;
+    padding: 0;
+}
+
+
+/* Style the caret/arrow */
+
+.caret {
+    cursor: pointer;
+    user-select: none;
+    /* Prevent text selection */
+}
+
+
+/* Create the caret/arrow with a unicode, and style it */
+
+.caret::before {
+    content: "\25B6";
+    color: black;
+    display: inline-block;
+    margin-right: 6px;
+}
+
+
+/* Rotate the caret/arrow icon when clicked on (using JavaScript) */
+
+.caret-down::before {
+    transform: rotate(90deg);
+}
+
+
+/* Hide the nested list */
+
+.nested {
+    display: none;
+}
+
+
+/* Show the nested list when the user clicks on the caret/arrow (with JavaScript) */
+
+.active {
+    display: block;
+}
+
+.hud {
+    height: 100%;
+    overflow: auto;
+    max-height: 240px;
+}
+
+.projecttree {
+    height: 100%;
+    padding-bottom: 10px;
+    max-height: 185px;
+    overflow: auto;
+}
+
+.projectprofile {
+    height: 300px;
+    overflow: auto;
+}
+
+.dashboard {
+    height: 100%;
+    max-height: 300px;
+    overflow: auto;
+}
+
+#style-2::-webkit-scrollbar-track {
+    /* webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); */
+    border-radius: 10px;
+}
+
+#style-2::-webkit-scrollbar {
+    width: 6px;
+}
+
+#style-2::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    /* -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3); */
+    background-color: #cccccc;
+}
+
+.scrollbar {
+    height: 420px;
+    overflow-y: scroll;
+}
+
+.space-stage {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.text-blue {
+    color: #716dff;
+    font-size: 15px;
+    font-weight: 900;
+}
+
+.text-white {
+    color: #fff;
+    font-size: 15px;
+    /* font-weight: 900; */
+}
+
+.pb-10 {
+    padding-bottom: 10px;
+}
+
+.status-active {
+    background: #192231;
+    padding: 2px 5px 2px 5px;
+    border-radius: 5px;
+    border: 1px solid #292948;
+    font-weight: 500;
+}
+
+.space-stage {
+    display: flex;
+}
+
+.space-stage p {
+    padding: 0px 0px 0px 6px;
+}
+
+
+/* File Upload */
+
+.uploadfilecontainer {
+    background-image: url("../../assets/cloud-2044823_960_720.png");
+    background-repeat: no-repeat;
+    background-size: 100px;
+    background-position: center;
+    height: 200px;
+    width: 80%;
+    margin: 20px auto;
+    border: 2px dashed #716dff;
+    border-radius: 10px;
+}
+
+.uploadfilecontainer:hover {
+    cursor: pointer;
+    background-color: #9ecbec !important;
+    opacity: 0.8;
+}
+
+
+/* .files-list {
+    display: flex;
+    width: 80%;
+    margin: 10px auto;
+    margin: 5px 10px 10px 5px;
+    background: #ffffff;
+    border: 1px dashed;
+    border-radius: 12px;
+    padding: 10px;
+    color: #716dff;
+    margin-bottom: 10px;
+} */
+
+.icon {
+    color: tomato !important;
+}
+
+.files-list .delete-file {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.files-list .delete-file img {
+    width: 30px;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.files-list p {
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.files-list-inner {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    border: 1px dashed;
+    border-radius: 12px;
+    padding: 10px;
+    background: #fff;
+    color: #716dff;
+    margin-bottom: 10px;
+}
+
+.files-list-inner .delete-file {
+    margin-left: auto;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.active-phase {
+    color: yellow;
+    font-weight: 500;
+    text-transform: uppercase;
+}
+
+.custom-panel {
+    border-radius: 2px;
+    margin-bottom: 24px;
+    /* padding: 25px; */
+    background-color: #1c2635;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15), 0 -1px 0 rgba(0, 0, 0, 0.02);
+}
+
+.custom-panel-title {
+    font-size: 17px;
+    color: rgb(255, 255, 255, 0.8);
+    font-weight: bold;
+    letter-spacing: 0.5px;
+}
+
+.custom-panel-heading {
+    border-radius: 5px;
+    padding: 0.5px 1px 0.5px 10px;
+}
+
+.custom-panel-blue {
+    color: white;
+    background-color: #716dff;
+}
+
+.custom-panel-orange {
+    color: white;
+    background-color: #ec5e69;
+}
+
+.custom-panel-sky {
+    color: white;
+    background-color: #2ec5d3;
+}
+
+.custom-panel-body {
+    padding: 10px;
+}
+
+.custom-panel-table {
+    width: 100%;
+    max-width: 100%;
+}
+
+.custom-panel-table tr:nth-child(even) {
+    background-color: #9795cd2b;
+    border: 1px solid #39435c;
+}
+
+table.custom-panel-table td:first-child {
+    font-weight: 600;
+    font-size: 10px;
+    letter-spacing: 0.2px;
+    width: 50%;
+}
+
+table.custom-panel-table td:nth-child(2) {
+    width: 50%;
+}
+
+.custom-panel-blue-table td:first-child {
+    color: #716dff;
+}
+
+.custom-panel-orange-table td:first-child {
+    color: #ec5e69;
+}
+
+.custom-panel-sky-table td:first-child {
+    color: #2ec5d3;
+}
+
+.custom-panel-table>tbody>tr>td,
+.custom-panel-table>tbody>tr>th {
+    padding: 10px;
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+}
+
+.mb-10 {
+    margin-bottom: 10px;
+}
+
+.mt-30 {
+    margin-bottom: 30px;
+}
+
+.btn-space {
+    margin-right: 15px;
+}
+
+.btn-space {
+    margin-right: 15px;
+}
+
+
+/* Remove default bullets */
+
+ul,
+#myUL {
+    list-style-type: none;
+}
+
+
+/* Remove margins and padding from the parent ul */
+
+#myUL {
+    margin: 0;
+    padding: 0;
+}
+
+
+/* Style the caret/arrow */
+
+.caret {
+    cursor: pointer;
+    user-select: none;
+    /* Prevent text selection */
+}
+
+
+/* Create the caret/arrow with a unicode, and style it */
+
+.caret::before {
+    content: "\25B6";
+    color: black;
+    display: inline-block;
+    margin-right: 6px;
+}
+
+
+/* Rotate the caret/arrow icon when clicked on (using JavaScript) */
+
+.caret-down::before {
+    transform: rotate(90deg);
+}
+
+
+/* Hide the nested list */
+
+.nested {
+    display: none;
+}
+
+
+/* Show the nested list when the user clicks on the caret/arrow (with JavaScript) */
+
+.active {
+    display: block;
+}
+
+.hud {
+    height: 100%;
+    overflow: auto;
+    max-height: 240px;
+}
+
+.projecttree {
+    height: 100%;
+    padding-bottom: 10px;
+    max-height: 185px;
+    overflow: auto;
+}
+
+.projectprofile {
+    height: 300px;
+    overflow: auto;
+}
+
+.dashboard {
+    height: 100%;
+    max-height: 300px;
+    overflow: auto;
+}
+
+#style-2::-webkit-scrollbar-track {
+    /* webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); */
+    border-radius: 10px;
+}
+
+#style-2::-webkit-scrollbar {
+    width: 6px;
+}
+
+#style-2::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    /* -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3); */
+    background-color: #cccccc;
+}
+
+.scrollbar {
+    height: 420px;
+    overflow-y: scroll;
+}
+
+.space-stage {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.text-blue {
+    color: #716dff;
+    font-size: 15px;
+    font-weight: 900;
+}
+
+.text-white {
+    color: #fff;
+    font-size: 15px;
+    /* font-weight: 900; */
+}
+
+.pb-10 {
+    padding-bottom: 10px;
+}
+
+.status-active {
+    background: #192231;
+    padding: 2px 5px 2px 5px;
+    border-radius: 5px;
+    border: 1px solid #292948;
+    font-weight: 500;
+}
+
+.space-stage {
+    display: flex;
+}
+
+.space-stage p {
+    padding: 0px 0px 0px 6px;
+}
+
+
+/* File Upload */
+
+.uploadfilecontainer {
+    background-image: url("../../assets/cloud-2044823_960_720.png");
+    background-repeat: no-repeat;
+    background-size: 100px;
+    background-position: center;
+    height: 200px;
+    width: 80%;
+    margin: 20px auto;
+    border: 2px dashed #716dff;
+    border-radius: 10px;
+}
+
+.uploadfilecontainer:hover {
+    cursor: pointer;
+    background-color: #9ecbec !important;
+    opacity: 0.8;
+}
+
+
+/* .files-list {
+    display: flex;
+    width: 80%;
+    margin: 10px auto;
+    margin: 5px 10px 10px 5px;
+    background: #ffffff;
+    border: 1px dashed;
+    border-radius: 12px;
+    padding: 10px;
+    color: #716dff;
+    margin-bottom: 10px;
+} */
+
+.icon {
+    color: tomato !important;
+}
+
+.files-list .delete-file {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.files-list .delete-file img {
+    width: 30px;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.files-list p {
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.files-list-inner {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    border: 1px dashed;
+    border-radius: 12px;
+    padding: 10px;
+    background: #fff;
+    color: #716dff;
+    margin-bottom: 10px;
+}
+
+.files-list-inner .delete-file {
+    margin-left: auto;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.active-phase {
+    color: yellow;
+    font-weight: 500;
+}
+
+.custom-panel {
+    border-radius: 2px;
+    margin-bottom: 24px;
+    /* padding: 25px; */
+    background-color: #1c2635;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15), 0 -1px 0 rgba(0, 0, 0, 0.02);
+}
+
+.custom-panel-title {
+    font-size: 17px;
+    color: rgb(255, 255, 255, 0.8);
+    font-weight: bold;
+    letter-spacing: 0.5px;
+}
+
+.custom-panel-heading {
+    border-radius: 5px;
+    padding: 0.5px 1px 0.5px 10px;
+}
+
+.custom-panel-blue {
+    color: white;
+    background-color: #716dff;
+}
+
+.custom-panel-orange {
+    color: white;
+    background-color: #ec5e69;
+}
+
+.custom-panel-sky {
+    color: white;
+    background-color: #2ec5d3;
+}
+
+.custom-panel-body {
+    padding: 10px;
+}
+
+.custom-panel-table {
+    width: 100%;
+    max-width: 100%;
+}
+
+.custom-panel-table tr:nth-child(even) {
+    background-color: #9795cd2b;
+    border: 1px solid #39435c;
+}
+
+table.custom-panel-table td:first-child {
+    font-weight: 600;
+    font-size: 10px;
+    letter-spacing: 0.2px;
+    width: 50%;
+}
+
+table.custom-panel-table td:nth-child(2) {
+    width: 50%;
+}
+
+.custom-panel-blue-table td:first-child {
+    color: #716dff;
+}
+
+.custom-panel-orange-table td:first-child {
+    color: #ec5e69;
+}
+
+.custom-panel-sky-table td:first-child {
+    color: #2ec5d3;
+}
+
+.custom-panel-table>tbody>tr>td,
+.custom-panel-table>tbody>tr>th {
+    padding: 10px;
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+}
+
+.mb-10 {
+    margin-bottom: 10px !important;
+}
+
+.mt-20 {
+    margin-top: 20px !important;
+}
+
+.mt-30 {
+    margin-top: 30px !important;
+}
+
+.overflow-div {
+    width: 100% !important;
+    overflow-x: scroll;
+}
+
+#style-2::-webkit-scrollbar-track {
+    /* webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); */
+    border-radius: 10px;
+}
+
+#style-2::-webkit-scrollbar {
+    width: 6px;
+}
+
+#style-2::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    /* -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3); */
+    background-color: #cccccc;
+}
+
+.scrollbar {
+    height: 420px;
+    overflow-y: scroll;
+}
+
+.up {
+    color: green;
+    text-align: center;
+}
+
+.down {
+    color: red;
+    text-align: center;
+}

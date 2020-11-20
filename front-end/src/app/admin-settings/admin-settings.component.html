@@ -1,0 +1,36 @@
+<app-header></app-header>
+<!-- Page Content -->
+<div class="page-content">
+    <app-top-header></app-top-header>
+    <div class="page-inner no-page-title font-color-white">
+        <div class="row">
+           
+            <div class="page-title col-md-8">
+              
+                <h3 >Settings</h3>
+            </div>
+            
+            <div class="col-md-8">
+                <div class="panel panel-cutom-blue">
+                    <div class="panel-body basic-form-panel">
+                        <form [formGroup]="addsettingForm" (ngSubmit)="updateProfile();">
+                            <div class="form-group">
+                                <label for="first_name">Delegation Timeout<span>( In Hours )</span></label>
+                                <input type="number" class="form-control" placeholder="Enter Delegation Timeout in Hours" formControlName="delegationtimeout" [ngClass]="{ 'is-invalid': addtimeoutSubmitted && fval.delegationtimeout.errors }">
+                                <div *ngIf="addtimeoutSubmitted && fval.delegationtimeout.errors" class="invalid-feedback">
+                                    <div *ngIf="fval.delegationtimeout.errors.required">
+                                       Please Enter Delegation Timeout
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-success btn-lg pull-right m-b-xxs">Save</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    <app-footer></app-footer>
+</div>

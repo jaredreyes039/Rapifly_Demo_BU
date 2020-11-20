@@ -1,0 +1,103 @@
+<app-header></app-header>
+
+<!-- Page Content -->
+<div class="page-content">
+    <app-top-header></app-top-header>
+
+    <div class="page-inner no-page-title">
+        <div class="page-title">
+            <h3 class="breadcrumb-header">Coaches</h3>
+        </div>
+        <div class="panel panel-cutom-blue">
+            <div class="panel-body">
+                <div class="form-group pull-right mb-5">
+                    <a class="btn btn-primary" (click)="resetSearch()">
+                        <i class="fa fa-refresh"></i></a>&nbsp;
+                    <a class="btn btn-success" (click)="openSearchModal()">
+                        <i class="fa fa-search"></i></a>&nbsp;
+                </div>
+                <div class="row col-md-12">
+                    <div class="table-responsive">
+                        <table id="example" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="display table table-data-width">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Phone</th>
+                                    <th>Title</th>
+                                    <th>Industries</th>
+                                    <th>Company</th>
+                                    <th>Created at</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let user of users; let i=index;">
+                                    <td>{{ user.first_name }} {{ user.last_name }}</td>
+                                    <td>{{ user.email }}</td>
+                                    <td>{{ user.phone }}</td>
+                                    <td>{{ user.title }}</td>
+                                    <td>{{ user.industries }}</td>
+                                    <td>{{ (user.company_name) ? user.company_name : '---' }}</td>
+                                    <td>{{ user.created_at | date: 'yyyy-MM-dd h:mm:ss a' }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Start Search Control Modal -->
+    <div class="modal fade" id="searchCoachModal" tabindex="-1" role="dialog" aria-labelledby="searchCoachModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="searchCoachModalLabel">Search Coaches</h4>
+                </div>
+                <form [formGroup]="searchCoachesForm">
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label>First Name</label>
+                                <input type="text" class="form-control" formControlName="first_name" placeholder="First Name">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>Last Name</label>
+                                <input type="text" class="form-control" formControlName="last_name" placeholder="First Name">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>Email</label>
+                                <input type="Email" class="form-control" formControlName="email" placeholder="Email">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>Phone</label>
+                                <input type="text" class="form-control" formControlName="phone" placeholder="Phone">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>Company Name</label>
+                                <input type="text" class="form-control" formControlName="company_name" placeholder="Company Name">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>Title</label>
+                                <input type="text" class="form-control" formControlName="title" placeholder="Title">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>Industries</label>
+                                <input type="text" class="form-control" formControlName="industries" placeholder="Industries">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-success" (click)="submit()">Search</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- End Search Control Modal -->
+    <app-footer></app-footer>
+</div>

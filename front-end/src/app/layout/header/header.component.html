@@ -1,0 +1,116 @@
+<!-- Page Sidebar -->
+<div class="page-sidebar" [hidden]="currentUser.role == 'User'">
+    <a class="logo-box" routerLink="/dashboard" id="logo-box">
+        <span id="collapsed-sidebar-logo">
+            <img class="logo" src="/assets/images/new-theme/logoRapiFly.png" alt="RapiFly">
+        </span>
+        <span class="logo-text" id="full-sidebar-logo">
+            <img class="logo" src="/assets/images/new-theme/logoRapiFly.png" alt="RapiFly">&nbsp; RapiFly
+        </span>
+        <!-- <i class="icon-radio_button_unchecked" id="fixed-sidebar-toggle-button"></i> -->
+        <i class="icon-close" id="sidebar-toggle-button-close"></i>
+    </a>
+    <div class="page-sidebar-inner" id="page-sidebar-scroll">
+        <div class="page-sidebar-menu">
+            <mat-accordion>
+                <mat-panel-title class="single-menu" [ngClass]="{'active' : router.url == '/dashboard'}" routerLink='/dashboard'>
+                    <i class="fa fa-home"></i><span>Dashboard</span>
+                </mat-panel-title>
+                <mat-panel-title class="single-menu" [ngClass]="{'active' : router.url == '/hierarchy/manage' || router.url == '/hierarchy' || router.url == '/hierarchy/change' }" routerLink='/hierarchy/manage'>
+                    <i class="fa fa-link"></i><span>Hierarchy</span>
+                </mat-panel-title>
+                <mat-panel-title class="single-menu" [ngClass]="{'active' : router.url == '/users' || router.url == '/invite/user'}" routerLink='/users'>
+                    <i class="fa fa-users"></i><span>Users</span>
+                </mat-panel-title>
+                <mat-panel-title *ngIf="currentUserRole == 'Admin'" class="single-menu" [ngClass]="{'active' : router.url == '/setting' }" routerLink='/setting'>
+                    <i class="fa fa-cog"></i><span>Settings</span>
+                </mat-panel-title>
+                <mat-expansion-panel *ngIf="!checkUserRole()" [expanded]="isExpanded(['/item-plans', '/item-plans-details', '/prioritize', '/deactivate','/propose','/vote','/select'])">
+                    <mat-expansion-panel-header [ngClass]="{'active' : router.url == '/item-plans' || router.url == '/add/plan' || router.url == '/item-plans-details' || router.url == '/prioritize' || router.url == '/deactivate' || router.url == '/propose' || router.url == '/vote' || router.url == '/select' }">
+                        <!-- <mat-panel-title (mouseenter)="mouseEnter($event)" (mouseleave)="mouseLeave($event)" [ngClass]="{'is-active': router.url == '/item-plans' || router.url == '/add/plan' || router.url == '/item-plans-details' || router.url == '/prioritize' || router.url == '/deactivate' || router.url == '/propose' || router.url == '/vote' || router.url == '/select'}"> -->
+                        <mat-panel-title>
+                            <i class="menu-icon fa fa-file-text"></i><span>Plan</span>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <ul>
+                        <li><a [ngClass]="{'link-active' : router.url == '/item-plans' || router.url == '/add/plan' }" routerLink="/item-plans">Add Plan</a></li>
+                        <li><a [ngClass]="{'link-active' : router.url == '/item-plans-details'}" routerLink="/item-plans-details">Brainstorm</a></li>
+                        <!-- <li><a *ngIf="permissiongrant" [ngClass]="{'link-active' : router.url == '/prioritize'}" routerLink="/prioritize">Prioritize</a></li>
+                        <li><a *ngIf="permissiongrant" [ngClass]="{'link-active' : router.url == '/deactivate'}" routerLink="/deactivate">Deactivate</a></li>
+                        <li><a [ngClass]="{'link-active' : router.url == '/propose'}" routerLink="/propose">Propose</a></li>
+                        <li><a [ngClass]="{'link-active' : router.url == '/vote'}" routerLink="/vote">Vote</a></li>
+                        <li><a *ngIf="permissiongrant" [ngClass]="{'link-active' : router.url == '/select'}" routerLink="/select">Select</a></li> -->
+                    </ul>
+                </mat-expansion-panel>
+                <!-- <mat-expansion-panel *ngIf="!checkUserRole()" [expanded]="isExpanded(['/delegate', '/countdown', '/launch', '/report'])">
+                    <mat-expansion-panel-header [ngClass]="{'active' : router.url == '/delegate' || router.url == '/countdown' || router.url == '/launch' || router.url == '/report' }">
+                        <mat-panel-title>
+                            <i class="menu-icon fa fa-cog"></i><span>Execute</span>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <ul>
+                        <li><a [ngClass]="{'link-active' : router.url == '/delegate' || router.url == '/delegate' }" routerLink="/delegate">Delegate</a></li>
+                        <li><a [ngClass]="{'link-active' : router.url == '/countdown' || router.url == '/countdown' }" routerLink="/countdown">Countdown </a></li>
+                        <li><a [ngClass]="{'link-active' : router.url == '/launch' || router.url == '/launch' }" routerLink="/launch">Launch</a></li>
+                        <li><a [ngClass]="{'link-active' : router.url == '/report' || router.url == '/report' }" routerLink="/report">Report</a></li>
+                    </ul>
+                </mat-expansion-panel>
+                <mat-expansion-panel *ngIf="!checkUserRole()" [expanded]="isExpanded(['/measure', '/improve'])">
+                    <mat-expansion-panel-header [ngClass]="{'active' : router.url == '/measure' || router.url == '/improve' }">
+                        <mat-panel-title>
+                            <i class="menu-icon fa fa-tasks"></i><span>Evalute</span>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <ul>
+                        <li><a [ngClass]="{'link-active' : router.url == '/measure' || router.url == '/measure' }" routerLink="/measure">Measure</a></li>
+                        <li><a [ngClass]="{'link-active' : router.url == '/improve' || router.url == '/improve' }" routerLink="/improve">Improve </a></li>
+                    </ul>
+                </mat-expansion-panel> -->
+                <mat-panel-title *ngIf="currentUserRole == 'User'" class="single-menu" [ngClass]="{'active' : router.url == '/user-groups' || router.url == '/user-groups/add' }" routerLink='/user-groups'>
+                    <i class="fa fa-users"></i><span>User Groups</span>
+                </mat-panel-title>
+                <mat-panel-title *ngIf="currentUserRole == 'User'" class="single-menu" [ngClass]="{'active' : router.url == '/qa/forms' || router.url == '/qa/forms/add' }" routerLink='/qa/forms'>
+                    <i class="fa fa-question-circle"></i><span>Q&A</span>
+                </mat-panel-title>
+                <mat-panel-title class="single-menu" [ngClass]="{'active' : router.url == '/coaches' }" routerLink='/coaches'>
+                    <i class="fa fa-users"></i><span>Coaches</span>
+                </mat-panel-title>
+            </mat-accordion>
+        </div>
+
+        <div class="page-sidebar-menu">
+            <!-- <ul class="accordion-menu">
+              <li [ngClass]="{'active-page' : router.url == '/dashboard'}">
+                  <a routerLink="/dashboard">
+                      <i class="menu-icon icon-home4"></i><span>Dashboard</span>
+                  </a>
+              </li>
+              <li [ngClass]="{'active-page' : router.url == '/hierarchy'}">
+                  <a routerLink="/hierarchy">
+                      <i class="menu-icon fa fa-link"></i><span>Hierarchy</span>
+                  </a>
+              </li>
+              <li [ngClass]="{'active-page' : router.url == '/users' || router.url == '/invite/user'}">
+                  <a routerLink="/users">
+                      <i class="menu-icon fa fa-users"></i><span>Users</span>
+                  </a>
+              </li>
+              <li>
+                  <a href="javascript:void(0)">
+                      <i class="menu-icon fa fa-file-text"></i><span>Plan</span><i class="accordion-icon fa fa-angle-left"></i>
+                  </a>
+                  <ul class="sub-menu">
+                      <li><a href="#">Add Plan</a></li>
+                      <li><a href="#">Brainstorm</a></li>
+                      <li><a href="#">Prioritize</a></li>
+                      <li><a href="#">Deactivate</a></li>
+                      <li><a href="#">Propose</a></li>
+                      <li><a href="#">Vote</a></li>
+                      <li><a href="#">Selected Vote</a></li>
+                  </ul>
+              </li>
+          </ul> -->
+        </div>
+    </div>
+</div>
+<!-- /Page Sidebar -->

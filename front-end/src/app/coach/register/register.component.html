@@ -1,0 +1,96 @@
+<!-- Page Container -->
+<div class="page-container register-page">
+
+    <!-- Page Content -->
+    <div class="">
+        <div class="row bg-wrapper">
+            <div class="col-md-6">
+                <div class="row text-center logo-wrapper">
+                    <div class="col-md-12 mb-15">
+                        <h1 class="welcome-text">WELCOME</h1>
+                    </div>
+                    <div class="col-md-12 mb-15">
+                        <img src="../../assets/images/new-theme/logoRapiFly.png" class="logo-style">
+                    </div>
+                    <div class="col-md-12">
+                        <h1 class="title-text">Coach's Corner</h1>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 right-section-bg">
+                <div class="col-md-2"></div>
+                <div class="col-md-8">
+                    <div class="row control-style">
+                        <div class="col-md-12 mb-15">
+                            <div class="page-title">
+                                Register your details as a Coach
+                            </div>
+                        </div>
+                        <div class="col-md-12 form-wrapper">
+                            <form class="m-t-md" #kform="ngForm" [formGroup]="signupForm">
+                                <div class="col-md-12 form-group">
+                                    <label class="custom-label-control">First Name</label>
+                                    <input type="text" class="form-control custom-form-control" placeholder="First name" formControlName="first_name" [ngClass]="{ 'is-invalid': sigup_submitted && jval.first_name.errors }">
+                                    <div *ngIf="sigup_submitted && jval.first_name.errors" class="invalid-feedback">
+                                        <div *ngIf="jval.first_name.errors.required">First name is required</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 form-group">
+                                    <label class="custom-label-control">Last Name</label>
+                                    <input type="text" class="form-control custom-form-control" placeholder="Last name" formControlName="last_name" [ngClass]="{ 'is-invalid': sigup_submitted && jval.last_name.errors }">
+                                    <div *ngIf="sigup_submitted && jval.last_name.errors" class="invalid-feedback">
+                                        <div *ngIf="jval.last_name.errors.required">Last name is required</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 form-group">
+                                    <label class="custom-label-control">Email</label>
+                                    <input type="email" class="form-control custom-form-control" placeholder="Email" formControlName="email" [ngClass]="{ 'is-invalid': sigup_submitted && jval.email.errors }">
+                                    <div *ngIf="sigup_submitted && jval.email.errors" class="invalid-feedback">
+                                        <div *ngIf="jval.email.errors.required">Email is required</div>
+                                        <div *ngIf="jval.email.errors.email">Email must be a valid email address</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 form-group">
+                                    <label class="custom-label-control">Phone</label>
+                                    <input type="text" formControlName="phone" class="form-control custom-form-control" placeholder="Phone" [ngClass]="{ 'is-invalid': sigup_submitted && jval.phone.errors }" autocomplete="off" required>
+                                    <div *ngIf="sigup_submitted && jval.phone.errors" class="invalid-feedback">
+                                        <div *ngIf="jval.phone.errors.required">Phone Is Required</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 form-group">
+                                    <label class="custom-label-control">Title</label>
+                                    <input type="text" class="form-control custom-form-control" placeholder="Title" formControlName="title" [ngClass]="{ 'is-invalid': sigup_submitted && jval.title.errors }">
+                                    <div *ngIf="sigup_submitted && jval.title.errors" class="invalid-feedback">
+                                        <div *ngIf="jval.title.errors.required">Title is required</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 form-group">
+                                    <label class="custom-label-control">Industries</label>
+                                    <input type="text" class="form-control custom-form-control" placeholder="Industries" formControlName="industries" [ngClass]="{ 'is-invalid': sigup_submitted && jval.industries.errors }">
+                                    <div *ngIf="sigup_submitted && jval.industries.errors" class="invalid-feedback">
+                                        <div *ngIf="jval.industries.errors.required">Industries is required</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 form-group">
+                                    <label class="custom-label-control">Company Name</label>
+                                    <input type="text" class="form-control custom-form-control" placeholder="Company Name" formControlName="company_name">
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-md-12">
+                                        <button type="submit" (click)="Signup()" class="btn btn-success form-submit-button pull-right">Submit&nbsp;&nbsp;
+                                            <i class="fa fa-arrow-right"></i></button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Page Inner -->
+
+        <!-- /Page Inner -->
+    </div>
+    <!-- /Page Content -->
+</div>
+<!-- /Page Container -->

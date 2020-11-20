@@ -1,0 +1,100 @@
+<app-header></app-header>
+
+<!-- Page Content -->
+<div class="page-content">
+    <app-top-header></app-top-header>
+
+    <div class="page-inner no-page-title">
+        <div class="page-title">
+            <a routerLink="/hierarchy" class="btn btn-success m-b-sm pull-right"><i class="fa fa-link"></i>&nbsp;Create Hieararchy</a>
+            <h3 class="breadcrumb-header">Manage Hierarchy</h3>
+        </div>
+        <div class="panel panel-cutom-blue">
+            <div class="panel-body">
+                <div class="col-md-12" *ngIf="currentuser.role == 'User'">
+                    <a [routerLink]="['/item-plans-details']" [queryParams]="{stage:'user'}" class="btn btn-warning m-b-sm pull-right"><i class="fa fa-arrow-left"></i>&nbsp;Back</a>
+                </div>
+                <div class="row col-md-12">
+                    <div class="table-responsive">
+                        <table id="example" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="display table table-data-width">
+                            <thead>
+                                <tr>
+                                    <th>Designation</th>
+                                    <th>Superior Designation</th>
+                                    <th>Created At</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let designation of hierarchy;let i = index;">
+                                    <td>{{ designation[0] }}</td>
+                                    <td>{{ (designation[1]) ? designation[1] : '---' }}</td>
+                                    <td>{{ designation[3] | date: 'yyyy-MM-dd' }}</td>
+                                    <td>
+                                        <button class="btn btn-warning" (click)="editDesignation(designation)"><i class="fa fa-pencil"></i></button>&nbsp;
+                                        <button class="btn btn-danger" [disabled]="this.currentuser.role == 'User'" (click)="confirmDeleteDesignation(designation[2])"><i class="fa fa-trash"></i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <form id="add-row-form" [formGroup]="designationForm" (ngSubmit)="renameDesignation()">
+            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog" style="min-width: 400px;">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel">Update Designation</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label>Designation</label>
+                                <input type="text" autocomplete="off" class="form-control" placeholder="Designation" formControlName="designation" [ngClass]="{ 'is-invalid': designationSubmitted && pval.designation.errors }">
+                                <div *ngIf="designationSubmitted && pval.designation.errors" class="invalid-feedback">
+                                    <div *ngIf="pval.designation.errors.required">Designation is required</div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Superior Designation</label>
+                                <ng-select [items]="superiorDesignations" bindLabel="designation" placeholder="Select Superior" formControlName="superior_designation" appendTo="body" [(ngModel)]="selectedDesignation" (change)="onChange($event)">
+                                </ng-select>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-success">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <form id="remove-designation-form">
+            <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
+                <div class="modal-dialog" style="min-width: 400px;">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="confirmModalLabel">Delete Designation?</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group text-center">
+                                <h4>Are you sure you want to remove this designation?</h4>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                <button type="submit" class="btn btn-danger" (click)="deleteDesignation()">Delete!</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <app-footer></app-footer>
+</div>

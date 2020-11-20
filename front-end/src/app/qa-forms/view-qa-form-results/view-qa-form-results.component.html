@@ -1,0 +1,57 @@
+<app-header></app-header>
+
+<!-- Page Content -->
+<div class="page-content">
+    <app-top-header></app-top-header>
+
+    <div class="page-inner no-page-title">
+        <div class="page-title">
+            <h3 class="breadcrumb-header">QA Reports</h3>
+        </div>
+        <div class="panel panel-cutom-blue">
+            <div class="panel-body">
+                <div class="row col-md-12">
+                    <div class="col-md-3 report-box">
+                        <div class="col-md-12 text-center">
+                            <h4>Total Answers</h4>
+                        </div>
+                        <div class="col-md-12 text-center">
+                            <h1>{{ totalAnswers }}</h1>
+                        </div>
+                    </div>
+                    <div *ngFor="let box of reports;" class="col-md-3 report-box">
+                        <div class="col-md-12 text-center">
+                            <h4>{{ textDecoration(box.key) }}</h4>
+                        </div>
+                        <div class="col-md-12 text-center">
+                            <h1>{{ box.value }}</h1>
+                        </div>
+                    </div>
+                </div>
+                <div class="row col-md-12">
+                    <div class="table-responsive" *ngIf="isFormAnswerAvailable">
+                        <table id="example" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"
+                            class="display table table-data-width">
+                            <!-- <table  class="display table table-data-width"> -->
+                            <thead>
+                                <tr>
+                                    <th *ngFor="let column of tableKeys | keyvalue;">{{ textDecoration(column.key) }}
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let element of formResults;">
+                                    <td *ngFor="let elem of element | keyvalue;">{{ elem.value }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div *ngIf="!isFormAnswerAvailable" class="text-center">
+                        <h5>Details has not been found.</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <app-footer></app-footer>
+</div>

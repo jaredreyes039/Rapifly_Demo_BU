@@ -1,0 +1,17 @@
+.logo-home-text {
+    color: white !important;
+    font-size: 25px !important;
+    font-weight: bold !important;
+}
+
+p.profile-text {
+    margin: 0px !important;
+    padding-top: 5px !important;
+    text-align: center !important;
+}
+
+.user-name {
+    color: white;
+    font-weight: 700;
+    font-size: 13px;
+}

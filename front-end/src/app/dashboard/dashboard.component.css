@@ -1,0 +1,69 @@
+.custom-panel {
+    border-radius: 2px;
+    margin-bottom: 24px;
+    color: white;
+    border-radius: 5px;
+}
+
+.custom-panel-body {
+    padding: 15px;
+}
+
+.custom-panel-blue {
+    background: rgb(115, 109, 255);
+    background: linear-gradient(270deg, rgba(115, 109, 255, 1) 0%, rgba(169, 127, 255, 1) 100%);
+    box-shadow: 0px 13px 40px -14px rgba(115, 109, 255, 1), 0 -1px 0 0 rgba(169, 127, 255, 1);
+}
+
+.custom-panel-orange {
+    background: rgb(253, 101, 133);
+    background: linear-gradient(277deg, rgba(253, 101, 133, 1) 0%, rgba(255, 211, 165, 1) 100%);
+    box-shadow: 0px 13px 40px -14px rgba(253, 101, 133, 1), 0 -1px 0 0 rgba(255, 211, 165, 1);
+}
+
+.custom-panel-pink {
+    background: rgb(249, 180, 189);
+    background: linear-gradient(90deg, rgba(249, 180, 189, 1) 0%, rgba(149, 115, 219, 1) 100%);
+    box-shadow: 0px 13px 40px -14px rgba(249, 180, 189, 1), 0 -1px 0 0 rgba(149, 115, 219, 1);
+}
+
+.custom-panel-sky-blue {
+    background: rgb(68, 222, 197);
+    background: linear-gradient(90deg, rgba(68, 222, 197, 1) 0%, rgba(78, 188, 250, 1) 100%);
+    box-shadow: 0px 13px 40px -14px rgba(68, 222, 197, 1), 0 -1px 0 0 rgba(78, 188, 250, 1);
+}
+
+.custom-panel-body img {
+    width: 50px;
+    height: 50px;
+    margin-right: 20px;
+}
+
+.custom-panel-body span {
+    font-size: 35px;
+    font-weight: bold;
+    color: white;
+    vertical-align: middle;
+}
+
+.custom-panel-text {
+    border-top: 1px solid #fdfdfd70;
+    padding: 10px;
+}
+
+.custom-panel-text p {
+    font-weight: bold;
+    color: white;
+    font-size: 15px;
+    letter-spacing: 0.8px;
+}
+
+.custom-panel-text h5 {
+    color: white;
+}
+
+.chart-width {
+    width: 800px !important;
+    height: 400px !important;
+    margin: 0 auto;
+}

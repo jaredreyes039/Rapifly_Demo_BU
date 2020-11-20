@@ -1,0 +1,191 @@
+<app-header></app-header>
+
+<!-- Page Content -->
+<div class="page-content">
+    <app-top-header></app-top-header>
+    <div class="page-inner no-page-title">
+        <form class="form-inline" action="javascript:void(0);">
+            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog" style="min-width: 780px;">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel">Add Form Control</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div>
+                                <button type="button" class="btn btn-default m-b-xxs" (click)="onAddData()">Add Field</button>
+                            </div>
+                            <div *ngFor="let dev of formfield;index as i">
+                                <div class="form-group" style="padding: 3px;">
+                                    <input type="text" id="data{{i}}" [ngModelOptions]="{standalone: true}" [(ngModel)]="dev.name" class="form-control" placeholder="Name Of FormControl" autocomplete="off">
+                                </div>
+                                &nbsp;
+                                <div class="form-group" style="padding: 3px;">
+                                    <select class="form-control" (change)="addcontrol(i)" (change)="getselectoption(selected.value,i)" #selected [ngModelOptions]="{standalone: true}" [(ngModel)]="dev.type" style="padding: 0px 0px!important">
+                                    <option value="" >Select FormControl</option>
+                                    <option  value="text">Text</option>
+                                    <option value="number">Number</option>
+                                    <option value="select">Select</option>
+                                </select>
+                                </div>
+                                &nbsp;
+                                <div class="form-group" style="padding: 3px;">
+                                    <select class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="dev.required" style="padding: 0px 0px!important">
+                                    <option value="">Select Required</option>
+                                    <option  value="true">True</option>
+                                    <option value="false">False</option>
+                                </select>
+                                </div>
+                                <div class="form-group" *ngIf="dev.option && dev.option.length == 0" style="padding: 3px;">
+                                    <button class="btn btn-primary" style="margin: 4px;height: 36px;" (click)="addoption(i)">Add option</button>
+                                </div>
+                                <div class="form-group" *ngIf="dev.option && dev.option.length > 0" style="padding: 3px;">
+                                    <button class="btn btn-primary" style="margin: 4px;height: 36px;" (click)="addoption(i)">Modify option</button>
+                                </div>
+                                <button class="btn btn-danger" style="margin: 4px;height: 36px;" (click)="removeData(i)">X</button>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-success" (click)="onplanformcreate()">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog" style="min-width: 480px;">
+                <div class="modal-content ">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Add Option</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div>
+                            <button type="button" class="btn btn-default m-b-xxs" (click)="onAddoption()">Add new Option</button>
+                        </div>
+                        <input type="hidden" value="" id="controlid">
+                        <div *ngFor="let dev of selectoption;index as i">
+                            <div class="form-group" style="padding: 3px;margin: 0;">
+                                <input type="text" id="data{{i}}" style="width:300px;display: inline;" [ngModelOptions]="{standalone: true}" [(ngModel)]="dev.id" class="form-control" placeholder="Name Of FormControl" autocomplete="off">
+                                <button class="btn btn-danger" style="margin: 4px;height: 33px;margin-bottom: 8px" (click)="removeoption(i)">X</button>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-success" (click)="saveoption()">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="editid == undefined">
+            <button type="button" class="btn btn-default pull-right" (click)="fetch()">Add Form Control</button>
+        </div>
+        <div class="page-title">
+            <h3 class="breadcrumb-header">{{action}} Plan</h3>
+        </div>
+
+        <div class="panel panel-darkblue">
+            <div class="panel-body">
+                <form #kform="ngForm" [formGroup]="parentplangroup">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Short Name<span>*</span></label>
+                                <input type="text" id="position-input" formControlName="short_name" class="form-control" value="{{ (planDetails && planDetails.short_name) ? planDetails.short_name : '' }}" [(ngModel)]="planDetails.short_name" placeholder="Short name" [ngClass]="{ 'is-invalid': IsLoginFormValid && jval.short_name.errors }"
+                                    autocomplete="off">
+                                <div *ngIf="IsLoginFormValid && jval.short_name.errors" class="invalid-feedback">
+                                    <label *ngIf="jval.short_name.errors.required" class="error">Short Name is required</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Long Name<span>*</span></label>
+                                <input type="text" id="long_name" formControlName="long_name" class="form-control" placeholder="Long name" [ngClass]="{ 'is-invalid': IsLoginFormValid && jval.long_name.errors }" autocomplete="off">
+                                <div *ngIf="IsLoginFormValid && jval.long_name.errors" class="invalid-feedback">
+                                    <!-- <div *ngIf="jval.long_name.errors.required">Long Name is required</div> -->
+                                    <label *ngIf="jval.long_name.errors.required" class="error">Long Name is required</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Start Date<span>*</span></label>
+                            <div class="input-group input-append bootstrap-datepicker">
+                                <input type="text" id="date-input5" formControlName="start_date" class="form-control date-picker" placeholder="Start Date" autocomplete="off">
+                                <span style="background-color: #8869c2;" class="input-group-addon add-on"><i class="fa fa-calendar"></i></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label>End Date<span>*</span></label>
+                            <div class="input-group input-append bootstrap-datepicker">
+                                <input type="text" id="date-input6" formControlName="end_date" class="form-control date-picker" placeholder="End Date" autocomplete="off">
+                                <span style="background-color: #8869c2;" class="input-group-addon add-on"><i class="fa fa-calendar"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 form-group">
+                            <label>Description</label>
+                            <textarea type="text" formControlName="description" class="form-control" placeholder="Description"></textarea>
+                        </div>
+                        <div class="col-md-12 form-group">
+                            <label>Security<span>*</span></label>
+                            <select class="form-control" style="padding: 0px 0px!important" formControlName="security" [ngClass]="{ 'is-invalid': IsLoginFormValid && jval.security.errors }">
+                                <option value="" >Select Seurity</option>
+                                <option  value="0">Private</option>
+                                <option value="1">Public</option>
+                            </select>
+                            <div *ngIf="IsLoginFormValid && jval.security.errors" class="invalid-feedback">
+                                <label *ngIf="jval.security.errors.required" class="error">Security is required</label>
+                            </div>
+                        </div>
+                        <div class="col-md-12 form-group">
+                            <label>Share Goal(s) Permission To Users</label>
+                            <ng-select [items]="items" bindLabel="name" placeholder="Select Users" formControlName="share_users" appendTo="body" multiple="true" [(ngModel)]="selected" (change)="onChange($event)">
+                            </ng-select>
+                        </div>
+                        <div class="col-md-12 form-group" *ngFor="let dev of datafinal">
+                            <div *ngIf="(dev.type=='text');">
+                                <label>{{dev.name}}<span *ngIf="dev.required=='true'">*</span></label>
+                                <input type="text" formControlName="{{dev.name}}" id="long_name" class="form-control" placeholder="Enter {{dev.name}}" autocomplete="off" required="{{dev.required}}" [ngClass]="{ 'is-invalid': IsLoginFormValid && jval[dev.name].errors }">
+                                <div *ngIf="IsLoginFormValid && jval[dev.name].errors" class="invalid-feedback">
+                                    <label *ngIf="jval[dev.name].errors.required" class="error">{{dev.name}} is required</label>
+                                </div>
+                            </div>
+                            <div *ngIf="(dev.type=='number');">
+                                <label>{{dev.name}}<span *ngIf="dev.required=='true'">*</span></label>
+                                <input type="number" formControlName="{{dev.name}}" class="form-control" placeholder="Enter {{dev.name}}" autocomplete="off" required="{{dev.required}}" [ngClass]="{ 'is-invalid': IsLoginFormValid && jval[dev.name].errors }">
+                                <div *ngIf="IsLoginFormValid && jval[dev.name].errors" class="invalid-feedback">
+                                    <label *ngIf="jval[dev.name].errors.required" class="error">{{dev.name}} is required</label>
+                                </div>
+                            </div>
+                            <div *ngIf="(dev.type=='select')">
+                                <label>{{dev.name}}<span *ngIf="dev.required=='true'">*</span></label>
+                                <select class="form-control" formControlName="{{dev.name}}" #selectField required="{{dev.required}}" [ngClass]="{ 'is-invalid': IsLoginFormValid && jval[dev.name].errors }">
+                                        <option  value="">Select {{dev.name}}</option>
+                                        <option *ngFor="let plan of dev.option" value="{{plan.id}}">{{plan.id}}</option>
+                                    </select>
+                                <div *ngIf="IsLoginFormValid && jval[dev.name].errors" class="invalid-feedback">
+                                    <label *ngIf="jval[dev.name].errors.required" class="error">{{dev.name}} is required</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="padding: 40px;">
+                        <div class="form-group">
+                            <button type="submit" (click)="reset()" class="btn btn-default pull-right">Reset</button>
+                            <button type="submit" (click)="submit(kform)" class="btn btn-primary btn-space pull-right">Submit</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <app-footer></app-footer>
+</div>

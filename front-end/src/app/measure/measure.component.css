@@ -1,0 +1,83 @@
+.custom-panel {
+    border-radius: 2px;
+    margin-bottom: 24px;
+    /* padding: 25px; */
+    background-color: #1c2635;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15), 0 -1px 0 rgba(0, 0, 0, 0.02);
+}
+
+.custom-panel-title {
+    font-size: 17px;
+    color: rgb(255, 255, 255, 0.8);
+    font-weight: bold;
+    letter-spacing: 0.5px;
+}
+
+.custom-panel-heading {
+    border-radius: 5px;
+    padding: 0.5px 1px 0.5px 10px;
+}
+
+.custom-panel-blue {
+    color: white;
+    background-color: #716dff;
+}
+
+.custom-panel-orange {
+    color: white;
+    background-color: #ec5e69;
+}
+
+.custom-panel-sky {
+    color: white;
+    background-color: #2ec5d3;
+}
+
+.custom-panel-body {
+    padding: 10px;
+}
+
+.custom-panel-table {
+    width: 100%;
+    max-width: 100%;
+}
+
+.custom-panel-table tr:nth-child(even) {
+    background-color: #9795cd2b;
+    border: 1px solid #39435c;
+}
+
+table.custom-panel-table td:first-child {
+    font-weight: 600;
+    font-size: 10px;
+    letter-spacing: 0.2px;
+    width: 50%;
+}
+
+table.custom-panel-table td:nth-child(2) {
+    width: 50%;
+}
+
+.custom-panel-blue-table td:first-child {
+    color: #716dff;
+}
+
+.custom-panel-orange-table td:first-child {
+    color: #ec5e69;
+}
+
+.custom-panel-sky-table td:first-child {
+    color: #2ec5d3;
+}
+
+.custom-panel-table>tbody>tr>td,
+.custom-panel-table>tbody>tr>th {
+    padding: 10px;
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+}
+
+.mb-10 {
+    margin-bottom: 10px;
+}

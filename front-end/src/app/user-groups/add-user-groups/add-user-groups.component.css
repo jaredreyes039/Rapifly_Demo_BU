@@ -1,0 +1,43 @@
+.add-user-cust .form-horizontal .control-label{
+    text-align: left;
+    padding-bottom: 7px;
+    color: #E1EBF5 !important;
+    font-family: "Poppins", sans-serif;
+}
+
+.ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value .ng-value-label{
+    color: #fff !important;
+    font-size: 16px;
+    font-family: "Poppins", sans-serif;
+}
+
+.add-user-cust .text-right{
+    text-align: right;
+}
+
+.add-user-cust .panel{
+    background: #24344D;
+}
+
+.add-user-cust .btn-success{
+    background-color: #716DFF !important;
+    border-color: #716DFF !important;
+    padding: 10px 50px;
+}
+
+.add-user-cust .btn-default{
+    padding: 10px 50px;
+    background-color: #131C29 !important;
+    border-color: #131C29 !important;
+}
+
+/* .add-user-cust .ng-select{
+    background: url(/../assets/images/Drop_icon.svg);
+    background-repeat: no-repeat;
+    background-position: right;
+    background-size: 25px;
+}
+
+.cust-select-add .ng-select-container {
+    background: transparent !important;
+} */

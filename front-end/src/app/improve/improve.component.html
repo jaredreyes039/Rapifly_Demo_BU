@@ -1,0 +1,103 @@
+<app-header></app-header>
+
+<!-- Page Content -->
+<div class="page-content">
+    <app-top-header></app-top-header>
+    <div class="page-inner no-page-title">
+        <div class="page-title">
+            <h3 class="breadcrumb-header"> Add new Item to {{golaplanname}}</h3>
+            <h6 [hidden]="!planstartdate && !planenddate">Start Date: {{ planstartdate | date:'dd-MM-yyyy' }}&nbsp;&nbsp;End Date: {{ planenddate | date:'dd-MM-yyyy' }}</h6>
+        </div>
+        <div class="panel panel-darkblue">
+            <div class="panel-body">
+                <form id="add-row-form" #kform="ngForm" [formGroup]="ImprovePlanForm">
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Plan<span>*</span></label>
+                        <select class="form-control" style="padding: 0px 0px!important" (change)="getplanid(selectField.value);" formControlName="plan_id" [ngClass]="{ 'is-invalid': submitted && f.plan_id.errors }" #selectField>
+                                <option  value="">Select Plan</option>
+                                <option *ngFor="let plan of plans;let i=index"  value="{{plan._id}}">{{plan.short_name}}</option>
+                            </select>
+                        <div *ngIf="submitted && f.plan_id.errors" class="invalid-feedback">
+                            <div *ngIf="f.plan_id.errors.required">Please Select Plan</div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Short Name<span>*</span></label>
+                                <input type="text" id="position-input" formControlName="short_name" class="form-control" placeholder="Short name" autocomplete="off" [ngClass]="{ 'is-invalid': submitted && f.short_name.errors }">
+                                <div *ngIf="submitted && f.short_name.errors" class="invalid-feedback">
+                                    <div *ngIf="f.short_name.errors.required">Short name is required</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="exampleInputPassword1">Long Name<span>*</span></label>
+                                <input type="text" id="long_name" formControlName="long_name" class="form-control" placeholder="Long name" autocomplete="off" [ngClass]="{ 'is-invalid': submitted && f.long_name.errors }">
+                                <div *ngIf="submitted && f.long_name.errors" class="invalid-feedback">
+                                    <div *ngIf="f.long_name.errors.required">Short name is required</div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="exampleInputPassword1">Start Date<span>*</span></label>
+                            <div class="input-group input-append bootstrap-datepicker">
+                                <input type="text" id="date-input1" formControlName="start_date" class="form-control date-picker" placeholder="Start Date" autocomplete="off">
+                                <span style="background-color: #8869c2;" class="input-group-addon add-on"><i class="fa fa-calendar"></i></span>
+                            </div>
+                            <!-- <div *ngIf="IsLoginFormValid && jval.start_date.errors" class="invalid-feedback">
+                                <label *ngIf="jval.start_date.errors.required" class="error">Start date is required</label>
+                            </div> -->
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="exampleInputPassword1">End Date<span>*</span></label>
+                            <div class="input-group input-append bootstrap-datepicker">
+                                <input type="text" id="date-input2" formControlName="end_date" class="form-control date-picker" placeholder="End Date" autocomplete="off">
+                                <span style="background-color: #8869c2;" class="input-group-addon add-on"><i class="fa fa-calendar"></i></span>
+                            </div>
+                            <!-- <div *ngIf="IsLoginFormValid && jval.end_date.errors" class="invalid-feedback">
+                                <label *ngIf="jval.end_date.errors.required" class="error">End date is required</label>
+                            </div> -->
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Description</label>
+                        <textarea type="text" formControlName="description" class="form-control" placeholder="Description" [ngClass]="{ 'is-invalid': submitted && f.description.errors }"></textarea>
+                        <div *ngIf="submitted && f.description.errors" class="invalid-feedback">
+                            <label *ngIf="f.description.errors.required" style="color:#b36886">Description is required</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 form-group">
+                            <label for="exampleInputPassword1">Revenue Target</label>
+                            <input type="number" onwheel="this.blur()" min="1" formControlName="revenue_target" class="form-control" placeholder="Revenue Target" [ngClass]="{ 'is-invalid': submitted && f.revenue_target.errors }">
+                            <div *ngIf="submitted && f.revenue_target.errors" class="invalid-feedback">
+                                <div *ngIf="f.revenue_target.errors.required">Revenue Target is required</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label for="exampleInputPassword1">Expected Target</label>
+                            <input type="number" onwheel="this.blur()" min="1" formControlName="expected_target" class="form-control" placeholder="Expected Target" [ngClass]="{ 'is-invalid': submitted && f.expected_target.errors }">
+                            <div *ngIf="submitted && f.expected_target.errors" class="invalid-feedback">
+                                <div *ngIf="f.expected_target.errors.required">Expected Target is required</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <button type="reset" class="btn btn-default pull-right">Reset</button>
+                        <button type="submit" (click)="onSubmit()" class="btn btn-primary btn-space pull-right">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+
+    </div>
+    <app-footer></app-footer>
+</div>

@@ -1,0 +1,86 @@
+<app-header></app-header>
+
+<!-- Page Content -->
+<div class="page-content">
+    <app-top-header></app-top-header>
+
+    <div class="page-inner no-page-title">
+        <div class="page-title">
+            <a routerLink="/hierarchy/change" class="btn btn-success m-b-sm pull-right"><i class="fa fa-link"></i>&nbsp;Change Hieararchy</a>
+            <h3 class="breadcrumb-header">Create Hierarchy</h3>
+        </div>
+        <div class="row">
+            <div class="col-md-12" *ngIf="currentuser.role == 'User'">
+                <a [routerLink]="['/item-plans-details']" [queryParams]="{stage:'user'}" class="btn btn-warning m-b-sm pull-right"><i class="fa fa-arrow-left"></i>&nbsp;Back</a>
+            </div>
+            <div class="col-md-12">
+                <div class="panel panel-darkblue">
+                    <div class="panel-body">
+                        <form class="form-horizontal" [formGroup]="hierarchyForm">
+                            <div class="form-group m-t-xs">
+                                <label class="col-sm-3 control-label">Designation</label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control" placeholder="Designation" formControlName="designation" id="designation" [ngClass]="{ 'is-invalid': isHierarchyFormValid && formVal.designation.errors }">
+                                    <div *ngIf="isHierarchyFormValid && formVal.designation.errors" class="invalid-feedback">
+                                        <div *ngIf="formVal.designation.errors.required">Designation is required.</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group m-t-xs">
+                                <label class="col-sm-3 control-label">Superior</label>
+                                <div class="col-sm-6">
+                                    <select class="form-control" formControlName="user_id" id="user_id" (change)="getHierarchyId($event)" [ngClass]="{ 'is-invalid': isHierarchyFormValid && formVal.user_id.errors }">
+                                        <option value="">Select Superior</option>
+                                        <option *ngFor="let hu of users;" value="{{hu._id}}" [attr.data-hierarchy-id]="hu.hierarchy_id._id">{{ hu.user_id.first_name }} {{ hu.user_id.last_name }} ({{hu.hierarchy_id.designation}})</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-offset-7 col-sm-6">
+                                    <button type="submit" (click)="submit()" class="btn btn-success horizontal-form-button">Save</button>&nbsp;
+                                    <button type="reset" class="btn btn-default horizontal-form-button">Cancel</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="panel">
+                    <div class="panel-heading">
+                        <div class="page-title">
+                            <h3 class="breadcrumb-header">Organization Hierarchy</h3>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div *ngIf="isShowHierarchy" class="overflow-div" id="style-2">
+                            <google-chart style="margin: 0 auto;" #chart (click)="getHierarchyDetails($event)" [title]="title" [type]="type" [data]="data" [columnNames]="columnNames" [options]="options" [width]="width" [height]="height">
+                            </google-chart>
+                        </div>
+                        <div class="form-group text-center" *ngIf="!isShowHierarchy">
+                            <h3><i class="fa fa-info-circle"></i> No detail found</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12" *ngIf="isShowSubHierarchy">
+                <div class="panel">
+                    <div class="panel-heading clearfix">
+                        <div class="page-title">
+                            <h3 class="breadcrumb-header">User Hierarchy</h3>
+                        </div>
+                    </div>
+
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <google-chart style="margin: 0 auto;" #chart1 [title]="title" [type]="type" [data]="userHierarchyData" [columnNames]="columnNames" [options]="options" [width]="width" [height]="height">
+                            </google-chart>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <app-footer></app-footer>
+</div>

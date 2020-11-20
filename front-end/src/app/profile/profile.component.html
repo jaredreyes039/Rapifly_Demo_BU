@@ -1,0 +1,158 @@
+<app-header></app-header>
+<!-- Page Content -->
+<div class="page-content">
+    <app-top-header></app-top-header>
+    <div class="page-inner no-page-title font-color-white">
+        <div class="row">
+            <div class="page-title col-md-4">
+                <h3 class="breadcrumb-header">{{currentuser.role}} Account</h3>
+            </div>
+            <div class="page-title col-md-8">
+                <button class="btn btn-info font-weight-700 pull-right" routerLink="/item-plans-details"><i class="fa fa-arrow-left"></i>&nbsp;Brainstorm</button>
+                <h3 class="breadcrumb-header">Account Details</h3>
+            </div>
+            <div class="col-md-4">
+                <div class="panel panel-cutom-blue">
+                    <div class="panel-body">
+                        <div class="col-md-12 mb-10">
+                            <div class="profile-image text-center">
+                                <img [hidden]="!avatarUrl" [src]="avatarUrl">
+                                <img [hidden]="avatarUrl" src="/assets/images/avatars/default-avatar.png">
+                                <span class="camera-button">
+                                    <label class="profile-button">
+                                        <input type="file" (change)="fileChangeEvent($event)" accept="image/*"/>
+                                        <i class="fa fa-camera"></i>
+                                    </label>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-12 text-center">
+                            <button class="btn btn-success btn-lg m-b-xxs font-weight-700">{{currentuser.role}}</button>
+                        </div>
+                        <div class="col-md-12 text-center">
+                            <h2 class="font-weight-700">{{ userProfile.first_name }}&nbsp;{{ userProfile.last_name }}</h2>
+                            <h3>{{ (userDesignation) ? userDesignation : '' }}</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="panel panel-cutom-blue">
+                    <div class="panel-body basic-form-panel row">
+                        <form [formGroup]="editProfileForm" (ngSubmit)="updateProfile();">
+                            <div class="form-group col-md-12">
+                                <label>Title:</label>
+                                <input type="text" readonly disabled value="{{ (userDesignation) ? userDesignation : '' }}" class="form-control">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="first_name">First Name</label>
+                                <input type="text" class="form-control" id="first_name" placeholder="First Name" formControlName="first_name" [ngClass]="{ 'is-invalid': editProfileSubmitted && fval.first_name.errors }">
+                                <div *ngIf="editProfileSubmitted && fval.first_name.errors" class="invalid-feedback">
+                                    <div *ngIf="fval.first_name.errors.required">
+                                        First Name is required
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="last_name">Last Name</label>
+                                <input type="text" class="form-control" id="last_name" placeholder="Last Name" formControlName="last_name" [ngClass]="{ 'is-invalid': editProfileSubmitted && fval.last_name.errors }">
+                                <div *ngIf="editProfileSubmitted && fval.last_name.errors" class="invalid-feedback">
+                                    <div *ngIf="fval.last_name.errors.required">
+                                        Last Name is required
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-12">
+                                <label for="email">Email address</label>
+                                <input type="email" class="form-control" id="email" autocomplete="off" placeholder="Email" formControlName="email" [ngClass]="{ 'is-invalid': editProfileSubmitted && fval.email.errors }">
+                                <div *ngIf="editProfileSubmitted && fval.email.errors" class="invalid-feedback">
+                                    <div *ngIf="fval.email.errors.required">
+                                        Email is required
+                                    </div>
+                                    <div *ngIf="fval.email.errors.email">
+                                        Please enter valid email address
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-12">
+                                <label>Current Password</label>
+                                <input type="password" autocomplete="off" class="form-control" autocomplete="off" placeholder="Current Password" formControlName="password" [ngClass]="{ 'is-invalid': editProfileSubmitted && fval.password.errors }">
+                                <div *ngIf="editProfileSubmitted && fval.password.errors" class="invalid-feedback">
+                                    <div *ngIf="fval.password.errors.required">
+                                        Current password is required
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>New Password</label>
+                                <input type="password" autocomplete="off" class="form-control" autocomplete="off" placeholder="New Password" formControlName="new_password" [ngClass]="{ 'is-invalid': editProfileSubmitted && fval.new_password.errors }">
+                                <div *ngIf="editProfileSubmitted && fval.new_password.errors" class="invalid-feedback">
+                                    <div *ngIf="fval.new_password.errors.required">
+                                        New password is required
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>Confirm Password</label>
+                                <input type="password" autocomplete="off" class="form-control" placeholder="Confirm Password" formControlName="confirm_password" [ngClass]="{ 'is-invalid': editProfileSubmitted && fval.confirm_password.errors }">
+                                <div *ngIf="editProfileSubmitted && fval.confirm_password.errors" class="invalid-feedback">
+                                    <div *ngIf="fval.confirm_password.errors.required">Confirm password is required</div>
+                                    <div *ngIf="fval.confirm_password.errors.mustMatch">Your enetered value should be match with new password</div>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-success btn-lg pull-right m-b-xxs">Save</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <form id="add-row-form" [formGroup]="changePasswordForm" (ngSubmit)="changePassword();">
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog" style="min-width: 400px;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Update Password</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>Current Password</label>
+                            <input type="password" autocomplete="off" class="form-control" placeholder="Current Password" formControlName="password" [ngClass]="{ 'is-invalid': changePasswordSubmitted && pval.password.errors }">
+                            <div *ngIf="changePasswordSubmitted && pval.password.errors" class="invalid-feedback">
+                                <div *ngIf="pval.password.errors.required">
+                                    Current password is required
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>New Password</label>
+                            <input type="password" autocomplete="off" class="form-control" placeholder="New Password" formControlName="new_password" [ngClass]="{ 'is-invalid': changePasswordSubmitted && pval.new_password.errors }">
+                            <div *ngIf="changePasswordSubmitted && pval.new_password.errors" class="invalid-feedback">
+                                <div *ngIf="pval.new_password.errors.required">
+                                    New password is required
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Confirm Password</label>
+                            <input type="password" autocomplete="off" class="form-control" placeholder="Confirm Password" formControlName="confirm_password" [ngClass]="{ 'is-invalid': changePasswordSubmitted && pval.confirm_password.errors }">
+                            <div *ngIf="changePasswordSubmitted && pval.confirm_password.errors" class="invalid-feedback">
+                                <div *ngIf="pval.confirm_password.errors.required">Confirm password is required</div>
+                                <div *ngIf="pval.confirm_password.errors.mustMatch">Your enetered value should be match with new password</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-success">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <app-footer></app-footer>
+
+</div>

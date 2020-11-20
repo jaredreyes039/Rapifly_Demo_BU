@@ -1,0 +1,173 @@
+<app-header></app-header>
+
+<!-- Page Content -->
+<div class="page-content">
+    <app-top-header></app-top-header>
+    <div class="page-inner no-page-title">
+        <div>
+            <button type="button" class="btn btn-default pull-right" (click)="openFormControlModal()"><i class="fa fa-plus"></i> Form Control</button>
+        </div>
+        <div class="page-title">
+            <h3 class="breadcrumb-header">{{ pageTitle }}</h3>
+        </div>
+
+        <div class="panel panel-darkblue">
+            <div class="panel-body">
+                <h3 class="breadcrumb-header">Form Preview</h3>
+                <div *ngIf="qaFormControls && qaFormControls.length > 0">
+                    <form [formGroup]="qaForm">
+                        <div class="row form-controls-div">
+                            <div *ngFor="let element of qaFormControls;">
+                                <div class="form-group col-md-6">
+                                    <div *ngIf="(element.type=='text');">
+                                        <label>{{textDecoration(element.name)}}<span *ngIf="element.required=='true'">*</span></label>
+                                        <input type="text" formControlName="{{element.name}}" class="form-control" placeholder="Enter {{textDecoration(element.name)}}" autocomplete="off" required="{{element.required}}" [ngClass]="{ 'is-invalid': isQAFormSubmitted && f[element.name].errors }">
+                                        <div *ngIf="isQAFormSubmitted && f[element.name].errors" class="invalid-feedback">
+                                            <div *ngIf="f[element.name].errors.required" class="error">{{textDecoration(element.name)}} is required</div>
+                                        </div>
+                                    </div>
+                                    <div *ngIf="(element.type=='number');">
+                                        <label>{{textDecoration(element.name)}}<span *ngIf="element.required=='true'">*</span></label>
+                                        <input type="number" formControlName="{{element.name}}" class="form-control" placeholder="Enter {{textDecoration(element.name)}}" autocomplete="off" required="{{element.required}}" [ngClass]="{ 'is-invalid': isQAFormSubmitted && f[element.name].errors }">
+                                        <div *ngIf="isQAFormSubmitted && f[element.name].errors" class="invalid-feedback">
+                                            <div *ngIf="f[element.name].errors.required" class="error">{{textDecoration(element.name)}} is required</div>
+                                        </div>
+                                    </div>
+                                    <div *ngIf="(element.type=='select')">
+                                        <label>{{textDecoration(element.name)}}<span *ngIf="element.required=='true'">*</span></label>
+                                        <select class="form-control" formControlName="{{element.name}}" #selectField required="{{element.required}}" [ngClass]="{ 'is-invalid': isQAFormSubmitted && f[element.name].errors }">
+                                            <option  value="">Select {{textDecoration(element.name)}}</option>
+                                            <option *ngFor="let plan of element.option" value="{{plan.id}}">{{plan.id}}</option>
+                                        </select>
+                                        <div *ngIf="isQAFormSubmitted && f[element.name].errors" class="invalid-feedback">
+                                            <div *ngIf="f[element.name].errors.required" class="error">{{textDecoration(element.name)}} is required</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-12">
+                                <button type="submit" class="btn btn-primary pull-right" (click)="onSubmit()">Submit</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div *ngIf="qaFormControls && qaFormControls.length == 0" class="row form-controls-div">
+                    <div class="col-md-12 text-center">
+                        <h5>No control found</h5>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <form [formGroup]="qaFullForm">
+                        <div class="col-md-6 form-group">
+                            <label>Form name</label>
+                            <input type="text" placeholder="Form name" formControlName="form_name" class="form-control" [ngClass]="{ 'is-invalid': isQAFullFormSubmitted && qaf.form_name.errors }">
+                            <div *ngIf="isQAFullFormSubmitted && qaf.form_name.errors" class="invalid-feedback">
+                                <div *ngIf="qaf.form_name.errors.required" class="error">Form name is required</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>Plan</label>
+                            <ng-select [items]="plans" bindLabel="short_name" placeholder="Select Plan" formControlName="plan" appendTo="body" [(ngModel)]="selected" (change)="onChange($event)" [ngClass]="{ 'is-invalid': isQAFullFormSubmitted && qaf.form_name.errors }">
+                            </ng-select>
+                            <div *ngIf="isQAFullFormSubmitted && qaf.plan.errors" class="invalid-feedback">
+                                <div *ngIf="qaf.plan.errors.required" class="error">Select any plan</div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 text-right form-group">
+                            <button type="button" class="btn btn-success" (click)="saveQAForm()">Confirm</button>&nbsp;
+                            <button type="button" class="btn btn-danger">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Dynamic Form Fields Modal -->
+    <div class="modal fade" id="formControlModal" tabindex="-1" role="dialog" aria-labelledby="formControlModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <form>
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="formControlModalLabel">Create Q&A Form</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="">
+                            <div class="col-md-12 mb-10">
+                                <button type="button" class="btn btn-default pull-right" (click)="onAddNewControl()"><i class="fa fa-plus"></i> Control</button>
+                            </div>
+                            <div *ngFor="let control of formField; index as i;" class="row">
+                                <div class="form-group col-md-3">
+                                    <input type="text" id="data{{i}}" (input)="setControlLabel($event.target.value,i)" class="form-control" placeholder="Name of Control" autocomplete="off">
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <select class="form-control" (change)="getSelectOptions($event,i)">
+                                        <option value="">Select Control Type</option>
+                                        <option value="text">Text</option>
+                                        <option value="number">Number</option>
+                                        <option value="select">Select</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <select class="form-control" (input)="setRequiredValue($event.target.value,i)">
+                                        <option value="">Select Required</option>
+                                        <option  value="true">True</option>
+                                        <option value="false">False</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-2" *ngIf="control.option && control.option.length == 0">
+                                    <button class="btn btn-primary" (click)="addControlSelectOptions(i)">Add option</button>
+                                </div>
+                                <div class="form-group col-md-2" *ngIf="control.option && control.option.length > 0">
+                                    <button class="btn btn-primary" (click)="addControlSelectOptions(i)">Modify option</button>
+                                </div>
+                                <div class="form-group col-md-1">
+                                    <button class="btn btn-danger" [disabled]="this.formField.length == 1" (click)="onRemoveFormControl(i)"><i class="fa fa-times"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-success" (click)="saveControlFields()">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- Close Dynamic Form Fields Modal -->
+
+    <!-- Start Add Form Select Box Option Modal -->
+    <div class="modal fade" id="addSelectOptions" tabindex="-1" role="dialog" aria-labelledby="addSelectOptionsLabel" aria-hidden="true">
+        <div class="modal-dialog" style="min-width: 480px;">
+            <div class="modal-content ">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="addSelectOptionsLabel">Add Option</h4>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <button type="button" class="btn btn-default m-b-xxs" (click)="onAddOption()">Add new Option</button>
+                    </div>
+                    <input type="hidden" value="" id="controlid">
+                    <div *ngFor="let option of selectoption; index as i;">
+                        <div class="form-group" style="padding: 3px;margin: 0;">
+                            <input type="text" id="data{{i}}" style="width:300px;display: inline;" [ngModelOptions]="{standalone: true}" [(ngModel)]="option.id" class="form-control" placeholder="Name Of FormControl" autocomplete="off">
+                            <button class="btn btn-danger" style="margin: 4px;height: 33px;margin-bottom: 8px" (click)="removeoption(i)">X</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-success" (click)="saveOption()">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Close Add Form Select Box Option Modal -->
+
+    <app-footer></app-footer>
+</div>

@@ -1,0 +1,173 @@
+<app-header></app-header>
+<!-- Page Content -->
+<div class="page-content">
+    <app-top-header></app-top-header>
+    <div class="page-inner no-page-title">
+        <div class="page-title">
+            <!-- <a routerLink="/add/plan"   class="btn btn-success m-b-sm pull-right"   ><i class="fa fa-plus"></i>&nbsp;Add New Plan</a> -->
+            <select class="form-control pull-right" (change)="getgoal(selectField.value);" style="width: 17%;" #selectField>
+                <option  value="">Select Plan</option>
+                <option *ngFor="let plan of plans" value="{{plan._id}}">{{plan.short_name}}</option>
+            </select>
+            <h3 class="breadcrumb-header">Propose</h3>
+        </div>
+        <div class="table-responsive" *ngIf="dividearrayintothreepart==1">
+            <!-- <div class="panel panel-darkblue"> -->
+            <div class="panel-body">
+                <div class="panel panel-cutom-blue">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+
+                                <th class="prioritize-blue">Send To Team Page</th>
+                                <th class="prioritize-blue">Propose</th>
+                                <!-- <th class="prioritize-blue">Number</th> -->
+                                <th class="prioritize-blue">Priority</th>
+                                <th class="prioritize-blue">(G) Short Name</th>
+                                <th class="prioritize-blue">Start Date</th>
+                                <th class="prioritize-blue">End Date</th>
+                                <th class="prioritize-blue">Creator</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngIf="goals.length==0">
+                                <td style="text-align: center;" colspan="8"> No Data Available</td>
+                            </tr>
+                            <tr *ngFor="let p of goals ; let i=index">
+                                <td><input type="checkbox" (change)="handleChange($event,p._id)"></td>
+                                <td>
+                                    <a style="cursor: pointer;" data-toggle="tooltip" title="Click for Send Proposal!" *ngIf="p.propose==undefined || p.propose==0 " (click)="changeproposal(p._id,1)"><img src="assets/images/avatars/quit.png"></a>
+                                    <a style="cursor: pointer;" data-toggle="tooltip" title="Click for Cancel Proposal!" *ngIf="p.propose==1" (click)="changeproposal(p._id,0)"><img src="assets/images/avatars/correct.png"></a>
+                                </td>
+                                <!-- <td>{{ p.numbers }}</td> -->
+                                <td>{{ p.prioritize }}</td>
+                                <td>(G) {{ p.short_name }}</td>
+                                <td>{{ p.start_date | prioritizegoaldate }}</td>
+                                <td>{{ p.end_date | prioritizegoaldate}}</td>
+                                <td>{{ p.user_id.first_name }} {{ p.user_id.last_name }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- </div> -->
+        </div>
+        <div class="table-responsive" *ngIf="dividearrayintothreepart==2">
+            <!-- <div class="panel panel-darkblue"> -->
+            <div class="panel-body">
+                <div class="panel panel-cutom-blue">
+                    <div style="text-align: center;">
+                        <h4>Propose : High</h4>
+                    </div>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th class="prioritize-blue">Send To Team Page</th>
+                                <th class="prioritize-blue">Propose</th>
+                                <!-- <th class="prioritize-blue">Number</th> -->
+                                <th class="prioritize-blue">Priority</th>
+                                <th class="prioritize-blue">(G) Short Name</th>
+                                <th class="prioritize-blue">Start Date</th>
+                                <th class="prioritize-blue">End Date</th>
+                                <th class="prioritize-blue">Creator</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let p of high ; let i=index">
+                                <td><input type="checkbox" (change)="handleChange($event,p._id)"></td>
+                                <td style="text-align: center;">
+                                    <a style="cursor: pointer;" data-toggle="tooltip" title="Click for Send Proposal!" *ngIf="p.propose==undefined || p.propose==0 " (click)="changeproposal(p._id,1)"><img src="assets/images/avatars/quit.png"></a>
+                                    <a style="cursor: pointer;" data-toggle="tooltip" title="Click for Cancel Proposal!" *ngIf="p.propose==1" (click)="changeproposal(p._id,0)"><img src="assets/images/avatars/correct.png"></a>
+                                </td>
+                                <!-- <td>{{ p.numbers }}</td> -->
+                                <td>{{ p.prioritize }}</td>
+                                <td>(G) {{ p.short_name }}</td>
+                                <td>{{ p.start_date | prioritizegoaldate }}</td>
+                                <td>{{ p.end_date | prioritizegoaldate}}</td>
+                                <td>{{ p.user_id.short_name }}</td>
+
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="panel panel-cutom-blue">
+                    <div style="text-align: center;">
+                        <h4>Propose : Medium</h4>
+                    </div>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th class="prioritize-blue">Send To Team Page</th>
+                                <th class="prioritize-medium">Propose</th>
+                                <!-- <th class="prioritize-medium">Number</th> -->
+                                <th class="prioritize-medium">Priority</th>
+                                <th class="prioritize-medium">(G) Short Name</th>
+                                <th class="prioritize-medium">Start Date</th>
+                                <th class="prioritize-medium">End Date</th>
+                                <th class="prioritize-medium">Creator</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let p of medium ; let i=index">
+                                <td><input type="checkbox" (change)="handleChange($event,p._id)"></td>
+                                <td style="text-align: center;">
+                                    <a style="cursor: pointer;" data-toggle="tooltip" title="Click for Send Proposal!" *ngIf="p.propose==undefined || p.propose==0 " (click)="changeproposal(p._id,1)"><img src="assets/images/avatars/quit.png"></a>
+                                    <a style="cursor: pointer;" data-toggle="tooltip" title="Click for Cancel Proposal!" *ngIf="p.propose==1" (click)="changeproposal(p._id,0)"><img src="assets/images/avatars/correct.png"></a>
+                                </td>
+                                <!-- <td>{{ p.numbers }}</td> -->
+                                <td>{{ p.prioritize }}</td>
+                                <td>(G) {{ p.short_name }}</td>
+                                <td>{{ p.start_date | prioritizegoaldate }}</td>
+                                <td>{{ p.end_date | prioritizegoaldate}}</td>
+                                <td>{{ p.user_id.short_name }}</td>
+
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="panel panel-cutom-blue">
+                    <div style="text-align: center;">
+                        <h4>Propose : Low</h4>
+                    </div>
+                    <table class="table table-striped">
+
+                        <thead>
+                            <tr>
+                                <th class="prioritize-blue">Send To Team Page</th>
+                                <th class="prioritize-low">Propose</th>
+                                <!-- <th class="prioritize-low">Number</th> -->
+                                <th class="prioritize-low">Priority</th>
+                                <th class="prioritize-low">(G) Short Name</th>
+                                <th class="prioritize-low">Start Date</th>
+                                <th class="prioritize-low">End Date</th>
+                                <th class="prioritize-low">Creator</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let p of low ; let i=index">
+                                <td><input type="checkbox" (change)="handleChange($event,p._id)"></td>
+                                <td style="text-align: center;">
+                                    <a style="cursor: pointer;" data-toggle="tooltip" title="Click for Send Proposal!" *ngIf="p.propose==undefined || p.propose==0 " (click)="changeproposal(p._id,1)"><img src="assets/images/avatars/quit.png"></a>
+                                    <a style="cursor: pointer;" data-toggle="tooltip" title="Click for Cancel Proposal!" *ngIf="p.propose==1" (click)="changeproposal(p._id,0)"><img src="assets/images/avatars/correct.png"></a>
+                                </td>
+                                <!-- <td>{{ p.numbers }}</td> -->
+                                <td>{{ p.prioritize }}</td>
+                                <td>(G) {{ p.short_name }}</td>
+                                <td>{{ p.start_date | prioritizegoaldate }}</td>
+                                <td>{{ p.end_date | prioritizegoaldate}}</td>
+                                <td>{{ p.user_id.short_name }}</td>
+
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- </div> -->
+        </div>
+    </div>
+    <!-- </div>
+    </div> -->
+
+    <app-footer></app-footer>
+
+</div>
