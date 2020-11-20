@@ -353,21 +353,21 @@ exports.invite_user = async function (request, response) {
                         const user = new User({
                             first_name: '',
                             last_name: '',
-                            email: inviteUser.email,
+                            email: invite_user.email,
                             role_id: userRole._id,
                             passwordChanged: false,
                             password: defaultPassword,
-                            parent_user_id: inviteUser.parent_user_id,
+                            parent_user_id: invite_user.parent_user_id,
                         });
                         await user.save();
                         await user.generateAuthToken();
                         if (user) {
-                            var invite_user_id = inviteUser._id;
+                            var invite_user_id = invite_user._id;
                             var user_id = user._id;
                             const usersDesignation = new UsersDesignation({
-                                hierarchy_id: inviteUser.hierarchy_id,
+                                hierarchy_id: invite_user.hierarchy_id,
                                 user_id: user_id,
-                                parent_user_id: inviteUser.parent_user_id,
+                                parent_user_id: invite_user.parent_user_id,
                             });
                             await usersDesignation.save();
                             if (usersDesignation) {
@@ -382,7 +382,7 @@ exports.invite_user = async function (request, response) {
                                         })
                                     } else {
                                         // return response.send({ status: true, message: "User has been registered successfully." })
-                                        await emailHelper.sendEmail(inviteUser.email, "User Invitation - RapiFly", html);
+                                        await emailHelper.sendEmail(invite_user.email, "User Invitation - RapiFly", html);
                                         return response.status(201).send({
                                             status: true,
                                             message: "Invitation has been sent successfully."

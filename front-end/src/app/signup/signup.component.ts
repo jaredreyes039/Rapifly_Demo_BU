@@ -41,17 +41,12 @@ export class SignupComponent implements OnInit {
   //Check if user is invite or not.
   checkUser(email) {
     this.commonService.PostAPI('users/check/user', { email: email }).then((response: any) => {
-      console.log("checkUser -> response", response)
-      console.log(this.userRoles);
-      
       var role_name = "";
       if (response && response.data && response.data.length > 0) {
         role_name = "User";
       } else {
         role_name = "Admin";
       }
-      console.log("checkUser -> role_name", role_name)
-
       this.getRole(role_name);
     });
   }

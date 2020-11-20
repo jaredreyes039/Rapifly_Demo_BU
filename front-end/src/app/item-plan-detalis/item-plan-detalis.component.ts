@@ -512,7 +512,7 @@ export class ItemPlanDetailsComponent implements OnInit {
     this.data[0]["description"] = [''];
     this.data[0]["start_date"] = ['', Validators.required];
     this.data[0]["end_date"] = ['', Validators.required];
-    this.data[0]["security"] = ['', Validators.required];
+    this.data[0]["security"] = ['0', Validators.required];
     this.data[0]["share_users"] = [''];
     this.data[0]["production_target"] = ['', Validators.required];
     this.data[0]["production_type"] = [''];
@@ -533,7 +533,7 @@ export class ItemPlanDetailsComponent implements OnInit {
     $('#date-input6').on('changeDate', function (ev) {
       $(this).datepicker('hide');
     });
-    
+
   }
 
   getPlanDetails() {
@@ -1834,7 +1834,7 @@ export class ItemPlanDetailsComponent implements OnInit {
       $('#date-input5').datepicker('setDate', datePipe.transform(this.planDetails.start_date, 'MM/dd/yyyy'));
       $('#date-input6').datepicker('setDate', datePipe.transform(this.planDetails.end_date, 'MM/dd/yyyy'));
       this.getplanform();
-      this.parentplangroup.get('security').setValue('0');
+      // this.parentplangroup.get('security').setValue('0');
     }
 
     setInterval(() => {
