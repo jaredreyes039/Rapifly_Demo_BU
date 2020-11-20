@@ -29,7 +29,7 @@ let UsersSchema = new Schema({
     passwordChanged: {
         type: Boolean,
         required: true,
-        default: false
+        default: true
     },
     password: {
         type: String,

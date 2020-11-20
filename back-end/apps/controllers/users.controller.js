@@ -292,6 +292,7 @@ exports.invite_user = async function (request, response) {
                         email: inviteUser.email,
                         role_id: userRole._id,
                         password: defaultPassword,
+                        passwordChanged: false,
                         parent_user_id: inviteUser.parent_user_id,
                     });
                     await user.save();
@@ -356,6 +357,7 @@ exports.invite_user = async function (request, response) {
                             last_name: '',
                             email: inviteUser.email,
                             role_id: userRole._id,
+                            passwordChanged: false,
                             password: defaultPassword,
                             parent_user_id: inviteUser.parent_user_id,
                         });
