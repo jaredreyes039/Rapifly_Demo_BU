@@ -288,11 +288,11 @@ export class ItemPlanDetailsComponent implements OnInit {
     this.route.queryParams.subscribe(params => {
       if (params && params.stage && params.stage != '') {
         this.selectPanel(params.stage);
+      } else {
+        this.selectPanel('project')
       }
-
       if (params && params.phase && params.phase != '') {
         this.planId = params.planId;
-
         this.getplandetail(params.planId);
         this.getHeadUpToDisplayDetails(params.planId);
       }
@@ -533,6 +533,7 @@ export class ItemPlanDetailsComponent implements OnInit {
     $('#date-input6').on('changeDate', function (ev) {
       $(this).datepicker('hide');
     });
+    
   }
 
   getPlanDetails() {
@@ -740,7 +741,6 @@ export class ItemPlanDetailsComponent implements OnInit {
 
   onSubmit() {
     this.submitted = true;
-
     if (this.childPlanForm.invalid) {
       return;
     } else {

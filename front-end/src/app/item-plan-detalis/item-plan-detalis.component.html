@@ -359,7 +359,7 @@
                                 <textarea type="text" formControlName="description" class="form-control"
                                     placeholder="Description"></textarea>
                             </div>
-                            <div class="col-md-12 form-group">
+                            <!-- <div class="col-md-12 form-group">
                                 <label>Security<span>*</span></label>
                                 <select class="form-control" style="padding: 0px 0px!important"
                                     formControlName="security"
@@ -371,7 +371,7 @@
                                     <label *ngIf="jval.security.errors.required" class="error">Security is
                                         required</label>
                                 </div>
-                            </div>
+                            </div> -->
                             <div class="col-md-3 form-group">
                                 <label>Production Target<span>*</span></label>
                                 <input type="number" class="form-control" placeholder="Production Target"
@@ -386,7 +386,6 @@
                                 <label>Type</label>
                                 <select class="form-control" formControlName="production_type">
                                     <option value="">Select Type</option>
-                                    <option value="units">Units</option>
                                     <option value="dollars">Dollars</option>
                                 </select>
                                 <div *ngIf="IsLoginFormValid && jval.production_type.errors" class="invalid-feedback">
@@ -404,8 +403,8 @@
                                         required</label>
                                 </div>
                             </div>
-                            <div class="col-md-6 form-group">
-                                <label>Low Variance Alert</label>
+                            <!-- <div class="col-md-6 form-group">
+                                <label>Low Variance Alert For Production</label>
                                 <input type="number" class="form-control" placeholder="Low Variance Alert"
                                     formControlName="production_low_variance_alert"
                                     [ngClass]="{ 'is-invalid': IsLoginFormValid && jval.production_low_variance_alert.errors }">
@@ -416,7 +415,7 @@
                                 </div>
                             </div>
                             <div class="col-md-6 form-group">
-                                <label>Low Variance Alert</label>
+                                <label>Low Variance Alert For Expense</label>
                                 <input type="number" class="form-control" placeholder="Low Variance Alert"
                                     formControlName="expense_low_variance_alert"
                                     [ngClass]="{ 'is-invalid': IsLoginFormValid && jval.expense_low_variance_alert.errors }">
@@ -427,7 +426,7 @@
                                 </div>
                             </div>
                             <div class="col-md-6 form-group">
-                                <label>Hight Variance Alert</label>
+                                <label>Hight Variance Alert For Production</label>
                                 <input type="number" class="form-control" placeholder="Hight Variance Alert"
                                     formControlName="production_high_variance_alert"
                                     [ngClass]="{ 'is-invalid': IsLoginFormValid && jval.production_high_variance_alert.errors }">
@@ -438,7 +437,7 @@
                                 </div>
                             </div>
                             <div class="col-md-6 form-group">
-                                <label>Hight Variance Alert</label>
+                                <label>Hight Variance Alert For Expense</label>
                                 <input type="number" class="form-control" placeholder="Hight Variance Alert"
                                     formControlName="expense_high_variance_alert"
                                     [ngClass]="{ 'is-invalid': IsLoginFormValid && jval.expense_high_variance_alert.errors }">
@@ -467,7 +466,7 @@
                                     <label *ngIf="jval.expense_weight.errors.required" class="error">Expense weight is
                                         required</label>
                                 </div>
-                            </div>
+                            </div> -->
                             <div class="col-md-12 form-group">
                                 <label>Share Goal(s) Permission To Users</label>
                                 <ng-select [items]="childUsersList" bindLabel="name" placeholder="Select Users"
