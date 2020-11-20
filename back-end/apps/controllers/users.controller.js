@@ -27,8 +27,6 @@ exports.test = function (request, response) {
  */
 exports.user_create = async function (request, response) {
     // Create a new user
-    console.log("exports.user_create=function -> request.body", request.body)
-    return
     try {
         const user = new User(request.body)
         await user.save()
