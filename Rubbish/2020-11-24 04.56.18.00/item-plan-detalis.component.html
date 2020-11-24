@@ -1,0 +1,2448 @@
+<app-header></app-header>
+
+<!-- Page Content -->
+<div class="page-content">
+    <app-top-header></app-top-header>
+    <div class="page-inner no-page-title">
+        <div class="col-md-3">
+            <div class="panel-body">
+                <!-- <div class="page-title">
+                    <h3>HUD</h3>
+                </div> -->
+                <div class="panel-group" id="accordion2" role="tablist" aria-multiselectable="true">
+                    <div class="panel panel-cutom-blue hud" id="style-2">
+                        <div>
+                            <div class="panel-heading panel-green" role="tab" id="headingOne1">
+                                <h4 class="panel-title text-center">
+                                    <a aria-controls="collapseOne">Administrations Panel​</a>
+                                </h4>
+                            </div>
+                            <div class="panel-body">
+                                <div class="col-md-12 space-stage text-center">
+                                    <p (click)="selectPanel('user')" title="User" class="cursor-pointer"
+                                        [ngClass]="{'active-phase' : selectedPhase == 'user'}">
+                                        User
+                                    </p>&nbsp;|
+                                    <p (click)="selectPanel('project')" title="Project" class="cursor-pointer"
+                                        [ngClass]="{'active-phase' : selectedPhase == 'project'}">
+                                        Project
+                                    </p>&nbsp;|
+                                    <p (click)="selectPanel('team')" title="Team" class="cursor-pointer"
+                                        [ngClass]="{'active-phase' : selectedPhase == 'team'}">
+                                        Team
+                                    </p>&nbsp;|
+                                    <p (click)="selectPanel('security')" title="Security" class="cursor-pointer"
+                                        [ngClass]="{'active-phase' : selectedPhase == 'security'}">
+                                        Security
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <div class="col-md-12 space-stage">
+                                    <p class="cursor-pointor" (click)="selectPanel('coaches-corner')">Coaches
+                                        Corner&nbsp;&nbsp;<i class="fa fa-caret-right"></i></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-cutom-blue hud" id="style-2">
+                        <div class="panel-heading panel-green" role="tab" id="headingOne1">
+                            <h4 class="panel-title text-center">
+                                <a aria-controls="collapseOne">HUD</a>
+                            </h4>
+                        </div>
+                        <div class="panel-body">
+                            <div class="col-md-3 space-stage">
+                                <p>Stage:</p>
+                            </div>
+                            <div class="col-md-9 space-stage">
+                                <p (click)="selecteStage('create')" title="Create" class="cursor-pointer"
+                                    [ngClass]="{'active-phase' : selectedStage == 'create'}">
+                                    Create
+                                </p>&nbsp;|
+                                <p (click)="selecteStage('execute')" title="Execute" class="cursor-pointer"
+                                    [ngClass]="{'active-phase' : selectedStage == 'execute'}">
+                                    Execute
+                                </p>&nbsp;|
+                                <p (click)="selecteStage('evaluate')" title="Deactivate" class="cursor-pointer"
+                                    [ngClass]="{'active-phase' : selectedStage == 'evaluate'}">
+                                    Evaluate
+                                </p>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <div class="col-md-3 space-stage">
+                                <p>Phase:</p>
+                            </div>
+                            <div class="col-md-9 space-stage" *ngIf="selectedStage == 'create'">
+                                <p (click)="selectPhase('B')" title="Brainstorm" class="cursor-pointer"
+                                    [ngClass]="{'active-phase' : selectedPhase == 'B'}">
+                                    {{ (selectedPhase == 'B') ? 'Brainstorm' : 'B' }}
+                                </p>&nbsp;|
+                                <p (click)="selectPhase('P')" title="Prioritize" class="cursor-pointer"
+                                    [ngClass]="{'active-phase' : selectedPhase == 'P'}">
+                                    {{ (selectedPhase == 'P') ? 'Prioritize' : 'P' }}
+                                </p>&nbsp;|
+                                <p (click)="selectPhase('D')" title="Deactivate" class="cursor-pointer"
+                                    [ngClass]="{'active-phase' : selectedPhase == 'D'}">
+                                    {{ (selectedPhase == 'D') ? 'Deactivate' : 'D' }}
+                                </p>&nbsp;|
+                                <p (click)="selectPhase('PR')" title="Propose" class="cursor-pointer"
+                                    [ngClass]="{'active-phase' : selectedPhase == 'PR'}">
+                                    {{ (selectedPhase == 'PR') ? 'Propose' : 'P' }}
+                                </p>&nbsp;|
+                                <p (click)="selectPhase('V')" title="Vote" class="cursor-pointer"
+                                    [ngClass]="{'active-phase' : selectedPhase == 'V'}">
+                                    {{ (selectedPhase == 'V') ? 'Vote' : 'V' }}
+                                </p>&nbsp;|
+                                <p (click)="selectPhase('S')" title="Select" class="cursor-pointer"
+                                    [ngClass]="{'active-phase' : selectedPhase == 'S'}">
+                                    {{ (selectedPhase == 'S') ? 'Select' : 'S' }}
+                                </p>
+                            </div>
+                            <div class="col-md-9 space-stage" *ngIf="selectedStage == 'execute'">
+                                <p (click)="selectPhase('DG')" title="Delegate" class="cursor-pointer"
+                                    [ngClass]="{'active-phase' : selectedPhase == 'DG'}">
+                                    {{ (selectedPhase == 'DG') ? 'Delegate' : 'D' }}
+                                </p>&nbsp;|
+                                <p (click)="selectPhase('C')" title="Countdown" class="cursor-pointer"
+                                    [ngClass]="{'active-phase' : selectedPhase == 'C'}">
+                                    {{ (selectedPhase == 'C') ? 'Countdown' : 'C' }}
+                                </p>&nbsp;|
+                                <p (click)="selectPhase('L')" title="Launch" class="cursor-pointer"
+                                    [ngClass]="{'active-phase' : selectedPhase == 'L'}">
+                                    {{ (selectedPhase == 'L') ? 'Launch' : 'L' }}
+                                </p>&nbsp;|
+                                <p (click)="selectPhase('R')" title="Report" class="cursor-pointer"
+                                    [ngClass]="{'active-phase' : selectedPhase == 'R'}">
+                                    {{ (selectedPhase == 'R') ? 'Report' : 'R' }}
+                                </p>
+                            </div>
+                            <div class="col-md-9 space-stage" *ngIf="selectedStage == 'evaluate'">
+                                <p (click)="selectPhase('M')" title="Measure" class="cursor-pointer"
+                                    [ngClass]="{'active-phase' : selectedPhase == 'M'}">
+                                    {{ (selectedPhase == 'M') ? 'Measure' : 'M' }}
+                                </p>&nbsp;|
+                                <p (click)="selectPhase('I')" title="Imporve" class="cursor-pointer"
+                                    [ngClass]="{'active-phase' : selectedPhase == 'I'}">
+                                    {{ (selectedPhase == 'I') ? 'Imporve' : 'I' }}
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="panel-body">
+                            <div class="col-md-3 space-stage">
+                                <p>Modules:</p>
+                            </div>
+                            <div class="col-md-9 space-stage">
+                                <p title="Challanges" class="cursor-pointer" (click)="selectChallangeModule()"
+                                    *ngIf="selectedModules != 'opportunity'" [hidden]="selectedModules == 'problem'">
+                                    C&nbsp;|
+                                </p>
+                                <p title="Opportunity" *ngIf="selectedModules == 'opportunity'" class="cursor-pointer"
+                                    [ngClass]="{'active-phase' : selectedModules == 'opportunity'}"
+                                    (click)="selectModule('opportunity')">
+                                    {{ (selectedModules == 'opportunity') ? 'Opportunity' : 'O' }}&nbsp;|
+                                </p>
+                                <p title="Problem" *ngIf="selectedModules == 'problem'" class="cursor-pointer"
+                                    (click)="selectModule('problem')"
+                                    [ngClass]="{'active-phase' : selectedModules == 'problem'}">
+                                    {{ (selectedModules == 'problem') ? 'Problem' : 'P' }}&nbsp;|
+                                </p>
+                                <p title="Stretegy" class="cursor-pointer" (click)="selectModule('strategy')"
+                                    [ngClass]="{'active-phase' : selectedModules == 'strategy'}">
+                                    {{ (selectedModules == 'strategy') ? 'Strategy' : 'S' }}
+                                </p>&nbsp;|
+                                <p title="Process" class="cursor-pointer" (click)="selectModule('process')"
+                                    [ngClass]="{'active-phase' : selectedModules == 'process'}">
+                                    {{ (selectedModules == 'process') ? 'Process' : 'P' }}
+                                </p>&nbsp;|
+                                <p title="Motive" class="cursor-pointer" (click)="selectModule('motive')"
+                                    [ngClass]="{'active-phase' : selectedModules == 'motive'}">
+                                    {{ (selectedModules == 'motive') ? 'Motive' : 'M' }}
+                                </p>&nbsp;|
+                                <p title="Analysis" class="cursor-pointer" (click)="selectModule('analysis')"
+                                    [ngClass]="{'active-phase' : selectedModules == 'analysis'}">
+                                    {{ (selectedModules == 'analysis') ? 'Analysis' : 'A' }}
+                                </p>&nbsp;|
+                                <p title="Intelligence" class="cursor-pointer" (click)="selectModule('intelligence')"
+                                    [ngClass]="{'active-phase' : selectedModules == 'intelligence'}">
+                                    {{ (selectedModules == 'intelligence') ? 'Intelligence' : 'I' }}
+                                </p>
+                            </div>
+                            <div class="col-md-3 space-stage" *ngIf="isSelectedChallange">
+                                <p>Challanges: </p>
+                            </div>
+                            <div class="col-md-9 space-stage" *ngIf="isSelectedChallange">
+                                <p title="Opportunity" class="cursor-pointer" (click)="selectModule('opportunity')">
+                                    Opportunity
+                                </p>&nbsp;|
+                                <p title="Problem" class="cursor-pointer" (click)="selectModule('problem')">
+                                    Problem
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="page-title">
+                        <h3>Project</h3>
+                    </div>
+                    <div class="panel panel-cutom-blue ">
+                        <div class="panel-heading panel-green">
+                            <h4 class="panel-title">
+                                <a aria-controls="collapseTwo">Project Tree</a>
+                            </h4>
+                        </div>
+                        <div id="2" class="panel-collapse collapse in projecttree" role="tabpanel"
+                            aria-labelledby="headingTwo2" id="style-2">
+                            <div class="">
+                                <div id="jstree">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-cutom-blue" *ngIf="selectedModules && selectedModules != ''">
+                        <div class="panel-heading panel-green">
+                            <h4 class="panel-title">
+                                <a aria-controls="collapseTwo">{{ textDecoration(selectedModules) }} Tree</a>
+                            </h4>
+                        </div>
+                        <div id="3" class="panel-collapse collapse in projecttree" role="tabpanel"
+                            aria-labelledby="headingTwo2" id="style-3">
+                            <div class="">
+                                <div id="jstree-module-tree">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="page-title">
+                        <h3>Alerts</h3>
+                    </div>
+                    <div class="panel panel-cutom-blue ">
+                        <div>
+                            <div class="panel-heading panel-aler" role="tab" id="headingThree3">
+                                <h4 class="panel-title">
+                                    <a aria-controls="collapseTwo">Plan Items</a>
+                                </h4>
+                            </div>
+                            <div class="hud" id="style-2">
+                                <div class="col-md-12 space-stage" *ngIf="alertdata && alertdata.length > 0">
+                                    <div *ngFor="let p of alertdata;">
+                                        <div class="alert alert-success" role="alert" *ngIf="p.type=='Launch'">
+                                            <a [routerLink]="" (click)="getgoaldetail(p.goal_id._id,p.plan_id)"
+                                                class="alert-link">{{p.goal_id.short_name}}</a> launch date is tomorrow.
+                                        </div>
+                                        <div class="alert alert-danger" role="alert" *ngIf="p.type=='Report'">
+                                            This is a secondary alert with <a [routerLink]=""
+                                                (click)="getgoaldetail(p.goal_id._id,p.plan_id)"
+                                                class="alert-link">{{p.goal_id.short_name}}</a>. Give it a click if you
+                                            like.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 text-center" *ngIf="alertdata && alertdata.length == 0">
+                                    <h5>Alert not found.</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-9" *ngIf="parentplanDetails[0] && parentplanDetails[0] != ''">
+            <div class="page-title">
+                Project Profile
+            </div>
+            <div class="panel panel-cutom-blue">
+                <div class="panel-body">
+                    <div class="row" style="padding: 10px;">
+                        <div class="col-md-12 text-right">
+                            <button routerLink="/item-plans/{{ goalplanid }}" class="btn btn-warning"><i
+                                    class="fa fa-comments"></i></button>
+                        </div>
+                        <div *ngFor="let parentplan of parentplanDetails[0] | keyvalue ">
+                            <div class="col-md-6 row pb-10"
+                                *ngIf="parentplan.key !='_id' && parentplan.key !='shared_permission_users' && parentplan.key !='share_users' && parentplan.key !='shared_plan_users' && parentplan.key !='user_group_id' && parentplan.key !='number' && parentplan.key !='motivation' ">
+                                <div *ngIf="parentplan.key=='user_id' ">
+                                    <div class="col-md-6 text-blue ">Creator</div>
+                                    <div class="col-md-6 text-white " *ngIf="parentplan.key !='userid' ">:
+                                        {{parentplan.value.first_name}} {{parentplan.value.last_name}}</div>
+                                </div>
+                                <div *ngIf="parentplan.key=='start_date' || parentplan.key=='end_date' ">
+                                    <div class="col-md-6 text-blue ">{{textDecoration(parentplan.key)}}</div>
+                                    <div class="col-md-6 text-white " *ngIf="parentplan.key !='userid' ">:
+                                        {{parentplan.value | itemplanitemdate }}</div>
+                                </div>
+                                <div
+                                    *ngIf="parentplan.key !='start_date' && parentplan.key !='end_date' && parentplan.key !='user_id' && parentplan.key !='security' ">
+                                    <div class="col-md-6 text-blue ">{{textDecoration(parentplan.key)}}</div>
+                                    <div class="col-md-6 text-white " *ngIf="parentplan.key !='userid' ">:
+                                        {{parentplan.value}}</div>
+                                </div>
+                                <div *ngIf="parentplan.key=='security' ">
+                                    <div class="col-md-6 text-blue ">{{textDecoration(parentplan.key)}}</div>
+                                    <div class="col-md-6 text-white " *ngIf="parentplan.value==0 ">: Private</div>
+                                    <div class="col-md-6 text-white " *ngIf="parentplan.value==1 ">: Shared </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-9" *ngIf="selectedPhase == 'project'">
+            <form #kform="ngForm" [formGroup]="parentplangroup">
+                <div class="page-title">
+                    <h3>Parent Plan Item</h3>
+                </div>
+                <div class="col-md-12 form-group text-right">
+                    <button type="button" class="btn btn-warning mt-20" (click)="fetch()">Add Form Control</button>
+                </div>
+                <div class="panel panel-cutom-blue">
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                <label>Short Name<span>*</span></label>
+                                <input type="text" formControlName="short_name" class="form-control"
+                                    value="{{ (planDetails && planDetails.short_name) ? planDetails.short_name : '' }}"
+                                    [(ngModel)]="planDetails.short_name" placeholder="Short name"
+                                    [ngClass]="{ 'is-invalid': IsLoginFormValid && jval.short_name.errors }"
+                                    autocomplete="off">
+                                <div *ngIf="IsLoginFormValid && jval.short_name.errors" class="invalid-feedback">
+                                    <label *ngIf="jval.short_name.errors.required" class="error">Short Name is
+                                        required</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>Long Name<span>*</span></label>
+                                <input type="text" id="long_name" formControlName="long_name" class="form-control"
+                                    placeholder="Long name"
+                                    [ngClass]="{ 'is-invalid': IsLoginFormValid && jval.long_name.errors }"
+                                    autocomplete="off">
+                                <div *ngIf="IsLoginFormValid && jval.long_name.errors" class="invalid-feedback">
+                                    <!-- <div *ngIf="jval.long_name.errors.required">Long Name is required</div> -->
+                                    <label *ngIf="jval.long_name.errors.required" class="error">Long Name is
+                                        required</label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 form-group">
+                                <label>Start Date<span>*</span></label>
+                                <div class="input-group input-append bootstrap-datepicker">
+                                    <input type="text" id="date-input5" formControlName="start_date"
+                                        class="form-control date-picker" placeholder="Start Date" autocomplete="off">
+                                    <span style="background-color: #8869c2;" class="input-group-addon add-on"><i
+                                            class="fa fa-calendar"></i></span>
+                                </div>
+                                <div *ngIf="IsLoginFormValid && jval.start_date.errors" class="invalid-feedback">
+                                    <label *ngIf="jval.start_date.errors.required" class="error">Start Date is
+                                        required</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>End Date<span>*</span></label>
+                                <div class="input-group input-append bootstrap-datepicker">
+                                    <input type="text" id="date-input6" formControlName="end_date"
+                                        class="form-control date-picker" placeholder="End Date" autocomplete="off">
+                                    <span style="background-color: #8869c2;" class="input-group-addon add-on"><i
+                                            class="fa fa-calendar"></i></span>
+                                </div>
+                                <div *ngIf="IsLoginFormValid && jval.end_date.errors" class="invalid-feedback">
+                                    <label *ngIf="jval.end_date.errors.required" class="error">End Date is
+                                        required</label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12 form-group">
+                                <label>Description</label>
+                                <textarea type="text" formControlName="description" class="form-control"
+                                    placeholder="Description"></textarea>
+                            </div>
+                            <!-- <div class="col-md-12 form-group">
+                                <label>Security<span>*</span></label>
+                                <select class="form-control" style="padding: 0px 0px!important"
+                                    formControlName="security"
+                                    [ngClass]="{ 'is-invalid': IsLoginFormValid && jval.security.errors }">
+                                    <option value="0">Private</option>
+                                    <option value="1">Public</option>
+                                </select>
+                                <div *ngIf="IsLoginFormValid && jval.security.errors" class="invalid-feedback">
+                                    <label *ngIf="jval.security.errors.required" class="error">Security is
+                                        required</label>
+                                </div>
+                            </div> -->
+                        </div>
+                    </div>
+                </div>
+                <div class="page-title">
+                    <h3>Dashboard</h3>
+                </div>
+                <div class="panel panel-cutom-blue">
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-3 form-group">
+                                <label>Production Target<span>*</span></label>
+                                <input type="number" class="form-control" placeholder="Production Target"
+                                    formControlName="production_target"
+                                    [ngClass]="{ 'is-invalid': IsLoginFormValid && jval.production_target.errors }">
+                                <div *ngIf="IsLoginFormValid && jval.production_target.errors" class="invalid-feedback">
+                                    <label *ngIf="jval.production_target.errors.required" class="error">Production
+                                        target is required</label>
+                                </div>
+                            </div>
+                            <div class="col-md-3 form-group">
+                                <label>Type</label>
+                                <select class="form-control" formControlName="production_type">
+                                    <option value="">Select Type</option>
+                                    <option value="dollars">Dollars</option>
+                                </select>
+                                <div *ngIf="IsLoginFormValid && jval.production_type.errors" class="invalid-feedback">
+                                    <label *ngIf="jval.production_type.errors.required" class="error">Production type is
+                                        required</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>Expense Target<span>*</span></label>
+                                <input type="number" class="form-control" placeholder="Expense Target"
+                                    formControlName="expense_target"
+                                    [ngClass]="{ 'is-invalid': IsLoginFormValid && jval.expense_target.errors }">
+                                <div *ngIf="IsLoginFormValid && jval.expense_target.errors" class="invalid-feedback">
+                                    <label *ngIf="jval.expense_target.errors.required" class="error">Expense target is
+                                        required</label>
+                                </div>
+                            </div>
+                            <!-- <div class="col-md-6 form-group">
+                                <label>Low Variance Alert For Production</label>
+                                <input type="number" class="form-control" placeholder="Low Variance Alert"
+                                    formControlName="production_low_variance_alert"
+                                    [ngClass]="{ 'is-invalid': IsLoginFormValid && jval.production_low_variance_alert.errors }">
+                                <div *ngIf="IsLoginFormValid && jval.production_low_variance_alert.errors"
+                                    class="invalid-feedback">
+                                    <label *ngIf="jval.production_low_variance_alert.errors.required" class="error">Low
+                                        Variance Alert is required</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>Low Variance Alert For Expense</label>
+                                <input type="number" class="form-control" placeholder="Low Variance Alert"
+                                    formControlName="expense_low_variance_alert"
+                                    [ngClass]="{ 'is-invalid': IsLoginFormValid && jval.expense_low_variance_alert.errors }">
+                                <div *ngIf="IsLoginFormValid && jval.expense_low_variance_alert.errors"
+                                    class="invalid-feedback">
+                                    <label *ngIf="jval.expense_low_variance_alert.errors.required" class="error">Low
+                                        Variance Alert is required</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>Hight Variance Alert For Production</label>
+                                <input type="number" class="form-control" placeholder="Hight Variance Alert"
+                                    formControlName="production_high_variance_alert"
+                                    [ngClass]="{ 'is-invalid': IsLoginFormValid && jval.production_high_variance_alert.errors }">
+                                <div *ngIf="IsLoginFormValid && jval.production_high_variance_alert.errors"
+                                    class="invalid-feedback">
+                                    <label *ngIf="jval.production_high_variance_alert.errors.required"
+                                        class="error">Hight Variance Alert is required</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>Hight Variance Alert For Expense</label>
+                                <input type="number" class="form-control" placeholder="Hight Variance Alert"
+                                    formControlName="expense_high_variance_alert"
+                                    [ngClass]="{ 'is-invalid': IsLoginFormValid && jval.expense_high_variance_alert.errors }">
+                                <div *ngIf="IsLoginFormValid && jval.expense_high_variance_alert.errors"
+                                    class="invalid-feedback">
+                                    <label *ngIf="jval.expense_high_variance_alert.errors.required" class="error">Hight
+                                        Variance Alert is required</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>Production Weight</label>
+                                <input type="number" class="form-control" placeholder="Production weight"
+                                    formControlName="production_weight"
+                                    [ngClass]="{ 'is-invalid': IsLoginFormValid && jval.production_weight.errors }">
+                                <div *ngIf="IsLoginFormValid && jval.production_weight.errors" class="invalid-feedback">
+                                    <label *ngIf="jval.production_weight.errors.required" class="error">Expense weight
+                                        is required</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>Expense Weight</label>
+                                <input type="number" class="form-control" placeholder="Expense weight"
+                                    formControlName="expense_weight"
+                                    [ngClass]="{ 'is-invalid': IsLoginFormValid && jval.expense_weight.errors }">
+                                <div *ngIf="IsLoginFormValid && jval.expense_weight.errors" class="invalid-feedback">
+                                    <label *ngIf="jval.expense_weight.errors.required" class="error">Expense weight is
+                                        required</label>
+                                </div>
+                            </div> -->
+                            <div class="col-md-12 form-group">
+                                <label>Share Goal(s) Permission To Users</label>
+                                <ng-select [items]="childUsersList" bindLabel="name" placeholder="Select Users"
+                                    formControlName="share_users" appendTo="body" multiple="true"
+                                    [(ngModel)]="selectedSharedPlanUser" (change)="onChangePlan($event)">
+                                </ng-select>
+                            </div>
+                            <div class="col-md-6 form-group" *ngFor="let dev of datafinal">
+                                <div *ngIf="(dev.type=='text');">
+                                    <label>{{dev.name}}<span *ngIf="dev.required=='true'">*</span></label>
+                                    <input type="text" formControlName="{{dev.name}}" id="long_name"
+                                        class="form-control" placeholder="Enter {{dev.name}}" autocomplete="off"
+                                        required="{{dev.required}}"
+                                        [ngClass]="{ 'is-invalid': IsLoginFormValid && jval[dev.name].errors }">
+                                    <div *ngIf="IsLoginFormValid && jval[dev.name].errors" class="invalid-feedback">
+                                        <label *ngIf="jval[dev.name].errors.required" class="error">{{dev.name}} is
+                                            required</label>
+                                    </div>
+                                </div>
+                                <div *ngIf="(dev.type=='number');">
+                                    <label>{{dev.name}}<span *ngIf="dev.required=='true'">*</span></label>
+                                    <input type="number" formControlName="{{dev.name}}" class="form-control"
+                                        placeholder="Enter {{dev.name}}" autocomplete="off" required="{{dev.required}}"
+                                        [ngClass]="{ 'is-invalid': IsLoginFormValid && jval[dev.name].errors }">
+                                    <div *ngIf="IsLoginFormValid && jval[dev.name].errors" class="invalid-feedback">
+                                        <label *ngIf="jval[dev.name].errors.required" class="error">{{dev.name}} is
+                                            required</label>
+                                    </div>
+                                </div>
+                                <div *ngIf="(dev.type=='select')">
+                                    <label>{{dev.name}}<span *ngIf="dev.required=='true'">*</span></label>
+                                    <select class="form-control" formControlName="{{dev.name}}" #selectField
+                                        required="{{dev.required}}"
+                                        [ngClass]="{ 'is-invalid': IsLoginFormValid && jval[dev.name].errors }">
+                                        <option value="">Select {{dev.name}}</option>
+                                        <option *ngFor="let plan of dev.option" value="{{plan.id}}">{{plan.id}}</option>
+                                    </select>
+                                    <div *ngIf="IsLoginFormValid && jval[dev.name].errors" class="invalid-feedback">
+                                        <label *ngIf="jval[dev.name].errors.required" class="error">{{dev.name}} is
+                                            required</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="padding: 40px;">
+                            <div class="form-group">
+                                <button type="submit" (click)="resetPlanForm()"
+                                    class="btn btn-default pull-right">Reset</button>
+                                <button type="submit" (click)="submitPlanForm()"
+                                    class="btn btn-primary btn-space pull-right">Submit</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <div class="page-title">
+                <h3>Discussion</h3>
+            </div>
+            <div class="panel panel-cutom-blue">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-6 form-group">
+                            <label>Security</label>
+                            <select class="form-control">
+                                <option value="">Select Security</option>
+                                <option value="public">Public</option>
+                                <option value="private">Private</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>Recipient</label>
+                            <input type="text" class="form-control" placeholder="Recipient">
+                        </div>
+                        <div class="col-md-12 form-group">
+                            <label>Subject</label>
+                            <input type="text" class="form-control" placeholder="Subject">
+                        </div>
+                        <div class="col-md-12 form-group">
+                            <textarea class="form-control" placeholder="Message"></textarea>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>Attachment</label>
+                            <input type="file">
+                        </div>
+                        <div class="col-md-12 form-group text-right">
+                            <button type="submit" class="btn btn-primary btn-space">Save</button>
+                            <button type="reset" class="btn btn-default">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-9" *ngIf="selectedPhase == 'coaches-corner'">
+            <div class="page-title">
+                <h3>Coaches Corner</h3>
+            </div>
+
+            <div class="panel panel-cutom-blue">
+                <div class="panel-body">
+                    <table id="coaches-corner-table" datatable [dtOptions]="dtOptionsCoaches"
+                        class="display table table-data-width">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>Title</th>
+                                <th>Industries</th>
+                                <th>Company</th>
+                                <th>Created at</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let user of coachesDetails; let i=index;">
+                                <td>{{ user.first_name }} {{ user.last_name }}</td>
+                                <td>{{ user.email }}</td>
+                                <td>{{ user.phone }}</td>
+                                <td>{{ user.title }}</td>
+                                <td>{{ user.industries }}</td>
+                                <td>{{ (user.company_name) ? user.company_name : '---' }}</td>
+                                <td>{{ user.created_at | date: 'yyyy-MM-dd h:mm:ss a' }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-9" *ngIf="selectedPhase == 'team'">
+            <div class="page-title">
+                <h3>Team</h3>
+            </div>
+
+            <div class="panel panel-cutom-blue">
+                <div class="panel-body">
+                    <div class="overflow-div">
+                        <google-chart style="margin: 0 auto;" #chart [title]="title" [type]="type"
+                            [data]="userHierarchyData" [columnNames]="columnNames" [options]="option" [width]="width"
+                            [height]="height">
+                        </google-chart>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-9" *ngIf="selectedPhase == 'user'">
+            <div class="page-title">
+                <h3>Create Hierarchy</h3>
+            </div>
+
+            <div class="panel panel-cutom-blue">
+                <div class="panel-body">
+                    <div class="row col-md-12 text-right">
+                        <a routerLink="/users" class="btn btn-danger m-b-sm"><i
+                                class="fa fa-users"></i>&nbsp;Users</a>&nbsp;
+                        <a routerLink="/invite/user" class="btn btn-info m-b-sm"><i
+                                class="fa fa-user-plus"></i>&nbsp;Invite User</a>&nbsp;
+                        <a routerLink="/hierarchy" class="btn btn-primary m-b-sm"><i
+                                class="fa fa-link"></i>&nbsp;Hierarchy</a>&nbsp;
+                        <a routerLink="/hierarchy/manage" class="btn btn-success m-b-sm"><i
+                                class="fa fa-user-plus"></i>&nbsp;Manage Hierarchy</a>&nbsp;
+                        <a routerLink="/hierarchy/change" class="btn btn-warning m-b-sm"><i
+                                class="fa fa-pencil"></i>&nbsp;Update Hierarchy</a>
+                    </div>
+                    <form [formGroup]="InviteUserForm">
+                        <div class="row">
+                            <div class="col-md-12 form-group">
+                                <label>Users<span>*</span></label>
+                                <select class="form-control" formControlName="user_id">
+                                    <option value="">Select User</option>
+                                    <option *ngFor="let hu of users;" value="{{hu.user_id._id}}">
+                                        {{ hu.user_id.first_name }} {{ hu.user_id.last_name }}
+                                        ({{hu.hierarchy_id.designation}})</option>
+                                </select>
+                                <div *ngIf="isInviteUserFormValid && iFrm.user_id.errors" class="invalid-feedback">
+                                    <label *ngIf="iFrm.user_id.errors.required" class="error">Select any user</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>First Name<span>*</span></label>
+                                <input type="text" formControlName="first_name" class="form-control"
+                                    placeholder="First Name"
+                                    [ngClass]="{ 'is-invalid': isInviteUserFormValid && iFrm.first_name.errors }"
+                                    autocomplete="off">
+                                <div *ngIf="isInviteUserFormValid && iFrm.first_name.errors" class="invalid-feedback">
+                                    <label *ngIf="iFrm.first_name.errors.required" class="error">First Name is
+                                        required</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>Last Name<span>*</span></label>
+                                <input type="text" formControlName="last_name" class="form-control"
+                                    placeholder="Last Name"
+                                    [ngClass]="{ 'is-invalid': isInviteUserFormValid && iFrm.last_name.errors }"
+                                    autocomplete="off">
+                                <div *ngIf="isInviteUserFormValid && iFrm.last_name.errors" class="invalid-feedback">
+                                    <label *ngIf="iFrm.last_name.errors.required" class="error">Last Name is
+                                        required</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>Role<span>*</span></label>
+                                <input type="text" formControlName="designation" class="form-control" placeholder="Role"
+                                    [ngClass]="{ 'is-invalid': isInviteUserFormValid && iFrm.designation.errors }"
+                                    autocomplete="off">
+                                <div *ngIf="isInviteUserFormValid && iFrm.designation.errors" class="invalid-feedback">
+                                    <label *ngIf="iFrm.designation.errors.required" class="error">Role is
+                                        required</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>Email<span>*</span></label>
+                                <input type="text" formControlName="email" class="form-control" placeholder="Email"
+                                    [ngClass]="{ 'is-invalid': isInviteUserFormValid && iFrm.email.errors }"
+                                    autocomplete="off">
+                                <div *ngIf="isInviteUserFormValid && iFrm.email.errors" class="invalid-feedback">
+                                    <label *ngIf="iFrm.email.errors.required" class="error">Email is required</label>
+                                    <label *ngIf="iFrm.email.errors.email" class="error">Please enter valid email
+                                        address</label>
+                                </div>
+                            </div>
+                            <div class="col-md-12 form-group text-right">
+                                <button type="reset" (click)="resetInviteForm()" class="btn btn-default">Reset</button>
+                                <button type="submit" (click)="submitInviteForm()"
+                                    class="btn btn-primary btn-space ">Submit</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-9" *ngIf="selectedPhase == 'security'">
+            <div class="page-title">
+                <h3>Security</h3>
+            </div>
+            <div class="panel panel-cutom-blue">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-12 row pb-10">
+                            <div class="col-md-6 text-blue">Plan</div>
+                            <div class="col-md-6 text-white">: {{ (golaplanname) ? golaplanname : '---' }}</div>
+                        </div>
+                        <div class="col-md-12 row pb-10">
+                            <div class="col-md-6 text-blue">Security</div>
+                            <div class="col-md-6 text-white">: {{ (plansecurity) ? plansecurity : '---' }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-9" *ngIf="selectedPhase == 'B' && planGoals && planGoals.length > 0">
+            <div class="page-title">
+                <h3>{{ textDecoration(moduleType) }} List</h3>
+            </div>
+
+            <div class="panel panel-cutom-blue" *ngIf="selectedPhase == 'B' && planGoals && planGoals.length > 0">
+                <div class="row">
+                    <table id="table-goals" datatable [dtOptions]="dtOptionsPlanGoals"
+                        class="display table table-data-width">
+                        <thead>
+                            <tr>
+                                <th class="prioritize-blue">(G) Short Name</th>
+                                <th class="prioritize-blue">Start Date</th>
+                                <th class="prioritize-blue">End Date</th>
+                                <th class="prioritize-blue">Production Target</th>
+                                <th class="prioritize-blue">Expense Target</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let p of planGoals; let i=index">
+                                <td>(G) {{ p.short_name }}</td>
+                                <td>{{ p.start_date | prioritizegoaldate }}</td>
+                                <td>{{ p.end_date | prioritizegoaldate}}</td>
+                                <td>{{ (p.production_target) ? p.production_target : 0 }}</td>
+                                <td>{{ (p.expense_target) ? p.expense_target : 0 }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Brainstorm && Imporve -->
+        <div class="col-md-3" *ngIf="selectedPhase === 'B' || selectedPhase === 'I'"
+            [hidden]="selectedModules && selectedModules != ''"></div>
+        <div class="col-md-9" *ngIf="selectedPhase === 'B' || selectedPhase === 'I'"
+            [hidden]="selectedModules && selectedModules != ''">
+            <div class="">
+                <div class="page-title">
+                    <h3>{{ (selectedPhase == 'I') ? 'Imporve' : 'Sub Item' }}</h3>
+                </div>
+            </div>
+            <form #kform="ngForm" class="p-3" [formGroup]="childPlanForm">
+                <div class="panel panel-cutom-blue">
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                <label for="exampleInputEmail1">Short Name<span>*</span></label>
+                                <input type="text" formControlName="short_name" class="form-control"
+                                    placeholder="Short name"
+                                    [ngClass]="{ 'is-invalid': submitted && f.short_name.errors }" autocomplete="off">
+                                <div *ngIf="submitted && f.short_name.errors" class="invalid-feedback">
+                                    <div *ngIf="f.short_name.errors.required">Short name is required</div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label for="exampleInputPassword1">Long Name<span>*</span></label>
+                                <input type="text" id="long_name" formControlName="long_name" class="form-control"
+                                    placeholder="Long name"
+                                    [ngClass]="{ 'is-invalid': submitted && f.long_name.errors }" autocomplete="off">
+                                <div *ngIf="submitted && f.long_name.errors" class="invalid-feedback">
+                                    <div *ngIf="f.long_name.errors.required">Long name is required</div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label for="exampleInputPassword1">Start Date<span>*</span></label>
+                                <div class="input-group input-append bootstrap-datepicker">
+                                    <input type="text" id="date-input5" formControlName="start_date"
+                                        class="form-control date-picker" placeholder="Start Date" autocomplete="off">
+                                    <span style="background-color: #8869c2;" class="input-group-addon add-on"><i
+                                            class="fa fa-calendar"></i></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label for="exampleInputPassword1">End Date<span>*</span></label>
+                                <div class="input-group input-append bootstrap-datepicker">
+                                    <input type="text" id="date-input6" formControlName="end_date"
+                                        class="form-control date-picker" placeholder="End Date" autocomplete="off">
+                                    <span style="background-color: #8869c2;" class="input-group-addon add-on"><i
+                                            class="fa fa-calendar"></i></span>
+                                </div>
+                            </div>
+                            <div class="col-md-12 form-group" *ngIf="isSharedPlanPermission">
+                                <label>Select Users</label>
+                                <ng-select [items]="items" bindLabel="name" placeholder="Select Users"
+                                    formControlName="shared_users" appendTo="body" multiple="true"
+                                    [(ngModel)]="selected" (change)="onChange($event)">
+                                </ng-select>
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <label for="exampleInputPassword1">Description</label>
+                                <textarea type="text" formControlName="description" class="form-control"
+                                    placeholder="Description"></textarea>
+                                <div *ngIf="submitted && f.description.errors" class="invalid-feedback">
+                                    <div *ngIf="f.description.errors.required">Description is required</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="page-title">
+                    <h3 class="">Dashboard</h3>
+                </div>
+                <div class="panel panel-cutom-blue">
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-3 form-group">
+                                <label>Production Target<span>*</span></label>
+                                <input type="number" class="form-control" placeholder="Production Target"
+                                    formControlName="production_target"
+                                    [ngClass]="{ 'is-invalid': submitted && f.production_target.errors }">
+                                <div *ngIf="submitted && f.production_target.errors" class="invalid-feedback">
+                                    <label *ngIf="f.production_target.errors.required" class="error">Production target
+                                        is required</label>
+                                </div>
+                            </div>
+                            <div class="col-md-3 form-group">
+                                <label>Type</label>
+                                <select class="form-control" formControlName="production_type">
+                                    <option value="">Select Type</option>
+                                    <option value="units">Units</option>
+                                    <option value="dollars">Dollars</option>
+                                </select>
+                                <div *ngIf="submitted && f.production_type.errors" class="invalid-feedback">
+                                    <label *ngIf="f.production_type.errors.required" class="error">Production type is
+                                        required</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>Expense Target<span>*</span></label>
+                                <input type="number" class="form-control" placeholder="Expense Target"
+                                    formControlName="expense_target"
+                                    [ngClass]="{ 'is-invalid': submitted && f.expense_target.errors }">
+                                <div *ngIf="submitted && f.expense_target.errors" class="invalid-feedback">
+                                    <label *ngIf="f.expense_target.errors.required" class="error">Expense target is
+                                        required</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>Low Variance Alert</label>
+                                <input type="number" class="form-control" placeholder="Low Variance Alert"
+                                    formControlName="production_low_variance_alert"
+                                    [ngClass]="{ 'is-invalid': submitted && f.production_low_variance_alert.errors }">
+                                <div *ngIf="submitted && f.production_low_variance_alert.errors"
+                                    class="invalid-feedback">
+                                    <label *ngIf="f.production_low_variance_alert.errors.required" class="error">Low
+                                        Variance Alert is required</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>Low Variance Alert</label>
+                                <input type="number" class="form-control" placeholder="Low Variance Alert"
+                                    formControlName="expense_low_variance_alert"
+                                    [ngClass]="{ 'is-invalid': submitted && f.expense_low_variance_alert.errors }">
+                                <div *ngIf="submitted && f.expense_low_variance_alert.errors" class="invalid-feedback">
+                                    <label *ngIf="f.expense_low_variance_alert.errors.required" class="error">Low
+                                        Variance Alert is required</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>Hight Variance Alert</label>
+                                <input type="number" class="form-control" placeholder="Hight Variance Alert"
+                                    formControlName="production_high_variance_alert"
+                                    [ngClass]="{ 'is-invalid': submitted && f.production_high_variance_alert.errors }">
+                                <div *ngIf="submitted && f.production_high_variance_alert.errors"
+                                    class="invalid-feedback">
+                                    <label *ngIf="f.production_high_variance_alert.errors.required" class="error">Hight
+                                        Variance Alert is required</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>Hight Variance Alert</label>
+                                <input type="number" class="form-control" placeholder="Hight Variance Alert"
+                                    formControlName="expense_high_variance_alert"
+                                    [ngClass]="{ 'is-invalid': submitted && f.expense_high_variance_alert.errors }">
+                                <div *ngIf="submitted && f.expense_high_variance_alert.errors" class="invalid-feedback">
+                                    <label *ngIf="f.expense_high_variance_alert.errors.required" class="error">Hight
+                                        Variance Alert is required</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>Production Weight</label>
+                                <input type="number" class="form-control" placeholder="Production weight"
+                                    formControlName="production_weight"
+                                    [ngClass]="{ 'is-invalid': submitted && f.production_weight.errors }">
+                                <div *ngIf="submitted && f.production_weight.errors" class="invalid-feedback">
+                                    <label *ngIf="f.production_weight.errors.required" class="error">Expense weight is
+                                        required</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>Expense Weight</label>
+                                <input type="number" class="form-control" placeholder="Expense weight"
+                                    formControlName="expense_weight"
+                                    [ngClass]="{ 'is-invalid': submitted && f.expense_weight.errors }">
+                                <div *ngIf="submitted && f.expense_weight.errors" class="invalid-feedback">
+                                    <label *ngIf="f.expense_weight.errors.required" class="error">Expense weight is
+                                        required</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 form-group text-right">
+                            <button type="submit " (click)="onSubmit()"
+                                [disabled]="!checkforgoaledit && !isSharedPlanPermission"
+                                class="btn btn-primary btn-space">Save</button>
+                            <button type="reset" (click)="reset()" [disabled]="!checkforgoaledit "
+                                class="btn btn-default">Clear</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div class="page-title">
+                <h3>Discussion</h3>
+            </div>
+            <div class="panel panel-cutom-blue">
+                <div class="panel-body">
+                    <form [formGroup]="DiscussionForm">
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                <label>Security</label>
+                                <select class="form-control" formControlName="security">
+                                    <option value="">Select Security</option>
+                                    <option value="public">Public</option>
+                                    <option value="private">Private</option>
+                                </select>
+                                <div *ngIf="isSubmittedDiscussionForm && dscf.security.errors" class="invalid-feedback">
+                                    <label *ngIf="dscf.security.errors.required" class="error">Security is
+                                        required</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>Recipients</label>
+                                <select class="form-control" formControlName="recipient_id">
+                                    <option value="">Select Recipient</option>
+                                    <option *ngFor="let hu of users;" value="{{hu.user_id._id}}">
+                                        {{ hu.user_id.first_name }} {{ hu.user_id.last_name }}
+                                        ({{hu.hierarchy_id.designation}})</option>
+                                </select>
+                                <div *ngIf="isSubmittedDiscussionForm && dscf.recipient_id.errors"
+                                    class="invalid-feedback">
+                                    <label *ngIf="dscf.recipient_id.errors.required" class="error">Recipient is
+                                        required</label>
+                                </div>
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <label>Subject</label>
+                                <input type="text" class="form-control" placeholder="Subject" formControlName="subject"
+                                    [ngClass]="{ 'is-invalid': isSubmittedDiscussionForm && dscf.subject.errors }">
+                                <div *ngIf="isSubmittedDiscussionForm && dscf.subject.errors" class="invalid-feedback">
+                                    <label *ngIf="dscf.subject.errors.required" class="error">Subject is
+                                        required</label>
+                                </div>
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <label>Message</label>
+                                <textarea class="form-control" placeholder="Message" formControlName="message"
+                                    [ngClass]="{ 'is-invalid': isSubmittedDiscussionForm && dscf.message.errors }"></textarea>
+                                <div *ngIf="isSubmittedDiscussionForm && dscf.message.errors" class="invalid-feedback">
+                                    <label *ngIf="dscf.message.errors.required" class="error">Message is
+                                        required</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>Attachment</label>
+                                <input type="file" (change)="uploadDiscussionAttachment($event.target.files)">
+                            </div>
+                            <div class="col-md-12 form-group text-right">
+                                <button type="submit" class="btn btn-primary btn-space"
+                                    (click)="onSubmitDiscussion()">Save</button>
+                                <button type="reset" class="btn btn-default"
+                                    (click)="resetDiscussionForm()">Cancel</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!-- <div class=" ">
+                <div class="page-title ">
+                    <h3>Dashboard</h3>
+                </div>
+            </div>
+            <div class="panel panel-cutom-blue dashboard " id="style-2">
+                <div class="row" [hidden]="!goalReportDetails ">
+                    <div class="col-md-6 pb-10 ">
+                        <div class="col-md-6 text-blue ">Total Expected Target</div>
+                        <div class="col-md-6 text-white ">: {{goalReportDetails.total_expected_target}}</div>
+                    </div>
+                    <div class="col-md-6 pb-10 ">
+                        <div class="col-md-6 text-blue ">Total Revenue Target</div>
+                        <div class="col-md-6 text-white ">: {{goalReportDetails.total_revenue_target}}</div>
+                    </div>
+                    <div class="col-md-6 pb-10 ">
+                        <div class="col-md-6 text-blue ">Actual Expected</div>
+                        <div class="col-md-6 text-white ">: {{goalReportDetails.actual_expected_target}}</div>
+                    </div>
+                    <div class="col-md-6 pb-10 ">
+                        <div class="col-md-6 text-blue ">Actual Revenue</div>
+                        <div class="col-md-6 text-white ">: {{goalReportDetails.actual_revenue_target}}</div>
+                    </div>
+                    <div class="col-md-6 pb-10 ">
+                        <div class="col-md-6 text-blue ">Actual Expected (%)</div>
+                        <div class="col-md-6 text-white ">: {{goalReportDetails.plan_expected}}%</div>
+                    </div>
+                    <div class="col-md-6 pb-10 ">
+                        <div class="col-md-6 text-blue ">Actual Revenue (%)</div>
+                        <div class="col-md-6 text-white ">: {{goalReportDetails.plan_revenue}}%</div>
+                    </div>
+                </div>
+                <div class="row" [hidden]="goalReportDetails ">
+                    <div class="col-md-12 text-center ">
+                        <p>No details found.</p>
+                    </div>
+                </div>
+            </div> -->
+        </div>
+        <!-- End Brainstorm && Imporve -->
+
+        <!-- Deactivate -->
+        <div class="col-md-9" *ngIf="selectedPhase == 'D'">
+            <div class="">
+                <div class="page-title">
+                    <h3>Deactivate</h3>
+                </div>
+            </div>
+            <div class="panel panel-cutom-blue">
+                <div class="panel-body">
+                    <div class="table-responsive" *ngIf="dividearrayintothreepart !== 2">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th class="prioritize-blue">Deactivate</th>
+                                    <th class="prioritize-blue">Priority</th>
+                                    <th class="prioritize-blue">(G) Short Name</th>
+                                    <th class="prioritize-blue">Start Date</th>
+                                    <th class="prioritize-blue">End Date</th>
+                                    <th class="prioritize-blue">Creator</th>
+                                </tr>
+                            </thead>
+                            <tbody *ngIf="goals && goals.length > 0">
+                                <tr *ngFor="let p of goals; let i=index">
+                                    <td class="text-center">
+                                        <a style="cursor: pointer;" data-toggle="tooltip" title="Click for Activate!"
+                                            *ngIf="p.deactivate==1" (click)="changedeactivate(p._id,0)"><img
+                                                src="assets/images/avatars/quit.png"></a>
+                                        <a style="cursor: pointer;" data-toggle="tooltip" title="Click for Deactivate!"
+                                            *ngIf="p.deactivate==0" (click)="changedeactivate(p._id,1)"><img
+                                                src="assets/images/avatars/correct.png"></a>
+                                    </td>
+                                    <td>{{ p.prioritize }}</td>
+                                    <td>(G) {{ p.short_name }}</td>
+                                    <td>{{ p.start_date | prioritizegoaldate }}</td>
+                                    <td>{{ p.end_date | prioritizegoaldate}}</td>
+                                    <td>{{ p.user_id.first_name }} {{ p.user_id.last_name }}</td>
+                                </tr>
+                            </tbody>
+                            <tbody *ngIf="goals && goals.length == 0">
+                                <tr>
+                                    <td class="text-center" colspan="8"> No Data Available</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="table-responsive" *ngIf="dividearrayintothreepart == 2">
+                        <div>
+                            <h4>Deactivate : High</h4>
+                        </div>
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th class="prioritize-blue">Deactivate</th>
+                                    <!-- <th class="prioritize-blue">Number</th> -->
+                                    <th class="prioritize-blue">Priority</th>
+                                    <th class="prioritize-blue">(G) Short Name</th>
+                                    <th class="prioritize-blue">Start Date</th>
+                                    <th class="prioritize-blue">End Date</th>
+                                    <th class="prioritize-blue">Creator</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let p of high ; let i=index">
+                                    <td style="text-align: center;">
+                                        <a style="cursor: pointer;" data-toggle="tooltip" title="Click for Activate!"
+                                            *ngIf="p.deactivate==1" (click)="changedeactivate(p._id,0)"><img
+                                                src="assets/images/avatars/quit.png"></a>
+                                        <a style="cursor: pointer;" data-toggle="tooltip" title="Click for Deactivate!"
+                                            *ngIf="p.deactivate==0" (click)="changedeactivate(p._id,1)"><img
+                                                src="assets/images/avatars/correct.png"></a>
+                                    </td>
+                                    <!-- <td>{{ p.numbers }}</td> -->
+                                    <td>{{ p.prioritize }}</td>
+                                    <td>(G) {{ p.short_name }}</td>
+                                    <td>{{ p.start_date | prioritizegoaldate }}</td>
+                                    <td>{{ p.end_date | prioritizegoaldate}}</td>
+                                    <td>{{ p.user_id.first_name }} {{ p.user_id.last_name }}</td>
+
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div>
+                            <h4>Deactivate : Medium</h4>
+                        </div>
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th class="prioritize-medium">Deactivate</th>
+                                    <!-- <th class="prioritize-medium">Number</th> -->
+                                    <th class="prioritize-medium">Priority</th>
+                                    <th class="prioritize-medium">(G) Short Name</th>
+                                    <th class="prioritize-medium">Start Date</th>
+                                    <th class="prioritize-medium">End Date</th>
+                                    <th class="prioritize-medium">Creator</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let p of medium ; let i=index">
+                                    <td style="text-align: center;">
+                                        <a style="cursor: pointer;" data-toggle="tooltip" title="Click for Activate!"
+                                            *ngIf="p.deactivate==1" (click)="changedeactivate(p._id,0)"><img
+                                                src="assets/images/avatars/quit.png"></a>
+                                        <a style="cursor: pointer;" data-toggle="tooltip" title="Click for Deactivate!"
+                                            *ngIf="p.deactivate==0" (click)="changedeactivate(p._id,1)"><img
+                                                src="assets/images/avatars/correct.png"></a>
+                                    </td>
+                                    <!-- <td>{{ p.numbers }}</td> -->
+                                    <td>{{ p.prioritize }}</td>
+                                    <td>(G) {{ p.short_name }}</td>
+                                    <td>{{ p.start_date | prioritizegoaldate }}</td>
+                                    <td>{{ p.end_date | prioritizegoaldate}}</td>
+                                    <td>{{ p.user_id.first_name }} {{ p.user_id.last_name }}</td>
+
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div>
+                            <h4>Deactivate : Low</h4>
+                        </div>
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th class="prioritize-low">Deactivate</th>
+                                    <!-- <th class="prioritize-low">Number</th> -->
+                                    <th class="prioritize-low">Priority</th>
+                                    <th class="prioritize-low">(G) Short Name</th>
+                                    <th class="prioritize-low">Start Date</th>
+                                    <th class="prioritize-low">End Date</th>
+                                    <th class="prioritize-low">Creator</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let p of low ; let i=index">
+                                    <td style="text-align: center;">
+                                        <a style="cursor: pointer;" data-toggle="tooltip" title="Click for Activate!"
+                                            *ngIf="p.deactivate==1" (click)="changedeactivate(p._id,0)"><img
+                                                src="assets/images/avatars/quit.png"></a>
+                                        <a style="cursor: pointer;" data-toggle="tooltip" title="Click for Deactivate!"
+                                            *ngIf="p.deactivate==0" (click)="changedeactivate(p._id,1)"><img
+                                                src="assets/images/avatars/correct.png"></a>
+                                    </td>
+                                    <!-- <td>{{ p.numbers }}</td> -->
+                                    <td>{{ p.prioritize }}</td>
+                                    <td>(G) {{ p.short_name }}</td>
+                                    <td>{{ p.start_date | prioritizegoaldate }}</td>
+                                    <td>{{ p.end_date | prioritizegoaldate}}</td>
+                                    <td>{{ p.user_id.first_name }} {{ p.user_id.last_name }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Deactivate -->
+
+        <!-- Prioritize -->
+        <div class="col-md-9" *ngIf="selectedPhase == 'P'">
+            <div class="">
+                <div class="page-title">
+                    <h3>Prioritize</h3>
+                </div>
+            </div>
+            <div class="panel panel-cutom-blue">
+                <div class="panel-body">
+                    <div class="table-responsive" *ngIf="isDevidedInParts == 1">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th class="prioritize-blue">Up</th>
+                                    <th class="prioritize-blue">Down</th>
+                                    <th class="prioritize-blue" style="max-width: 50px;">Priority</th>
+                                    <th class="prioritize-blue">(G) Short Name</th>
+                                    <th class="prioritize-blue">Start Date</th>
+                                    <th class="prioritize-blue">End Date</th>
+                                    <th class="prioritize-blue">Creator</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbl">
+                                <tr *ngIf="priorityGoals.length == 0">
+                                    <td style="text-align: center;" colspan="8"> No Data Available</td>
+                                </tr>
+                                <tr *ngFor="let p of priorityGoals; let i=index">
+                                    <td style="text-align: center;">
+                                        <a style="cursor: pointer;"
+                                            (click)="changepriority(p._id,p.prioritize, p.prioritize-1)"><img
+                                                src="assets/images/avatars/arrow-up.png"></a>
+                                    </td>
+                                    <td style="text-align: center;">
+                                        <a style="cursor: pointer;"
+                                            (click)="changepriority(p._id,p.prioritize, p.prioritize+1)"><img
+                                                src="assets/images/avatars/arrow-down.png"></a>
+                                    </td>
+                                    <td>
+                                        <span class="editable" id="label-priority-{{i}}"
+                                            (click)="updatepriority(i)">{{ p.prioritize }}</span>
+                                        <span style="display: none;" id="priority-text-{{i}}">
+                                            <input class="form-control" value="{{ p.prioritize }}"
+                                                id="input-priority-{{i}}" type="number" min="1"
+                                                style="float: left;width: 50px;">&nbsp;
+                                            <a style="cursor:pointer" (click)="updategoalpriority(p._id,i)">
+                                                <img style="width:20px;height: 20px;margin-top: 7px;"
+                                                    src="assets/images/avatars/correct.png">
+                                            </a>
+                                        </span>
+                                    </td>
+                                    <td>(G) {{ p.short_name }}</td>
+                                    <td>{{ p.start_date | prioritizegoaldate }}</td>
+                                    <td>{{ p.end_date | prioritizegoaldate}}</td>
+                                    <td>{{ p.user_id.first_name }} {{ p.user_id.last_name }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="table-responsive" *ngIf="isDevidedInParts == 2">
+                        <div class="panel panel-cutom-blue">
+                            <div style="text-align: center;">
+                                <h4>Prioritize : High</h4>
+                            </div>
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th class="prioritize-blue">Up</th>
+                                        <th class="prioritize-blue">Down</th>
+                                        <th class="prioritize-blue">Priority</th>
+                                        <th class="prioritize-blue">(G) Short Name</th>
+                                        <th class="prioritize-blue">Start Date</th>
+                                        <th class="prioritize-blue">End Date</th>
+                                        <th class="prioritize-blue">Creator</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let p of highPriorityGoals; let i=index">
+                                        <td style="text-align: center;">
+                                            <a style="cursor: pointer;"
+                                                (click)="changepriority(p._id,p.prioritize,p.prioritize-1)"><img
+                                                    src="assets/images/avatars/arrow-up.png"></a>
+                                        </td>
+                                        <td style="text-align: center;">
+                                            <a style="cursor: pointer;"
+                                                (click)="changepriority(p._id,p.prioritize,p.prioritize+1)"><img
+                                                    src="assets/images/avatars/arrow-down.png"></a>
+                                        </td>
+                                        <td>{{ p.prioritize }}</td>
+                                        <td>(G) {{ p.short_name }}</td>
+                                        <td>{{ p.start_date | prioritizegoaldate }}</td>
+                                        <td>{{ p.end_date | prioritizegoaldate}}</td>
+                                        <td>{{ p.user_id.first_name }} {{ p.user_id.last_name }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="panel panel-cutom-blue">
+                            <div style="text-align: center;">
+                                <h4>Prioritize : Medium</h4>
+                            </div>
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th class="prioritize-medium">Up</th>
+                                        <th class="prioritize-medium">Down</th>
+                                        <th class="prioritize-medium">Priority</th>
+                                        <th class="prioritize-medium">(G) Short Name</th>
+                                        <th class="prioritize-medium">Start Date</th>
+                                        <th class="prioritize-medium">End Date</th>
+                                        <th class="prioritize-medium">Creator</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let p of mediumPriorityGoals; let i=index">
+                                        <td style="text-align: center;">
+                                            <a style="cursor: pointer;"
+                                                (click)="changepriority(p._id,p.prioritize, p.prioritize-1)"><img
+                                                    src="assets/images/avatars/arrow-up.png"></a>
+                                        </td>
+                                        <td style="text-align: center;">
+                                            <a style="cursor: pointer;"
+                                                (click)="changepriority(p._id,p.prioritize, p.prioritize+1)"><img
+                                                    src="assets/images/avatars/arrow-down.png"></a>
+                                        </td>
+                                        <td>{{ p.prioritize }}</td>
+                                        <td>(G) {{ p.short_name }}</td>
+                                        <td>{{ p.start_date | prioritizegoaldate }}</td>
+                                        <td>{{ p.end_date | prioritizegoaldate}}</td>
+                                        <td>{{ p.user_id.first_name }} {{ p.user_id.last_name }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="panel panel-cutom-blue">
+                            <div style="text-align: center;">
+                                <h4>Prioritize : Low</h4>
+                            </div>
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th class="prioritize-low">Up</th>
+                                        <th class="prioritize-low">Down</th>
+                                        <th class="prioritize-low">Priority</th>
+                                        <th class="prioritize-low">(G) Short Name</th>
+                                        <th class="prioritize-low">Start Date</th>
+                                        <th class="prioritize-low">End Date</th>
+                                        <th class="prioritize-low">Creator</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let p of lowPriorityGoals; let i=index">
+                                        <td style="text-align: center;">
+                                            <a style="cursor: pointer;"
+                                                (click)="changepriority(p._id,p.prioritize,p.prioritize-1)"><img
+                                                    src="assets/images/avatars/arrow-up.png"></a>
+                                        </td>
+                                        <td style="text-align: center;">
+                                            <a style="cursor: pointer;"
+                                                (click)="changepriority(p._id,p.prioritize,p.prioritize+1)"><img
+                                                    src="assets/images/avatars/arrow-down.png"></a>
+                                        </td>
+                                        <!-- <td>{{ p.numbers }}</td> -->
+                                        <td>{{ p.prioritize }}</td>
+                                        <td>(G) {{ p.short_name }}</td>
+                                        <td>{{ p.start_date | prioritizegoaldate }}</td>
+                                        <td>{{ p.end_date | prioritizegoaldate}}</td>
+                                        <td>{{ p.user_id.first_name }} {{ p.user_id.last_name }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Prioritize -->
+
+        <!-- Propose -->
+        <div class="col-md-9" *ngIf="selectedPhase == 'PR'">
+            <div class="">
+                <div class="page-title">
+                    <h3>Propose</h3>
+                </div>
+            </div>
+            <div class="panel panel-cutom-blue">
+                <div class="table-responsive" *ngIf="isProposeDevidedInParts == 1">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th class="prioritize-blue">Send To Team Page</th>
+                                <th class="prioritize-blue">Propose</th>
+                                <th class="prioritize-blue">Priority</th>
+                                <th class="prioritize-blue">(G) Short Name</th>
+                                <th class="prioritize-blue">Start Date</th>
+                                <th class="prioritize-blue">End Date</th>
+                                <th class="prioritize-blue">Creator</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngIf="proposeGoals.length == 0">
+                                <td style="text-align: center;" colspan="8"> No Data Available</td>
+                            </tr>
+                            <tr *ngFor="let p of proposeGoals; let i=index;">
+                                <td><input type="checkbox" (change)="handleChange($event,p._id)"></td>
+                                <td>
+                                    <a style="cursor: pointer;" data-toggle="tooltip" title="Click for Send Proposal!"
+                                        *ngIf="p.propose==undefined || p.propose==0 "
+                                        (click)="changeproposal(p._id,1)"><img src="assets/images/avatars/quit.png"></a>
+                                    <a style="cursor: pointer;" data-toggle="tooltip" title="Click for Cancel Proposal!"
+                                        *ngIf="p.propose==1" (click)="changeproposal(p._id,0)"><img
+                                            src="assets/images/avatars/correct.png"></a>
+                                </td>
+                                <td>{{ p.prioritize }}</td>
+                                <td>(G) {{ p.short_name }}</td>
+                                <td>{{ p.start_date | prioritizegoaldate }}</td>
+                                <td>{{ p.end_date | prioritizegoaldate}}</td>
+                                <td>{{ p.user_id.first_name }} {{ p.user_id.last_name }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="table-responsive" *ngIf="isProposeDevidedInParts == 2">
+                    <div>
+                        <h4>Propose : High</h4>
+                    </div>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th class="prioritize-blue">Send To Team Page</th>
+                                <th class="prioritize-blue">Propose</th>
+                                <th class="prioritize-blue">Priority</th>
+                                <th class="prioritize-blue">(G) Short Name</th>
+                                <th class="prioritize-blue">Start Date</th>
+                                <th class="prioritize-blue">End Date</th>
+                                <th class="prioritize-blue">Creator</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let p of highPriorityGoals; let i=index">
+                                <td><input type="checkbox" (change)="handleChange($event,p._id)"></td>
+                                <td style="text-align: center;">
+                                    <a style="cursor: pointer;" data-toggle="tooltip" title="Click for Send Proposal!"
+                                        *ngIf="p.propose==undefined || p.propose==0 "
+                                        (click)="changeproposal(p._id,1)"><img src="assets/images/avatars/quit.png"></a>
+                                    <a style="cursor: pointer;" data-toggle="tooltip" title="Click for Cancel Proposal!"
+                                        *ngIf="p.propose==1" (click)="changeproposal(p._id,0)"><img
+                                            src="assets/images/avatars/correct.png"></a>
+                                </td>
+                                <td>{{ p.prioritize }}</td>
+                                <td>(G) {{ p.short_name }}</td>
+                                <td>{{ p.start_date | prioritizegoaldate }}</td>
+                                <td>{{ p.end_date | prioritizegoaldate}}</td>
+                                <td>{{ p.user_id.short_name }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div>
+                        <h4>Propose : Medium</h4>
+                    </div>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th class="prioritize-blue">Send To Team Page</th>
+                                <th class="prioritize-medium">Propose</th>
+                                <th class="prioritize-medium">Priority</th>
+                                <th class="prioritize-medium">(G) Short Name</th>
+                                <th class="prioritize-medium">Start Date</th>
+                                <th class="prioritize-medium">End Date</th>
+                                <th class="prioritize-medium">Creator</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let p of mediumPriorityGoals; let i=index">
+                                <td><input type="checkbox" (change)="handleChange($event,p._id)"></td>
+                                <td style="text-align: center;">
+                                    <a style="cursor: pointer;" data-toggle="tooltip" title="Click for Send Proposal!"
+                                        *ngIf="p.propose==undefined || p.propose==0 "
+                                        (click)="changeproposal(p._id,1)"><img src="assets/images/avatars/quit.png"></a>
+                                    <a style="cursor: pointer;" data-toggle="tooltip" title="Click for Cancel Proposal!"
+                                        *ngIf="p.propose==1" (click)="changeproposal(p._id,0)"><img
+                                            src="assets/images/avatars/correct.png"></a>
+                                </td>
+                                <td>{{ p.prioritize }}</td>
+                                <td>(G) {{ p.short_name }}</td>
+                                <td>{{ p.start_date | prioritizegoaldate }}</td>
+                                <td>{{ p.end_date | prioritizegoaldate}}</td>
+                                <td>{{ p.user_id.short_name }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div>
+                        <h4>Propose : Low</h4>
+                    </div>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th class="prioritize-blue">Send To Team Page</th>
+                                <th class="prioritize-low">Propose</th>
+                                <th class="prioritize-low">Priority</th>
+                                <th class="prioritize-low">(G) Short Name</th>
+                                <th class="prioritize-low">Start Date</th>
+                                <th class="prioritize-low">End Date</th>
+                                <th class="prioritize-low">Creator</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let p of lowPriorityGoals; let i=index">
+                                <td><input type="checkbox" (change)="handleChange($event,p._id)"></td>
+                                <td style="text-align: center;">
+                                    <a style="cursor: pointer;" data-toggle="tooltip" title="Click for Send Proposal!"
+                                        *ngIf="p.propose==undefined || p.propose==0 "
+                                        (click)="changeproposal(p._id,1)"><img src="assets/images/avatars/quit.png"></a>
+                                    <a style="cursor: pointer;" data-toggle="tooltip" title="Click for Cancel Proposal!"
+                                        *ngIf="p.propose==1" (click)="changeproposal(p._id,0)"><img
+                                            src="assets/images/avatars/correct.png"></a>
+                                </td>
+                                <td>{{ p.prioritize }}</td>
+                                <td>(G) {{ p.short_name }}</td>
+                                <td>{{ p.start_date | prioritizegoaldate }}</td>
+                                <td>{{ p.end_date | prioritizegoaldate}}</td>
+                                <td>{{ p.user_id.short_name }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!-- End Propose -->
+
+        <!-- Vote -->
+        <div class="col-md-9" *ngIf="selectedPhase == 'V'">
+            <div class="">
+                <div class="page-title">
+                    <h3>Vote</h3>
+                </div>
+                <div class="panel panel-cutom-blue">
+                    <!-- <table class="display table table-data-width"> -->
+                    <table id="table-vote" datatable [dtOptions]="dtOptionsVote" class="display table table-data-width">
+                        <thead>
+                            <tr>
+                                <th class="prioritize-blue">Vote Up</th>
+                                <th class="prioritize-blue">Vote Down</th>
+                                <th class="prioritize-blue">Priority</th>
+                                <th class="prioritize-blue">(G) Short Name</th>
+                                <th class="prioritize-blue">Start Date</th>
+                                <th class="prioritize-blue">End Date</th>
+                                <th class="prioritize-blue">Creator</th>
+                            </tr>
+                        </thead>
+                        <tbody *ngIf="voteGoals && voteGoals.length > 0">
+                            <tr *ngFor="let p of voteGoals; let i=index">
+                                <td style="text-align: center;">
+                                    <a style="cursor: pointer;" (click)="changevote(p._id,'up')"><img
+                                            [ngClass]="{'opacity':checkvote(p)}" src="assets/images/avatars/up.png"></a>
+                                </td>
+                                <td style="text-align: center;">
+                                    <a style="cursor: pointer;" (click)="changevote(p._id,'down')"><img
+                                            [ngClass]="{'opacity':checkvote(p)}"
+                                            src="assets/images/avatars/down.png"></a>
+                                </td>
+                                <td>{{ p.prioritize }}</td>
+                                <td>(G) {{ p.short_name }}</td>
+                                <td>{{ p.start_date | prioritizegoaldate }}</td>
+                                <td>{{ p.end_date | prioritizegoaldate}}</td>
+                                <td>{{ p.user_id.first_name }} {{ p.user_id.last_name }}</td>
+                            </tr>
+                        </tbody>
+                        <tbody *ngIf="voteGoals && voteGoals.length == 0">
+                            <tr>
+                                <td colspan="7" class="text-center">Details not found</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!-- End Vote -->
+
+        <!-- Select -->
+        <div class="col-md-9" *ngIf="selectedPhase == 'S'">
+            <div class="">
+                <div class="page-title">
+                    <h3>Select</h3>
+                </div>
+            </div>
+            <div class="panel panel-cutom-blue">
+                <div class="table-responsive">
+                    <table id="table-select" datatable [dtOptions]="dtOptionsSelect"
+                        class="display table table-data-width">
+                        <thead>
+                            <tr>
+                                <th class="prioritize-blue">Select</th>
+                                <th class="prioritize-blue">Vote Up</th>
+                                <th class="prioritize-blue">Vote Down</th>
+                                <th class="prioritize-blue">Priority</th>
+                                <th class="prioritize-blue">(G) Short Name</th>
+                                <th class="prioritize-blue">Start Date</th>
+                                <th class="prioritize-blue">End Date</th>
+                                <th class="prioritize-blue">Creator</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let p of selectGoals; let i=index;">
+                                <td>
+                                    <label class="switch">
+                                        <input type="checkbox" (change)="updateplanselect($event, p._id)"
+                                            checked="{{ (p.select == 1  ) ? 'checked' : '' }}">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </td>
+                                <td>
+                                    <div>{{p.voteup.length}}</div>
+                                </td>
+                                <td>
+                                    <div>{{p.votedown.length}}</div>
+                                </td>
+                                <td>{{ p.prioritize }}</td>
+                                <td>(G) {{ p.short_name }}</td>
+                                <td>{{ p.start_date | prioritizegoaldate }}</td>
+                                <td>{{ p.end_date | prioritizegoaldate}}</td>
+                                <td>{{ p.user_id.first_name }} {{ p.user_id.last_name }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!-- End Select -->
+
+        <!-- Delegate -->
+        <div class="col-md-9" *ngIf="selectedPhase == 'DG'">
+            <div class="">
+                <div class="page-title">
+                    <h3>Delegate</h3>
+                </div>
+            </div>
+            <div class="panel panel-cutom-blue">
+                <div class="table-responsive">
+                    <table id="table-delegate" datatable [dtOptions]="dtOptionsDelegate" [dtTrigger]="dtTriggerDelegate"
+                        class="display table table-data-width">
+                        <thead>
+                            <tr>
+                                <th class="prioritize-blue">Delegate</th>
+                                <th class="prioritize-blue">Delegation (%)</th>
+                                <th class="prioritize-blue">Priority</th>
+                                <th class="prioritize-blue">(G) Short Name</th>
+                                <th class="prioritize-blue">Start Date</th>
+                                <th class="prioritize-blue">End Date</th>
+                                <th class="prioritize-blue">Creator</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let p of delegateGoals; let i=index;">
+                                <td>
+                                    <button class="btn btn-success"
+                                        (click)="goaldelegate(p._id,p.short_name)">Delegate</button>
+                                </td>
+                                <td>{{ p.delegate_percentage }} %</td>
+                                <td>{{ p.prioritize }}</td>
+                                <td>(G) {{ p.short_name }}</td>
+                                <td>{{ p.start_date | prioritizegoaldate }}</td>
+                                <td>{{ p.end_date | prioritizegoaldate}}</td>
+                                <td>{{ p.user_id.first_name }} {{ p.user_id.last_name }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="mt-10">
+                    <div class="page-title">
+                        <h3 class="breadcrumb-header">Delegated {{ textDecoration(selectedModules) }}</h3>
+                    </div>
+                    <table class="display table table-data-width">
+                        <thead>
+                            <tr>
+                                <th class="prioritize-blue">(P) Short name</th>
+                                <th class="prioritize-blue">(G) Short Name</th>
+                                <th class="prioritize-blue">Percentage</th>
+                                <th class="prioritize-blue">Creator</th>
+                                <th class="prioritize-blue">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngIf="delegatedGoals && delegatedGoals.length==0">
+                                <td style="text-align: center;" colspan="5"> No Data Available</td>
+                            </tr>
+                            <tr *ngFor="let delegates of delegatedGoals; let i=index;">
+                                <td>{{ delegates.plan_id.short_name }}</td>
+                                <td>{{ delegates.goal_id.short_name }}</td>
+                                <td>{{ delegates.percentage }}</td>
+                                <td>{{ delegates.user_id.first_name }} {{ delegates.user_id.last_name }}</td>
+                                <td>
+                                    <a style="cursor: pointer;" data-toggle="tooltip" title="Accept"
+                                        (click)="changegoaldelegatestatus(delegates._id,1)"><img
+                                            src="assets/images/avatars/correct.png"></a>&nbsp;
+                                    <a style="cursor: pointer;" data-toggle="tooltip" title="Reject"
+                                        (click)="changegoaldelegatestatus(delegates._id,2)"><img
+                                            src="assets/images/avatars/quit.png"></a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!-- End Delegate -->
+
+        <!-- Countdown -->
+        <div class="col-md-9" *ngIf="selectedPhase == 'C'">
+            <div class="">
+                <div class="page-title">
+                    <h3>Countdown</h3>
+                </div>
+            </div>
+            <div class="panel panel-cutom-blue">
+                <table id="table-countdown" datatable [dtOptions]="dtOptionsCountdown" [dtTrigger]="dtTriggerCountdown"
+                    class="display table table-data-width">
+                    <thead>
+                        <tr>
+                            <th class="prioritize-blue">(G) Short Name</th>
+                            <th class="prioritize-blue">Start Date</th>
+                            <th class="prioritize-blue">End Date</th>
+                            <th class="prioritize-blue">Creator</th>
+                            <th class="prioritize-blue">Start Time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let p of countdownGoals; let i=index;">
+                            <td>(G) {{ p.short_name }}</td>
+                            <td>{{ p.start_date | prioritizegoaldate }}</td>
+                            <td>{{ p.end_date | prioritizegoaldate}}</td>
+                            <td>{{ p.user_id.first_name }} {{ p.user_id.last_name }}</td>
+                            <td>{{ p.total_time }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!-- End Countdown -->
+
+        <!-- Launch -->
+        <div class="col-md-9" *ngIf="selectedPhase == 'L'">
+            <div class="">
+                <div class="page-title">
+                    <h3>Launch</h3>
+                </div>
+            </div>
+            <div class="panel panel-cutom-blue">
+                <table id="table-launch" datatable [dtOptions]="dtOptionsLaunch" class="display table table-data-width">
+                    <thead>
+                        <tr>
+                            <th class="prioritize-blue">(G) Short Name</th>
+                            <th class="prioritize-blue">Start Date</th>
+                            <th class="prioritize-blue">End Date</th>
+                            <th class="prioritize-blue">Creator</th>
+                            <th class="prioritize-blue">Start Time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let p of launchGoals; let i=index">
+                            <td>(G) {{ p.short_name }}</td>
+                            <td>{{ p.start_date | prioritizegoaldate }}</td>
+                            <td>{{ p.end_date | prioritizegoaldate}}</td>
+                            <td>{{ p.user_id.first_name }} {{ p.user_id.last_name }}</td>
+                            <td>{{ p.total_time }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!-- End Launch -->
+
+        <!-- Report -->
+        <div class="col-md-9" *ngIf="selectedPhase == 'R'">
+            <div class="">
+                <div class="page-title">
+                    <h3>Reports</h3>
+                </div>
+            </div>
+            <div class="panel panel-cutom-blue">
+                <table id="report-table" datatable [dtOptions]="dtOptionsReport" class="display table table-data-width">
+                    <thead>
+                        <tr>
+                            <th class="prioritize-blue">(G) Short Name</th>
+                            <th class="prioritize-blue">Production Target</th>
+                            <th class="prioritize-blue">Actual Production</th>
+                            <th class="prioritize-blue">Expense Target</th>
+                            <th class="prioritize-blue">Actual Expense</th>
+                            <th class="prioritize-blue">Start Date</th>
+                            <th class="prioritize-blue">End Date</th>
+                            <th class="prioritize-blue">Creator</th>
+                            <th class="prioritize-blue">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let p of reportGoals; let i=index;">
+                            <td>(G) {{ p.element.short_name }}</td>
+                            <td class="text-center"> {{ p.element.production_target }}</td>
+                            <td *ngIf="p.actual_production >= p.element.production_target" class="up">
+                                {{ p.actual_production }}</td>
+                            <td *ngIf="p.actual_production < p.element.production_target" class="down">
+                                {{ p.actual_production }}</td>
+                            <td class="text-center">{{ p.element.expense_target }}</td>
+                            <td *ngIf="p.actual_expense >= p.element.expense_target" class="up">{{ p.actual_expense }}
+                            </td>
+                            <td *ngIf="p.actual_expense < p.element.expense_target" class="down">{{ p.actual_expense }}
+                            </td>
+                            <td>{{ p.element.start_date | prioritizegoaldate }}</td>
+                            <td>{{ p.element.end_date | prioritizegoaldate}}</td>
+                            <td>{{ p.element.user_id.first_name }} {{ p.element.user_id.last_name }}</td>
+                            <td>
+                                <button class="btn btn-primary btn-xs btn-rounded"
+                                    (click)="showreportform(p.element._id,p.report_id,p)"
+                                    title="Add/Update Actual Revenue and Expected"><i class="fa fa-pencil"></i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!-- End Report -->
+
+        <!-- Measure -->
+        <div class="col-md-9" *ngIf="selectedPhase == 'M'">
+            <div class="">
+                <div class="page-title">
+                    <h3>Measure</h3>
+                </div>
+            </div>
+            <div class="panel panel-cutom-blue">
+                <div class="row">
+                    <div class="col-md-12 mb-10">
+                        <div class="form-group col-md-5">&nbsp;</div>
+                        <div class="form-group col-md-3">
+                            <input class="form-control" placeholder="From Date" (click)="[fd.toggle()]" name="dpf"
+                                [(ngModel)]="fromDate" ngbDatepicker #fd="ngbDatepicker" autocomplete="off">
+                        </div>
+                        <div class="form-group col-md-3">
+                            <input class="form-control" placeholder="To Date" (click)="[td.toggle()]" name="dpt"
+                                [(ngModel)]="toDate" ngbDatepicker #td="ngbDatepicker" autocomplete="off">
+                        </div>
+                        <div class="form-group col-md-1">
+                            <button type="button" (click)="onChangeDate()" class="btn btn-warning">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div *ngIf="isDetailsFound" class="mb-10">
+                        <div class="col-md-6" *ngFor="let plan of planDetails;">
+                            <div class="custom-panel">
+                                <div class="custom-panel-heading custom-panel-blue">
+                                    <h4 class="custom-panel-title">
+                                        {{plan.plan.short_name}}
+                                    </h4>
+                                </div>
+                                <div class="custom-panel-body">
+                                    <table class="custom-panel-table custom-panel-blue-table">
+                                        <tbody>
+                                            <tr>
+                                                <td>Matric Type</td>
+                                                <td>% Percentage (Completion)</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Actual Expected</td>
+                                                <td>: {{ plan.goal.plan_expected }}%</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Actual Revenue</td>
+                                                <td>: {{ plan.goal.plan_revenue }}%</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div *ngIf="!isDetailsFound" class="mb-10">
+                        <div class="col-md-12 text-center">
+                            <h4>Plan details has not been found.</h4>
+                        </div>
+                    </div>
+
+                    <div class="page-title mt-30">
+                        <h3 class="breadcrumb-header">Goal Summary Chart</h3>
+                    </div>
+
+                    <div class="col-md-12 row mt-30">
+                        <div class="col-md-6">
+                            <rg-gauge-chart [canvasWidth]="canvasWidth" [needleValue]="needleValue"
+                                [centralLabel]="centralLabel" [options]="options" [name]="name"
+                                [bottomLabel]="bottomLabel"></rg-gauge-chart>
+                        </div>
+                        <div class="col-md-6">
+                            <rg-gauge-chart [canvasWidth]="canvasWidth" [needleValue]="review_needleValue"
+                                [centralLabel]="centralLabel" [options]="review_options" [name]="review_name"
+                                [bottomLabel]="review_bottomLabel"></rg-gauge-chart>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Measure -->
+
+        <!-- Modules -->
+        <div class="col-md-3"
+            *ngIf="(selectedPhase == 'B' || selectedPhase == 'I') && (selectedModules && selectedModules != '')"></div>
+        <div class="col-md-9"
+            *ngIf="(selectedPhase == 'B' || selectedPhase == 'I') && (selectedModules && selectedModules != '')">
+            <!-- <div class="">
+                <div class="page-title">
+                    <h3>{{ textDecoration(selectedModules) }}</h3>
+                </div>
+            </div>
+            <div class="panel panel-cutom-blue">
+                <div class="panel-body">
+                    <table class="display table table-data-width" id="table-module" datatable [dtOptions]="dtOptionsModule">
+                        <thead>
+                            <tr>
+                                <th class="prioritize-blue">Short Name</th>
+                                <th class="prioritize-blue">Start Date</th>
+                                <th class="prioritize-blue">End Date</th>
+                                <th class="prioritize-blue">Production Target</th>
+                                <th class="prioritize-blue">Expense Target</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let p of moduleGoals; let i=index;">
+                                <td>{{ p.short_name }}</td>
+                                <td>{{ p.start_date | date:'dd/MM/yyyy' }}</td>
+                                <td>{{ p.end_date | date:'dd/MM/yyyy'}}</td>
+                                <td>{{ p.production_target }}</td>
+                                <td>{{ p.expense_target }}</td>
+                            </tr>
+                            <tr *ngIf="moduleGoals && moduleGoals.length == 0">
+                                <td colspan="5" class="text-center">Details not found</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div> -->
+            <div class="page-title">
+                <h3>Add {{ textDecoration(selectedModules) }}</h3>
+            </div>
+            <div class="panel panel-cutom-blue">
+                <form class="p-3" [formGroup]="ModuleForm">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Short Name<span>*</span></label>
+                                <input type="text" formControlName="short_name" class="form-control"
+                                    placeholder="Short name"
+                                    [ngClass]="{ 'is-invalid': isModuleFormSubmitted && mf.short_name.errors }"
+                                    autocomplete="off">
+                                <div *ngIf="isModuleFormSubmitted && mf.short_name.errors" class="invalid-feedback">
+                                    <div *ngIf="mf.short_name.errors.required">Short name is required</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Long Name<span>*</span></label>
+                                <input type="text" formControlName="long_name" class="form-control"
+                                    placeholder="Long name"
+                                    [ngClass]="{ 'is-invalid': isModuleFormSubmitted && mf.long_name.errors }"
+                                    autocomplete="off">
+                                <div *ngIf="isModuleFormSubmitted && mf.long_name.errors" class="invalid-feedback">
+                                    <div *ngIf="mf.long_name.errors.required">Long name is required</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label for="exampleInputPassword1">Start Date<span>*</span></label>
+                            <div class="input-group input-append bootstrap-datepicker">
+                                <input type="text" id="module-start-date" class="form-control date-picker"
+                                    placeholder="Start Date" autocomplete="off">
+                                <span style="background-color: #8869c2;" class="input-group-addon add-on"><i
+                                        class="fa fa-calendar"></i></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label for="exampleInputPassword1">End Date<span>*</span></label>
+                            <div class="input-group input-append bootstrap-datepicker">
+                                <input type="text" id="module-end-date" class="form-control date-picker"
+                                    placeholder="End Date" autocomplete="off">
+                                <span style="background-color: #8869c2;" class="input-group-addon add-on"><i
+                                        class="fa fa-calendar"></i></span>
+                            </div>
+                        </div>
+                        <!-- <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Supervisor<span>*</span></label>
+                                <input formControlName="supervisor" class="form-control" placeholder="Supervisor" [ngClass]="{ 'is-invalid': isModuleFormSubmitted && mf.supervisor.errors }" autocomplete="off">
+                                <div *ngIf="isModuleFormSubmitted && mf.supervisor.errors" class="invalid-feedback">
+                                    <div *ngIf="mf.supervisor.errors.required">Supervisor is required</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Department<span>*</span></label>
+                                <input formControlName="department" class="form-control" placeholder="Department" [ngClass]="{ 'is-invalid': isModuleFormSubmitted && mf.department.errors }" autocomplete="off">
+                                <div *ngIf="isModuleFormSubmitted && mf.department.errors" class="invalid-feedback">
+                                    <div *ngIf="mf.department.errors.required">Department is required</div>
+                                </div>
+                            </div>
+                        </div> -->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Security<span>*</span></label>
+                                <select formControlName="security" class="form-control">
+                                    <option value="">Select Security</option>
+                                    <option value="public">Public</option>
+                                    <option value="private">Private</option>
+                                </select>
+                                <div *ngIf="isModuleFormSubmitted && mf.security.errors" class="invalid-feedback">
+                                    <div *ngIf="mf.security.errors.required">Security is required</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12" [hidden]="selectedModules == 'motive' || selectedModules == 'analysis'">
+                            <div class="form-group">
+                                <label>Description<span>*</span></label>
+                                <textarea formControlName="description" class="form-control" placeholder="Description"
+                                    [ngClass]="{ 'is-invalid': isModuleFormSubmitted && mf.description.errors }"
+                                    autocomplete="off"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-6"
+                            [hidden]="selectedModules == 'motive' || selectedModules == 'analysis' || selectedModules == 'intelligence'">
+                            <div class="form-group">
+                                <label>Production Target</label>
+                                <input type="number" formControlName="production_target" class="form-control"
+                                    placeholder="Production Target"
+                                    [ngClass]="{ 'is-invalid': isModuleFormSubmitted && mf.production_target.errors }"
+                                    autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="col-md-6"
+                            [hidden]="selectedModules == 'motive' || selectedModules == 'analysis' || selectedModules == 'intelligence'">
+                            <div class="form-group">
+                                <label>Expense Target</label>
+                                <input type="number" formControlName="expense_target" class="form-control"
+                                    placeholder="Expense Target"
+                                    [ngClass]="{ 'is-invalid': isModuleFormSubmitted && mf.expense_target.errors }"
+                                    autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="col-md-6"
+                            [hidden]="selectedModules == 'motive' || selectedModules == 'analysis' || selectedModules == 'intelligence'">
+                            <div class="form-group">
+                                <label>High Variance</label>
+                                <input type="number" formControlName="production_high_variance_alert"
+                                    class="form-control" placeholder="High Variance"
+                                    [ngClass]="{ 'is-invalid': isModuleFormSubmitted && mf.production_high_variance_alert.errors }"
+                                    autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="col-md-6"
+                            [hidden]="selectedModules == 'motive' || selectedModules == 'analysis' || selectedModules == 'intelligence'">
+                            <div class="form-group">
+                                <label>High Variance</label>
+                                <input type="number" formControlName="expense_high_variance_alert" class="form-control"
+                                    placeholder="High Variance"
+                                    [ngClass]="{ 'is-invalid': isModuleFormSubmitted && mf.expense_high_variance_alert.errors }"
+                                    autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="col-md-6"
+                            [hidden]="selectedModules == 'motive' || selectedModules == 'analysis' || selectedModules == 'intelligence'">
+                            <div class="form-group">
+                                <label>Low Variance</label>
+                                <input type="number" formControlName="production_low_variance_alert"
+                                    class="form-control" placeholder="Low Variance"
+                                    [ngClass]="{ 'is-invalid': isModuleFormSubmitted && mf.production_low_variance_alert.errors }"
+                                    autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="col-md-6"
+                            [hidden]="selectedModules == 'motive' || selectedModules == 'analysis' || selectedModules == 'intelligence'">
+                            <div class="form-group">
+                                <label>Low Variance</label>
+                                <input type="number" formControlName="expense_low_variance_alert" class="form-control"
+                                    placeholder="Low Variance"
+                                    [ngClass]="{ 'is-invalid': isModuleFormSubmitted && mf.expense_low_variance_alert.errors }"
+                                    autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="col-md-6"
+                            [hidden]="selectedModules == 'motive' || selectedModules == 'analysis' || selectedModules == 'intelligence'">
+                            <div class="form-group">
+                                <label>Production Weight</label>
+                                <input type="number" formControlName="production_weight" class="form-control"
+                                    placeholder="Production Weight"
+                                    [ngClass]="{ 'is-invalid': isModuleFormSubmitted && mf.production_weight.errors }"
+                                    autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="col-md-6"
+                            [hidden]="selectedModules == 'motive' || selectedModules == 'analysis' || selectedModules == 'intelligence'">
+                            <div class="form-group">
+                                <label>Expense Weight</label>
+                                <input type="number" formControlName="expense_weight" class="form-control"
+                                    placeholder="Expense Weight"
+                                    [ngClass]="{ 'is-invalid': isModuleFormSubmitted && mf.expense_weight.errors }"
+                                    autocomplete="off">
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 page-title mt-30" *ngIf="selectedModules == 'analysis'">
+                            <h3 class="breadcrumb-header">Analysis Framework</h3>
+                        </div>
+                        <div class="col-md-12 page-title mt-30" *ngIf="selectedModules == 'intelligence'">
+                            <h3 class="breadcrumb-header">Intelligence Details</h3>
+                        </div>
+
+                        <div class="col-md-12" *ngIf="selectedModules == 'analysis'">
+                            <div class="form-group">
+                                <label>Question</label>
+                                <input type="text" formControlName="question" class="form-control"
+                                    placeholder="Question"
+                                    [ngClass]="{ 'is-invalid': isModuleFormSubmitted && mf.question.errors }"
+                                    autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="col-md-12" *ngIf="selectedModules == 'analysis'">
+                            <div class="form-group">
+                                <label>Answer</label>
+                                <input type="text" formControlName="answer" class="form-control" placeholder="Answer"
+                                    [ngClass]="{ 'is-invalid': isModuleFormSubmitted && mf.answer.errors }"
+                                    autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="col-md-6" *ngIf="selectedModules == 'intelligence'">
+                            <div class="form-group">
+                                <label>Value</label>
+                                <input type="text" formControlName="intelligence_value" class="form-control"
+                                    placeholder="Value" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="col-md-6" *ngIf="selectedModules == 'intelligence'">
+                            <div class="form-group">
+                                <label>Response</label>
+                                <input type="text" formControlName="intelligence_response" class="form-control"
+                                    placeholder="Response" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="col-md-6"
+                            *ngIf="selectedModules == 'analysis' || selectedModules == 'intelligence'">
+                            <div class="form-group">
+                                <label>Source</label>
+                                <input type="text" formControlName="source" class="form-control" placeholder="Source"
+                                    [ngClass]="{ 'is-invalid': isModuleFormSubmitted && mf.source.errors }"
+                                    autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="col-md-6"
+                            *ngIf="selectedModules == 'analysis' || selectedModules == 'intelligence'">
+                            <div class="form-group">
+                                <label>Link</label>
+                                <input type="text" formControlName="link" class="form-control" placeholder="Link"
+                                    [ngClass]="{ 'is-invalid': isModuleFormSubmitted && mf.link.errors }"
+                                    autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="col-md-6 form-group"
+                            *ngIf="selectedModules == 'motive' || selectedModules == 'analysis' || selectedModules == 'intelligence'">
+                            <label>Attachment</label>
+                            <input type="file" (change)="uploadAttachment($event.target.files)">
+                        </div>
+                    </div>
+                    <div class="form-group text-right">
+                        <button type="submit" (click)="saveModule()" class="btn btn-primary btn-space">Save</button>
+                        <button type="reset" (click)="resetModule()" class="btn btn-default">Cancel</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="page-title">
+                <h3>Discussion</h3>
+            </div>
+            <div class="panel panel-cutom-blue">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-6 form-group">
+                            <label>Security</label>
+                            <select class="form-control">
+                                <option value="">Select Security</option>
+                                <option value="public">Public</option>
+                                <option value="private">Private</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>Recipient</label>
+                            <input type="text" class="form-control" placeholder="Recipient">
+                        </div>
+                        <div class="col-md-12 form-group">
+                            <label>Subject</label>
+                            <input type="text" class="form-control" placeholder="Subject">
+                        </div>
+                        <div class="col-md-12 form-group">
+                            <textarea class="form-control" placeholder="Message"></textarea>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>Attachment</label>
+                            <input type="file">
+                        </div>
+                        <div class="col-md-12 form-group text-right">
+                            <button type="submit" class="btn btn-primary btn-space">Save</button>
+                            <button type="reset" class="btn btn-default">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Modules -->
+    </div>
+    <app-footer></app-footer>
+</div>
+
+<!-- Delegate Form -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="min-width: 880px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Delegate {{goalname}}</h4>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive" style="height: 250px;overflow:auto;" id="style-2">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Delegated User</th>
+                                <th>Percentage</th>
+                                <th>User</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngIf="goalDelegateData && goalDelegateData.length==0">
+                                <td style="text-align: center;" colspan="5"> No Data Available</td>
+                            </tr>
+                            <tr *ngFor="let p of goalDelegateData; let i=index;">
+                                <th scope="row">{{i+1}}</th>
+                                <td>{{p.child_user_id.first_name}} {{p.child_user_id.last_name}}</td>
+                                <td>{{p.percentage}}%</td>
+                                <td>{{p.user_id.first_name}} {{p.user_id.last_name}}</td>
+                                <td *ngIf="p.is_accept==0" class="text-warning">Pending</td>
+                                <td *ngIf="p.is_accept==1" class="text-success">Accept</td>
+                                <td *ngIf="p.is_accept==2" class="text-danger">Reject</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <form [formGroup]="DelegateForm">
+                    <div class="form-group">
+                        <label>Child User</label>
+                        <select class="form-control" formControlName="child_user_id" style="padding: 0px 0px!important"
+                            [ngClass]="{ 'is-invalid': isDelegateFormSubmitted && df.child_user_id.errors }">
+                            <option value="">Select Child User</option>
+                            <option *ngFor="let child of childuser;" value="{{child._id}}">{{child.first_name}}
+                                {{child.last_name}}</option>
+                        </select>
+                        <div *ngIf="isDelegateFormSubmitted && df.child_user_id.errors" class="invalid-feedback">
+                            <div *ngIf="df.child_user_id.errors.required">Please Select Child User</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Percentage</label>
+                        <input type="number" autocomplete="off" formControlName="percentage" class="form-control"
+                            placeholder="Percentage"
+                            [ngClass]="{ 'is-invalid': isDelegateFormSubmitted && df.percentage.errors }">
+                        <div *ngIf="isDelegateFormSubmitted && df.percentage.errors" class="invalid-feedback">
+                            <div *ngIf="df.percentage.errors.required">Percentage is required</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea type="text" formControlName="description" class="form-control"
+                            placeholder="Description"
+                            [ngClass]="{ 'is-invalid': isDelegateFormSubmitted && df.description.errors }"></textarea>
+                        <div *ngIf="isDelegateFormSubmitted && df.description.errors" class="invalid-feedback">
+                            <div *ngIf="df.description.errors.required">Description is required</div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-success" (click)="SaveDelegate()">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Delegate Form -->
+
+<!-- Report Modal -->
+<form action="javascript:void(0);" [formGroup]="ReportForm">
+    <div class="modal fade" id="reportModal" tabindex="-1" role="dialog" aria-labelledby="reportModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" style="min-width: 400px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="reportModalLabel">Add Report Details</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Actual Production</label>
+                        <input type="number" autocomplete="off" formControlName="actual_production" class="form-control"
+                            placeholder="Actual Production"
+                            [ngClass]="{ 'is-invalid': isReportFormSubmitted && rf.actual_production.errors }">
+                        <div *ngIf="isReportFormSubmitted && rf.actual_production.errors" class="invalid-feedback">
+                            <div *ngIf="rf.actual_production.errors.required">Actual production is required</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Actual Expense</label>
+                        <input type="number" autocomplete="off" formControlName="actual_expense" class="form-control"
+                            placeholder="Actual Expense"
+                            [ngClass]="{ 'is-invalid': isReportFormSubmitted && rf.actual_expense.errors }">
+                        <div *ngIf="isReportFormSubmitted && rf.actual_expense.errors" class="invalid-feedback">
+                            <div *ngIf="rf.actual_expense.errors.required">Actual expense is required</div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-success" (click)="SaveReport()">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<!-- End Report Modal -->
+
+<!-- Generate Dynamic Control Modal -->
+<form class="form-inline" action="javascript:void(0);">
+    <div class="modal fade" id="fromControlModal" tabindex="-1" role="dialog" aria-labelledby="fromControlModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" style="min-width: 780px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="fromControlModalLabel">Add Form Control</h4>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <button type="button" class="btn btn-default m-b-xxs" (click)="onAddData()">Add Field</button>
+                    </div>
+                    <div *ngFor="let dev of formfield;index as i">
+                        <div class="form-group" style="padding: 3px;">
+                            <input type="text" id="data{{i}}" [ngModelOptions]="{standalone: true}"
+                                [(ngModel)]="dev.name" class="form-control" placeholder="Name Of FormControl"
+                                autocomplete="off">
+                        </div>
+                        &nbsp;
+                        <div class="form-group" style="padding: 3px;">
+                            <select class="form-control" (change)="addcontrol(i)"
+                                (change)="getselectoption(selected.value,i)" #selected
+                                [ngModelOptions]="{standalone: true}" [(ngModel)]="dev.type"
+                                style="padding: 0px 0px!important">
+                                <option value="">Select FormControl</option>
+                                <option value="text">Text</option>
+                                <option value="number">Number</option>
+                                <option value="select">Select</option>
+                            </select>
+                        </div>
+                        &nbsp;
+                        <div class="form-group" style="padding: 3px;">
+                            <select class="form-control" [ngModelOptions]="{standalone: true}"
+                                [(ngModel)]="dev.required" style="padding: 0px 0px!important">
+                                <option value="">Select Required</option>
+                                <option value="true">True</option>
+                                <option value="false">False</option>
+                            </select>
+                        </div>
+                        <div class="form-group" *ngIf="dev.option && dev.option.length == 0" style="padding: 3px;">
+                            <button class="btn btn-primary" style="margin: 4px;height: 36px;" (click)="addoption(i)">Add
+                                option</button>
+                        </div>
+                        <div class="form-group" *ngIf="dev.option && dev.option.length > 0" style="padding: 3px;">
+                            <button class="btn btn-primary" style="margin: 4px;height: 36px;"
+                                (click)="addoption(i)">Modify option</button>
+                        </div>
+                        <button class="btn btn-danger" style="margin: 4px;height: 36px;"
+                            (click)="removeData(i)">X</button>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-success" (click)="onplanformcreate()">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<!-- End Generate Dynamic Control Modal -->
+
+<!-- Manage options for select modal -->
+<div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="min-width: 480px;">
+        <div class="modal-content ">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Add Option</h4>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <button type="button" class="btn btn-default m-b-xxs" (click)="onAddoption()">Add new
+                        Option</button>
+                </div>
+                <input type="hidden" value="" id="controlid">
+                <div *ngFor="let dev of selectoption;index as i">
+                    <div class="form-group" style="padding: 3px;margin: 0;">
+                        <input type="text" id="data-modal{{i}}" style="width:300px;display: inline;"
+                            [ngModelOptions]="{standalone: true}" [(ngModel)]="dev.id" class="form-control"
+                            placeholder="Name Of FormControl" autocomplete="off">
+                        <button class="btn btn-danger" style="margin: 4px;height: 33px;margin-bottom: 8px"
+                            (click)="removeoption(i)">X</button>
+                    </div>
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-success" (click)="saveoption()">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End manage options for select modal -->

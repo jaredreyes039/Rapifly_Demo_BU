@@ -702,6 +702,7 @@ export class ItemPlanDetailsComponent implements OnInit {
     this.commonService.PostAPI('plan/get/by/id2', { plan_id: Plan }).then((response: any) => {
       if (response.status) {
         this.parentplanDetails = response.data;
+        console.log("---", response.data)
         this.goalid = "";
         this.planstartdate = this.parentplanDetails[0].start_date;
         this.planenddate = this.parentplanDetails[0].end_date;

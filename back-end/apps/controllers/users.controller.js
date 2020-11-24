@@ -577,7 +577,6 @@ exports.get_by_organization = function (request, response) {
 
 exports.check_new_user = function (request, response) {
     var body = request.body;
-    console.log("body", body)
 
     if (!body.email) {
         return response.send({

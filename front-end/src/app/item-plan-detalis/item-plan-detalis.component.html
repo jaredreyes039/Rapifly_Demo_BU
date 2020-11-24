@@ -262,7 +262,7 @@
                         </div>
                         <div *ngFor="let parentplan of parentplanDetails[0] | keyvalue ">
                             <div class="col-md-6 row pb-10"
-                                *ngIf="parentplan.key !='_id' && parentplan.key !='shared_permission_users' && parentplan.key !='share_users' && parentplan.key !='shared_plan_users' && parentplan.key !='user_group_id' && parentplan.key !='number' && parentplan.key !='motivation' ">
+                                *ngIf="parentplan.key !='_id' && parentplan.key !='shared_permission_users' && parentplan.key !='share_users' && parentplan.key !='shared_plan_users' && parentplan.key !='user_group_id' && parentplan.key !='number' && parentplan.key !='motivation' && parentplan.value ">
                                 <div *ngIf="parentplan.key=='user_id' ">
                                     <div class="col-md-6 text-blue ">Creator</div>
                                     <div class="col-md-6 text-white " *ngIf="parentplan.key !='userid' ">:
@@ -292,15 +292,15 @@
         </div>
 
         <div class="col-md-9" *ngIf="selectedPhase == 'project'">
-            <div class="page-title">
-                <h3>Parent Plan Item</h3>
-            </div>
-            <div class="col-md-12 form-group text-right">
-                <button type="button" class="btn btn-warning mt-20" (click)="fetch()">Add Form Control</button>
-            </div>
-            <div class="panel panel-cutom-blue">
-                <div class="panel-body">
-                    <form #kform="ngForm" [formGroup]="parentplangroup">
+            <form #kform="ngForm" [formGroup]="parentplangroup">
+                <div class="page-title">
+                    <h3>Parent Plan Item</h3>
+                </div>
+                <div class="col-md-12 form-group text-right">
+                    <button type="button" class="btn btn-warning mt-20" (click)="fetch()">Add Form Control</button>
+                </div>
+                <div class="panel panel-cutom-blue">
+                    <div class="panel-body">
                         <div class="row">
                             <div class="col-md-6 form-group">
                                 <label>Short Name<span>*</span></label>
@@ -372,6 +372,15 @@
                                         required</label>
                                 </div>
                             </div> -->
+                        </div>
+                    </div>
+                </div>
+                <div class="page-title">
+                    <h3>Dashboard</h3>
+                </div>
+                <div class="panel panel-cutom-blue">
+                    <div class="panel-body">
+                        <div class="row">
                             <div class="col-md-3 form-group">
                                 <label>Production Target<span>*</span></label>
                                 <input type="number" class="form-control" placeholder="Production Target"
@@ -519,9 +528,9 @@
                                     class="btn btn-primary btn-space pull-right">Submit</button>
                             </div>
                         </div>
-                    </form>
+                    </div>
                 </div>
-            </div>
+            </form>
 
             <div class="page-title">
                 <h3>Discussion</h3>
