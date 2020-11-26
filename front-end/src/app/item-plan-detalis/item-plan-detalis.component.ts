@@ -319,13 +319,13 @@ export class ItemPlanDetailsComponent implements OnInit {
       shared_users: [''],
       production_target: ['', Validators.required],
       production_type: ['', Validators.required],
-      production_low_variance_alert: ['', Validators.required],
-      production_high_variance_alert: ['', Validators.required],
-      production_weight: ['', Validators.required],
+      production_low_variance_alert: [''],
+      production_high_variance_alert: [''],
+      production_weight: [''],
       expense_target: ['', Validators.required],
-      expense_low_variance_alert: ['', Validators.required],
-      expense_high_variance_alert: ['', Validators.required],
-      expense_weight: ['', Validators.required],
+      expense_low_variance_alert: [''],
+      expense_high_variance_alert: [''],
+      expense_weight: [''],
     });
 
     // Module
@@ -562,11 +562,9 @@ export class ItemPlanDetailsComponent implements OnInit {
         $("#jstree").on("select_node.jstree",
           function (evt, data) {
             var plan_id;
-
             if (data.node.parent == "#") {
               a.getplandetail(data.selected[0]);
               a.getGoalReportByPlan(data.selected[0]);
-
               plan_id = data.selected[0];
             } else {
               a.getgoaldetail(data.selected[0], data.node.parent);
@@ -709,6 +707,7 @@ export class ItemPlanDetailsComponent implements OnInit {
         this.golaplanname = this.parentplanDetails[0].short_name;
         this.plansecurity = this.parentplanDetails[0].security;
         this.childPlanForm.reset();
+        this.childPlanForm.get('production_type').setValue('units')
       } else {
         this.toastr.error(response.message, "Error");
       }

@@ -396,6 +396,8 @@
                                 <select class="form-control" formControlName="production_type">
                                     <option value="">Select Type</option>
                                     <option value="dollars">Dollars</option>
+                                    <option value="units">Units</option>
+                                    <option value="percentage">Percentage</option>
                                 </select>
                                 <div *ngIf="IsLoginFormValid && jval.production_type.errors" class="invalid-feedback">
                                     <label *ngIf="jval.production_type.errors.required" class="error">Production type is
@@ -869,7 +871,7 @@
                                 </div>
                             </div>
                             <div class="col-md-6 form-group">
-                                <label>Low Variance Alert</label>
+                                <label>Production Low Variance Alert</label>
                                 <input type="number" class="form-control" placeholder="Low Variance Alert"
                                     formControlName="production_low_variance_alert"
                                     [ngClass]="{ 'is-invalid': submitted && f.production_low_variance_alert.errors }">
@@ -880,7 +882,7 @@
                                 </div>
                             </div>
                             <div class="col-md-6 form-group">
-                                <label>Low Variance Alert</label>
+                                <label>Expense Low Variance Alert</label>
                                 <input type="number" class="form-control" placeholder="Low Variance Alert"
                                     formControlName="expense_low_variance_alert"
                                     [ngClass]="{ 'is-invalid': submitted && f.expense_low_variance_alert.errors }">
@@ -890,7 +892,7 @@
                                 </div>
                             </div>
                             <div class="col-md-6 form-group">
-                                <label>Hight Variance Alert</label>
+                                <label>Production Hight Variance Alert</label>
                                 <input type="number" class="form-control" placeholder="Hight Variance Alert"
                                     formControlName="production_high_variance_alert"
                                     [ngClass]="{ 'is-invalid': submitted && f.production_high_variance_alert.errors }">
@@ -901,7 +903,7 @@
                                 </div>
                             </div>
                             <div class="col-md-6 form-group">
-                                <label>Hight Variance Alert</label>
+                                <label>Expense Hight Variance Alert</label>
                                 <input type="number" class="form-control" placeholder="Hight Variance Alert"
                                     formControlName="expense_high_variance_alert"
                                     [ngClass]="{ 'is-invalid': submitted && f.expense_high_variance_alert.errors }">
