@@ -83,6 +83,7 @@ export class InviteUsersComponent implements OnInit {
   }
 
   submit() {
+    console.log(this.designations)
     this.isInviteUserFormValid = true;
 
     if (this.inviteUserForm.invalid) {

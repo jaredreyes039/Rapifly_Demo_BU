@@ -1,3 +1,4 @@
+console.log('-----');
 let express = require('express')
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
@@ -14,10 +15,10 @@ let server = http.Server(app);
 
 let socketIO = require('socket.io');
 let io = socketIO(server);
-
 // Set up mongoose connection
 var url = 'mongodb://localhost:27017/mission-control-panning-synergies';
-const mongoDB = process.env.MONGODB_URI || url;
+const mongoDB = process.env.MONGO_URL || url;
+console.log("🚀 ~ file: server.js ~ line 21 ~ mongoDB", mongoDB)
 mongoose.connect(mongoDB, {useNewUrlParser: true, useUnifiedTopology: true});
 mongoose.Promise = global.Promise;
 const db = mongoose.connection;

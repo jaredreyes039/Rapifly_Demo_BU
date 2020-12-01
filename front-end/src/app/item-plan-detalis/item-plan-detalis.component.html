@@ -829,10 +829,17 @@
                                     <div *ngIf="f.description.errors.required">Description is required</div>
                                 </div>
                             </div>
+                            <div class="col-md-12 form-group text-right">
+                                <button type="submit " (click)="onSubmit()"
+                                    [disabled]="!checkforgoaledit && !isSharedPlanPermission"
+                                    class="btn btn-primary btn-space">Save</button>
+                                <button type="reset" (click)="reset()" [disabled]="!checkforgoaledit "
+                                    class="btn btn-default">Clear</button>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="page-title">
+                <!-- <div class="page-title">
                     <h3 class="">Dashboard</h3>
                 </div>
                 <div class="panel panel-cutom-blue">
@@ -871,45 +878,45 @@
                                 </div>
                             </div>
                             <div class="col-md-6 form-group">
-                                <label>Production Low Variance Alert</label>
-                                <input type="number" class="form-control" placeholder="Low Variance Alert"
+                                <label>Low Production Alert</label>
+                                <input type="number" class="form-control" placeholder="Low Production Alert"
                                     formControlName="production_low_variance_alert"
                                     [ngClass]="{ 'is-invalid': submitted && f.production_low_variance_alert.errors }">
                                 <div *ngIf="submitted && f.production_low_variance_alert.errors"
                                     class="invalid-feedback">
                                     <label *ngIf="f.production_low_variance_alert.errors.required" class="error">Low
-                                        Variance Alert is required</label>
+                                        Production Alert is required</label>
                                 </div>
                             </div>
                             <div class="col-md-6 form-group">
-                                <label>Expense Low Variance Alert</label>
-                                <input type="number" class="form-control" placeholder="Low Variance Alert"
+                                <label>Low Expense Alert</label>
+                                <input type="number" class="form-control" placeholder="Low Expense Alert"
                                     formControlName="expense_low_variance_alert"
                                     [ngClass]="{ 'is-invalid': submitted && f.expense_low_variance_alert.errors }">
                                 <div *ngIf="submitted && f.expense_low_variance_alert.errors" class="invalid-feedback">
                                     <label *ngIf="f.expense_low_variance_alert.errors.required" class="error">Low
-                                        Variance Alert is required</label>
+                                        Expense Alert is required</label>
                                 </div>
                             </div>
                             <div class="col-md-6 form-group">
-                                <label>Production Hight Variance Alert</label>
-                                <input type="number" class="form-control" placeholder="Hight Variance Alert"
+                                <label>Hight Production Alert</label>
+                                <input type="number" class="form-control" placeholder="Hight Production Alert"
                                     formControlName="production_high_variance_alert"
                                     [ngClass]="{ 'is-invalid': submitted && f.production_high_variance_alert.errors }">
                                 <div *ngIf="submitted && f.production_high_variance_alert.errors"
                                     class="invalid-feedback">
                                     <label *ngIf="f.production_high_variance_alert.errors.required" class="error">Hight
-                                        Variance Alert is required</label>
+                                        Production Alert is required</label>
                                 </div>
                             </div>
                             <div class="col-md-6 form-group">
-                                <label>Expense Hight Variance Alert</label>
-                                <input type="number" class="form-control" placeholder="Hight Variance Alert"
+                                <label>Hight Expense Alert</label>
+                                <input type="number" class="form-control" placeholder="Hight Expense Alert"
                                     formControlName="expense_high_variance_alert"
                                     [ngClass]="{ 'is-invalid': submitted && f.expense_high_variance_alert.errors }">
                                 <div *ngIf="submitted && f.expense_high_variance_alert.errors" class="invalid-feedback">
                                     <label *ngIf="f.expense_high_variance_alert.errors.required" class="error">Hight
-                                        Variance Alert is required</label>
+                                        Expense Alert is required</label>
                                 </div>
                             </div>
                             <div class="col-md-6 form-group">
@@ -941,7 +948,7 @@
                                 class="btn btn-default">Clear</button>
                         </div>
                     </div>
-                </div>
+                </div> -->
             </form>
             <div class="page-title">
                 <h3>Discussion</h3>
@@ -964,11 +971,12 @@
                             </div>
                             <div class="col-md-6 form-group">
                                 <label>Recipients</label>
-                                <select class="form-control" formControlName="recipient_id">
+                                <select class="form-control" formControlName="recipient_id" id="recipient_id" (change)="onRecipient($event)">
                                     <option value="">Select Recipient</option>
                                     <option *ngFor="let hu of users;" value="{{hu.user_id._id}}">
                                         {{ hu.user_id.first_name }} {{ hu.user_id.last_name }}
                                         ({{hu.hierarchy_id.designation}})</option>
+                                    <option value="invite">Invite New Recipient</option>
                                 </select>
                                 <div *ngIf="isSubmittedDiscussionForm && dscf.recipient_id.errors"
                                     class="invalid-feedback">
@@ -2448,3 +2456,49 @@
     </div>
 </div>
 <!-- End manage options for select modal -->
+
+<!-- Recipient Invite Modal -->
+<div class="modal fade" id="inviteModal" tabindex="-1" role="dialog" aria-labelledby="inviteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="min-width: 880px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="inviteModalLabel">Invite Users</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" [formGroup]="inviteUserForm">
+                    <div class="form-group m-t-xs">
+                        <label class="col-sm-3 control-label">Designation</label>
+                        <div class="col-sm-6">
+                            <select class="form-control" formControlName="hierarchy_id" id="hierarchy_id" [ngClass]="{ 'is-invalid': isInviteUserFormValid && formVal.hierarchy_id.errors }">
+                                        <option value="">Select Designation</option>
+                                      <option *ngFor="let desg of designations;" value="{{desg._id}}">{{ desg.designation }}</option>
+                                    </select>
+                            <div *ngIf="isInviteUserFormValid && formVal.hierarchy_id.errors" class="invalid-feedback">
+                                <div *ngIf="formVal.hierarchy_id.errors.required">Please select any organization</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group m-t-xs">
+                        <label class="col-sm-3 control-label">Email</label>
+                        <div class="col-sm-6">
+                            <input type="email" class="form-control" formControlName="email" placeholder="Email" [ngClass]="{ 'is-invalid': isInviteUserFormValid && formVal.email.errors }">
+                            <div *ngIf="isInviteUserFormValid && formVal.email.errors" class="invalid-feedback">
+                                <div *ngIf="formVal.email.errors.required">Email is required</div>
+                                <div *ngIf="formVal.email.errors.email">Please enter valid email address</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-7 col-sm-6">
+                            <button type="submit" (click)="submit()" class="btn btn-success horizontal-form-button">Invite User</button>&nbsp;
+                            <button type="reset" class="btn btn-default horizontal-form-button" data-dismiss="modal">Cancel</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Recipient Invite Modal -->
