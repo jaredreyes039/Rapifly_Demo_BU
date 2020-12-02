@@ -3,9 +3,12 @@ const moment = require('moment');
 const fs = require('fs');
 
 const Goals = require('../models/goals.model');
+const Users = require('../models/user.model');
+const Plan = require('../models/plan.model');
 const Discussion = require('../models/discussion.model');
+const emailHelper = require('../helpers/email.helper');
 
-exports.create = async function(request, response) {
+exports.create = async function (request, response) {
     var body = request.body;
     var errors = [];
 
@@ -39,7 +42,7 @@ exports.create = async function(request, response) {
                 var file_name = getTime + '-' + element.name;
                 fs.writeFileSync('./public/module_attachments/' + file_name, element.data, { mode: 0o755 });
 
-                Modules.updateOne({ _id: moduleId }, { attachment: file_name }, function(error, result) {
+                Modules.updateOne({ _id: moduleId }, { attachment: file_name }, function (error, result) {
                     if (error) {
                         console.log(error)
                         return response.send({
@@ -74,7 +77,7 @@ exports.create = async function(request, response) {
     }
 }
 
-exports.getModulesByUserAndType = async function(request, response) {
+exports.getModulesByUserAndType = async function (request, response) {
     var body = request.body;
     var errors = [];
 
@@ -99,7 +102,7 @@ exports.getModulesByUserAndType = async function(request, response) {
     }
 
     try {
-        Goals.find({ plan_id: body.plan_id, user_id: body.user_id, module_type: body.module_type, deactivate: 0 }, function(error, results) {
+        Goals.find({ plan_id: body.plan_id, user_id: body.user_id, module_type: body.module_type, deactivate: 0 }, function (error, results) {
             if (error) {
                 return response.send({
                     status: false,
@@ -120,7 +123,7 @@ exports.getModulesByUserAndType = async function(request, response) {
     }
 };
 
-exports.createDiscussion = async function(request, response) {
+exports.createDiscussion = async function (request, response) {
     var body = request.body;
     var errors = [];
 
@@ -143,19 +146,43 @@ exports.createDiscussion = async function(request, response) {
     try {
         var discussion = new Discussion(body);
         await discussion.save();
-        
+
+        Users.findOne({ _id: body.recipient_id }, { email: 1 }, (err, email) => {
+            console.log(err, email);
+            if (err) throw err;
+            if (email) {
+                Plan.findOne({ _id: body.plan_id }, { short_name: 1 }, async (err, short_name) => {
+                    console.log(err, short_name, body.plan_id);
+                    if (err) throw err
+                    if (short_name) {
+                        var fullUrl = request.protocol + '://' + request.get('host') + request.originalUrl;
+                        let html = `
+                    <h4><b>Project Invitation (${body.subject})</b></h4>
+                    <p>You was invited to :  <b>${short_name.short_name}</b> project</p>
+                    <p>${body.message}</p>
+                    <a href="${fullUrl}/item-plans-details">please check project list</a>
+                    <br><br>
+                    <p>--Team</p>
+                    `
+                        await emailHelper.sendEmail(email, "Project Invitation - RapiFly", html);
+                        
+                    }
+
+                })
+            }
+        })
+
         if (discussion) {
             var discussionId = discussion._id;
-            
+
             if (request.files && request.files.attachment) {
                 var element = request.files.attachment;
                 var getTime = new Date().getTime();
-                
+
                 var file_name = getTime + '-' + element.name;
-                console.log("---->",file_name, discussion)
                 fs.writeFileSync('./public/module_attachments/' + file_name, element.data, { mode: 0o755 });
 
-                Discussion.updateOne({ _id: discussionId }, { attachment: file_name }, function(error, result) {
+                Discussion.updateOne({ _id: discussionId }, { attachment: file_name }, function (error, result) {
                     if (error) {
                         console.log(error)
                         return response.send({

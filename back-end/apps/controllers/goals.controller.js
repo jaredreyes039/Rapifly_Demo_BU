@@ -199,6 +199,9 @@ exports.get_plan_goal_tree = async function (request, response) {
                                     }, {
                                         security: 'private',
                                         recipient_id: request.body.id
+                                    }, {
+                                        security: 'public',
+                                        recipient_id: request.body.id
                                     }]
                                 }, { security: 1, plan_id: 1, created_at: 1 }, { sort: { 'created_at': -1 } }, (err, discussionPlanIds) => {
                                     if (err) throw err;
@@ -213,91 +216,67 @@ exports.get_plan_goal_tree = async function (request, response) {
                                         });
 
                                         async1.each(discussionPlanIds, function (ele, cd4) {
-                                            Goals.find({ plan_id: ele.plan_id, deactivate: 0 }, {}, (err, goal) => {
+                                            Plan.find({ status: 0, _id: ele.plan_id }, {short_name: 1}, (err, plan) => {
                                                 if (err) throw err;
-                                                if (goal) {
-                                                    ele.set("goals", goal, { strict: false });
+                                                if (plan && plan.length > 0) {
+                                                    console.log(plan);
+                                                    ele.set("short_name", plan[0].short_name, { strict: false });
                                                     cd4();
                                                 } else {
                                                     cd4();
                                                 }
                                             });
-                                        }, async function (err) {
-                                            var children = plans.concat(childplans.concat(discussionPlanIds));
+                                        }, function (err) {
+                                            async1.each(discussionPlanIds, function (ele, cd5) {
+                                                Goals.find({ plan_id: ele.plan_id, deactivate: 0 }, {}, (err, goal) => {
+                                                    if (err) throw err;
+                                                    if (goal) {
+                                                        ele.set("goals", goal, { strict: false });
+                                                        cd5();
+                                                    } else {
+                                                        cd5();
+                                                    }
+                                                });
+                                            }, async function (err) {
+                                                var children = plans.concat(childplans.concat(discussionPlanIds));
 
-                                            var planObj = {
-                                                path: 'plan_id'
-                                            };
+                                                var planObj = {
+                                                    path: 'plan_id'
+                                                };
 
-                                            await Goals.find({ shared_users: request.body.id }).populate(planObj).exec(function (error, results) {
-                                                if (!error && results && results.length > 0) {
-                                                    async1.each(results, function (element, callback) {
-                                                        var plan = element.plan_id;
-                                                        var childKey = children.map(data => data._id);
+                                                await Goals.find({ shared_users: request.body.id }).populate(planObj).exec(function (error, results) {
+                                                    if (!error && results && results.length > 0) {
+                                                        async1.each(results, function (element, callback) {
+                                                            var plan = element.plan_id;
+                                                            var childKey = children.map(data => data._id);
 
-                                                        if (childKey.includes(plan._id) == true) {
-                                                            var index = childKey.indexOf(plan._id);
-                                                            children[index].goals.push(element);
-                                                        } else {
-                                                            var data = {
-                                                                _id: plan._id,
-                                                                short_name: plan.short_name,
-                                                                goals: [element]
-                                                            };
+                                                            if (childKey.includes(plan._id) == true) {
+                                                                var index = childKey.indexOf(plan._id);
+                                                                children[index].goals.push(element);
+                                                            } else {
+                                                                var data = {
+                                                                    _id: plan._id,
+                                                                    short_name: plan.short_name,
+                                                                    goals: [element]
+                                                                };
 
-                                                            children.push(data);
-                                                        }
-                                                    });
-                                                    return response.send({
-                                                        status: true,
-                                                        data: children
-                                                    })
-                                                } else {
-                                                    return response
-                                                        .status(200)
-                                                        .send({ status: true, data: children });
-                                                }
-                                            });
+                                                                children.push(data);
+                                                            }
+                                                        });
+                                                        return response.send({
+                                                            status: true,
+                                                            data: children
+                                                        })
+                                                    } else {
+                                                        return response
+                                                            .status(200)
+                                                            .send({ status: true, data: children });
+                                                    }
+                                                });
+                                            })
                                         })
                                     }
                                 })
-
-
-                                // var children = plans.concat(childplans);
-
-                                // var planObj = {
-                                //     path: 'plan_id'
-                                // };
-
-                                // await Goals.find({ shared_users: request.body.id }).populate(planObj).exec(function (error, results) {
-                                //     if (!error && results && results.length > 0) {
-                                //         async1.each(results, function (element, callback) {
-                                //             var plan = element.plan_id;
-                                //             var childKey = children.map(data => data._id);
-
-                                //             if (childKey.includes(plan._id) == true) {
-                                //                 var index = childKey.indexOf(plan._id);
-                                //                 children[index].goals.push(element);
-                                //             } else {
-                                //                 var data = {
-                                //                     _id: plan._id,
-                                //                     short_name: plan.short_name,
-                                //                     goals: [element]
-                                //                 };
-
-                                //                 children.push(data);
-                                //             }
-                                //         });
-                                //         return response.send({
-                                //             status: true,
-                                //             data: children
-                                //         })
-                                //     } else {
-                                //         return response
-                                //             .status(200)
-                                //             .send({ status: true, data: children });
-                                //     }
-                                // });
                             });
                         }
                     });
