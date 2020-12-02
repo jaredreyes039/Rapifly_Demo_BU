@@ -143,15 +143,16 @@ exports.createDiscussion = async function(request, response) {
     try {
         var discussion = new Discussion(body);
         await discussion.save();
-
+        
         if (discussion) {
             var discussionId = discussion._id;
-
+            
             if (request.files && request.files.attachment) {
                 var element = request.files.attachment;
                 var getTime = new Date().getTime();
-
+                
                 var file_name = getTime + '-' + element.name;
+                console.log("---->",file_name, discussion)
                 fs.writeFileSync('./public/module_attachments/' + file_name, element.data, { mode: 0o755 });
 
                 Discussion.updateOne({ _id: discussionId }, { attachment: file_name }, function(error, result) {

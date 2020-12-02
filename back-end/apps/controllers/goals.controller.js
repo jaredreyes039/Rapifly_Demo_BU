@@ -14,17 +14,18 @@ const UserDesignation = require('../models/users_designation.model');
 const GoalChat = require('../models/goal_chat.model');
 const StrategyAttachments = require('../models/strategy_attachments.model');
 const StrategyChats = require('../models/strategy_chats.model');
+const Discussions = require('../models/discussion.model');
 
 var _ = require('lodash');
 
-exports.create = async function(request, response) {
+exports.create = async function (request, response) {
     var body = request.body;
     var files = request.files;
 
     body.shared_users = (body.shared_users && body.shared_users != undefined) ? body.shared_users.split(',') : [];
 
     if (body.controls && body.controls.length > 0) {
-        async1.each(body.controls, function(element, cd2) {
+        async1.each(body.controls, function (element, cd2) {
             if (element.type == "text") {
                 Goals.schema.add({
                     [element.name]: String
@@ -42,7 +43,7 @@ exports.create = async function(request, response) {
         })
     }
 
-    Goals.find({ plan_id: body.plan_id }, async(err, res) => {
+    Goals.find({ plan_id: body.plan_id }, async (err, res) => {
         if (err) throw err;
         if (res) {
             if (res.length == 0) {
@@ -82,7 +83,7 @@ exports.create = async function(request, response) {
                 }
 
                 try {
-                    Goals.updateOne({ _id: body.editid }, body, async function(error, level) {
+                    Goals.updateOne({ _id: body.editid }, body, async function (error, level) {
                         if (error) {
                             return response.send({
                                 status: false,
@@ -144,7 +145,7 @@ exports.create = async function(request, response) {
     }
 };
 
-exports.get_plan_goal_tree = async function(request, response) {
+exports.get_plan_goal_tree = async function (request, response) {
     //get plan tree in brainstrom phase
     var body = request.body;
 
@@ -158,7 +159,7 @@ exports.get_plan_goal_tree = async function(request, response) {
         Plan.find({ status: 0, user_id: request.body.id }, { short_name: 1 }, (err, plans) => {
             if (err) throw err;
             if (plans) {
-                async1.each(plans, function(element, cd2) {
+                async1.each(plans, function (element, cd2) {
                     Goals.find({ plan_id: element._id, deactivate: 0 }, {}, (err2, goal) => {
                         if (err) throw err;
                         if (goal) {
@@ -168,7 +169,7 @@ exports.get_plan_goal_tree = async function(request, response) {
                             cd2();
                         }
                     });
-                }, function(err) {
+                }, function (err) {
                     Plan.find({
                         security: 1,
                         status: 0,
@@ -176,7 +177,7 @@ exports.get_plan_goal_tree = async function(request, response) {
                     }, { short_name: 1 }, (err, childplans) => {
                         if (err) throw err;
                         if (childplans) {
-                            async1.each(childplans, function(element2, cd3) {
+                            async1.each(childplans, function (element2, cd3) {
                                 Goals.find({
                                     plan_id: element2._id,
                                 }, {}, (err2, goalchild) => {
@@ -190,42 +191,113 @@ exports.get_plan_goal_tree = async function(request, response) {
                                         cd3();
                                     }
                                 });
-                            }, async function(err) {
-                                var children = plans.concat(childplans);
-
-                                var planObj = {
-                                    path: 'plan_id'
-                                };
-
-                                await Goals.find({ shared_users: request.body.id }).populate(planObj).exec(function(error, results) {
-                                    if (!error && results && results.length > 0) {
-                                        async1.each(results, function(element, callback) {
-                                            var plan = element.plan_id;
-                                            var childKey = children.map(data => data._id);
-
-                                            if (childKey.includes(plan._id) == true) {
-                                                var index = childKey.indexOf(plan._id);
-                                                children[index].goals.push(element);
-                                            } else {
-                                                var data = {
-                                                    _id: plan._id,
-                                                    short_name: plan.short_name,
-                                                    goals: [element]
-                                                };
-
-                                                children.push(data);
+                            }, function (err) {
+                                Discussions.find({
+                                    "$or": [{
+                                        security: 'public',
+                                        user_id: { $in: request.body.childids }
+                                    }, {
+                                        security: 'private',
+                                        recipient_id: request.body.id
+                                    }]
+                                }, { security: 1, plan_id: 1, created_at: 1 }, { sort: { 'created_at': -1 } }, (err, discussionPlanIds) => {
+                                    if (err) throw err;
+                                    if (discussionPlanIds) {
+                                        var tempDiscussionPlanIds = [];
+                                        discussionPlanIds = discussionPlanIds.filter(elem => {
+                                            const id = elem.plan_id.toString();
+                                            if (tempDiscussionPlanIds.indexOf(id) === -1) {
+                                                tempDiscussionPlanIds.push(id);
+                                                return true;
                                             }
                                         });
-                                        return response.send({
-                                            status: true,
-                                            data: children
+
+                                        async1.each(discussionPlanIds, function (ele, cd4) {
+                                            Goals.find({ plan_id: ele.plan_id, deactivate: 0 }, {}, (err, goal) => {
+                                                if (err) throw err;
+                                                if (goal) {
+                                                    ele.set("goals", goal, { strict: false });
+                                                    cd4();
+                                                } else {
+                                                    cd4();
+                                                }
+                                            });
+                                        }, async function (err) {
+                                            var children = plans.concat(childplans.concat(discussionPlanIds));
+
+                                            var planObj = {
+                                                path: 'plan_id'
+                                            };
+
+                                            await Goals.find({ shared_users: request.body.id }).populate(planObj).exec(function (error, results) {
+                                                if (!error && results && results.length > 0) {
+                                                    async1.each(results, function (element, callback) {
+                                                        var plan = element.plan_id;
+                                                        var childKey = children.map(data => data._id);
+
+                                                        if (childKey.includes(plan._id) == true) {
+                                                            var index = childKey.indexOf(plan._id);
+                                                            children[index].goals.push(element);
+                                                        } else {
+                                                            var data = {
+                                                                _id: plan._id,
+                                                                short_name: plan.short_name,
+                                                                goals: [element]
+                                                            };
+
+                                                            children.push(data);
+                                                        }
+                                                    });
+                                                    return response.send({
+                                                        status: true,
+                                                        data: children
+                                                    })
+                                                } else {
+                                                    return response
+                                                        .status(200)
+                                                        .send({ status: true, data: children });
+                                                }
+                                            });
                                         })
-                                    } else {
-                                        return response
-                                            .status(200)
-                                            .send({ status: true, data: children });
                                     }
-                                });
+                                })
+
+
+                                // var children = plans.concat(childplans);
+
+                                // var planObj = {
+                                //     path: 'plan_id'
+                                // };
+
+                                // await Goals.find({ shared_users: request.body.id }).populate(planObj).exec(function (error, results) {
+                                //     if (!error && results && results.length > 0) {
+                                //         async1.each(results, function (element, callback) {
+                                //             var plan = element.plan_id;
+                                //             var childKey = children.map(data => data._id);
+
+                                //             if (childKey.includes(plan._id) == true) {
+                                //                 var index = childKey.indexOf(plan._id);
+                                //                 children[index].goals.push(element);
+                                //             } else {
+                                //                 var data = {
+                                //                     _id: plan._id,
+                                //                     short_name: plan.short_name,
+                                //                     goals: [element]
+                                //                 };
+
+                                //                 children.push(data);
+                                //             }
+                                //         });
+                                //         return response.send({
+                                //             status: true,
+                                //             data: children
+                                //         })
+                                //     } else {
+                                //         return response
+                                //             .status(200)
+                                //             .send({ status: true, data: children });
+                                //     }
+                                // });
                             });
                         }
                     });
@@ -237,7 +309,7 @@ exports.get_plan_goal_tree = async function(request, response) {
     }
 };
 
-exports.get_all_goals_by_plan = async function(request, response) {
+exports.get_all_goals_by_plan = async function (request, response) {
     var body = request.body;
 
     if (!body.id) {
@@ -261,7 +333,7 @@ exports.get_all_goals_by_plan = async function(request, response) {
         Goals.find({ plan_id: body.id, module_type: body.module_type })
             .populate(obj)
             .sort({ prioritize: 1 })
-            .exec(function(error, goal) {
+            .exec(function (error, goal) {
                 if (error) {
                     return response.send({
                         status: false,
@@ -279,7 +351,7 @@ exports.get_all_goals_by_plan = async function(request, response) {
     }
 };
 
-exports.get_goals_by_planid = async function(request, response) {
+exports.get_goals_by_planid = async function (request, response) {
     var body = request.body;
 
     if (!body.id) {
@@ -303,7 +375,7 @@ exports.get_goals_by_planid = async function(request, response) {
         Goals.find({ plan_id: body.id, module_type: body.module_type, deactivate: 0 })
             .populate(obj)
             .sort({ prioritize: 1 })
-            .exec(function(error, goal) {
+            .exec(function (error, goal) {
                 if (error) {
                     return response.send({
                         status: false,
@@ -320,7 +392,7 @@ exports.get_goals_by_planid = async function(request, response) {
         return response.status(400).send({ status: false, message: error });
     }
 };
-exports.get_goal_by_id = async function(request, response) {
+exports.get_goal_by_id = async function (request, response) {
     var body = request.body;
     if (!body.goal_id) {
         return response.send({
@@ -330,7 +402,7 @@ exports.get_goal_by_id = async function(request, response) {
     }
 
     try {
-        Goals.findById(body.goal_id, function(error, goal) {
+        Goals.findById(body.goal_id, function (error, goal) {
             if (error) {
                 return response.send({
                     status: false,
@@ -356,7 +428,7 @@ exports.get_goal_by_id = async function(request, response) {
  * @version 1.0
  * @since   2020-02-20
  */
-exports.priority_change_by_id = async function(request, response) {
+exports.priority_change_by_id = async function (request, response) {
 
     //Modified code
     var body = request.body;
@@ -389,7 +461,7 @@ exports.priority_change_by_id = async function(request, response) {
     }
 
     try {
-        Goals.findOne({ prioritize: body.new_priority, plan_id: body.plan_id }, async function(error, result) {
+        Goals.findOne({ prioritize: body.new_priority, plan_id: body.plan_id }, async function (error, result) {
             if (error) {
                 return response.send({
                     status: false,
@@ -397,14 +469,14 @@ exports.priority_change_by_id = async function(request, response) {
                 });
             } else {
                 if (result) {
-                    await Goals.updateOne({ _id: body.goal_id }, { prioritize: result.prioritize }, async function(error, is_update_current_goal) {
+                    await Goals.updateOne({ _id: body.goal_id }, { prioritize: result.prioritize }, async function (error, is_update_current_goal) {
                         if (error) {
                             return response.send({
                                 status: false,
                                 message: "Can not update priority in selected goal."
                             });
                         } else {
-                            await Goals.updateOne({ _id: result._id }, { prioritize: body.current_priority }, function(error, is_update_new_goal) {
+                            await Goals.updateOne({ _id: result._id }, { prioritize: body.current_priority }, function (error, is_update_new_goal) {
                                 if (error) {
                                     return response.send({
                                         status: false,
@@ -447,7 +519,7 @@ exports.priority_change_by_id = async function(request, response) {
     }
 };
 
-exports.deactivate_change_by_id = async function(request, response) {
+exports.deactivate_change_by_id = async function (request, response) {
     var body = request.body;
 
     if (!body.id) {
@@ -458,7 +530,7 @@ exports.deactivate_change_by_id = async function(request, response) {
     }
 
     try {
-        Goals.updateOne({ _id: body.id }, body, function(error, level) {
+        Goals.updateOne({ _id: body.id }, body, function (error, level) {
             if (error) {
                 return response.send({
                     status: false,
@@ -483,7 +555,7 @@ exports.deactivate_change_by_id = async function(request, response) {
     }
 };
 
-exports.propose_change_by_id = async function(request, response) {
+exports.propose_change_by_id = async function (request, response) {
     var body = request.body;
 
     if (!body.id) {
@@ -494,7 +566,7 @@ exports.propose_change_by_id = async function(request, response) {
     }
 
     try {
-        Goals.updateOne({ _id: body.id }, body, function(error, level) {
+        Goals.updateOne({ _id: body.id }, body, function (error, level) {
             if (error) {
                 return response.send({
                     status: false,
@@ -519,7 +591,7 @@ exports.propose_change_by_id = async function(request, response) {
     }
 };
 
-exports.get_goals_by_vote = async function(request, response) {
+exports.get_goals_by_vote = async function (request, response) {
     var body = request.body;
 
     if (!body.id) {
@@ -547,7 +619,7 @@ exports.get_goals_by_vote = async function(request, response) {
             .populate(obj)
             .populate(planObj)
             .sort({ prioritize: 1 })
-            .exec(function(error, goal) {
+            .exec(function (error, goal) {
                 if (error) {
                     return response.send({
                         status: false,
@@ -565,7 +637,7 @@ exports.get_goals_by_vote = async function(request, response) {
     }
 };
 
-exports.get_goals_by_vote_all_plan = async function(request, response) {
+exports.get_goals_by_vote_all_plan = async function (request, response) {
     var body = request.body;
 
     if (!body.planIds) {
@@ -586,7 +658,7 @@ exports.get_goals_by_vote_all_plan = async function(request, response) {
             .populate(obj)
             .populate(planObj)
             .sort({ prioritize: 1 })
-            .exec(function(error, goal) {
+            .exec(function (error, goal) {
                 if (error) {
                     return response.send({
                         status: false,
@@ -604,7 +676,7 @@ exports.get_goals_by_vote_all_plan = async function(request, response) {
     }
 };
 
-exports.get_goals_by_delegate = async function(request, response) {
+exports.get_goals_by_delegate = async function (request, response) {
     var body = request.body;
 
     if (!body.id) {
@@ -628,7 +700,7 @@ exports.get_goals_by_delegate = async function(request, response) {
         Goals.find({ plan_id: body.id, module_type: body.module_type, select: 1, deactivate: 0 })
             .populate(obj)
             .sort({ prioritize: 1 })
-            .exec(function(error, goals) {
+            .exec(function (error, goals) {
                 if (error) {
                     return response.send({
                         status: false,
@@ -638,10 +710,10 @@ exports.get_goals_by_delegate = async function(request, response) {
                     if (goals && goals.length > 0) {
                         var goalsArr = [];
 
-                        async1.each(goals, function(element, callback) {
+                        async1.each(goals, function (element, callback) {
                             var goal_id = element._id;
 
-                            Delegation.find({ goal_id: goal_id, is_accept: 1 }, function(error, result) {
+                            Delegation.find({ goal_id: goal_id, is_accept: 1 }, function (error, result) {
                                 var delegate_percentage = 0;
 
                                 if (!error && result && result.length > 0) {
@@ -652,7 +724,7 @@ exports.get_goals_by_delegate = async function(request, response) {
                                 goalsArr.push(element);
                                 callback();
                             })
-                        }, function(error) {
+                        }, function (error) {
                             return response.send({
                                 status: true,
                                 data: goalsArr
@@ -671,7 +743,7 @@ exports.get_goals_by_delegate = async function(request, response) {
     }
 };
 
-exports.get_goals_by_countdown = async function(request, response) {
+exports.get_goals_by_countdown = async function (request, response) {
     var body = request.body;
 
     if (!body.id) {
@@ -695,7 +767,7 @@ exports.get_goals_by_countdown = async function(request, response) {
         Goals.find({ plan_id: body.id, module_type: body.module_type, is_countdown_update: 1, deactivate: 0 })
             .populate(obj)
             .sort({ prioritize: 1 })
-            .exec(function(error, goal) {
+            .exec(function (error, goal) {
                 if (error) {
                     return response.send({
                         status: false,
@@ -712,7 +784,7 @@ exports.get_goals_by_countdown = async function(request, response) {
         return response.status(400).send({ status: false, message: error });
     }
 };
-exports.voteupdown_by_id = async function(request, response) {
+exports.voteupdown_by_id = async function (request, response) {
     var body = request.body;
     console.log(body);
 
@@ -724,9 +796,9 @@ exports.voteupdown_by_id = async function(request, response) {
     }
 
     Goals.findOne({
-            _id: body.id
-        },
-        function(err, res) {
+        _id: body.id
+    },
+        function (err, res) {
             if (err) throw err;
             if (res) {
                 if (res.voteup.includes(body.userid) == true || res.votedown.includes(body.userid) == true) {
@@ -739,7 +811,7 @@ exports.voteupdown_by_id = async function(request, response) {
                 if (body.vote == "up") {
                     try {
                         var newvalues = { $push: { voteup: body.userid } };
-                        Goals.updateOne({ _id: body.id }, newvalues, function(
+                        Goals.updateOne({ _id: body.id }, newvalues, function (
                             error,
                             level
                         ) {
@@ -763,7 +835,7 @@ exports.voteupdown_by_id = async function(request, response) {
                 } else if (body.vote == "down") {
                     try {
                         var newvalues = { $push: { votedown: body.userid } };
-                        Goals.updateOne({ _id: body.id }, newvalues, function(
+                        Goals.updateOne({ _id: body.id }, newvalues, function (
                             error,
                             level
                         ) {
@@ -790,7 +862,7 @@ exports.voteupdown_by_id = async function(request, response) {
         }
     );
 };
-exports.updateselect = async function(request, response) {
+exports.updateselect = async function (request, response) {
     var body = request.body;
     if (body.security == 0) {
         if (body.select == 1) {
@@ -808,12 +880,12 @@ exports.updateselect = async function(request, response) {
 
         try {
             Goals.updateOne({ _id: body.id }, {
-                    select: body.select,
-                    countdown: CountDown,
-                    is_countdown_update: 1
+                select: body.select,
+                countdown: CountDown,
+                is_countdown_update: 1
 
-                },
-                function(error, domain) {
+            },
+                function (error, domain) {
                     if (error) {
                         return response.send({
                             status: false,
@@ -846,9 +918,9 @@ exports.updateselect = async function(request, response) {
         }
         try {
             Goals.updateOne({ _id: body.id }, {
-                    select: body.select
-                },
-                function(error, domain) {
+                select: body.select
+            },
+                function (error, domain) {
                     if (error) {
                         return response.send({
                             status: false,
@@ -872,7 +944,7 @@ exports.updateselect = async function(request, response) {
         } catch (error) {
             return response.status(400).send({ status: false, message: error });
         }
-    } else {}
+    } else { }
 };
 
 /**
@@ -884,14 +956,14 @@ exports.updateselect = async function(request, response) {
  * @since   2020-02-13
  */
 
-module.exports.launchgoal = function(request, response) {
+module.exports.launchgoal = function (request, response) {
     try {
         console.log(new Date());
 
         GoalAlert.find({
             user_id: request.body.user_id,
             date: new Date()
-        }, function(error, record) {
+        }, function (error, record) {
             console.log(record);
 
         });
@@ -908,7 +980,7 @@ module.exports.launchgoal = function(request, response) {
  * @version 1.0
  * @since   2020-02-18
  */
-module.exports.getGoalReportByUser = function(request, response) {
+module.exports.getGoalReportByUser = function (request, response) {
     var body = request.body;
     var errors = [];
 
@@ -928,7 +1000,7 @@ module.exports.getGoalReportByUser = function(request, response) {
         var data = {};
         var currentDate = Math.round(new Date().getTime());
 
-        Goals.find({ user_id: body.user_id }, function(error, results) {
+        Goals.find({ user_id: body.user_id }, function (error, results) {
             if (error) {
                 return response.send({
                     status: false,
@@ -942,8 +1014,8 @@ module.exports.getGoalReportByUser = function(request, response) {
                     var remaining_goals = 0;
                     var overdue_goals = 0;
 
-                    async1.each(results, function(element, callback) {
-                        Reports.find({ goal_id: element._id }, function(error, reports) {
+                    async1.each(results, function (element, callback) {
+                        Reports.find({ goal_id: element._id }, function (error, reports) {
                             if (!error && reports && reports.length > 0) {
                                 //Calculate completed goals
                                 completed_goals += 1;
@@ -962,7 +1034,7 @@ module.exports.getGoalReportByUser = function(request, response) {
                             }
                             callback();
                         });
-                    }, function(error) {
+                    }, function (error) {
                         if (error) {
                             return response.send({
                                 status: false,
@@ -1003,7 +1075,7 @@ module.exports.getGoalReportByUser = function(request, response) {
  * @version 1.0
  * @since   2020-02-18
  */
-module.exports.getGoalReportByAdmin = function(request, response) {
+module.exports.getGoalReportByAdmin = function (request, response) {
     var body = request.body;
     var errors = [];
 
@@ -1021,7 +1093,7 @@ module.exports.getGoalReportByAdmin = function(request, response) {
 
     try {
         //Find users of parent user id (by organization)
-        User.find({ parent_user_id: body.user_id }, { _id: 1 }, function(error, results) {
+        User.find({ parent_user_id: body.user_id }, { _id: 1 }, function (error, results) {
             if (error) {
                 return response.send({
                     status: false,
@@ -1034,7 +1106,7 @@ module.exports.getGoalReportByAdmin = function(request, response) {
 
                     var userIds = results.map(data => data._id);
 
-                    Goals.find({ user_id: { $in: userIds } }, function(error, results) {
+                    Goals.find({ user_id: { $in: userIds } }, function (error, results) {
                         if (error) {
                             return response.send({
                                 status: false,
@@ -1048,8 +1120,8 @@ module.exports.getGoalReportByAdmin = function(request, response) {
                                 var remaining_goals = 0;
                                 var overdue_goals = 0;
 
-                                async1.each(results, function(element, callback) {
-                                    Reports.find({ goal_id: element._id }, function(error, reports) {
+                                async1.each(results, function (element, callback) {
+                                    Reports.find({ goal_id: element._id }, function (error, reports) {
                                         if (!error && reports && reports.length > 0) {
                                             //Calculate completed goals
                                             completed_goals += 1;
@@ -1068,7 +1140,7 @@ module.exports.getGoalReportByAdmin = function(request, response) {
                                         }
                                         callback();
                                     });
-                                }, function(error) {
+                                }, function (error) {
                                     if (error) {
                                         return response.send({
                                             status: false,
@@ -1117,7 +1189,7 @@ module.exports.getGoalReportByAdmin = function(request, response) {
  * @version 1.0
  * @since   2020-02-22
  */
-module.exports.updateGoalPrioroty = function(request, response) {
+module.exports.updateGoalPrioroty = function (request, response) {
     var body = request.body;
     var errors = [];
 
@@ -1138,7 +1210,7 @@ module.exports.updateGoalPrioroty = function(request, response) {
     }
 
     try {
-        Goals.updateOne({ _id: body.goal_id }, { prioritize: body.prioritize }, function(error, is_update) {
+        Goals.updateOne({ _id: body.goal_id }, { prioritize: body.prioritize }, function (error, is_update) {
             if (error) {
                 return response.send({
                     status: false,
@@ -1167,7 +1239,7 @@ module.exports.updateGoalPrioroty = function(request, response) {
  * @version 1.0
  * @since   2020-02-22
  */
-module.exports.getGoalAttachments = function(request, response) {
+module.exports.getGoalAttachments = function (request, response) {
     var body = request.body;
     var errors = [];
 
@@ -1186,7 +1258,7 @@ module.exports.getGoalAttachments = function(request, response) {
     try {
         var site_url = request.protocol + '://' + request.get('host');
 
-        GoalAttachment.find({ goal_id: body.goal_id }, function(error, attachments) {
+        GoalAttachment.find({ goal_id: body.goal_id }, function (error, attachments) {
             if (error) {
                 return response.send({
                     status: false,
@@ -1228,7 +1300,7 @@ module.exports.getGoalAttachments = function(request, response) {
  * @version 1.0
  * @since   2020-02-22
  */
-module.exports.deleteGoalAttachment = function(request, response) {
+module.exports.deleteGoalAttachment = function (request, response) {
     var body = request.body;
     var errors = [];
 
@@ -1245,7 +1317,7 @@ module.exports.deleteGoalAttachment = function(request, response) {
     }
 
     try {
-        GoalAttachment.deleteOne({ _id: body.goal_attachment_id }, function(error, result) {
+        GoalAttachment.deleteOne({ _id: body.goal_attachment_id }, function (error, result) {
             if (error) {
                 return response.send({
                     status: false,
@@ -1274,7 +1346,7 @@ module.exports.deleteGoalAttachment = function(request, response) {
  * @version 1.0
  * @since   2020-02-22
  */
-module.exports.getGoalSharedUsers = function(request, response) {
+module.exports.getGoalSharedUsers = function (request, response) {
     var body = request.body;
     var errors = [];
 
@@ -1291,7 +1363,7 @@ module.exports.getGoalSharedUsers = function(request, response) {
     }
 
     try {
-        Goals.findOne({ _id: body.goal_id }, function(error, result) {
+        Goals.findOne({ _id: body.goal_id }, function (error, result) {
             if (error) {
                 return response.send({
                     status: false,
@@ -1310,7 +1382,7 @@ module.exports.getGoalSharedUsers = function(request, response) {
                         path: 'user_id'
                     };
 
-                    UserDesignation.find({ user_id: { $in: userids } }).populate(hierarchyObj).populate(userObj).exec(function(error, records) {
+                    UserDesignation.find({ user_id: { $in: userids } }).populate(hierarchyObj).populate(userObj).exec(function (error, records) {
                         if (error) {
                             return response.send({
                                 status: false,
@@ -1347,7 +1419,7 @@ module.exports.getGoalSharedUsers = function(request, response) {
  * @version 1.0
  * @since   2020-03-04
  */
-module.exports.getGoalByPlan = function(request, response) {
+module.exports.getGoalByPlan = function (request, response) {
     var body = request.body;
     var errors = [];
 
@@ -1371,7 +1443,7 @@ module.exports.getGoalByPlan = function(request, response) {
             }, {
                 parent_goal_id: ''
             }],
-        }, function(error, results) {
+        }, function (error, results) {
             if (error) {
                 return response.send({
                     status: false,
@@ -1400,7 +1472,7 @@ module.exports.getGoalByPlan = function(request, response) {
  * @version 1.0
  * @since   2020-03-04
  */
-module.exports.storeGoalAttachments = function(request, response) {
+module.exports.storeGoalAttachments = function (request, response) {
     var body = request.body;
     var errors = [];
 
@@ -1444,7 +1516,7 @@ module.exports.storeGoalAttachments = function(request, response) {
             });
 
             if (insertAttachmentObject && insertAttachmentObject.length > 0) {
-                GoalAttachment.insertMany(insertAttachmentObject, function(error, result) {
+                GoalAttachment.insertMany(insertAttachmentObject, function (error, result) {
                     if (error) {
                         return response.send({
                             status: false,
@@ -1499,7 +1571,7 @@ module.exports.storeGoalAttachments = function(request, response) {
  * @version 2.0
  * @since   2020-03-04
  */
-module.exports.sendMessage = async function(body) {
+module.exports.sendMessage = async function (body) {
     try {
         const goalChat = new GoalChat({
             goal_id: body.goal_id,
@@ -1519,11 +1591,11 @@ module.exports.sendMessage = async function(body) {
                     //path to store uploaded files
                     var fileName = './public/chat_attachment/' + name;
 
-                    fs.open(fileName, 'a', 0o755, function(err, fd) {
+                    fs.open(fileName, 'a', 0o755, function (err, fd) {
                         if (err) throw err;
 
-                        fs.write(fd, element, null, 'Binary', function(err, written, buff) {
-                            fs.close(fd, function() {
+                        fs.write(fd, element, null, 'Binary', function (err, written, buff) {
+                            fs.close(fd, function () {
                                 console.log('File saved successful!');
                             });
                         })
@@ -1551,7 +1623,7 @@ module.exports.sendMessage = async function(body) {
  * @version 1.0
  * @since   2020-03-04
  */
-module.exports.getGoalChat = function(request, response) {
+module.exports.getGoalChat = function (request, response) {
     var body = request.body;
     var errors = [];
     var site_url = request.protocol + '://' + request.get('host');
@@ -1573,7 +1645,7 @@ module.exports.getGoalChat = function(request, response) {
             path: 'sender_id'
         }
 
-        GoalChat.find({ goal_id: body.goal_id }).sort({ "created_at": 1 }).populate(userObj).exec(function(error, results) {
+        GoalChat.find({ goal_id: body.goal_id }).sort({ "created_at": 1 }).populate(userObj).exec(function (error, results) {
             if (error) {
                 return response.send({
                     status: false,
@@ -1642,7 +1714,7 @@ module.exports.getGoalChat = function(request, response) {
  * @version 1.0
  * @since   2020-03-03
  */
-module.exports.getGoalSingleChat = function(request, response) {
+module.exports.getGoalSingleChat = function (request, response) {
     var body = request.body;
     var errors = [];
     var site_url = request.protocol + '://' + request.get('host');
@@ -1664,7 +1736,7 @@ module.exports.getGoalSingleChat = function(request, response) {
             path: 'sender_id'
         }
 
-        GoalChat.findById(body._id).populate(userObj).exec(function(error, element) {
+        GoalChat.findById(body._id).populate(userObj).exec(function (error, element) {
             if (error) {
                 return response.send({
                     status: false,
@@ -1730,7 +1802,7 @@ module.exports.getGoalSingleChat = function(request, response) {
  * @version 2.0
  * @since   2020-03-18
  */
-module.exports.createStrategies = function(request, response) {
+module.exports.createStrategies = function (request, response) {
     var body = request.body;
     var errors = [];
 
@@ -1768,7 +1840,7 @@ module.exports.createStrategies = function(request, response) {
 
     try {
         if (body.controls && body.controls.length > 0) {
-            async1.each(body.controls, function(element, cd2) {
+            async1.each(body.controls, function (element, cd2) {
                 if (element.type == "text") {
                     Strategies.schema.add({
                         [element.name]: String
@@ -1786,7 +1858,7 @@ module.exports.createStrategies = function(request, response) {
             })
         }
 
-        Strategies.find({ plan_id: body.plan_id }, async(err, res) => {
+        Strategies.find({ plan_id: body.plan_id }, async (err, res) => {
             if (err) {
                 return response.send({
                     status: false,
@@ -1831,7 +1903,7 @@ module.exports.createStrategies = function(request, response) {
  * @version 2.0
  * @since   2020-03-18
  */
-module.exports.getStrategies = function(request, response) {
+module.exports.getStrategies = function (request, response) {
     var body = request.body;
     var errors = [];
 
@@ -1848,7 +1920,7 @@ module.exports.getStrategies = function(request, response) {
     }
 
     try {
-        Strategies.find({ plan_id: body.plan_id }, async(err, records) => {
+        Strategies.find({ plan_id: body.plan_id }, async (err, records) => {
             if (err) {
                 return response.send({
                     status: false,
@@ -1877,7 +1949,7 @@ module.exports.getStrategies = function(request, response) {
  * @version 2.0
  * @since   2020-03-04
  */
-module.exports.storeStrategyAttachments = function(request, response) {
+module.exports.storeStrategyAttachments = function (request, response) {
     var body = request.body;
     var errors = [];
 
@@ -1921,7 +1993,7 @@ module.exports.storeStrategyAttachments = function(request, response) {
             });
 
             if (insertAttachmentObject && insertAttachmentObject.length > 0) {
-                StrategyAttachments.insertMany(insertAttachmentObject, function(error, result) {
+                StrategyAttachments.insertMany(insertAttachmentObject, function (error, result) {
                     if (error) {
                         return response.send({
                             status: false,
@@ -1976,7 +2048,7 @@ module.exports.storeStrategyAttachments = function(request, response) {
  * @version 1.0
  * @since   2020-02-22
  */
-module.exports.getStrategyAttachments = function(request, response) {
+module.exports.getStrategyAttachments = function (request, response) {
     var body = request.body;
     var errors = [];
 
@@ -1995,7 +2067,7 @@ module.exports.getStrategyAttachments = function(request, response) {
     try {
         var site_url = request.protocol + '://' + request.get('host');
 
-        StrategyAttachments.find({ strategy_id: body.strategy_id }, function(error, attachments) {
+        StrategyAttachments.find({ strategy_id: body.strategy_id }, function (error, attachments) {
             if (error) {
                 return response.send({
                     status: false,
@@ -2037,7 +2109,7 @@ module.exports.getStrategyAttachments = function(request, response) {
  * @version 2.0
  * @since   2020-03-18
  */
-module.exports.deleteStrategyAttachment = function(request, response) {
+module.exports.deleteStrategyAttachment = function (request, response) {
     var body = request.body;
     var errors = [];
 
@@ -2054,7 +2126,7 @@ module.exports.deleteStrategyAttachment = function(request, response) {
     }
 
     try {
-        StrategyAttachments.deleteOne({ _id: body.strategy_attachment_id }, function(error, result) {
+        StrategyAttachments.deleteOne({ _id: body.strategy_attachment_id }, function (error, result) {
             if (error) {
                 return response.send({
                     status: false,
@@ -2083,7 +2155,7 @@ module.exports.deleteStrategyAttachment = function(request, response) {
  * @version 2.0
  * @since   2020-03-18
  */
-module.exports.sendStrategyMessage = async function(body) {
+module.exports.sendStrategyMessage = async function (body) {
     try {
         const strategyChat = new StrategyChats({
             strategy_id: body.strategy_id,
@@ -2103,11 +2175,11 @@ module.exports.sendStrategyMessage = async function(body) {
                     //path to store uploaded files
                     var fileName = './public/chat_attachment/' + name;
 
-                    fs.open(fileName, 'a', 0o755, function(err, fd) {
+                    fs.open(fileName, 'a', 0o755, function (err, fd) {
                         if (err) throw err;
 
-                        fs.write(fd, element, null, 'Binary', function(err, written, buff) {
-                            fs.close(fd, function() {
+                        fs.write(fd, element, null, 'Binary', function (err, written, buff) {
+                            fs.close(fd, function () {
                                 console.log('File saved successful!');
                             });
                         })
@@ -2134,7 +2206,7 @@ module.exports.sendStrategyMessage = async function(body) {
  * @version 1.0
  * @since   2020-03-03
  */
-module.exports.getStrategySingleChat = function(request, response) {
+module.exports.getStrategySingleChat = function (request, response) {
     var body = request.body;
     var errors = [];
     var site_url = request.protocol + '://' + request.get('host');
@@ -2156,7 +2228,7 @@ module.exports.getStrategySingleChat = function(request, response) {
             path: 'sender_id'
         }
 
-        StrategyChats.findById(body._id).populate(userObj).exec(function(error, element) {
+        StrategyChats.findById(body._id).populate(userObj).exec(function (error, element) {
             if (error) {
                 return response.send({
                     status: false,
@@ -2222,7 +2294,7 @@ module.exports.getStrategySingleChat = function(request, response) {
  * @version 2.0
  * @since   2020-03-18
  */
-module.exports.getStrategyfChat = function(request, response) {
+module.exports.getStrategyfChat = function (request, response) {
     var body = request.body;
     var errors = [];
     var site_url = request.protocol + '://' + request.get('host');
@@ -2244,7 +2316,7 @@ module.exports.getStrategyfChat = function(request, response) {
             path: 'sender_id'
         }
 
-        StrategyChats.find({ strategy_id: body.strategy_id }).sort({ "created_at": 1 }).populate(userObj).exec(function(error, results) {
+        StrategyChats.find({ strategy_id: body.strategy_id }).sort({ "created_at": 1 }).populate(userObj).exec(function (error, results) {
             if (error) {
                 return response.send({
                     status: false,
@@ -2313,7 +2385,7 @@ module.exports.getStrategyfChat = function(request, response) {
  * @version 2.0
  * @since   2020-03-18
  */
-module.exports.getChildGoals = function(request, response) {
+module.exports.getChildGoals = function (request, response) {
     var body = request.body;
     var errors = [];
 
@@ -2330,7 +2402,7 @@ module.exports.getChildGoals = function(request, response) {
     }
 
     try {
-        Goals.find({ parent_goal_id: body.parent_goal_id }, function(error, records) {
+        Goals.find({ parent_goal_id: body.parent_goal_id }, function (error, records) {
             if (error) {
                 return response.send({
                     status: false,

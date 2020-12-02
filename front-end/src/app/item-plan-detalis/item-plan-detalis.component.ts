@@ -10,7 +10,6 @@ import { Subject } from "rxjs";
 
 import { Pipe, PipeTransform } from '@angular/core';
 import { DatePipe, PlatformLocation } from '@angular/common'
-declare var $: any;
 import * as moment from 'moment';
 import { NgbDate, NgbCalendar, NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap';
 
@@ -253,6 +252,16 @@ export class ItemPlanDetailsComponent implements OnInit {
 
   moduleType: any = 'goal';
 
+  // Invite User
+  designations: any = [];
+
+  inviteUserForm: FormGroup;
+
+  selectedDomain: any = '';
+
+  currentUserId;
+  parent_user_id: any;
+
   constructor(
     private toastr: ToastrService,
     public authenticationService: AuthenticationService,
@@ -266,8 +275,15 @@ export class ItemPlanDetailsComponent implements OnInit {
     private ref: ChangeDetectorRef
   ) {
     this.currentUrl = (this.platformLocation as any).location.origin;
-
     this.currentuser = JSON.parse(window.localStorage.getItem("currentUser"));
+
+    this.currentUserId = this.currentuser.user._id;
+    if (this.currentuser.role == "Admin") {
+      this.parent_user_id = this.currentuser.user._id;
+    } else {
+      this.parent_user_id = this.currentuser.user.parent_user_id;
+    }
+
     this.currentchildUser = JSON.parse(window.localStorage.getItem("currentchildUser"));
     this.currentparentUser = JSON.parse(window.localStorage.getItem("currentparentUser"));
     if (!this.currentuser.user.passwordChanged) {
@@ -278,7 +294,8 @@ export class ItemPlanDetailsComponent implements OnInit {
     this.fromDate = calendar.getPrev(calendar.getToday(), 'm', 1);
   }
 
-  formfield = [{ name: '', type: '', required: '', label: '', value: '', userid: this.userid }]
+  // formfield = [{ name: '', type: '', required: '', label: '', value: '', userid: this.userid }]
+  formfield = [{ name: '', type: '', required: '', label: '', value: '', userid: '' }]
   selectoption = [{ id: '' }]
   data = [{}]
 
@@ -317,12 +334,12 @@ export class ItemPlanDetailsComponent implements OnInit {
       start_date: [''],
       end_date: [''],
       shared_users: [''],
-      production_target: ['', Validators.required],
-      production_type: ['', Validators.required],
+      production_target: [''],
+      production_type: [''],
       production_low_variance_alert: [''],
       production_high_variance_alert: [''],
       production_weight: [''],
-      expense_target: ['', Validators.required],
+      expense_target: [''],
       expense_low_variance_alert: [''],
       expense_high_variance_alert: [''],
       expense_weight: [''],
@@ -534,6 +551,73 @@ export class ItemPlanDetailsComponent implements OnInit {
       $(this).datepicker('hide');
     });
 
+    // Invite User
+    this.inviteUserForm = this.formBuilder.group({
+      hierarchy_id: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]]
+    });
+
+    this.getInviteDesignations();
+
+
+  }
+
+  getInviteDesignations() {
+    if (this.currentuser.role == "Admin") {
+      this.commonService.PostAPI('hierarchy/get/designation', { parent_user_id: this.parent_user_id }).then((response: any) => {
+        if (response.status) {
+          this.designations = response.data;
+        } else {
+          this.toastr.error(response.message, 'Error');
+        }
+      });
+    } else {
+      this.commonService.PostAPI('hierarchy/get/child/designation', { user_id: this.currentUserId }).then((response: any) => {
+        if (response.status) {
+          this.designations = response.data;
+        } else {
+          this.toastr.error(response.message, 'Error');
+        }
+      });
+    }
+  }
+
+  onRecipient(e) {
+    if (e.target.value && e.target.value === "invite") {
+      this.DiscussionForm.get('recipient_id').setValue('')
+      $("#inviteModal").modal("show");
+    }
+  }
+  
+  //For validation
+  get formVal() {
+    return this.inviteUserForm.controls;
+  }
+  
+  submit() {
+    this.isInviteUserFormValid = true;
+    
+    if (this.inviteUserForm.invalid) {
+      return;
+    } else {
+      var data = this.inviteUserForm.value;
+
+      data.current_url = this.currentUrl;
+      data.invited_by_user_id = this.currentuser.user._id;
+      data.parent_user_id = this.parent_user_id;
+
+      $("#inviteModal").modal("hide");
+
+      this.commonService.PostAPI('users/invite', data).then((response: any) => {
+        if (response.status) {
+          this.inviteUserForm.reset();
+          this.isInviteUserFormValid = false;
+          this.toastr.success(response.message, "Success");
+        } else {
+          this.toastr.error(response.message, "Error");
+        }
+      });
+    }
   }
 
   getPlanDetails() {
@@ -2198,7 +2282,7 @@ export class ItemPlanDetailsComponent implements OnInit {
   getDesignations() {
     this.commonService.PostAPI('hierarchy/get/by/parent', { parent_user_id: this.currentuser.user.parent_user_id }).then((response: any) => {
       if (response.status) {
-        this.users = response.data;
+        this.users = response.data.filter(item => item.user_id.email !== this.currentuser.user.email);
       } else {
         this.users = [];
       }
@@ -2227,7 +2311,7 @@ export class ItemPlanDetailsComponent implements OnInit {
         data.user_id = this.currentuser.user._id;
         data.plan_id = this.planId;
 
-        const formData: any = new FormData();
+        var formData: any = new FormData();
         const files: Array<File> = this.discussionAttachments;
 
         for (let i = 0; i < files.length; i++) {
@@ -2260,6 +2344,7 @@ export class ItemPlanDetailsComponent implements OnInit {
   showSelectedTree(type) {
     this.getModuleTreeDetails(type);
   }
+
 }
 
 @Pipe({ name: 'itemplanitemdate' })

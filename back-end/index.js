@@ -35,7 +35,7 @@ const app = express();
 
 // Set up mongoose connection
 var url = 'mongodb://localhost:27017/mission-control-panning-synergies';
-const mongoDB = process.env.MONGODB_URI || url;
+const mongoDB = process.env.MONGO_URL || url;
 mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true });
 mongoose.Promise = global.Promise;
 const db = mongoose.connection;
