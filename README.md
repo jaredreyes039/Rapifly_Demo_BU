@@ -6,6 +6,7 @@
 - **IMPORTANT**: Do we have access to MongoDB Atlas Cluster? If not, we have the code here to hook in a new URI and get a cluster going under an admin through Doug or Adam
 - **CRITICAL UPDATE**: WE HAVE A SERVER GOING BABY! (TEMP)
 - **IMPORTANT**: Branch opened ref(Server_Dev) to host the updated, executable server code
+- **CRITICAL UPDATE**: BEGAN WORK ON FRONT END RECOVERY -> SO FAR, SO GOOD!!
 
 **WARNING**: DO **NOT** PULL ref(Server_Dev) INTO ref(MAIN) BRANCH!!!
 
