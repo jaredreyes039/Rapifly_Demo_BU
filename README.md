@@ -5,7 +5,7 @@
 - **IMPORTANT**: Is the API key for SGmail still valid?
 - **IMPORTANT**: Do we have access to MongoDB Atlas Cluster? If not, we have the code here to hook in a new URI and get a cluster going under an admin through Doug or Adam
 
-**CRITICAL UPDATE**: WE HAVE A SERVER GOING BABY!
+**CRITICAL UPDATE**: WE HAVE A SERVER GOING BABY! (TEMP)
 
 <img src="https://dl.dropboxusercontent.com/s/orwed3h58i36mlk/ServerLogSuccess.png?dl=0" alt="Server successfully established">
 <img src="https://dl.dropboxusercontent.com/s/85ns08uzc3j5moc/IndexLogSuccess.png?dl=0" alt="Index successfully established">
