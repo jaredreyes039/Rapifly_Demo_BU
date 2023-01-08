@@ -13,3 +13,4 @@
   - REF: [Moment](https://github.com/moment/moment)
   - REF: [SocketIO Docs](https://socket.io/docs/v4/)
 - **DROPBOX**: [Simplified Data Models](https://www.dropbox.com/s/6iwpmcq9jcvos3g/Models.jsonc?dl=0)
+- **EXCALIDRAW**: [APIRouter&Controller Mappings](https://excalidraw.com/#json=nPVf6hlDmpPetIibQG8uI,Ct3JlVL_lQyziEA0cSY2kA)
