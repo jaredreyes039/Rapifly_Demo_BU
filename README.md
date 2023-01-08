@@ -7,6 +7,8 @@
 - **CRITICAL UPDATE**: WE HAVE A SERVER GOING BABY! (TEMP)
 - **IMPORTANT**: Branch opened ref(Server_Dev) to host the updated, executable server code
 
+**WARNING**: DO **NOT** PULL ref(Server_Dev) INTO ref(MAIN) BRANCH!!!
+
 <img src="https://dl.dropboxusercontent.com/s/orwed3h58i36mlk/ServerLogSuccess.png?dl=0" alt="Server successfully established">
 <img src="https://dl.dropboxusercontent.com/s/85ns08uzc3j5moc/IndexLogSuccess.png?dl=0" alt="Index successfully established">
 
