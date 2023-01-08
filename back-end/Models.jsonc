@@ -1,0 +1,428 @@
+// USERS
+"USER": [
+    "first_name",
+    "last_name",
+    "email",
+    "passwordChanged",
+    "password",
+    "role_id",
+    "parent_user_id",
+    "tokens",
+    "created_at",
+    // TYPO FOUND IN USER MODEL
+    "palnInformfield",
+    "status",
+    "avatar",
+    "delegationtimeout"
+]
+
+"USER_DESIGNATION":[
+    "hierarchy_id",
+    "user_id",
+    "parent_user_id",
+    "status",
+    "created_at"
+]
+
+"USER_GROUPS":[
+    "group_name",
+    "description",
+    "user_id",
+    "group_members",
+    "status",
+    "parent_user_id",
+    "created_at"
+]
+
+"INVITE_USERS":[
+    "hierarchy_id",
+    "invited_by_user_id",
+    "email",
+    "user_id",
+    "parent_user_id",
+    "created_at",
+    "has_registered"
+]
+
+"ROLES":[
+    "name",
+    "created_at"
+]
+
+// Actual file name has typo (reser-password.module.js)
+"RESET_PASSWORD":[
+    "userId",
+    "resetPasswordToken",
+    "expire",
+    "created_at"
+]
+
+"DELEGATION":[
+    "plan_id",
+    "goal_id",
+    "child_user_id",
+    "percentage",
+    "user_id",
+    "description",
+    "start_date",
+    "end_date",
+    "is_accept",
+    "created_at"
+]
+
+// Challenge (typo in filenames challange...module.js)
+"Challenge_Attachment":[
+    "challenge_id",
+    "attachment",
+    "created_at"
+]
+
+"Challenge_Chats":[
+    "challenge_id",
+    "message",
+    "attachments",
+    "sender_id",
+    "created_at"
+]
+
+// COACHES
+
+"COACHES":[
+    "first_name",
+    "last_name",
+    "email",
+    "phone",
+    "company_name",
+    "title",
+    "industries",
+    "created_at"
+]
+
+// DISCUSSION & DOMAINS
+
+"DISCUSSION":[
+    "plan_id",
+    "user_id",
+    "recipient_id",
+    "subject",
+    "security",
+    "message",
+    "attachment",
+    "created_at"
+]
+
+"DOMAINS":[
+    "plan_id",
+    "domain_name",
+    "can_invite",
+    "created_at",
+    "status"
+]
+
+// GOALS
+
+"GOAL_ALERT":[
+    "plan_id",
+    "goal_id",
+    "user_id",
+    "message",
+    "date",
+    "type",
+    "created_at"
+]
+
+"GOAL_ATTACHMENT":[
+    "goal_id",
+    "attachment",
+    "created_at"
+]
+
+"GOAL_CHAT":[
+    "goal_id",
+    "message",
+    "attachments",
+    "sender_id",
+    "created_at"
+]
+
+"GOALS":[
+    "plan_id",
+    "parent_goal_id",
+    "numbers",
+    "user_id",
+    "long_name",
+    "short_name",
+    "description",
+    "security",
+    "select",
+    "start_date",
+    "end_date",
+    "status",
+    "prioritize",
+    "deactivate",
+    "propose",
+    "weight",
+    "created_at",
+    "countdown",
+    "voteup",
+    "votedown",
+    "is_countdown_update",
+    "revenue_target",
+    "expected_target",
+    "shared_users",
+    "production_target",
+    "production_high_variance_alert",
+    "production_low_variance_alert",
+    "production_weight",
+    "expense_target",
+    "expense_high_variance_alert",
+    "expense_low_variance_alert",
+    "expense_weight",
+    "attachment",
+    "question",
+    "answer",
+    "source",
+    "link",
+    "intelligence_value",
+    "intelligence_response",
+    "module_type"
+]
+
+// HIERARCHY
+
+"HIERARCHY":[
+    "designation",
+    "user_id",
+    "parent_hierarchy_id",
+    "parent_user_id",
+    "status",
+    "created_at"
+]
+
+// LEVELS
+
+"LEVELS":[
+    "level_priority",
+    "organization_id",
+    "level_name",
+    "status",
+    "created_at"
+]
+
+// MODS
+
+"MODULARS":[
+    "plan_id",
+    "numbers",
+    "user_id",
+    "long_name",
+    "short_name",
+    "description",
+    "security",
+    "select",
+    "start_date",
+    "end_date",
+    "status",
+    "prioritize",
+    "deactivate",
+    "propose",
+    "weight",
+    "created_at",
+    "countdown",
+    "voteup",
+    "votedown",
+    "is_countdown_update",
+    "revenue_target",
+    "expected_target",
+    "shared_users"
+]
+
+"MODULES":[
+    "plan_id",
+    "parent_module_id",
+    "user_id",
+    "long_name",
+    "short_name",
+    "description",
+    "supervisor",
+    "department",
+    "start_date_time",
+    "end_date_time",
+    "security",
+    "production_target",
+    "production_high_variance_alert",
+    "production_low_variance_alert",
+    "production_weight",
+    "expense_target",
+    "expense_high_variance_target",
+    "expense_low_variance_target",
+    "expense_weight",
+    "attachment",
+    "question",
+    "answer",
+    "source",
+    "link",
+    "intelligence_value",
+    "intelligence_response",
+    "module_type",
+    "created_at"
+]
+
+// ORGANIZATIONS
+
+"ORGANIZATION":[
+    "organization_id",
+    "level_id",
+    "role_name",
+    "created_at"
+]
+
+"ORGANIZATIONS":[
+    "name",
+    "user_id",
+    "can_invite",
+    "created_at",
+    "status"
+]
+
+// PLANS
+
+"PLAN_ATTACHMENT":[
+    "plan_id",
+    "user_id",
+    "attachment",
+    "created_at"
+]
+
+"PLAN_CHAT":[
+    "plan_id",
+    "message",
+    "attachments",
+    "sender_id",
+    "created_at"
+]
+
+"SHARE_PLANS":[
+    "plan_id",
+    "user_id",
+    "user_group_id",
+    "shared_user_ids",
+    "created_at"
+]
+
+"PLAN":[
+    "numbers",
+    "created_at",
+    "long_name",
+    "short_name",
+    "description",
+    "motivation",
+    "security",
+    "start_date",
+    "end_date",
+    "plan_id",
+    "user_id",
+    "status",
+    "shared_permission_users",
+    "user_group_id",
+    "share_users",
+    "shared_plan_users",
+    "production_type",
+    "production_target",
+    "production_high_variance_alert",
+    "production_low_variance_alert",
+    "production_weight",
+    "expense_target",
+    "expense_high_variance_alert",
+    "expense_low_variance_alert",
+    "expense_weight"
+]
+
+// PROBLEMS AND PROPOSALS
+
+"PROBLEM_OPPORTUNITY":[
+    "challenge",
+    "description",
+    "plan_id",
+    "user_id",
+    "created_at"
+]
+
+"PROPOSE_HISTORY":[
+    "propose_id",
+    "plan_id",
+    "goal_id",
+    "user_id",
+    "superior_id",
+    "created_at"
+]
+
+"PROPOSE":[
+    "plan_id",
+    "goal_id",
+    "user_id",
+    "superior_id",
+    "status",
+    "created_at"
+]
+
+"QA_FORMS":[
+    "form_name",
+    "plan_id",
+    "user_id",
+    "parent_user_id",
+    "form_controls",
+    "status",
+    "created_at"
+]
+
+"REPORTS":[
+    "plan_id",
+    "goal_id",
+    "user_id",
+    "actual_production",
+    "actual_expense",
+    "created_at"
+]
+
+// STRATEGIES
+
+"STRATEGIES":[
+    "plan_id",
+    "numbers",
+    "user_id",
+    "long_name",
+    "short_name",
+    "description",
+    "security",
+    "select",
+    "start_date",
+    "end_date",
+    "status",
+    "prioritize",
+    "deactivate",
+    "propose",
+    "weight",
+    "created_at",
+    "countdown",
+    "voteup",
+    "votedown",
+    "is_countdown_update",
+    "revenue_target",
+    "expected_target",
+    "shared_users"
+]
+
+"STRATEGY_ATTACHMENTS":[
+    "strategy_id",
+    "attachment",
+    "created_at"
+]
+
+"STRATEGY_CHATS":[
+    "strategy_id",
+    "message",
+    "attachments",
+    "sender_id",
+    "created_at"
+]
