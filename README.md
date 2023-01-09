@@ -8,6 +8,14 @@
 - **IMPORTANT**: Branch opened ref(Server_Dev) to host the updated, executable server code
 - **CRITICAL UPDATE**: BEGAN WORK ON FRONT END RECOVERY -> SO FAR, SO GOOD!!
 
+```diff
+
+- HOLY $H1T MOMENT: JUST CONNECTED THE BACK END AND FRONT END BACK TOGETHER IN A DEV ENVIRONMENT- WITH SOME CONFIGURATION IM CERTAIN WE WILL BE ON TRACK TO MVP IN NO TIME!!! (See proof image below)
+
+```
+
+<img src="https://www.dl.dropboxusercontent.com/s/2jg188n7qtg10mm/BEFETie.png?dl=0" alt="Confirmed back end to front end tie">
+
 **WARNING**: DO **NOT** PULL ref(Server_Dev) INTO ref(MAIN) BRANCH!!!
 
 <img src="https://dl.dropboxusercontent.com/s/orwed3h58i36mlk/ServerLogSuccess.png?dl=0" alt="Server successfully established">
@@ -60,3 +68,4 @@
         - Could result in an intense rewrite and restructure of directories **IF** they are not structured in a way to already approach this solution effectively
 
 **OPEN TO ANY SOLUTIONS NOT ALREADY MENTIONED**
+
