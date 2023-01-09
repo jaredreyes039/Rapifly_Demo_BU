@@ -67,4 +67,7 @@
 
 **OPEN TO ANY SOLUTIONS NOT ALREADY MENTIONED**
 
-* SG is tied to FE, not BE
+
+## FOR 01/09/2023
+1. Get a login going
+2. Get deployed
