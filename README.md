@@ -7,12 +7,7 @@
 - **CRITICAL UPDATE**: WE HAVE A SERVER GOING BABY! (TEMP)
 - **IMPORTANT**: Branch opened ref(Server_Dev) to host the updated, executable server code
 - **CRITICAL UPDATE**: BEGAN WORK ON FRONT END RECOVERY -> SO FAR, SO GOOD!!
-
-```diff
-
-- HOLY $H1T MOMENT: JUST CONNECTED THE BACK END AND FRONT END BACK TOGETHER IN A DEV ENVIRONMENT- WITH SOME CONFIGURATION IM CERTAIN WE WILL BE ON TRACK TO MVP IN NO TIME!!! (See proof image below)
-
-```
+- **HOLY SHIT MOMENT**: JUST CONNECTED THE BACK END AND FRONT END BACK TOGETHER IN A DEV ENVIRONMENT- WITH SOME CONFIGURATION IM CERTAIN WE WILL BE ON TRACK TO MVP IN NO TIME!!! (See proof image below)
 
 <img src="https://www.dl.dropboxusercontent.com/s/2jg188n7qtg10mm/BEFETie.png?dl=0" alt="Confirmed back end to front end tie">
 
