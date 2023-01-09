@@ -67,3 +67,4 @@
 
 **OPEN TO ANY SOLUTIONS NOT ALREADY MENTIONED**
 
+* SG is tied to FE, not BE
