@@ -62,5 +62,7 @@
         - NOT recommended for enterprise apps normally (there are **exceptions**)
         - Could result in an intense rewrite and restructure of directories **IF** they are not structured in a way to already approach this solution effectively
 
+#### P: Login functionality down until SGMail link is updated? Or is it a role problem? The question consists of possible solutions, but I need further comment on this issue to move further. (At least the API is functioning and fairly well in-tact)
+
 **OPEN TO ANY SOLUTIONS NOT ALREADY MENTIONED**
 
