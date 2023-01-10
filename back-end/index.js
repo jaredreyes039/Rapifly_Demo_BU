@@ -28,7 +28,7 @@ const logger = require('morgan')
 
 //Setup enviroment file
 require('dotenv').config({ path: __dirname + '/.env' })
-var port = process.env['PORT'] || 3000;
+var port = process.env.PORT || 3000;
 
 // initialize our express app
 const app = express();
@@ -80,6 +80,6 @@ app.use('/coach', coach);
 app.use('/modular', modular);
 app.use('/module', modules);
 
-app.listen(port, () => {
+app.listen(port, (res) => {
     console.log('Server is up and running on port number ' + port);
 });
