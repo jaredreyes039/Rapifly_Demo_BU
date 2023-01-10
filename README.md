@@ -19,3 +19,11 @@
   - REF: [SocketIO Docs](https://socket.io/docs/v4/)
 - **DROPBOX**: [Simplified Data Models](https://www.dropbox.com/s/6iwpmcq9jcvos3g/Models.jsonc?dl=0)
 - **EXCALIDRAW**: [APIRouter&Controller Mappings](https://excalidraw.com/#json=nPVf6hlDmpPetIibQG8uI,Ct3JlVL_lQyziEA0cSY2kA)
+
+## FOR 01/09/2023
+
+### Notes
+- **IMPORTANT**: I made it into the frontend dashboard by removing a function that may or may not have been integral to some aspect of the overall functionality of Rapifly; however, for right our current position, this is an excellent point of transition into deeper testing to see where the bugs exist and what we can do to repair them before moving into touch ups and future additions.
+
+### Docs
+- **INTERNAL DOCUMENT (SEE REPO)**: Serverlog.txt
