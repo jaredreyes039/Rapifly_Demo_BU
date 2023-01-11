@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "export NODE_OPTIONS=--openssl-legacy-provider && ng serve ",
-    "build": "ng build --prod",
+    "build": "export NODE_OPTIONS=--openssl-legacy-provider && ng build --prod",
     "staging": "ng build --configuration=staging",
     "test": "ng test",
     "lint": "ng lint",
