@@ -16,7 +16,7 @@ let server = http.Server(app);
 let socketIO = require('socket.io');
 let io = socketIO(server);
 // Set up mongoose connection
-const mongoDB = process.env.MONGO_URI || "mongodb+srv://jaredreyes039:L2HMZuhcsaQ7hne5@rapifly.jaup042.mongodb.net/?retryWrites=true&w=majority";
+const mongoDB = process.env.MONGO_URI || "mongodb+srv://psyn_mongodb_dbuser:QaRkQaJS4PB4446o@cluster0.mkkdmpe.mongodb.net/?retryWrites=true&w=majority";
 mongoose.connect(mongoDB, {useNewUrlParser: true, useUnifiedTopology: true}, (err)=>{
     if(!err){
         console.log(`Server: Connected to MongoDB on port: ${process.env.PORT || 3000}`)
