@@ -69,16 +69,7 @@ exports.user_authentication = async function (request, response) {
 
         //Generate and update JWT token to user account
         const token = await user.generateAuthToken();
-        Role.findById(user.role_id, function (error, role) {
-            if (error) {
-                return response.send({
-                    status: false,
-                    message: 'Something went wrong.'
-                });
-            } else {
-                return response.send({ status: true, data: { user, token, role: role.name } })
-            }
-        });
+        return response.send({ status: true, data: { user, token, role: "User"} })
     } catch (error) {
         return response.status(400).send({ status: false, message: "Something went wrong" })
     }

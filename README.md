@@ -14,6 +14,8 @@
 
 **WARNING**: DO **NOT** PULL ref(Server_Dev) INTO ref(MAIN) BRANCH!!!
 
+**WARNING**: DO **NOT** PULL ref(Server_Dev) INTO ref(MAIN) BRANCH!!!
+
 <img src="https://dl.dropboxusercontent.com/s/orwed3h58i36mlk/ServerLogSuccess.png?dl=0" alt="Server successfully established">
 <img src="https://dl.dropboxusercontent.com/s/85ns08uzc3j5moc/IndexLogSuccess.png?dl=0" alt="Index successfully established">
 
@@ -66,7 +68,6 @@
 #### P: Login functionality down until SGMail link is updated? Or is it a role problem? The question consists of possible solutions, but I need further comment on this issue to move further. (At least the API is functioning and fairly well in-tact)
 
 **OPEN TO ANY SOLUTIONS NOT ALREADY MENTIONED**
-
 
 ## FOR 01/09/2023
 

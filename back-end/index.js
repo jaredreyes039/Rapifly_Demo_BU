@@ -28,15 +28,18 @@ const logger = require('morgan')
 
 //Setup enviroment file
 require('dotenv').config({ path: __dirname + '/.env' })
-var port = process.env['PORT'] || 3000;
+var port = process.env.PORT || 3000;
 
 // initialize our express app
 const app = express();
 
 // Set up mongoose connection
-var url = 'mongodb://localhost:27017/mission-control-panning-synergies';
-const mongoDB = process.env.MONGO_URL || url;
-mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true });
+const mongoDB = process.env.MONGO_URI || "mongodb+srv://psyn_mongodb_dbuser:QaRkQaJS4PB4446o@cluster0.mkkdmpe.mongodb.net/?retryWrites=true&w=majority";
+mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true }, (err)=>{
+    if(!err){
+        console.log(`Index: Connected to MongoDB on port: ${process.env.PORT || 3000}`)
+    }
+});
 mongoose.Promise = global.Promise;
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
@@ -76,6 +79,6 @@ app.use('/coach', coach);
 app.use('/modular', modular);
 app.use('/module', modules);
 
-app.listen(port, () => {
+app.listen(port, (res) => {
     console.log('Server is up and running on port number ' + port);
 });

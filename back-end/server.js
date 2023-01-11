@@ -1,4 +1,4 @@
-console.log('-----');
+console.log('\n -----BEGIN SERVER LOG \n');
 let express = require('express')
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
@@ -16,9 +16,12 @@ let server = http.Server(app);
 let socketIO = require('socket.io');
 let io = socketIO(server);
 // Set up mongoose connection
-var url = 'mongodb://localhost:27017/mission-control-panning-synergies';
-const mongoDB = process.env.MONGO_URL || url;
-mongoose.connect(mongoDB, {useNewUrlParser: true, useUnifiedTopology: true});
+const mongoDB = process.env.MONGO_URI || "mongodb+srv://psyn_mongodb_dbuser:QaRkQaJS4PB4446o@cluster0.mkkdmpe.mongodb.net/?retryWrites=true&w=majority";
+mongoose.connect(mongoDB, {useNewUrlParser: true, useUnifiedTopology: true}, (err)=>{
+    if(!err){
+        console.log(`Server: Connected to MongoDB on port: ${process.env.PORT || 3000}`)
+    }
+});
 mongoose.Promise = global.Promise;
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
@@ -67,5 +70,6 @@ io.on('connection', (socket) => {
 });
 
 server.listen(port, () => {
-    console.log(`started on port: ${port}`);
+    console.log(`Sever opened on: ${port}`);
 });
+
