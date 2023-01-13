@@ -64,9 +64,7 @@
     - Cons:
         - NOT recommended for enterprise apps normally (there are **exceptions**)
         - Could result in an intense rewrite and restructure of directories **IF** they are not structured in a way to already approach this solution effectively
-
-#### P: Login functionality down until SGMail link is updated? Or is it a role problem? The question consists of possible solutions, but I need further comment on this issue to move further. (At least the API is functioning and fairly well in-tact)
-
+  
 **OPEN TO ANY SOLUTIONS NOT ALREADY MENTIONED**
 
 ## FOR 01/09/2023
@@ -75,4 +73,4 @@
 - **IMPORTANT**: I made it into the frontend dashboard by removing a function that may or may not have been integral to some aspect of the overall functionality of Rapifly; however, for right our current position, this is an excellent point of transition into deeper testing to see where the bugs exist and what we can do to repair them before moving into touch ups and future additions.
 
 ### Docs
-- **INTERNAL DOCUMENT (SEE REPO -> Server_Dev BRANCH)**: Serverlog.txt
+- **INTERNAL DOCUMENT (SEE REPO -> main BRANCH)**: Serverlog.txt
