@@ -44,7 +44,7 @@ export class SignupComponent implements OnInit {
 
   //Check if user is invite or not.
   checkUser(email) {
-    this.commonService.PostAPI(`${this.slug}users/check/user`, { email: email }).then((response: any) => {
+    this.commonService.PostAPI(`https://lionfish-app-czku6.ondigitalocean.app/users/check/user`, { email: email }).then((response: any) => {
       var role_name = "";
       if (response && response.data && response.data.length > 0) {
         role_name = "User";
