@@ -32,9 +32,6 @@ export class ManageHieararchyComponent implements OnInit {
   dtOptions: DataTables.Settings = {};
   dtTrigger: Subject<any> = new Subject();
 
-  // Use slug to connect w/ prod API
-  // Must end with /
-  slug = "https://lionfish-app-czku6.ondigitalocean.app/"
 
 
   @ViewChild(DataTableDirective, { static: false })
@@ -83,7 +80,7 @@ export class ManageHieararchyComponent implements OnInit {
     };
 
     if (this.currentuser.role === 'Admin') {
-      this.commonService.PostAPI(`${this.slug}hierarchy/designation/by/parent`, { parent_user_id: this.parent_user_id }).then((response: any) => {
+      this.commonService.PostAPI(`hierarchy/designation/by/parent`, { parent_user_id: this.parent_user_id }).then((response: any) => {
         if (response.status && response.data && response.data.length > 0) {
           this.hierarchy = response.data;
         } else {
@@ -94,7 +91,7 @@ export class ManageHieararchyComponent implements OnInit {
         this.dataTableAfterViewInit();
       });
     } else if (this.currentuser.role === 'User') {
-      this.commonService.PostAPI(`${this.slug}hierarchy/designation/by/user`, { user_id: this.currentUserId }).then((response: any) => {
+      this.commonService.PostAPI(`hierarchy/designation/by/user`, { user_id: this.currentUserId }).then((response: any) => {
         if (response.status && response.data && response.data.length > 0) {
           this.hierarchy = response.data;
         } else {
@@ -136,7 +133,7 @@ export class ManageHieararchyComponent implements OnInit {
   }
 
   getDesignations() {
-    this.commonService.PostAPI(`${this.slug}hierarchy/get/all/designation`, { hierarchy_id: this.editedHierarchy[2], parent_user_id: this.parent_user_id }).then((response: any) => {
+    this.commonService.PostAPI(`hierarchy/get/all/designation`, { hierarchy_id: this.editedHierarchy[2], parent_user_id: this.parent_user_id }).then((response: any) => {
       if (response.status && response.data && response.data.length > 0) {
         this.superiorDesignations = response.data;
       } else {
@@ -146,7 +143,7 @@ export class ManageHieararchyComponent implements OnInit {
   }
 
   getParentDesignation() {
-    this.commonService.PostAPI(`${this.slug}hierarchy/get/parent/designation`, { hierarchy_id: this.editedHierarchy[2] }).then((response: any) => {
+    this.commonService.PostAPI(`hierarchy/get/parent/designation`, { hierarchy_id: this.editedHierarchy[2] }).then((response: any) => {
       if (response.status && response.data) {
         this.selectedDesignation = response.data;
       } else {
@@ -166,7 +163,7 @@ export class ManageHieararchyComponent implements OnInit {
     data._id = this.editedHierarchy[2];
     data.parent_hierarchy_id = this.selectedDesignation._id;
 
-    this.commonService.PostAPI(`${this.slug}hierarchy/update/designation`, data).then((response: any) => {
+    this.commonService.PostAPI(`hierarchy/update/designation`, data).then((response: any) => {
       if (response.status) {
         this.toastr.success(response.message, "Success");
         this.loadDatatables();
@@ -192,7 +189,7 @@ export class ManageHieararchyComponent implements OnInit {
   }
 
   deleteDesignation() {
-    this.commonService.PostAPI(`${this.slug}hierarchy/delete`, { hierarchy_id: this.hierarchyId }).then((response: any) => {
+    this.commonService.PostAPI(`hierarchy/delete`, { hierarchy_id: this.hierarchyId }).then((response: any) => {
       if (response.status) {
         this.toastr.success(response.message, "Success");
         this.loadDatatables();

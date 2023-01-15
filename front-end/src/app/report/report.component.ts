@@ -29,9 +29,7 @@ export class ReportComponent implements OnInit {
   @ViewChild(DataTableDirective, { static: false })
   datatableElement: DataTableDirective;
 
-  // Use slug to connect w/ prod API
-  // Must end with /
-  slug = "https://lionfish-app-czku6.ondigitalocean.app/"
+
 
   constructor(
     private toastr: ToastrService,
@@ -64,7 +62,7 @@ export class ReportComponent implements OnInit {
       this.currentparentUser = []
     }
     var children = this.currentchildUser.concat(this.currentparentUser);
-    this.commonService.PostAPI(`${this.slug}plan/get/allplanselectbox`,{id:this.currentuser.user._id,childids:children} ).then((response: any) => {
+    this.commonService.PostAPI(`plan/get/allplanselectbox`,{id:this.currentuser.user._id,childids:children} ).then((response: any) => {
       if (response.status) {
          this.plans = response.data;
          this.dtOptions = {
@@ -104,7 +102,7 @@ export class ReportComponent implements OnInit {
   }
   getgoal(planid){
     this.plan_id = planid
-    this.commonService.PostAPI(`${this.slug}report/get/all`,{plan_id:planid,user_id:this.currentuser.user._id} ).then((response: any) => {
+    this.commonService.PostAPI(`report/get/all`,{plan_id:planid,user_id:this.currentuser.user._id} ).then((response: any) => {
       if (response.status) {
          this.goals = response.data;
        console.log(this.goals);
@@ -163,7 +161,7 @@ export class ReportComponent implements OnInit {
      data.goal_id = this.goal_id
      data.user_id = this.currentuser.user._id
 
-     this.commonService.PostAPI(`${this.slug}report/create`, data).then((response: any) => {
+     this.commonService.PostAPI(`report/create`, data).then((response: any) => {
       if (response.status)
       {
         this.toastr.success(response.message, "Success");

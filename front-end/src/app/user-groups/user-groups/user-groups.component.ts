@@ -31,9 +31,6 @@ export class UserGroupsComponent implements OnInit {
   dtOptions: DataTables.Settings = {};
   dtTrigger: Subject<any> = new Subject();
 
-  // Use slug to connect w/ prod API
-  // Must end with /
-  slug = "https://lionfish-app-czku6.ondigitalocean.app/"
 
 
   @ViewChild(DataTableDirective, { static: false })
@@ -72,7 +69,7 @@ export class UserGroupsComponent implements OnInit {
   }
 
   getUserGroups() {
-    this.commonService.PostAPI(`${this.slug}user_group/get/by/user`, { user_id: this.currentUserId }).then((response: any) => {
+    this.commonService.PostAPI(`user_group/get/by/user`, { user_id: this.currentUserId }).then((response: any) => {
       if (response.status) {
         this.userGroups = response.data;
       } else {
@@ -108,7 +105,7 @@ export class UserGroupsComponent implements OnInit {
       status = 0;
     }
 
-    this.commonService.PostAPI(`${this.slug}user_group/update/status`, { id: id, status: status }).then((response: any) => {
+    this.commonService.PostAPI(`user_group/update/status`, { id: id, status: status }).then((response: any) => {
       if (response.status) {
         this.toastr.success(response.message, 'Success');
       } else {
@@ -127,7 +124,7 @@ export class UserGroupsComponent implements OnInit {
       data.user_id = this.changeRequestUser.user._id;
       data.parent_user_id = this.parent_user_id;
 
-      this.commonService.PostAPI(`${this.slug}hierarchy/change/user/designation`, data).then((response: any) => {
+      this.commonService.PostAPI(`hierarchy/change/user/designation`, data).then((response: any) => {
         if (response.status) {
           this.resetTable();
           this.toastr.success(response.message, "Success");

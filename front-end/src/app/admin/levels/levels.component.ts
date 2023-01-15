@@ -27,9 +27,6 @@ export class LevelsComponent implements OnInit {
   currentuser;
   editedLevel: any = [];
 
-  // Use slug to connect w/ prod API
-  // Must end with /
-  slug = "https://lionfish-app-czku6.ondigitalocean.app/"
 
   constructor(
     private toastr: ToastrService,
@@ -74,7 +71,7 @@ export class LevelsComponent implements OnInit {
     } else {
       var data = this.addLevelForm.value;
 
-      this.commonService.PostAPI(`${this.slug}level/create`, data).then((response: any) => {
+      this.commonService.PostAPI(`level/create`, data).then((response: any) => {
         if (response.status) {
           $("#myModal").modal('hide');
           this.toastr.success(response.message, "Success");
@@ -87,7 +84,7 @@ export class LevelsComponent implements OnInit {
   }
 
   getOrganizations() {
-    this.commonService.GetAPI(`${this.slug}organization/get/all`, {}).then((response: any) => {
+    this.commonService.GetAPI(`organization/get/all`, {}).then((response: any) => {
       if (response.status) {
         this.organizations = response.data;
       } else {
@@ -101,7 +98,7 @@ export class LevelsComponent implements OnInit {
   }
 
   getLevels() {
-    this.commonService.GetAPI(`${this.slug}level/get/all`, {}).then((response: any) => {
+    this.commonService.GetAPI(`level/get/all`, {}).then((response: any) => {
       if (response.status) {
         this.levels = response.data;
         this.loadDatatables();
@@ -131,7 +128,7 @@ export class LevelsComponent implements OnInit {
       var data = this.editLevelForm.value;
       data.id = this.editedLevel._id;
 
-      this.commonService.PostAPI(`${this.slug}level/update`, data).then((response: any) => {
+      this.commonService.PostAPI(`level/update`, data).then((response: any) => {
         if (response.status) {
           this.getLevels();
           $("#editLevels").modal('hide');

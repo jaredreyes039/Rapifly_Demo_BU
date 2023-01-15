@@ -27,9 +27,6 @@ export class InviteUsersComponent implements OnInit {
   currentUserId;
   parent_user_id: any;
 
-  // Use slug to connect w/ prod API
-  // Must end with /
-  slug = "https://lionfish-app-czku6.ondigitalocean.app/"
 
   constructor(
     private toastr: ToastrService,
@@ -63,7 +60,7 @@ export class InviteUsersComponent implements OnInit {
 
   getDesignations() {
     if (this.currentuser.role == "Admin") {
-      this.commonService.PostAPI(`${this.slug}hierarchy/get/designation`, { parent_user_id: this.parent_user_id }).then((response: any) => {
+      this.commonService.PostAPI(`hierarchy/get/designation`, { parent_user_id: this.parent_user_id }).then((response: any) => {
         if (response.status) {
           this.designations = response.data;
         } else {
@@ -71,7 +68,7 @@ export class InviteUsersComponent implements OnInit {
         }
       });
     } else {
-      this.commonService.PostAPI(`${this.slug}hierarchy/get/child/designation`, { user_id: this.currentUserId }).then((response: any) => {
+      this.commonService.PostAPI(`hierarchy/get/child/designation`, { user_id: this.currentUserId }).then((response: any) => {
         if (response.status) {
           this.designations = response.data;
         } else {
@@ -99,7 +96,7 @@ export class InviteUsersComponent implements OnInit {
       data.invited_by_user_id = this.currentuser.user._id;
       data.parent_user_id = this.parent_user_id;
 
-      this.commonService.PostAPI(`${this.slug}users/invite`, data).then((response: any) => {
+      this.commonService.PostAPI(`users/invite`, data).then((response: any) => {
         if (response.status) {
           this.inviteUserForm.reset();
           this.isInviteUserFormValid = false;

@@ -31,9 +31,6 @@ export class PrioritizeComponent implements OnInit {
   @ViewChild(DataTableDirective, { static: false })
   datatableElement: DataTableDirective;
 
-  // Use slug to connect w/ prod API
-  // Must end with /
-  slug = "https://lionfish-app-czku6.ondigitalocean.app/"
 
   constructor(
     private toastr: ToastrService,
@@ -68,7 +65,7 @@ export class PrioritizeComponent implements OnInit {
     changevalue = parseInt(changevalue)
 
     if (changevalue > 0) {
-      this.commonService.PostAPI(`${this.slug}goal/update/priority`, { goal_id: goalid, prioritize: changevalue }).then((response: any) => {
+      this.commonService.PostAPI(`goal/update/priority`, { goal_id: goalid, prioritize: changevalue }).then((response: any) => {
         if (response.status) {
           this.toastr.success(response.message, "Success");
           this.getgoal(this.plan_id);
@@ -86,7 +83,7 @@ export class PrioritizeComponent implements OnInit {
     if (this.currentchildUser == null) {
       this.currentchildUser = [];
     }
-    this.commonService.PostAPI(`${this.slug}plan/get/allplanselectbox`, { id: this.currentuser.user._id, childids: this.currentchildUser }).then((response: any) => {
+    this.commonService.PostAPI(`plan/get/allplanselectbox`, { id: this.currentuser.user._id, childids: this.currentchildUser }).then((response: any) => {
       if (response.status) {
         this.plans = response.data;
 
@@ -112,7 +109,7 @@ export class PrioritizeComponent implements OnInit {
       plan_id: this.plan_id
     };
 
-    this.commonService.PostAPI(`${this.slug}goal/priority/changebyid`, data).then((response: any) => {
+    this.commonService.PostAPI(`goal/priority/changebyid`, data).then((response: any) => {
       if (response.status) {
         this.toastr.success(response.message, "Success");
         this.getgoal(this.plan_id);
@@ -131,7 +128,7 @@ export class PrioritizeComponent implements OnInit {
       this.dividearrayintothreepart = 0
     } else {
       this.plan_id = planid
-      this.commonService.PostAPI(`${this.slug}goal/getgoals/bypid`, { id: planid }).then((response: any) => {
+      this.commonService.PostAPI(`goal/getgoals/bypid`, { id: planid }).then((response: any) => {
         if (response.status) {
           this.goals = response.data;
           this.dividearrayintothreepart = 1
