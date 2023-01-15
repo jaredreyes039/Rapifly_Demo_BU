@@ -27,9 +27,6 @@ export class CountdownComponent implements OnInit {
   @ViewChild(DataTableDirective, { static: false })
   datatableElement: DataTableDirective;
 
-  // Use slug to connect w/ prod API
-  // Must end with /
-  slug = "https://lionfish-app-czku6.ondigitalocean.app/"
 
   constructor(
     private toastr: ToastrService,
@@ -56,7 +53,7 @@ export class CountdownComponent implements OnInit {
       this.currentparentUser = []
     }
     var children = this.currentchildUser.concat(this.currentparentUser); 
-    this.commonService.PostAPI(`${this.slug}plan/get/allplanselectbox`,{id:this.currentuser.user._id,childids:children} ).then((response: any) => {
+    this.commonService.PostAPI(`plan/get/allplanselectbox`,{id:this.currentuser.user._id,childids:children} ).then((response: any) => {
       if (response.status) {
          this.plans = response.data;
          console.log(this.plans);
@@ -106,7 +103,7 @@ export class CountdownComponent implements OnInit {
       status = 0;
     }
   
-    this.commonService.PostAPI(`${this.slug}goal/update/select`, {
+    this.commonService.PostAPI(`goal/update/select`, {
       select: status,
       id: goal_id
     }).then((response: any) => {
@@ -122,7 +119,7 @@ export class CountdownComponent implements OnInit {
   getgoal(planid){
     
     this.plan_id = planid
-    this.commonService.PostAPI(`${this.slug}goal/getgoals/bycountdown`,{id:planid} ).then((response: any) => {
+    this.commonService.PostAPI(`goal/getgoals/bycountdown`,{id:planid} ).then((response: any) => {
       if (response.status) {
          this.goals = response.data;
          this.goals.forEach((element1,index) => {

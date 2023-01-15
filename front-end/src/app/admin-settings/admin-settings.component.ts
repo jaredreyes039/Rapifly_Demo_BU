@@ -22,9 +22,7 @@ export class AdminSettingsComponent implements OnInit {
 
   avatarUrl: any = "";
 
-  // Use slug to connect w/ prod API
-  // Must end with /
-  slug = "https://lionfish-app-czku6.ondigitalocean.app/"
+
 
 
   constructor(
@@ -73,7 +71,7 @@ export class AdminSettingsComponent implements OnInit {
     var data = this.addsettingForm.value;
     data.user_id = this.currentUserId;
 
-    this.commonService.PostAPI(`${this.slug}users/save/delegationtimeout`, data).then((response: any) => {
+    this.commonService.PostAPI(`users/save/delegationtimeout`, data).then((response: any) => {
       if (response.status) {
         this.toastr.success(response.message, "Success");
         //this.getUserProfileDetails();

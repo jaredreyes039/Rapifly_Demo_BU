@@ -30,9 +30,7 @@ export class AddUserGroupsComponent implements OnInit {
   label: any = '';
   buttonLabel: any = '';
 
-  // Use slug to connect w/ prod API
-  // Must end with /
-  slug = "https://lionfish-app-czku6.ondigitalocean.app/"
+
 
   constructor(
     private toastr: ToastrService,
@@ -73,7 +71,7 @@ export class AddUserGroupsComponent implements OnInit {
   }
 
   getUserGroupById(id) {
-    this.commonService.PostAPI(`${this.slug}user_group/get/by/id`, { id: id }).then((response: any) => {
+    this.commonService.PostAPI(`user_group/get/by/id`, { id: id }).then((response: any) => {
       if (response.status) {
         if (response.data && response.data.group_members && response.data.user_group) {
           this.addUserGroupForm.setValue({
@@ -103,7 +101,7 @@ export class AddUserGroupsComponent implements OnInit {
 
   //Get users that assigned by designations
   getHierarchyUsers() {
-    this.commonService.PostAPI(`${this.slug}hierarchy/get/by/parent`, { parent_user_id: this.parent_user_id }).then((response: any) => {
+    this.commonService.PostAPI(`hierarchy/get/by/parent`, { parent_user_id: this.parent_user_id }).then((response: any) => {
       if (response.status) {
         if (response.data && response.data.length > 0) {
           var usersArr = [];
@@ -147,7 +145,7 @@ export class AddUserGroupsComponent implements OnInit {
         if (this.userGroupId) {
           data.id = this.userGroupId;
 
-          this.commonService.PostAPI(`${this.slug}user_group/update`, data).then((response: any) => {
+          this.commonService.PostAPI(`user_group/update`, data).then((response: any) => {
             if (response.status) {
               this.toastr.success(response.message, "Success");
               this.router.navigate(['/user-groups'])
@@ -159,7 +157,7 @@ export class AddUserGroupsComponent implements OnInit {
           data.parent_user_id = this.parent_user_id;
           data.user_id = this.currentUserId;
 
-          this.commonService.PostAPI(`${this.slug}user_group/create`, data).then((response: any) => {
+          this.commonService.PostAPI(`user_group/create`, data).then((response: any) => {
             if (response.status) {
               this.toastr.success(response.message, "Success");
               this.router.navigate(['/user-groups'])

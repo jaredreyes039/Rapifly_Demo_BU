@@ -33,10 +33,6 @@ export class UsersComponent implements OnInit {
   @ViewChild(DataTableDirective, { static: false })
   datatableElement: DataTableDirective;
 
-  // Use slug to connect w/ prod API
-  // Must end with /
-  slug = "https://lionfish-app-czku6.ondigitalocean.app/"
-
 
   constructor(
     private toastr: ToastrService,
@@ -73,7 +69,7 @@ export class UsersComponent implements OnInit {
 
   getUsers() {
     if (this.currentuser.role === 'Admin') {
-      this.commonService.PostAPI(`${this.slug}users/get/by/parent`, { parent_user_id: this.parent_user_id }).then((response: any) => {
+      this.commonService.PostAPI(`users/get/by/parent`, { parent_user_id: this.parent_user_id }).then((response: any) => {
         if (response.status) {
           this.users = response.data;
         } else {
@@ -91,7 +87,7 @@ export class UsersComponent implements OnInit {
         this.dataTableAfterViewInit();
       });
     } else if (this.currentuser.role === 'User') {
-      this.commonService.PostAPI(`${this.slug}users/get/invited`, { user_id: this.currentUserId }).then((response: any) => {
+      this.commonService.PostAPI(`users/get/invited`, { user_id: this.currentUserId }).then((response: any) => {
         if (response.status) {
           this.users = response.data;
         } else {
@@ -121,7 +117,7 @@ export class UsersComponent implements OnInit {
 
   getDesignations() {
     if (this.currentuser.role == "Admin") {
-      this.commonService.PostAPI(`${this.slug}hierarchy/get/designation`, { parent_user_id: this.parent_user_id }).then((response: any) => {
+      this.commonService.PostAPI(`hierarchy/get/designation`, { parent_user_id: this.parent_user_id }).then((response: any) => {
         if (response.status) {
           this.designations = response.data;
         } else {
@@ -129,7 +125,7 @@ export class UsersComponent implements OnInit {
         }
       });
     } else if (this.currentuser.role == "User") {
-      this.commonService.PostAPI(`${this.slug}hierarchy/get/child/designation`, { user_id: this.currentUserId }).then((response: any) => {
+      this.commonService.PostAPI(`hierarchy/get/child/designation`, { user_id: this.currentUserId }).then((response: any) => {
         if (response.status) {
           this.designations = response.data;
         } else {
@@ -148,7 +144,7 @@ export class UsersComponent implements OnInit {
       status = 0;
     }
 
-    this.commonService.PostAPI(`${this.slug}users/update/status`, { id: id, status: status }).then((response: any) => {
+    this.commonService.PostAPI(`users/update/status`, { id: id, status: status }).then((response: any) => {
       if (response.status) {
         this.toastr.success(response.message, 'Success');
       } else {
@@ -181,7 +177,7 @@ export class UsersComponent implements OnInit {
       data.user_id = this.changeRequestUser.user._id;
       data.parent_user_id = this.parent_user_id;
 
-      this.commonService.PostAPI(`${this.slug}hierarchy/change/user/designation`, data).then((response: any) => {
+      this.commonService.PostAPI(`hierarchy/change/user/designation`, data).then((response: any) => {
         if (response.status) {
           this.resetTable();
           this.toastr.success(response.message, "Success");

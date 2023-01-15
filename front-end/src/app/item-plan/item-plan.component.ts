@@ -122,9 +122,6 @@ export class ItemPlanComponent implements OnInit {
 
   actionPlanId: any;
 
-  // Use slug to connect w/ prod API
-  // Must end with /
-  slug = "https://lionfish-app-czku6.ondigitalocean.app/"
 
 
   constructor(
@@ -236,7 +233,7 @@ export class ItemPlanComponent implements OnInit {
       if (this.selectedGoal && this.selectedGoal._id == response.goal_id) {
         var goal_chat_id = response._id;
 
-        this.commonService.PostAPI(`${this.slug}goal/get/single/chat`, { _id: goal_chat_id }).then((response: any) => {
+        this.commonService.PostAPI(`goal/get/single/chat`, { _id: goal_chat_id }).then((response: any) => {
           if (response.status && response.data) {
             this.userGoalChats.push(response.data);
             this.ref.detectChanges(); //This function will detect change in array and send it to html side.
@@ -255,7 +252,7 @@ export class ItemPlanComponent implements OnInit {
       if (this.selectedStrategy && this.selectedStrategy._id == response.strategy_id) {
         var chat_id = response._id;
 
-        this.commonService.PostAPI(`${this.slug}goal/strategy/get/single/chat`, { _id: chat_id }).then((response: any) => {
+        this.commonService.PostAPI(`goal/strategy/get/single/chat`, { _id: chat_id }).then((response: any) => {
           if (response.status && response.data) {
             this.userStrategyChats.push(response.data);
             this.ref.detectChanges(); //This function will detect change in array and send it to html side.
@@ -274,7 +271,7 @@ export class ItemPlanComponent implements OnInit {
       if (this.challangeDetails && this.challangeDetails._id == response.challange_id) {
         var chat_id = response._id;
 
-        this.commonService.PostAPI(`${this.slug}plan/challange/get/single/chat`, { _id: chat_id }).then((response: any) => {
+        this.commonService.PostAPI(`plan/challange/get/single/chat`, { _id: chat_id }).then((response: any) => {
           if (response.status && response.data) {
             this.userChallangeChats.push(response.data);
             this.ref.detectChanges(); //This function will detect change in array and send it to html side.
@@ -343,7 +340,7 @@ export class ItemPlanComponent implements OnInit {
       // data.created_at = new Date()
       data.start_date = $('#date-input1').val();
       data.end_date = $('#date-input2').val()
-      this.commonService.PostAPI(`${this.slug}plan/create/parent`, data).then((response: any) => {
+      this.commonService.PostAPI(`plan/create/parent`, data).then((response: any) => {
         if (response.status) {
           $("#myModal").modal('hide');
           this.toastr.success(response.message, "Success");
@@ -359,7 +356,7 @@ export class ItemPlanComponent implements OnInit {
   }
 
   getallplan() {
-    this.commonService.GetAPI(`${this.slug}plan/get/allplan`, { id: this.currentuser.user._id }).then((response: any) => {
+    this.commonService.GetAPI(`plan/get/allplan`, { id: this.currentuser.user._id }).then((response: any) => {
       if (response.status) {
         this.plans = response.data;
         this.dtTrigger.next();
@@ -373,7 +370,7 @@ export class ItemPlanComponent implements OnInit {
 
   getallplan2() {
 
-    this.commonService.GetAPI(`${this.slug}plan/get/allplan`, { id: this.currentuser.user._id }).then((response: any) => {
+    this.commonService.GetAPI(`plan/get/allplan`, { id: this.currentuser.user._id }).then((response: any) => {
       if (response.status) {
         this.plans = response.data;
       } else {
@@ -411,7 +408,7 @@ export class ItemPlanComponent implements OnInit {
       status = 1;
     }
 
-    this.commonService.PostAPI(`${this.slug}plan/update/status`, {
+    this.commonService.PostAPI(`plan/update/status`, {
       status: status,
       id: plan_id
     }).then((response: any) => {
@@ -455,7 +452,7 @@ export class ItemPlanComponent implements OnInit {
       data.id = this.editedplan._id;
       data.start_date = $('#date-input3').val();
       data.end_date = $('#date-input4').val()
-      this.commonService.PostAPI(`${this.slug}plan/update`, data).then((response: any) => {
+      this.commonService.PostAPI(`plan/update`, data).then((response: any) => {
         if (response.status) {
           $("#editplanModal").modal('hide');
           this.toastr.success(response.message, "Success");
@@ -473,7 +470,7 @@ export class ItemPlanComponent implements OnInit {
     this.selectedGoal = '';
     this.selectedStrategy = '';
 
-    this.commonService.PostAPI(`${this.slug}plan/get`, { id: planDetails._id }).then((response: any) => {
+    this.commonService.PostAPI(`plan/get`, { id: planDetails._id }).then((response: any) => {
       if (response.status && response.data) {
         this.sharedPlanDetails = response.data;
 
@@ -524,7 +521,7 @@ export class ItemPlanComponent implements OnInit {
 
   //Get all user groups of current logged-in user
   getUserGroups() {
-    this.commonService.PostAPI(`${this.slug}user_group/get/by/user`, { user_id: this.currentUserId }).then((response: any) => {
+    this.commonService.PostAPI(`user_group/get/by/user`, { user_id: this.currentUserId }).then((response: any) => {
       if (response.status) {
         this.userGroups = response.data;
       } else {
@@ -583,7 +580,7 @@ export class ItemPlanComponent implements OnInit {
       shared_plan_to_users: users,
     };
 
-    this.commonService.PostAPI(`${this.slug}plan/update/users/details`, data).then((response: any) => {
+    this.commonService.PostAPI(`plan/update/users/details`, data).then((response: any) => {
       if (response.status) {
         this.toastr.success(response.message, "Success");
       } else {
@@ -594,7 +591,7 @@ export class ItemPlanComponent implements OnInit {
 
   //Get users that assigned by designations
   getHierarchyUsers() {
-    this.commonService.PostAPI(`${this.slug}users/get/all`, { parent_user_id: this.parent_user_id, user_id: this.currentUserId }).then((response: any) => {
+    this.commonService.PostAPI(`users/get/all`, { parent_user_id: this.parent_user_id, user_id: this.currentUserId }).then((response: any) => {
       if (response.status) {
         if (response.data && response.data.length > 0) {
           var usersArr = [];
@@ -631,12 +628,12 @@ export class ItemPlanComponent implements OnInit {
 
   //Change and modify Plan Description
   updatePlanDescription(e) {
-    this.commonService.PostAPI(`${this.slug}plan/change/description`, { id: this.sharedPlanDetails._id, description: e.target.value }).then();
+    this.commonService.PostAPI(`plan/change/description`, { id: this.sharedPlanDetails._id, description: e.target.value }).then();
   }
 
   //Change and modify Plan Motivation
   updatePlanMotivation(e) {
-    this.commonService.PostAPI(`${this.slug}plan/change/motivation`, { id: this.sharedPlanDetails._id, motivation: e.target.value }).then();
+    this.commonService.PostAPI(`plan/change/motivation`, { id: this.sharedPlanDetails._id, motivation: e.target.value }).then();
   }
 
   //Upload plan attachment
@@ -653,7 +650,7 @@ export class ItemPlanComponent implements OnInit {
     formData.append('plan_id', this.sharedPlanDetails._id);
     formData.append('user_id', this.currentUserId);
 
-    this.commonService.PostAPI(`${this.slug}plan/store/attachments`, formData).then((response: any) => {
+    this.commonService.PostAPI(`plan/store/attachments`, formData).then((response: any) => {
       if (response.status) {
         this.getPlanAttachment();
         this.toastr.success(response.message, "Success");
@@ -666,7 +663,7 @@ export class ItemPlanComponent implements OnInit {
   getPlanAttachment() {
     var plan_id = this.sharedPlanDetails._id;
 
-    this.commonService.PostAPI(`${this.slug}plan/get/attachments`, { plan_id: plan_id }).then((response: any) => {
+    this.commonService.PostAPI(`plan/get/attachments`, { plan_id: plan_id }).then((response: any) => {
       if (response.status) {
         if (response.data && response.data.length > 0) {
           this.planAttachments = response.data;
@@ -685,7 +682,7 @@ export class ItemPlanComponent implements OnInit {
   }
 
   confirmRemoveAttachment() {
-    this.commonService.PostAPI(`${this.slug}plan/attachments/delete`, { plan_attachment_id: this.delete_plan_attachment_id }).then((response: any) => {
+    this.commonService.PostAPI(`plan/attachments/delete`, { plan_attachment_id: this.delete_plan_attachment_id }).then((response: any) => {
       if (response.status) {
         this.getPlanAttachment();
         $("#deleteAttachmentConfirm").modal('hide');
@@ -751,7 +748,7 @@ export class ItemPlanComponent implements OnInit {
 
   //Get chat message details plan wise
   getChatMessageDetails() {
-    this.commonService.PostAPI(`${this.slug}plan/get/chat`, { plan_id: this.sharedPlanDetails._id }).then((response: any) => {
+    this.commonService.PostAPI(`plan/get/chat`, { plan_id: this.sharedPlanDetails._id }).then((response: any) => {
       if (response.status && response.data && response.data.length > 0) {
         this.userPlanChats = response.data;
 
@@ -836,7 +833,7 @@ export class ItemPlanComponent implements OnInit {
   getPlanGoals() {
     var plan_id = this.sharedPlanDetails._id;
 
-    this.commonService.PostAPI(`${this.slug}goal/get/by/plan`, { plan_id: plan_id }).then((response: any) => {
+    this.commonService.PostAPI(`goal/get/by/plan`, { plan_id: plan_id }).then((response: any) => {
       if (response.status && response.data && response.data.length > 0) {
         this.goalDetails = response.data;
       } else {
@@ -844,7 +841,7 @@ export class ItemPlanComponent implements OnInit {
       }
     });
 
-    this.commonService.PostAPI(`${this.slug}goal/get/strategies`, { plan_id: plan_id }).then((response: any) => {
+    this.commonService.PostAPI(`goal/get/strategies`, { plan_id: plan_id }).then((response: any) => {
       if (response.status && response.data && response.data.length > 0) {
         this.strategiesDetails = response.data;
       } else {
@@ -896,7 +893,7 @@ export class ItemPlanComponent implements OnInit {
 
     this.goalAndChildGoals = goalNavArr;
 
-    this.commonService.PostAPI(`${this.slug}goal/get/by/id`, { goal_id: goal.id }).then((response: any) => {
+    this.commonService.PostAPI(`goal/get/by/id`, { goal_id: goal.id }).then((response: any) => {
       if (response.status && response.data) {
         // Close goal modal
         this.isOpenGoalModal = false;
@@ -934,7 +931,7 @@ export class ItemPlanComponent implements OnInit {
 
     formData.append('goal_id', this.selectedGoal._id);
 
-    this.commonService.PostAPI(`${this.slug}goal/store/attachments`, formData).then((response: any) => {
+    this.commonService.PostAPI(`goal/store/attachments`, formData).then((response: any) => {
       if (response.status) {
         this.getGoalAttachments(this.selectedGoal._id);
         this.toastr.success(response.message, "Success");
@@ -946,7 +943,7 @@ export class ItemPlanComponent implements OnInit {
 
   //Get Goal Attachments
   getGoalAttachments(goal_id) {
-    this.commonService.PostAPI(`${this.slug}goal/get/attachments`, { goal_id: goal_id }).then((response: any) => {
+    this.commonService.PostAPI(`goal/get/attachments`, { goal_id: goal_id }).then((response: any) => {
       if (response.status) {
         this.goalAttachments = response.data;
       } else {
@@ -957,7 +954,7 @@ export class ItemPlanComponent implements OnInit {
 
   //Delete goal attachment
   deleteGoalAttachment(goal_attachment_id, goal_id) {
-    this.commonService.PostAPI(`${this.slug}goal/attachments/delete`, { goal_attachment_id: goal_attachment_id }).then((response: any) => {
+    this.commonService.PostAPI(`goal/attachments/delete`, { goal_attachment_id: goal_attachment_id }).then((response: any) => {
       if (response.status) {
         this.getGoalAttachments(goal_id)
         this.toastr.success(response.message, "Success");
@@ -1001,7 +998,7 @@ export class ItemPlanComponent implements OnInit {
 
   //Get chat message details plan wise
   getGoalChatMessageDetails() {
-    this.commonService.PostAPI(`${this.slug}goal/get/chat`, { goal_id: this.selectedGoal._id }).then((response: any) => {
+    this.commonService.PostAPI(`goal/get/chat`, { goal_id: this.selectedGoal._id }).then((response: any) => {
       if (response.status && response.data && response.data.length > 0) {
         this.userGoalChats = response.data;
 
@@ -1082,7 +1079,7 @@ export class ItemPlanComponent implements OnInit {
             data.controls = this.goalControls;
 
             if (this.planItemType && this.planItemType == 'goal') {
-              url = `${this.slug}goal/create`;
+              url = `goal/create`;
 
               if (this.selectedGoal && this.selectedGoal != null && this.selectedGoal._id) {
                 data.parent_goal_id = this.selectedGoal._id;
@@ -1090,7 +1087,7 @@ export class ItemPlanComponent implements OnInit {
             }
 
             if (this.planItemType && this.planItemType == 'strategy') {
-              url = `${this.slug}goal/create/strategy`;
+              url = `goal/create/strategy`;
             }
 
             this.commonService.PostAPI(url, data).then((response: any) => {
@@ -1296,7 +1293,7 @@ export class ItemPlanComponent implements OnInit {
 
     formData.append('strategy_id', this.selectedStrategy._id);
 
-    this.commonService.PostAPI(`${this.slug}goal/strategy/store/attachments`, formData).then((response: any) => {
+    this.commonService.PostAPI(`goal/strategy/store/attachments`, formData).then((response: any) => {
       if (response.status) {
         this.getStrategyAttachments(this.selectedStrategy._id);
         this.toastr.success(response.message, "Success");
@@ -1308,7 +1305,7 @@ export class ItemPlanComponent implements OnInit {
 
   //Get Strategy Attachments
   getStrategyAttachments(strategy_id) {
-    this.commonService.PostAPI(`${this.slug}goal/strategy/get/attachments`, { strategy_id: strategy_id }).then((response: any) => {
+    this.commonService.PostAPI(`goal/strategy/get/attachments`, { strategy_id: strategy_id }).then((response: any) => {
       if (response.status) {
         this.strategyAttachments = response.data;
       } else {
@@ -1319,7 +1316,7 @@ export class ItemPlanComponent implements OnInit {
 
   //Delete Strategy attachment
   deleteStrategyAttachment(strategy_attachment_id, strategy_id) {
-    this.commonService.PostAPI(`${this.slug}goal/strategy/attachments/delete`, { strategy_attachment_id: strategy_attachment_id }).then((response: any) => {
+    this.commonService.PostAPI(`goal/strategy/attachments/delete`, { strategy_attachment_id: strategy_attachment_id }).then((response: any) => {
       if (response.status) {
         this.getStrategyAttachments(strategy_id)
         this.toastr.success(response.message, "Success");
@@ -1384,7 +1381,7 @@ export class ItemPlanComponent implements OnInit {
 
   //Get strategy chat messages
   getStrategyChatMessageDetails() {
-    this.commonService.PostAPI(`${this.slug}goal/strategy/get/chat`, { strategy_id: this.selectedStrategy._id }).then((response: any) => {
+    this.commonService.PostAPI(`goal/strategy/get/chat`, { strategy_id: this.selectedStrategy._id }).then((response: any) => {
       if (response.status && response.data && response.data.length > 0) {
         this.userStrategyChats = response.data;
 
@@ -1400,7 +1397,7 @@ export class ItemPlanComponent implements OnInit {
   }
 
   getChildGoals(parent_goal_id) {
-    this.commonService.PostAPI(`${this.slug}goal/get/childs`, { parent_goal_id: parent_goal_id }).then((response: any) => {
+    this.commonService.PostAPI(`goal/get/childs`, { parent_goal_id: parent_goal_id }).then((response: any) => {
       if (response.status && response.data && response.data.length > 0) {
         this.childGoals = response.data;
       } else {
@@ -1426,7 +1423,7 @@ export class ItemPlanComponent implements OnInit {
       data.plan_id = this.sharedPlanDetails._id;
       data.user_id = this.currentUserId;
 
-      this.commonService.PostAPI(`${this.slug}plan/store/opportunity/problem`, data).then((response: any) => {
+      this.commonService.PostAPI(`plan/store/opportunity/problem`, data).then((response: any) => {
         if (response.status) {
           this.toastr.success(response.message, "Success");
 
@@ -1444,7 +1441,7 @@ export class ItemPlanComponent implements OnInit {
   }
 
   getOpportunityAndProblem() {
-    this.commonService.PostAPI(`${this.slug}plan/get/opportunity/problem`, { plan_id: this.sharedPlanDetails._id }).then((response: any) => {
+    this.commonService.PostAPI(`plan/get/opportunity/problem`, { plan_id: this.sharedPlanDetails._id }).then((response: any) => {
       if (response.status && response.data && response.data.length > 0) {
         this.opportunityProblems = response.data;
 
@@ -1488,7 +1485,7 @@ export class ItemPlanComponent implements OnInit {
 
     formData.append('challange_id', this.challangeDetails._id);
 
-    this.commonService.PostAPI(`${this.slug}plan/challange/store/attachments`, formData).then((response: any) => {
+    this.commonService.PostAPI(`plan/challange/store/attachments`, formData).then((response: any) => {
       if (response.status) {
         this.getChallangeAttachments(this.challangeDetails._id);
         this.toastr.success(response.message, "Success");
@@ -1500,7 +1497,7 @@ export class ItemPlanComponent implements OnInit {
 
   //Get Challange Attachments
   getChallangeAttachments(challange_id) {
-    this.commonService.PostAPI(`${this.slug}plan/challange/get/attachments`, { challange_id: challange_id }).then((response: any) => {
+    this.commonService.PostAPI(`plan/challange/get/attachments`, { challange_id: challange_id }).then((response: any) => {
       if (response.status) {
         this.challangeAttachments = response.data;
       } else {
@@ -1511,7 +1508,7 @@ export class ItemPlanComponent implements OnInit {
 
   //Delete Challange attachment
   deleteChallangeAttachment(challange_attachment_id, challange_id) {
-    this.commonService.PostAPI(`${this.slug}plan/challange/attachments/delete`, { challange_attachment_id: challange_attachment_id }).then((response: any) => {
+    this.commonService.PostAPI(`plan/challange/attachments/delete`, { challange_attachment_id: challange_attachment_id }).then((response: any) => {
       if (response.status) {
         this.getChallangeAttachments(challange_id)
         this.toastr.success(response.message, "Success");
@@ -1576,7 +1573,7 @@ export class ItemPlanComponent implements OnInit {
 
   //Get strategy chat messages
   getChallangeChatMessageDetails() {
-    this.commonService.PostAPI(`${this.slug}plan/challange/get/chat`, { challange_id: this.challangeDetails._id }).then((response: any) => {
+    this.commonService.PostAPI(`plan/challange/get/chat`, { challange_id: this.challangeDetails._id }).then((response: any) => {
       if (response.status && response.data && response.data.length > 0) {
         this.userChallangeChats = response.data;
 

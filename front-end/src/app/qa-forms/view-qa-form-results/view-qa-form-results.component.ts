@@ -34,9 +34,6 @@ export class ViewQaFormResultsComponent implements OnInit {
   totalAnswers: Number = 0;
   reports: any = [];
 
-  // Use slug to connect w/ prod API
-  // Must end with /
-  slug = "https://lionfish-app-czku6.ondigitalocean.app/"
 
   constructor(
     private toastr: ToastrService,
@@ -61,7 +58,7 @@ export class ViewQaFormResultsComponent implements OnInit {
   }
 
   getFormDetails(form_id) {
-    this.commonService.PostAPI(`${this.slug}qa/get/form/by/id`, { form_id: form_id }).then((response: any) => {
+    this.commonService.PostAPI(`qa/get/form/by/id`, { form_id: form_id }).then((response: any) => {
       if (response.status) {
         this.formDetail = response.data;
         this.getFormResultList();
@@ -73,7 +70,7 @@ export class ViewQaFormResultsComponent implements OnInit {
   }
 
   getFormResultList() {
-    this.commonService.PostAPI(`${this.slug}qa/form/list`, { form_name: this.formDetail.form_name }).then((response: any) => {
+    this.commonService.PostAPI(`qa/form/list`, { form_name: this.formDetail.form_name }).then((response: any) => {
       if (response.status && response.data && response.data.length > 0) {
         this.formResults = response.data;
         this.tableKeys = this.formResults[0];
@@ -101,7 +98,7 @@ export class ViewQaFormResultsComponent implements OnInit {
   }
 
   getReports(){
-    this.commonService.PostAPI(`${this.slug}qa/form/get/report`, { form_name: this.formDetail.form_name }).then((response: any) => {
+    this.commonService.PostAPI(`qa/form/get/report`, { form_name: this.formDetail.form_name }).then((response: any) => {
       console.log(response.data);
       if(response.data && response.data.length > 0){
         this.reports = response.data;

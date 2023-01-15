@@ -31,9 +31,6 @@ export class ListComponent implements OnInit {
   @ViewChild(DataTableDirective, { static: false })
   datatableElement: DataTableDirective;
 
-  // Use slug to connect w/ prod API
-  // Must end with /
-  slug = "https://lionfish-app-czku6.ondigitalocean.app/"
 
   constructor(
     private toastr: ToastrService,
@@ -68,7 +65,7 @@ export class ListComponent implements OnInit {
   }
 
   getUsers() {
-    this.commonService.PostAPI(`${this.slug}coach/get/all`, {}).then((response: any) => {
+    this.commonService.PostAPI(`coach/get/all`, {}).then((response: any) => {
       if (response.status) {
         this.users = response.data;
       } else {
@@ -117,7 +114,7 @@ export class ListComponent implements OnInit {
     } else {
       var data = this.searchCoachesForm.value;
 
-      this.commonService.PostAPI(`${this.slug}coach/filter`, data).then((response: any) => {
+      this.commonService.PostAPI(`coach/filter`, data).then((response: any) => {
         if (response.status) {
           this.users = response.data;
         } else {

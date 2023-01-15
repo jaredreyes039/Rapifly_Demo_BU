@@ -34,9 +34,7 @@ export class ImproveComponent implements OnInit {
   golaplanname;
   goalplanid;
 
-  // Use slug to connect w/ prod API
-  // Must end with /
-  slug = "https://lionfish-app-czku6.ondigitalocean.app/"
+
 
   constructor(
     private toastr: ToastrService,
@@ -78,7 +76,7 @@ export class ImproveComponent implements OnInit {
       this.currentparentUser = []
     }
     var children = this.currentchildUser.concat(this.currentparentUser);
-    this.commonService.PostAPI(`${this.slug}plan/get/allplanselectbox`, { id: this.currentuser.user._id, childids: children }).then((response: any) => {
+    this.commonService.PostAPI(`plan/get/allplanselectbox`, { id: this.currentuser.user._id, childids: children }).then((response: any) => {
       if (response.status) {
         this.plans = response.data;
       } else {
@@ -93,7 +91,7 @@ export class ImproveComponent implements OnInit {
 
     } else {
       this.plan_id = planid;
-      this.commonService.PostAPI(`${this.slug}plan/get/by/id2`, { plan_id: this.plan_id }).then((response: any) => {
+      this.commonService.PostAPI(`plan/get/by/id2`, { plan_id: this.plan_id }).then((response: any) => {
         if (response.status) {
           this.parentplanDetails = response.data;
           this.goalplanid = this.parentplanDetails[0]._id;
@@ -132,7 +130,7 @@ export class ImproveComponent implements OnInit {
             data.start_date = $('#date-input1').val();
             data.end_date = $('#date-input2').val();
 
-            this.commonService.PostAPI(`${this.slug}goal/create`, data).then((response: any) => {
+            this.commonService.PostAPI(`goal/create`, data).then((response: any) => {
               if (response.status) {
                 this.toastr.success(response.message, "Success");
                 this.ImprovePlanForm.reset();

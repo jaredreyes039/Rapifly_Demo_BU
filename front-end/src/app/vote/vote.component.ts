@@ -26,9 +26,6 @@ export class VoteComponent implements OnInit {
   @ViewChild(DataTableDirective, { static: false })
   datatableElement: DataTableDirective;
 
-  // Use slug to connect w/ prod API
-  // Must end with /
-  slug = "https://lionfish-app-czku6.ondigitalocean.app/"
 
   constructor(
     private toastr: ToastrService,
@@ -61,7 +58,7 @@ export class VoteComponent implements OnInit {
     }
     var children = this.currentchildUser.concat(this.currentparentUser);
     this.commonService
-      .PostAPI(`${this.slug}plan/get/allplanselectbox`, {
+      .PostAPI(`plan/get/allplanselectbox`, {
         id: this.currentuser.user._id,
         childids: children
       })
@@ -103,7 +100,7 @@ export class VoteComponent implements OnInit {
   }
   changevote(id, change) {
     this.commonService
-      .PostAPI(`${this.slug}goal/voteupdown/byid`, {
+      .PostAPI(`goal/voteupdown/byid`, {
         id: id,
         userid: this.currentuser.user._id,
         vote: change
@@ -121,7 +118,7 @@ export class VoteComponent implements OnInit {
   getgoal(planid) {
     this.plan_id = planid;
     this.commonService
-      .PostAPI(`${this.slug}goal/getgoals/byvote`, { id: planid })
+      .PostAPI(`goal/getgoals/byvote`, { id: planid })
       .then((response: any) => {
         if (response.status) {
           this.goals = response.data;
@@ -151,7 +148,7 @@ export class VoteComponent implements OnInit {
     }
 
     this.commonService
-      .PostAPI(`${this.slug}goal/getgoals/byvote/all/plans`, { planIds: planIds })
+      .PostAPI(`goal/getgoals/byvote/all/plans`, { planIds: planIds })
       .then((response: any) => {
         if (response.status) {
           this.goals = response.data;
