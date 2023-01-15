@@ -16,6 +16,10 @@ export class SignupComponent implements OnInit {
 
   userRoles: any = [];
 
+  // Use slug to connect w/ prod API
+  // Must end with /
+  slug = "https://lionfish-app-czku6.ondigitalocean.app/"
+
   constructor(
     private toastr: ToastrService,
     public router: Router,
@@ -31,7 +35,7 @@ export class SignupComponent implements OnInit {
 
   //Get role of user, if invite user then it's role is user and if not then it's role is admin.
   getRole(role_name) {
-    this.commonService.PostAPI('role/get', { role_name: role_name }).then((response: any) => {
+    this.commonService.PostAPI(`${this.slug}role/get`, { role_name: role_name }).then((response: any) => {
       if (response && response.data) {
         this.userRoles = response.data;
       }
@@ -40,7 +44,7 @@ export class SignupComponent implements OnInit {
 
   //Check if user is invite or not.
   checkUser(email) {
-    this.commonService.PostAPI('users/check/user', { email: email }).then((response: any) => {
+    this.commonService.PostAPI(`${this.slug}users/check/user`, { email: email }).then((response: any) => {
       var role_name = "";
       if (response && response.data && response.data.length > 0) {
         role_name = "User";
@@ -74,7 +78,7 @@ export class SignupComponent implements OnInit {
       var data = this.signupForm.value;
       data.role_id = this.userRoles._id;
 
-      this.commonService.PostAPI('users/create', data).then((response: any) => {
+      this.commonService.PostAPI(`${this.slug}users/create`, data).then((response: any) => {
         if (response.status) {
           this.toastr.success("You account has been created successfully..", "Success");
           this.router.navigate(['/sign-in']);

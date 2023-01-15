@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
-  apiUrl: 'http://18.217.235.91:3000/',
-  socketUrl: 'http://18.217.235.91:4000/',
+  apiUrl: 'https://lionfish-app-czku6.ondigitalocean.app/',
+  socketUrl: 'https://lionfish-app-czku6.ondigitalocean.app:4000/',
 };

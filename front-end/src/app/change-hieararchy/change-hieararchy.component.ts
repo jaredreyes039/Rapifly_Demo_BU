@@ -27,6 +27,10 @@ export class ChangeHieararchyComponent implements OnInit {
   items = [];
   selected = [];
 
+  // Use slug to connect w/ prod API
+  // Must end with /
+  slug = "https://lionfish-app-czku6.ondigitalocean.app/"
+
   constructor(
     private toastr: ToastrService,
     public authenticationService: AuthenticationService,
@@ -58,7 +62,7 @@ export class ChangeHieararchyComponent implements OnInit {
 
   //Get users that assigned by designations
   getHierarchyUsers() {
-    this.commonService.PostAPI('hierarchy/get/by/parent', { parent_user_id: this.parent_user_id }).then((response: any) => {
+    this.commonService.PostAPI(`${this.slug}hierarchy/get/by/parent`, { parent_user_id: this.parent_user_id }).then((response: any) => {
       if (response.status) {
         this.users = response.data;
       } else {
@@ -68,7 +72,7 @@ export class ChangeHieararchyComponent implements OnInit {
   }
 
   getDesignations() {
-    this.commonService.PostAPI('hierarchy/get/designation', { parent_user_id: this.parent_user_id }).then((response: any) => {
+    this.commonService.PostAPI(`${this.slug}hierarchy/get/designation`, { parent_user_id: this.parent_user_id }).then((response: any) => {
       if (response.status && response.data && response.data.length > 0) {
         this.items = response.data;  
       } else {
@@ -105,7 +109,7 @@ export class ChangeHieararchyComponent implements OnInit {
       data.parent_hierarchy_id = this.hierarchy_id;
       data.assign_designations = this.selected;
 
-      this.commonService.PostAPI('hierarchy/update', data).then((response: any) => {
+      this.commonService.PostAPI(`${this.slug}hierarchy/update`, data).then((response: any) => {
         if (response.status) {
           this.hierarchyForm.reset();
           this.isHierarchyFormValid = false;

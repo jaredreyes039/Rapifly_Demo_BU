@@ -25,6 +25,11 @@ export class SelectedVoteComponent implements OnInit {
   currentparentUser;
   @ViewChild(DataTableDirective, { static: false })
   datatableElement: DataTableDirective;
+
+  // Use slug to connect w/ prod API
+  // Must end with /
+  slug = "https://lionfish-app-czku6.ondigitalocean.app/"
+
   constructor(
     private toastr: ToastrService,
     public authenticationService: AuthenticationService,
@@ -44,7 +49,7 @@ export class SelectedVoteComponent implements OnInit {
 
   getallplan() {
     this.currentparentUser = JSON.parse(window.localStorage.getItem("currentparentUser"));
-    this.commonService.PostAPI('plan/get/allplanselectbox', { id: this.currentuser.user._id, childids: this.currentchildUser }).then((response: any) => {
+    this.commonService.PostAPI(`${this.slug}plan/get/allplanselectbox`, { id: this.currentuser.user._id, childids: this.currentchildUser }).then((response: any) => {
       if (response.status) {
         this.plans = response.data;
         // this.getGoalByPlans();
@@ -83,7 +88,7 @@ export class SelectedVoteComponent implements OnInit {
       this.dtTrigger.next();
     } else {
       this.plan_id = planid;
-      this.commonService.PostAPI('plan/get/by/id2', { plan_id: this.plan_id }).then((response: any) => {
+      this.commonService.PostAPI(`${this.slug}plan/get/by/id2`, { plan_id: this.plan_id }).then((response: any) => {
         if (response.status) {
           this.plansecurity = response.data[0].security
         } else {
@@ -103,7 +108,7 @@ export class SelectedVoteComponent implements OnInit {
     } else {
       status = 0;
     }
-    this.commonService.PostAPI('goal/update/select', {
+    this.commonService.PostAPI(`${this.slug}goal/update/select`, {
       select: status,
       id: goal_id,
       security: this.plansecurity
@@ -120,7 +125,7 @@ export class SelectedVoteComponent implements OnInit {
   getgoal(planid) {
 
     this.plan_id = planid
-    this.commonService.PostAPI('goal/getgoals/byvote', { id: planid }).then((response: any) => {
+    this.commonService.PostAPI(`${this.slug}goal/getgoals/byvote`, { id: planid }).then((response: any) => {
       if (response.status) {
         this.goals = response.data;
         this.dividearrayintothreepart = 1
@@ -139,7 +144,7 @@ export class SelectedVoteComponent implements OnInit {
       planIds = this.plans.map(data => data._id);
     }
 
-    this.commonService.PostAPI('goal/getgoals/byvote/all/plans', { planIds: planIds }).then((response: any) => {
+    this.commonService.PostAPI(`${this.slug}goal/getgoals/byvote/all/plans`, { planIds: planIds }).then((response: any) => {
       if (response.status) {
         this.goals = response.data;
         this.dividearrayintothreepart = 1

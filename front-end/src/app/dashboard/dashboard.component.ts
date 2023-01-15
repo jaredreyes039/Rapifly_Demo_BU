@@ -49,6 +49,10 @@ export class DashboardComponent implements OnInit {
     }
   ];
 
+  // Use slug to connect w/ prod API
+  // Must end with /
+  slug = "https://lionfish-app-czku6.ondigitalocean.app/"
+
   constructor(
     public authService: AuthenticationService,
     public router: Router,
@@ -64,7 +68,7 @@ export class DashboardComponent implements OnInit {
 
   getGoalsSummaryDetails() {
     if (this.currentuser.role == "Admin") {
-      this.commonService.PostAPI('goal/get/report/by/admin', { user_id: this.currentUserId }).then((response: any) => {
+      this.commonService.PostAPI(`${this.slug}goal/get/report/by/admin`, { user_id: this.currentUserId }).then((response: any) => {
         if (response.status) {
           this.goalReport = response.data;
 
@@ -81,7 +85,7 @@ export class DashboardComponent implements OnInit {
         }
       });
     } else if (this.currentuser.role == "User") {
-      this.commonService.PostAPI('goal/get/report', { user_id: this.currentUserId }).then((response: any) => {
+      this.commonService.PostAPI(`${this.slug}goal/get/report`, { user_id: this.currentUserId }).then((response: any) => {
         if (response.status) {
           this.goalReport = response.data;
 

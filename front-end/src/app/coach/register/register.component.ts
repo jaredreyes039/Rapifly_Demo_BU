@@ -14,6 +14,10 @@ export class RegisterComponent implements OnInit {
   signupForm: FormGroup;
   sigup_submitted = false;
 
+  // Use slug to connect w/ prod API
+  // Must end with /
+  slug = "https://lionfish-app-czku6.ondigitalocean.app/"
+
   constructor(
     private toastr: ToastrService,
     public router: Router,
@@ -46,7 +50,7 @@ export class RegisterComponent implements OnInit {
     } else {
       var data = this.signupForm.value;
 
-      this.commonService.PostAPI('coach/register', data).then((response: any) => {
+      this.commonService.PostAPI(`${this.slug}coach/register`, data).then((response: any) => {
         if (response.status) {
           this.sigup_submitted = false;
           this.signupForm.reset();

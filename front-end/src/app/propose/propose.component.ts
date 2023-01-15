@@ -26,6 +26,11 @@ export class ProposeComponent implements OnInit {
   plan_id;
   currentparentUser;
   currentchildUser;
+
+  // Use slug to connect w/ prod API
+  // Must end with /
+  slug = "https://lionfish-app-czku6.ondigitalocean.app/"
+
   constructor(
     private toastr: ToastrService,
     public authenticationService: AuthenticationService,
@@ -56,7 +61,7 @@ export class ProposeComponent implements OnInit {
     }
     var children = this.currentchildUser.concat(this.currentparentUser);
     this.commonService
-      .PostAPI("plan/get/allplanselectbox", {
+      .PostAPI(`${this.slug}plan/get/allplanselectbox`, {
         id: this.currentuser.user._id,
         childids: this.currentchildUser
       })
@@ -78,11 +83,11 @@ export class ProposeComponent implements OnInit {
       this.dividearrayintothreepart = 0;
     } else {
       this.plan_id = planid;
-      this.commonService.PostAPI("plan/get/by/id2", { plan_id: planid }).then((response: any) => {
+      this.commonService.PostAPI(`${this.slug}plan/get/by/id2`, { plan_id: planid }).then((response: any) => {
         if (response.status) {
           if (response.data[0].user_id._id == this.currentuser.user._id) {
 
-            this.commonService.PostAPI('propose/get/goal/by/plan', { plan_id: planid, user_id: this.currentuser.user._id }).then((response: any) => {
+            this.commonService.PostAPI(`${this.slug}propose/get/goal/by/plan`, { plan_id: planid, user_id: this.currentuser.user._id }).then((response: any) => {
               if (response.status) {
                 this.goals = []
                 this.goals = response.data;
@@ -102,7 +107,7 @@ export class ProposeComponent implements OnInit {
             });
           } else if (response.data[0].user_id._id != this.currentuser.user._id) {
 
-            this.commonService.PostAPI("propose/get/superior/goals", { plan_id: planid, user_id: this.currentuser.user._id }).then((response: any) => {
+            this.commonService.PostAPI(`${this.slug}propose/get/superior/goals`, { plan_id: planid, user_id: this.currentuser.user._id }).then((response: any) => {
               if (response.status) {
 
                 this.goals = []
@@ -135,7 +140,7 @@ export class ProposeComponent implements OnInit {
   }
   changeproposal(id, change) {
     this.commonService
-      .PostAPI("propose/manage", {
+      .PostAPI(`${this.slug}propose/manage`, {
         goal_id: id,
         plan_id: this.plan_id,
         user_id: this.currentuser.user._id
@@ -162,7 +167,7 @@ export class ProposeComponent implements OnInit {
     }
 
     this.commonService
-      .PostAPI("goal/proposal/changebyid", { id: id, propose: changepropose })
+      .PostAPI(`${this.slug}goal/proposal/changebyid`, { id: id, propose: changepropose })
       .then((response: any) => {
         if (response.status) {
           this.toastr.success(response.message, "Success");

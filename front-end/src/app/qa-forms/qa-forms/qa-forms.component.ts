@@ -28,6 +28,10 @@ export class QaFormsComponent implements OnInit {
   @ViewChild(DataTableDirective, { static: false })
   datatableElement: DataTableDirective;
 
+  // Use slug to connect w/ prod API
+  // Must end with /
+  slug = "https://lionfish-app-czku6.ondigitalocean.app/"
+
   constructor(
     private toastr: ToastrService,
     public authenticationService: AuthenticationService,
@@ -47,7 +51,7 @@ export class QaFormsComponent implements OnInit {
   }
 
   getForms() {
-    this.commonService.PostAPI('qa/get/by/parent', { parent_user_id: this.parentUserId }).then((response: any) => {
+    this.commonService.PostAPI(`${this.slug}qa/get/by/parent`, { parent_user_id: this.parentUserId }).then((response: any) => {
       if (response.status && response.data && response.data.length > 0) {
         this.forms = response.data;
       } else {

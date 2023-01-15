@@ -27,6 +27,10 @@ export class OrganizationsComponent implements OnInit {
   currentuser;
   editedOrg: any = [];
 
+  // Use slug to connect w/ prod API
+  // Must end with /
+  slug = "https://lionfish-app-czku6.ondigitalocean.app/"
+
   constructor(
     private toastr: ToastrService,
     public authenticationService: AuthenticationService,
@@ -69,7 +73,7 @@ export class OrganizationsComponent implements OnInit {
     } else {
       const data = this.addOrganizationForm.value;
 
-      this.commonService.PostAPI('organization/create', data).then((response: any) => {
+      this.commonService.PostAPI(`${this.slug}organization/create`, data).then((response: any) => {
         if (response.status) {
           $("#myModal").modal('hide');
           this.toastr.success(response.message, 'Success');
@@ -82,7 +86,7 @@ export class OrganizationsComponent implements OnInit {
   }
 
   getOrganizations() {
-    this.commonService.GetAPI('organization/get/all', {}).then((response: any) => {
+    this.commonService.GetAPI(`${this.slug}organization/get/all`, {}).then((response: any) => {
       if (response.status) {
         this.orgRecords = response.data;
         this.loadDatatables();
@@ -116,7 +120,7 @@ export class OrganizationsComponent implements OnInit {
       var data = this.editOrganizationForm.value;
       data.id = this.editedOrg._id;
 
-      this.commonService.PostAPI('organization/update', data).then((response: any) => {
+      this.commonService.PostAPI(`${this.slug}organization/update`, data).then((response: any) => {
         if (response.status) {
           this.getOrganizations();
           $("#editModal").modal('hide');
@@ -142,7 +146,7 @@ export class OrganizationsComponent implements OnInit {
       status = 1;
     }
 
-    this.commonService.PostAPI('organization/update/status', {
+    this.commonService.PostAPI(`${this.slug}organization/update/status`, {
       status: status,
       id: organization_id
     }).then((response: any) => {

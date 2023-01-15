@@ -45,6 +45,10 @@ export class HeirarchyComponent implements OnInit {
   width = "500";
   height = "500";
 
+  // Use slug to connect w/ prod API
+  // Must end with /
+  slug = "https://lionfish-app-czku6.ondigitalocean.app/"
+
   constructor(
     private toastr: ToastrService,
     public authenticationService: AuthenticationService,
@@ -77,7 +81,7 @@ export class HeirarchyComponent implements OnInit {
   //Get users that assigned by designations
   getHierarchyUsers() {
     if (this.currentuser.role == "Admin") {
-      this.commonService.PostAPI('hierarchy/get/by/parent', { parent_user_id: this.parent_user_id }).then((response: any) => {
+      this.commonService.PostAPI(`${this.slug}hierarchy/get/by/parent`, { parent_user_id: this.parent_user_id }).then((response: any) => {
         console.log("HeirarchyComponent -> getHierarchyUsers -> response", response)
         if (response.status) {
           this.users = response.data;
@@ -86,7 +90,7 @@ export class HeirarchyComponent implements OnInit {
         }
       });
     } else if (this.currentuser.role == "User") {
-      this.commonService.PostAPI('hierarchy/get/by/user', { user_id: this.currentUserId }).then((response: any) => {
+      this.commonService.PostAPI(`${this.slug}hierarchy/get/by/user`, { user_id: this.currentUserId }).then((response: any) => {
         console.log("HeirarchyComponent -> getHierarchyUsers -> response", response)
         if (response.status) {
           this.users = response.data;
@@ -120,7 +124,7 @@ export class HeirarchyComponent implements OnInit {
       data.parent_user_id = this.parent_user_id;
       data.parent_hierarchy_id = this.hierarchy_id;
 
-      this.commonService.PostAPI('hierarchy/save', data).then((response: any) => {
+      this.commonService.PostAPI(`${this.slug}hierarchy/save`, data).then((response: any) => {
         if (response.status) {
           this.hierarchyDiagram();
 
@@ -136,7 +140,7 @@ export class HeirarchyComponent implements OnInit {
 
   //fetch data of designations and display in organization chart
   hierarchyDiagram() {
-    this.commonService.PostAPI('hierarchy/designations', { parent_user_id: this.parent_user_id }).then((response: any) => {
+    this.commonService.PostAPI(`${this.slug}hierarchy/designations`, { parent_user_id: this.parent_user_id }).then((response: any) => {
       if (response.status) {
         if (response.data && response.data.length > 0) {
           this.data = response.data;
@@ -156,7 +160,7 @@ export class HeirarchyComponent implements OnInit {
   getHierarchyDetails(event) {
     var hierarchy_id = event.target.title;
 
-    this.commonService.PostAPI('hierarchy/users', { parent_user_id: this.parent_user_id, hierarchy_id: hierarchy_id }).then((response: any) => {
+    this.commonService.PostAPI(`${this.slug}hierarchy/users`, { parent_user_id: this.parent_user_id, hierarchy_id: hierarchy_id }).then((response: any) => {
       if (response.status) {
         if (response.data && response.data.length > 0) {
           this.userHierarchyData = response.data;
