@@ -27,6 +27,11 @@ export class ProfileComponent implements OnInit {
   avatarUrl: any = "";
   userDesignation: any;
 
+  // Use slug to connect w/ prod API
+  // Must end with /
+  slug = "https://lionfish-app-czku6.ondigitalocean.app/"
+
+
   constructor(
     private toastr: ToastrService,
     public authenticationService: AuthenticationService,
@@ -60,7 +65,7 @@ export class ProfileComponent implements OnInit {
   }
 
   getUserProfileDetails() {
-    this.commonService.PostAPI('users/profile', { user_id: this.currentUserId, }).then((response: any) => {
+    this.commonService.PostAPI(`${this.slug}users/profile`, { user_id: this.currentUserId, }).then((response: any) => {
       if (response.status) {
         this.userProfile = response.data;
         if (!response.data.passwordChanged) {
@@ -99,7 +104,7 @@ export class ProfileComponent implements OnInit {
     var data = this.editProfileForm.value;
     data.id = this.currentUserId;
 
-    this.commonService.PostAPI('users/profile/update', data).then((response: any) => {
+    this.commonService.PostAPI(`${this.slug}users/profile/update`, data).then((response: any) => {
       if (response.status) {
         if (data.password && data.new_password) {
           var changePasswordData = {
@@ -107,7 +112,7 @@ export class ProfileComponent implements OnInit {
             password: data.password,
             user_id: this.currentUserId
           };
-          this.commonService.PostAPI('users/password/update', changePasswordData).then((response: any) => {
+          this.commonService.PostAPI(`${this.slug}users/password/update`, changePasswordData).then((response: any) => {
             if (response.status) {
               this.toastr.success("Profile has been changed successfully.", "Success");
               this.currentuser.user.passwordChanged = true
@@ -144,7 +149,7 @@ export class ProfileComponent implements OnInit {
     var data = this.changePasswordForm.value;
     data.user_id = this.currentUserId;
 
-    this.commonService.PostAPI('users/password/update', data).then((response: any) => {
+    this.commonService.PostAPI(`${this.slug}users/password/update`, data).then((response: any) => {
       if (response.status) {
         this.toastr.success(response.message, "Success");
         this.closeModal();
@@ -161,7 +166,7 @@ export class ProfileComponent implements OnInit {
       formData.append('avatar', fileInput.target.files[0]);
       formData.append('user_id', this.currentUserId);
 
-      this.commonService.PostAPI('users/avatar/update', formData).then((response: any) => {
+      this.commonService.PostAPI(`${this.slug}users/avatar/update`, formData).then((response: any) => {
         if (response.status) {
           this.getUserProfileDetails();
           this.toastr.success(response.message, "Success");

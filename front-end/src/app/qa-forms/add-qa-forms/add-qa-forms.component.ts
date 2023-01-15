@@ -41,6 +41,11 @@ export class AddQaFormsComponent implements OnInit {
 
   pageTitle: any = "Add Q&A Form";
 
+
+  // Use slug to connect w/ prod API
+  // Must end with /
+  slug = "https://lionfish-app-czku6.ondigitalocean.app/"
+
   constructor(
     private toastr: ToastrService,
     public router: Router,
@@ -75,7 +80,7 @@ export class AddQaFormsComponent implements OnInit {
   }
 
   getFormDetails(form_id){
-    this.commonService.PostAPI('qa/get/form/by/id', { form_id: form_id }).then((response: any) => {
+    this.commonService.PostAPI(`${this.slug}qa/get/form/by/id`, { form_id: form_id }).then((response: any) => {
       if (response.status) {
         this.editedFormDetail = response.data;
         this.selected = this.editedFormDetail.plan_id;
@@ -101,7 +106,7 @@ export class AddQaFormsComponent implements OnInit {
   }
 
   getUserPlan() {
-    this.commonService.PostAPI('plan/get/of/user', { user_id: this.currentUserId }).then((response: any) => {
+    this.commonService.PostAPI(`${this.slug}plan/get/of/user`, { user_id: this.currentUserId }).then((response: any) => {
       if (response.status && response.data && response.data.length > 0) {
         this.plans = response.data;
       } else {
@@ -283,7 +288,7 @@ export class AddQaFormsComponent implements OnInit {
       data.form_controls = JSON.stringify(this.qaFormControls);
       data.parent_user_id = this.parentUserId;
 
-      this.commonService.PostAPI('qa/create', data).then((response: any) => {
+      this.commonService.PostAPI(`${this.slug}qa/create`, data).then((response: any) => {
         if (response.status) {
           this.isQAFullFormSubmitted = false;
           this.qaFullForm.reset();

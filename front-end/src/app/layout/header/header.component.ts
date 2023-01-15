@@ -18,6 +18,10 @@ export class HeaderComponent implements OnInit {
   AdminRole = "Admin";
   currentUserRole = "";
 
+  // Use slug to connect w/ prod API
+  // Must end with /
+  slug = "https://lionfish-app-czku6.ondigitalocean.app/"
+
   constructor(
     private toastr: ToastrService,
     public authService: AuthenticationService,
@@ -56,7 +60,7 @@ export class HeaderComponent implements OnInit {
   }
 
   setchilduser() {
-    this.commonService.PostAPI('hierarchy/user/child', {
+    this.commonService.PostAPI(`${this.slug}hierarchy/user/child`, {
       user_id: this.currentUser.user._id
     }).then((response: any) => {
       if (response.status) {
@@ -73,7 +77,7 @@ export class HeaderComponent implements OnInit {
     });
   }
   setparentuser() {
-    this.commonService.PostAPI('hierarchy/user/parent', {
+    this.commonService.PostAPI(`${this.slug}hierarchy/user/parent`, {
       user_id: this.currentUser.user._id
     }).then((response: any) => {
       if (response.status) {
@@ -92,7 +96,7 @@ export class HeaderComponent implements OnInit {
 
   checkforpriotizeanddeactivate() {
     this.currentchildUser = JSON.parse(window.localStorage.getItem("currentchildUser"));
-    this.commonService.PostAPI('plan/get/allplanselectbox', { id: this.currentUser.user._id, childids: this.currentchildUser }).then((response: any) => {
+    this.commonService.PostAPI(`${this.slug}plan/get/allplanselectbox`, { id: this.currentUser.user._id, childids: this.currentchildUser }).then((response: any) => {
       if (response.status) {
         if (response.data.length > 0) {
           this.permissiongrant = true;

@@ -86,6 +86,10 @@ export class ItemPlanDetailsComponent implements OnInit {
   lowProposeGoals: any = []
   mediumProposeGoals: any = []
 
+  // Use slug to connect w/ prod API
+  // Must end with /
+  slug = "https://lionfish-app-czku6.ondigitalocean.app/"
+
   // DataTables
   @ViewChild(DataTableDirective, { static: false })
   datatableElement: DataTableDirective;
@@ -564,7 +568,7 @@ export class ItemPlanDetailsComponent implements OnInit {
 
   getInviteDesignations() {
     if (this.currentuser.role == "Admin") {
-      this.commonService.PostAPI('hierarchy/get/designation', { parent_user_id: this.parent_user_id }).then((response: any) => {
+      this.commonService.PostAPI(`${this.slug}hierarchy/get/designation`, { parent_user_id: this.parent_user_id }).then((response: any) => {
         if (response.status) {
           this.designations = response.data;
         } else {
@@ -572,7 +576,7 @@ export class ItemPlanDetailsComponent implements OnInit {
         }
       });
     } else {
-      this.commonService.PostAPI('hierarchy/get/child/designation', { user_id: this.currentUserId }).then((response: any) => {
+      this.commonService.PostAPI(`${this.slug}hierarchy/get/child/designation`, { user_id: this.currentUserId }).then((response: any) => {
         if (response.status) {
           this.designations = response.data;
         } else {
@@ -608,7 +612,7 @@ export class ItemPlanDetailsComponent implements OnInit {
 
       $("#inviteModal").modal("hide");
 
-      this.commonService.PostAPI('users/invite', data).then((response: any) => {
+      this.commonService.PostAPI(`${this.slug}users/invite`, data).then((response: any) => {
         if (response.status) {
           this.inviteUserForm.reset();
           this.isInviteUserFormValid = false;
@@ -678,7 +682,7 @@ export class ItemPlanDetailsComponent implements OnInit {
   }
 
   getPlanGoals(planid) {
-    this.commonService.PostAPI('goal/getgoals/bypid', { id: planid, module_type: this.moduleType }).then((response: any) => {
+    this.commonService.PostAPI(`${this.slug}goal/getgoals/bypid`, { id: planid, module_type: this.moduleType }).then((response: any) => {
       if (response.status && response.data && response.data.length > 0) {
         this.planGoals = response.data;
       } else {
@@ -692,7 +696,7 @@ export class ItemPlanDetailsComponent implements OnInit {
   }
 
   getGoalAttachments(goal_id) {
-    this.commonService.PostAPI('goal/get/attachments', { goal_id: goal_id }).then((response: any) => {
+    this.commonService.PostAPI(`${this.slug}goal/get/attachments`, { goal_id: goal_id }).then((response: any) => {
       if (response.status) {
         this.goalAttachments = response.data;
       } else {
@@ -703,7 +707,7 @@ export class ItemPlanDetailsComponent implements OnInit {
 
   getGoalSharedUsers(goal_id) {
     if (this.isSharedPlanPermission) {
-      this.commonService.PostAPI('goal/get/shared/users', { goal_id: goal_id }).then((response: any) => {
+      this.commonService.PostAPI(`${this.slug}goal/get/shared/users`, { goal_id: goal_id }).then((response: any) => {
         if (response.status) {
           if (response.data && response.data.length > 0) {
             var usersArr = [];
@@ -725,7 +729,7 @@ export class ItemPlanDetailsComponent implements OnInit {
   }
 
   getHeadUpToDisplayDetails(plan_id) {
-    this.commonService.PostAPI('plan/get/hud/details', { plan_id: plan_id }).then((response: any) => {
+    this.commonService.PostAPI(`${this.slug}plan/get/hud/details`, { plan_id: plan_id }).then((response: any) => {
       if (response.status) {
         this.planHudDetails = response.data;
       } else {
@@ -735,7 +739,7 @@ export class ItemPlanDetailsComponent implements OnInit {
   }
 
   getgoaldetail(goal, parent) {
-    this.commonService.PostAPI('goal/get/by/id', { goal_id: goal }).then((response: any) => {
+    this.commonService.PostAPI(`${this.slug}goal/get/by/id`, { goal_id: goal }).then((response: any) => {
       if (response.status) {
         this.childgoalDetails = response.data;
         if (this.currentuser.user._id == this.childgoalDetails.user_id) {
@@ -781,7 +785,7 @@ export class ItemPlanDetailsComponent implements OnInit {
 
   getplandetail(Plan) {
     this.checkforgoaledit = true
-    this.commonService.PostAPI('plan/get/by/id2', { plan_id: Plan }).then((response: any) => {
+    this.commonService.PostAPI(`${this.slug}plan/get/by/id2`, { plan_id: Plan }).then((response: any) => {
       if (response.status) {
         this.parentplanDetails = response.data;
         this.goalid = "";
@@ -806,7 +810,7 @@ export class ItemPlanDetailsComponent implements OnInit {
   }
 
   getplandetail2(Plan) {
-    this.commonService.PostAPI('plan/get/by/id2', { plan_id: Plan }).then((response: any) => {
+    this.commonService.PostAPI(`${this.slug}plan/get/by/id2`, { plan_id: Plan }).then((response: any) => {
       if (response.status) {
         this.parentplanDetails = response.data;
         this.goalplanid = this.parentplanDetails[0]._id;
@@ -862,7 +866,7 @@ export class ItemPlanDetailsComponent implements OnInit {
                 formData.append(key.toString(), element);
               }
 
-              this.commonService.PostAPI('goal/create', formData).then((response: any) => {
+              this.commonService.PostAPI(`${this.slug}goal/create`, formData).then((response: any) => {
                 if (response.status) {
                   this.toastr.success(response.message, "Success");
                   this.getPlanDetails();
@@ -893,7 +897,7 @@ export class ItemPlanDetailsComponent implements OnInit {
   }
 
   launchgoalalert() {
-    this.commonService.PostAPI('delegation/get/launch/goal/alerts', { user_id: this.currentuser.user._id }).then((response: any) => {
+    this.commonService.PostAPI(`${this.slug}delegation/get/launch/goal/alerts`, { user_id: this.currentuser.user._id }).then((response: any) => {
       if (response.status) {
         this.alertdata = response.data
       } else {
@@ -904,7 +908,7 @@ export class ItemPlanDetailsComponent implements OnInit {
   }
 
   getGoalReportByPlan(plan_id) {
-    this.commonService.PostAPI('plan/get/goal/report', { plan_id: plan_id }).then((response: any) => {
+    this.commonService.PostAPI(`${this.slug}plan/get/goal/report`, { plan_id: plan_id }).then((response: any) => {
       if (response.status) {
         this.goalReportDetails = response.data
       } else {
@@ -958,7 +962,7 @@ export class ItemPlanDetailsComponent implements OnInit {
   }
 
   deleteGoalAttachment(goal_attachment_id, goal_id) {
-    this.commonService.PostAPI('goal/attachments/delete', { goal_attachment_id: goal_attachment_id }).then((response: any) => {
+    this.commonService.PostAPI(`${this.slug}goal/attachments/delete`, { goal_attachment_id: goal_attachment_id }).then((response: any) => {
       if (response.status) {
         this.getGoalAttachments(goal_id)
         this.toastr.success(response.message, "Success");
@@ -969,7 +973,7 @@ export class ItemPlanDetailsComponent implements OnInit {
   }
 
   getUserSharePlanPermission() {
-    this.commonService.PostAPI('plan/check/user/permission', { user_id: this.currentuser.user._id }).then((response: any) => {
+    this.commonService.PostAPI(`${this.slug}plan/check/user/permission`, { user_id: this.currentuser.user._id }).then((response: any) => {
       if (response.status) {
         this.sharedPlanPermission = response.data.map(data => data._id);
       }
@@ -987,7 +991,7 @@ export class ItemPlanDetailsComponent implements OnInit {
 
   //Get users that assigned by designations
   getHierarchyUsers() {
-    this.commonService.PostAPI('hierarchy/get/by/parent', { parent_user_id: this.currentuser.user.parent_user_id }).then((response: any) => {
+    this.commonService.PostAPI(`${this.slug}hierarchy/get/by/parent`, { parent_user_id: this.currentuser.user.parent_user_id }).then((response: any) => {
       if (response.status) {
         if (response.data && response.data.length > 0) {
           var usersArr = [];
@@ -1096,7 +1100,7 @@ export class ItemPlanDetailsComponent implements OnInit {
     if (planid == '') {
       this.dividearrayintothreepart = 0
     } else {
-      this.commonService.PostAPI('goal/get/all/by/plan', { id: planid, module_type: this.moduleType }).then((response: any) => {
+      this.commonService.PostAPI(`${this.slug}goal/get/all/by/plan`, { id: planid, module_type: this.moduleType }).then((response: any) => {
         if (response.status && response.data && response.data.length > 0) {
           this.goals = response.data;
           this.dividearrayintothreepart = 1
@@ -1115,7 +1119,7 @@ export class ItemPlanDetailsComponent implements OnInit {
   }
 
   changedeactivate(id, change) {
-    this.commonService.PostAPI('goal/deactivate/changebyid', { id: id, deactivate: change }).then((response: any) => {
+    this.commonService.PostAPI(`${this.slug}goal/deactivate/changebyid`, { id: id, deactivate: change }).then((response: any) => {
       if (response.status) {
         this.toastr.success(response.message, "Success");
         this.getgoal(this.planId);
@@ -1133,7 +1137,7 @@ export class ItemPlanDetailsComponent implements OnInit {
     if (planid == '') {
       this.isDevidedInParts = 0
     } else {
-      this.commonService.PostAPI('goal/getgoals/bypid', { id: planid, module_type: this.moduleType }).then((response: any) => {
+      this.commonService.PostAPI(`${this.slug}goal/getgoals/bypid`, { id: planid, module_type: this.moduleType }).then((response: any) => {
         if (response.status) {
           this.priorityGoals = response.data;
           this.isDevidedInParts = 1
@@ -1163,7 +1167,7 @@ export class ItemPlanDetailsComponent implements OnInit {
     changevalue = parseInt(changevalue)
 
     if (changevalue > 0) {
-      this.commonService.PostAPI('goal/update/priority', { goal_id: goalid, prioritize: changevalue }).then((response: any) => {
+      this.commonService.PostAPI(`${this.slug}goal/update/priority`, { goal_id: goalid, prioritize: changevalue }).then((response: any) => {
         if (response.status) {
           this.toastr.success(response.message, "Success");
           this.getPriorityGoals(this.planId);
@@ -1188,7 +1192,7 @@ export class ItemPlanDetailsComponent implements OnInit {
       plan_id: this.planId
     };
 
-    this.commonService.PostAPI('goal/priority/changebyid', data).then((response: any) => {
+    this.commonService.PostAPI(`${this.slug}goal/priority/changebyid`, data).then((response: any) => {
       if (response.status) {
         this.toastr.success(response.message, "Success");
         this.getPriorityGoals(this.planId);
@@ -1205,10 +1209,10 @@ export class ItemPlanDetailsComponent implements OnInit {
       this.checkboxshow = false;
       this.isProposeDevidedInParts = 0;
     } else {
-      this.commonService.PostAPI("plan/get/by/id2", { plan_id: planid }).then((response: any) => {
+      this.commonService.PostAPI(`${this.slug}plan/get/by/id2`, { plan_id: planid }).then((response: any) => {
         if (response.status) {
           if (response.data[0].user_id._id == this.currentuser.user._id) {
-            this.commonService.PostAPI('propose/get/goal/by/plan', { plan_id: planid, user_id: this.currentuser.user._id, module_type: this.moduleType }).then((response: any) => {
+            this.commonService.PostAPI(`${this.slug}propose/get/goal/by/plan`, { plan_id: planid, user_id: this.currentuser.user._id, module_type: this.moduleType }).then((response: any) => {
               if (response.status) {
                 this.proposeGoals = [];
                 this.proposeGoals = response.data;
@@ -1227,7 +1231,7 @@ export class ItemPlanDetailsComponent implements OnInit {
               }
             });
           } else if (response.data[0].user_id._id != this.currentuser.user._id) {
-            this.commonService.PostAPI("propose/get/superior/goals", { plan_id: planid, user_id: this.currentuser.user._id }).then((response: any) => {
+            this.commonService.PostAPI(`${this.slug}propose/get/superior/goals`, { plan_id: planid, user_id: this.currentuser.user._id }).then((response: any) => {
               if (response.status) {
                 this.priorityGoals = []
                 response.data.forEach(element => {
@@ -1255,7 +1259,7 @@ export class ItemPlanDetailsComponent implements OnInit {
   }
 
   changeproposal(id, change) {
-    this.commonService.PostAPI("propose/manage", {
+    this.commonService.PostAPI(`${this.slug}propose/manage`, {
       goal_id: id,
       plan_id: this.planId,
       user_id: this.currentuser.user._id
@@ -1277,7 +1281,7 @@ export class ItemPlanDetailsComponent implements OnInit {
     }
 
     this.commonService
-      .PostAPI("goal/proposal/changebyid", { id: id, propose: changepropose })
+      .PostAPI(`${this.slug}goal/proposal/changebyid`, { id: id, propose: changepropose })
       .then((response: any) => {
         if (response.status) {
           this.toastr.success(response.message, "Success");
@@ -1291,7 +1295,7 @@ export class ItemPlanDetailsComponent implements OnInit {
 
   // Vote
   getVoteGoals(planid) {
-    this.commonService.PostAPI("goal/getgoals/byvote", { id: planid, module_type: this.moduleType }).then((response: any) => {
+    this.commonService.PostAPI(`${this.slug}goal/getgoals/byvote`, { id: planid, module_type: this.moduleType }).then((response: any) => {
       if (response.status && response.data && response.data.length > 0) {
         this.voteGoals = response.data;
       } else {
@@ -1334,7 +1338,7 @@ export class ItemPlanDetailsComponent implements OnInit {
 
   changevote(id, change) {
     this.commonService
-      .PostAPI("goal/voteupdown/byid", {
+      .PostAPI(`${this.slug}goal/voteupdown/byid`, {
         id: id,
         userid: this.currentuser.user._id,
         vote: change
@@ -1351,7 +1355,7 @@ export class ItemPlanDetailsComponent implements OnInit {
 
   // Select
   getSelectGoals(planId) {
-    this.commonService.PostAPI('goal/getgoals/byvote', { id: planId, module_type: this.moduleType }).then((response: any) => {
+    this.commonService.PostAPI(`${this.slug}goal/getgoals/byvote`, { id: planId, module_type: this.moduleType }).then((response: any) => {
       if (response.status && response.data && response.data.length > 0) {
         this.selectGoals = response.data;
       } else {
@@ -1372,7 +1376,7 @@ export class ItemPlanDetailsComponent implements OnInit {
     } else {
       status = 0;
     }
-    this.commonService.PostAPI('goal/update/select', {
+    this.commonService.PostAPI(`${this.slug}goal/update/select`, {
       select: status,
       id: goal_id,
       security: this.plansecurity
@@ -1387,7 +1391,7 @@ export class ItemPlanDetailsComponent implements OnInit {
 
   // Delegate
   getDelegateGoals(planid) {
-    this.commonService.PostAPI('goal/getgoals/bydelegate', { id: planid, module_type: this.moduleType }).then((response: any) => {
+    this.commonService.PostAPI(`${this.slug}goal/getgoals/bydelegate`, { id: planid, module_type: this.moduleType }).then((response: any) => {
       if (response.status && response.data && response.data.length > 0) {
         this.delegateGoals = response.data;
       } else {
@@ -1407,7 +1411,7 @@ export class ItemPlanDetailsComponent implements OnInit {
       this.currentchildUser = []
     }
 
-    this.commonService.PostAPI('plan/get/allchilduser', { childids: this.currentchildUser }).then((response: any) => {
+    this.commonService.PostAPI(`${this.slug}plan/get/allchilduser`, { childids: this.currentchildUser }).then((response: any) => {
       if (response.status && response.data && response.data.length > 0) {
         this.childuser = response.data;
       } else {
@@ -1423,7 +1427,7 @@ export class ItemPlanDetailsComponent implements OnInit {
 
     $("#myModal").modal("show");
 
-    this.commonService.PostAPI('delegation/get/goals', { goal_id: this.delegateGoalId }).then((response: any) => {
+    this.commonService.PostAPI(`${this.slug}delegation/get/goals`, { goal_id: this.delegateGoalId }).then((response: any) => {
       if (response.status) {
         this.goalDelegateData = response.data;
         this.totalgoalacceptpercentage = 0
@@ -1470,7 +1474,7 @@ export class ItemPlanDetailsComponent implements OnInit {
         data.end_date = new Date(new Date().getTime() + (24 * 60 * 60 * 1000)).getTime();
         data.parent_user_id = this.currentuser.user.parent_user_id;
 
-        this.commonService.PostAPI('delegation/create', data).then((response: any) => {
+        this.commonService.PostAPI(`${this.slug}delegation/create`, data).then((response: any) => {
           if (response.status) {
             this.toastr.success(response.message, "Success");
             this.DelegateForm.reset();
@@ -1486,7 +1490,7 @@ export class ItemPlanDetailsComponent implements OnInit {
   }
 
   getalldelegategoals() {
-    this.commonService.PostAPI('delegation/get/user/goals', { child_user_id: this.currentuser.user._id }).then((response: any) => {
+    this.commonService.PostAPI(`${this.slug}delegation/get/user/goals`, { child_user_id: this.currentuser.user._id }).then((response: any) => {
       if (response.status) {
         this.delegatedGoals = response.data;
       } else {
@@ -1496,7 +1500,7 @@ export class ItemPlanDetailsComponent implements OnInit {
   }
 
   changegoaldelegatestatus(id, status) {
-    this.commonService.PostAPI('delegation/accept/status', { delegation_id: id, accept_status: status }).then((response: any) => {
+    this.commonService.PostAPI(`${this.slug}delegation/accept/status`, { delegation_id: id, accept_status: status }).then((response: any) => {
       if (response.status) {
         this.toastr.success(response.message, "Success");
         this.getalldelegategoals();
@@ -1508,7 +1512,7 @@ export class ItemPlanDetailsComponent implements OnInit {
 
   //Countdown
   getCountdownGoals(planid) {
-    this.commonService.PostAPI('goal/getgoals/bycountdown', { id: planid, module_type: this.moduleType }).then((response: any) => {
+    this.commonService.PostAPI(`${this.slug}goal/getgoals/bycountdown`, { id: planid, module_type: this.moduleType }).then((response: any) => {
       if (response.status) {
         this.countdownGoals = response.data;
         this.countdownGoals.forEach((element1, index) => {
@@ -1550,7 +1554,7 @@ export class ItemPlanDetailsComponent implements OnInit {
 
   // Launch
   getLaunchGoals(planid) {
-    this.commonService.PostAPI('goal/getgoals/bycountdown', { id: planid, module_type: this.moduleType }).then((response: any) => {
+    this.commonService.PostAPI(`${this.slug}goal/getgoals/bycountdown`, { id: planid, module_type: this.moduleType }).then((response: any) => {
       if (response.status && response.data && response.data.length > 0) {
         this.launchGoals = response.data;
         this.launchGoals.forEach((element1, index) => {
@@ -1594,7 +1598,7 @@ export class ItemPlanDetailsComponent implements OnInit {
 
   // Report
   getReportGoals(planid) {
-    this.commonService.PostAPI('report/get/all', { plan_id: planid, user_id: this.currentuser.user._id }).then((response: any) => {
+    this.commonService.PostAPI(`${this.slug}report/get/all`, { plan_id: planid, user_id: this.currentuser.user._id }).then((response: any) => {
       if (response.status && response.data && response.data.length > 0) {
         this.reportGoals = response.data;
       } else {
@@ -1634,7 +1638,7 @@ export class ItemPlanDetailsComponent implements OnInit {
       data.goal_id = this.reportGoalId
       data.user_id = this.currentuser.user._id
 
-      this.commonService.PostAPI('report/create', data).then((response: any) => {
+      this.commonService.PostAPI(`${this.slug}report/create`, data).then((response: any) => {
         if (response.status) {
           this.toastr.success(response.message, "Success");
 
@@ -1668,7 +1672,7 @@ export class ItemPlanDetailsComponent implements OnInit {
     if (toDateTimestamp < fromDateTimestamp) {
       this.toastr.error("To date should be smaller than From date.", "Filter Validation Error");
     } else {
-      this.commonService.PostAPI('plan/get/by/user', {
+      this.commonService.PostAPI(`${this.slug}plan/get/by/user`, {
         user_id: this.currentuser.user._id,
         fromDate: moment(from_date).format('YYYY-MM-DD'),
         toDate: moment(to_date).format('YYYY-MM-DD')
@@ -1831,7 +1835,7 @@ export class ItemPlanDetailsComponent implements OnInit {
               formData.append(key.toString(), element);
             }
 
-            this.commonService.PostAPI('goal/create', formData).then((response: any) => {
+            this.commonService.PostAPI(`${this.slug}goal/create`, formData).then((response: any) => {
               if (response.status) {
                 this.toastr.success(response.message, "Success");
                 this.getPlanDetails();
@@ -1865,7 +1869,7 @@ export class ItemPlanDetailsComponent implements OnInit {
     data.user_id = this.currentuser.user._id
     data.module_type = type;
 
-    this.commonService.PostAPI('module/get-by-user-and-plan', data).then((response: any) => {
+    this.commonService.PostAPI(`${this.slug}module/get-by-user-and-plan`, data).then((response: any) => {
       var treeArray: any = [];
 
       if (response.status && response.data && response.data.length > 0) {
@@ -1891,7 +1895,7 @@ export class ItemPlanDetailsComponent implements OnInit {
     data.user_id = this.currentuser.user._id
     data.module_type = this.selectedModules;
 
-    this.commonService.PostAPI('module/get-by-user-and-plan', data).then((response: any) => {
+    this.commonService.PostAPI(`${this.slug}module/get-by-user-and-plan`, data).then((response: any) => {
       if (response.status && response.data && response.data.length > 0) {
         this.opportunityDetails = response.data;
         this.moduleGoals = response.data;
@@ -1940,7 +1944,7 @@ export class ItemPlanDetailsComponent implements OnInit {
   }
 
   getUserRole() {
-    this.commonService.PostAPI('hierarchy/get/user/designation', { user_id: this.currentuser.user._id }).then((response: any) => {
+    this.commonService.PostAPI(`${this.slug}hierarchy/get/user/designation`, { user_id: this.currentuser.user._id }).then((response: any) => {
       if (response.status && response.data) {
         this.hierarchyDetails = response.data.hierarchy_id;
       }
@@ -1948,7 +1952,7 @@ export class ItemPlanDetailsComponent implements OnInit {
   }
 
   getChildDesignations(hiearachyId) {
-    this.commonService.PostAPI('hierarchy/get/user/all/childs', { hierarchy_id: hiearachyId }).then((response: any) => {
+    this.commonService.PostAPI(`${this.slug}hierarchy/get/user/all/childs`, { hierarchy_id: hiearachyId }).then((response: any) => {
       if (response.status && response.data && response.data.length > 0) {
         this.userHierarchyData = response.data;
       } else {
@@ -1972,7 +1976,7 @@ export class ItemPlanDetailsComponent implements OnInit {
       data.role_id = this.currentuser.user.role_id;
       data.current_url = this.currentUrl;
 
-      this.commonService.PostAPI('users/desigation/create', data).then((response: any) => {
+      this.commonService.PostAPI(`${this.slug}users/desigation/create`, data).then((response: any) => {
         if (response.status) {
           this.toastr.success(response.message, "Success");
           this.resetInviteForm();
@@ -1988,7 +1992,7 @@ export class ItemPlanDetailsComponent implements OnInit {
   }
 
   getChildUsers() {
-    this.commonService.PostAPI('users/get/designations', { user_ids: this.currentchildUser }).then((response: any) => {
+    this.commonService.PostAPI(`${this.slug}users/get/designations`, { user_ids: this.currentchildUser }).then((response: any) => {
       var usersArr = [];
 
       if (response.data && response.data.length > 0) {
@@ -2016,7 +2020,7 @@ export class ItemPlanDetailsComponent implements OnInit {
      * Plan form detail from admin
      */
 
-    this.commonService.PostAPI('plan/getform/by/id', { userid: this.userid }).then((response: any) => {
+    this.commonService.PostAPI(`${this.slug}plan/getform/by/id`, { userid: this.userid }).then((response: any) => {
       if (response.status) {
         this.final = response.data.palnformfield;
         this.datafinal = response.data.palnformfield;
@@ -2142,7 +2146,7 @@ export class ItemPlanDetailsComponent implements OnInit {
       if (i == 0) {
         if (j == 0) {
           if (k == 0) {
-            this.commonService.PostAPI('plan/create/form', this.formfield).then((response: any) => {
+            this.commonService.PostAPI(`${this.slug}plan/create/form`, this.formfield).then((response: any) => {
               if (response.status) {
                 this.toastr.success(response.message, "Success");
                 $("#fromControlModal").modal("hide");
@@ -2223,7 +2227,7 @@ export class ItemPlanDetailsComponent implements OnInit {
             data.shared_permission_users = [];
           }
 
-          this.commonService.PostAPI('plan/create/parent', data).then((response: any) => {
+          this.commonService.PostAPI(`${this.slug}plan/create/parent`, data).then((response: any) => {
             if (response.status) {
               this.toastr.success(response.message, "Success");
 
@@ -2260,7 +2264,7 @@ export class ItemPlanDetailsComponent implements OnInit {
   }
 
   getCoachesCornerDetails() {
-    this.commonService.PostAPI('coach/get/all', {}).then((response: any) => {
+    this.commonService.PostAPI(`${this.slug}coach/get/all`, {}).then((response: any) => {
       if (response.status) {
         this.coachesDetails = response.data;
       } else {
@@ -2280,7 +2284,7 @@ export class ItemPlanDetailsComponent implements OnInit {
   }
 
   getDesignations() {
-    this.commonService.PostAPI('hierarchy/get/by/parent', { parent_user_id: this.currentuser.user.parent_user_id }).then((response: any) => {
+    this.commonService.PostAPI(`${this.slug}hierarchy/get/by/parent`, { parent_user_id: this.currentuser.user.parent_user_id }).then((response: any) => {
       if (response.status) {
         this.users = response.data.filter(item => item.user_id.email !== this.currentuser.user.email);
       } else {
@@ -2323,7 +2327,7 @@ export class ItemPlanDetailsComponent implements OnInit {
           formData.append(key.toString(), element);
         }
 
-        this.commonService.PostAPI('module/disucssion/create', formData).then((response: any) => {
+        this.commonService.PostAPI(`${this.slug}module/disucssion/create`, formData).then((response: any) => {
           if (response.status) {
             this.toastr.success(response.message, "Success");
             this.resetDiscussionForm();

@@ -38,6 +38,10 @@ export class EditPlanComponent implements OnInit {
 
   childUsers: any = [];
 
+  // Use slug to connect w/ prod API
+  // Must end with /
+  slug = "https://lionfish-app-czku6.ondigitalocean.app/"
+
   constructor(
     private toastr: ToastrService,
     public router: Router,
@@ -97,7 +101,7 @@ export class EditPlanComponent implements OnInit {
   }
 
   getChildUsers() {
-    this.commonService.PostAPI('users/get/designations', { user_ids: this.childUsers }).then((response: any) => {
+    this.commonService.PostAPI(`${this.slug}users/get/designations`, { user_ids: this.childUsers }).then((response: any) => {
       if (response) {
         if (response.data && response.data.length > 0) {
           var usersArr = [];
@@ -122,7 +126,7 @@ export class EditPlanComponent implements OnInit {
      * Plan form detail from admin
      */
 
-    this.commonService.PostAPI('plan/getform/by/id', { userid: this.userid }).then((response: any) => {
+    this.commonService.PostAPI(`${this.slug}plan/getform/by/id`, { userid: this.userid }).then((response: any) => {
       if (response.status) {
         this.final = response.data.palnformfield;
 
@@ -184,7 +188,7 @@ export class EditPlanComponent implements OnInit {
     /**
     * Plan detail get using id
     */
-    this.commonService.PostAPI('plan/get/by/id', { plan_id: this.editid }).then((response: any) => {
+    this.commonService.PostAPI(`${this.slug}plan/get/by/id`, { plan_id: this.editid }).then((response: any) => {
       if (response.status) {
         this.planDetails = response.data;
         var usersArr = [];
@@ -277,7 +281,7 @@ export class EditPlanComponent implements OnInit {
     if (i == 0) {
       if (j == 0) {
         if (k == 0) {
-          this.commonService.PostAPI('plan/create/form', this.formfield).then((response: any) => {
+          this.commonService.PostAPI(`${this.slug}plan/create/form`, this.formfield).then((response: any) => {
             if (response.status) {
               this.toastr.success(response.message, "Success");
               $("#myModal").modal("hide");
@@ -353,7 +357,7 @@ export class EditPlanComponent implements OnInit {
           data.end_date = $('#date-input6').val();
           data.shared_permission_users = this.selected.map(data => data.id);
 
-          this.commonService.PostAPI('plan/create/parent', data).then((response: any) => {
+          this.commonService.PostAPI(`${this.slug}plan/create/parent`, data).then((response: any) => {
             if (response.status) {
               this.toastr.success(response.message, "Success");
               setTimeout(() => {

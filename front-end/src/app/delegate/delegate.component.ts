@@ -27,6 +27,11 @@ export class DelegateComponent implements OnInit {
   dtTrigger: Subject<any> = new Subject();
   @ViewChild(DataTableDirective, { static: false })
   datatableElement: DataTableDirective;
+
+  // Use slug to connect w/ prod API
+  // Must end with /
+  slug = "https://lionfish-app-czku6.ondigitalocean.app/"
+
   constructor(
     private toastr: ToastrService,
     public authenticationService: AuthenticationService,
@@ -60,7 +65,7 @@ export class DelegateComponent implements OnInit {
       this.currentparentUser = []
     }
     var children = this.currentchildUser.concat(this.currentparentUser); 
-    this.commonService.PostAPI('plan/get/allplanselectbox',{id:this.currentuser.user._id,childids:this.currentchildUser} ).then((response: any) => {
+    this.commonService.PostAPI(`${this.slug}plan/get/allplanselectbox`,{id:this.currentuser.user._id,childids:this.currentchildUser} ).then((response: any) => {
       if (response.status) {
           this.plans = response.data;
           this.dtOptions = {
@@ -85,7 +90,7 @@ export class DelegateComponent implements OnInit {
     if(this.currentchildUser == null){
       this.currentchildUser = []
     }
-    this.commonService.PostAPI('plan/get/allchilduser',{childids:this.currentchildUser} ).then((response: any) => 
+    this.commonService.PostAPI(`${this.slug}plan/get/allchilduser`,{childids:this.currentchildUser} ).then((response: any) => 
     {
       if (response.status) {
          this.childuser = response.data;
@@ -119,7 +124,7 @@ export class DelegateComponent implements OnInit {
     this.submitted = false;
     $("#myModal").modal("show");
    
-    this.commonService.PostAPI('delegation/get/goals',{goal_id:this.goalid} ).then((response: any) => {
+    this.commonService.PostAPI(`${this.slug}delegation/get/goals`,{goal_id:this.goalid} ).then((response: any) => {
       if (response.status) {
         this.goaldelegatedata = response.data
          this.totalgoalacceptpercentage = 0
@@ -169,7 +174,7 @@ export class DelegateComponent implements OnInit {
   }
   changegoaldelegatestatus(id, status)
   {
-    this.commonService.PostAPI('delegation/accept/status',{delegation_id:id,accept_status:status} ).then((response: any) => {
+    this.commonService.PostAPI(`${this.slug}delegation/accept/status`,{delegation_id:id,accept_status:status} ).then((response: any) => {
       if (response.status) {
         this.toastr.success(response.message, "Success");
         this.getalldelegategoals();
@@ -221,7 +226,7 @@ export class DelegateComponent implements OnInit {
   delegategoals = [];
   getalldelegategoals()
   {
-    this.commonService.PostAPI('delegation/get/user/goals',{child_user_id:this.currentuser.user._id} ).then((response: any) => {
+    this.commonService.PostAPI(`${this.slug}delegation/get/user/goals`,{child_user_id:this.currentuser.user._id} ).then((response: any) => {
       if (response.status) {
         this.delegategoals = response.data;
       } 
@@ -233,7 +238,7 @@ export class DelegateComponent implements OnInit {
   }
   getgoal(planid){
     this.plan_id = planid
-    this.commonService.PostAPI('goal/getgoals/bydelegate',{id:planid} ).then((response: any) => {
+    this.commonService.PostAPI(`${this.slug}goal/getgoals/bydelegate`,{id:planid} ).then((response: any) => {
       if (response.status) {
          this.goals = response.data;
          this.dividearrayintothreepart = 1

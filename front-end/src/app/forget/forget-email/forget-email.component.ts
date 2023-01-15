@@ -18,6 +18,10 @@ export class ForgetEmailComponent implements OnInit {
   currentUrl: String;
   isDisabled: Boolean = false;
 
+  // Use slug to connect w/ prod API
+  // Must end with /
+  slug = "https://lionfish-app-czku6.ondigitalocean.app/"
+
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
@@ -59,7 +63,7 @@ export class ForgetEmailComponent implements OnInit {
       this.isDisabled = false;
       return;
     } else {
-      this.commonService.PostAPI("users/reset-password", { email: this.f.email.value, clientUrl: this.currentUrl }).then((response: any) => {
+      this.commonService.PostAPI(`${this.slug}users/reset-password`, { email: this.f.email.value, clientUrl: this.currentUrl }).then((response: any) => {
         if (response.status) {
           this.toastr.success("Reset password link has been sent on your email address.", "Success");
           this.setForm();

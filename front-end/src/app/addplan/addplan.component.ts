@@ -61,6 +61,10 @@ export class AddplanComponent implements OnInit {
   selectedUser: any;
   currentUrl: any;
 
+  // Use slug to connect w/ prod API
+  // Must end with /
+  slug = "https://lionfish-app-czku6.ondigitalocean.app/"
+
   constructor(
     private toastr: ToastrService,
     public router: Router,
@@ -153,7 +157,7 @@ export class AddplanComponent implements OnInit {
   }
 
   getallplan() {
-    this.commonService.GetAPI('plan/get/allplan', { id: this.currentuser.user._id }).then((response: any) => {
+    this.commonService.GetAPI(`${this.slug}plan/get/allplan`, { id: this.currentuser.user._id }).then((response: any) => {
       var planTreeArray: any = [];
       if (response.status && response.data && response.data.length > 0) {
         this.plans = response.data;
@@ -175,7 +179,7 @@ export class AddplanComponent implements OnInit {
   }
 
   getChildUsers() {
-    this.commonService.PostAPI('users/get/designations', { user_ids: this.childUsers }).then((response: any) => {
+    this.commonService.PostAPI(`${this.slug}users/get/designations`, { user_ids: this.childUsers }).then((response: any) => {
       if (response) {
         if (response.data && response.data.length > 0) {
           var usersArr = [];
@@ -201,7 +205,7 @@ export class AddplanComponent implements OnInit {
      * Plan form detail from admin
      */
 
-    this.commonService.PostAPI('plan/getform/by/id', { userid: this.userid }).then((response: any) => {
+    this.commonService.PostAPI(`${this.slug}plan/getform/by/id`, { userid: this.userid }).then((response: any) => {
       if (response.status) {
         this.final = response.data.palnformfield;
 
@@ -263,7 +267,7 @@ export class AddplanComponent implements OnInit {
     /**
     * Plan detail get using id
     */
-    this.commonService.PostAPI('plan/get/by/id', { plan_id: this.editid }).then((response: any) => {
+    this.commonService.PostAPI(`${this.slug}plan/get/by/id`, { plan_id: this.editid }).then((response: any) => {
       if (response.status) {
         this.planDetails = response.data;
         var usersArr = [];
@@ -362,7 +366,7 @@ export class AddplanComponent implements OnInit {
       if (i == 0) {
         if (j == 0) {
           if (k == 0) {
-            this.commonService.PostAPI('plan/create/form', this.formfield).then((response: any) => {
+            this.commonService.PostAPI(`${this.slug}plan/create/form`, this.formfield).then((response: any) => {
               if (response.status) {
                 this.toastr.success(response.message, "Success");
                 $("#myModal").modal("hide");
@@ -443,7 +447,7 @@ export class AddplanComponent implements OnInit {
             data.shared_permission_users = [];
           }
 
-          this.commonService.PostAPI('plan/create/parent', data).then((response: any) => {
+          this.commonService.PostAPI(`${this.slug}plan/create/parent`, data).then((response: any) => {
             if (response.status) {
               this.toastr.success(response.message, "Success");
               this.getallplan();
@@ -488,7 +492,7 @@ export class AddplanComponent implements OnInit {
   }
 
   getUserRole() {
-    this.commonService.PostAPI('hierarchy/get/user/designation', { user_id: this.currentuser.user._id }).then((response: any) => {
+    this.commonService.PostAPI(`${this.slug}hierarchy/get/user/designation`, { user_id: this.currentuser.user._id }).then((response: any) => {
       if (response.status && response.data) {
         this.hierarchyDetails = response.data.hierarchy_id;
       }
@@ -496,7 +500,7 @@ export class AddplanComponent implements OnInit {
   }
 
   getChildDesignations(hiearachyId) {
-    this.commonService.PostAPI('hierarchy/get/user/all/childs', { hierarchy_id: hiearachyId }).then((response: any) => {
+    this.commonService.PostAPI(`${this.slug}hierarchy/get/user/all/childs`, { hierarchy_id: hiearachyId }).then((response: any) => {
       if (response.status && response.data && response.data.length > 0) {
         this.userHierarchyData = response.data;
       } else {
@@ -521,7 +525,7 @@ export class AddplanComponent implements OnInit {
       data.role_id = this.currentuser.user.role_id;
       data.current_url = this.currentUrl;
 
-      this.commonService.PostAPI('users/desigation/create', data).then((response: any) => {
+      this.commonService.PostAPI(`${this.slug}users/desigation/create`, data).then((response: any) => {
         if (response.status) {
           this.toastr.success(response.message, "Success");
           this.resetInviteForm();

@@ -25,6 +25,10 @@ export class ResetPasswordComponent implements OnInit {
   userId: any = '';
   userToken: any = '';
 
+  // Use slug to connect w/ prod API
+  // Must end with /
+  slug = "https://lionfish-app-czku6.ondigitalocean.app/"
+
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
@@ -77,7 +81,7 @@ export class ResetPasswordComponent implements OnInit {
         confirm_password: this.f.confirmPassword.value,
       };
 
-      this.commonService.PostAPI("users/update/reset-password", data).then((response: any) => {
+      this.commonService.PostAPI(`${this.slug}users/update/reset-password`, data).then((response: any) => {
         if (response.status) {
           this.toastr.success("Your password has been updated successfully.", "Success");
           this.router.navigateByUrl('/sign-in')

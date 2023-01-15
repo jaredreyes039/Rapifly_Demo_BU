@@ -28,6 +28,10 @@ export class MeasureComponent implements OnInit {
   startDate: any = '';
   endDate: any = '';
 
+  // Use slug to connect w/ prod API
+  // Must end with /
+  slug = "https://lionfish-app-czku6.ondigitalocean.app/"
+
   public centralLabel: any = '';
   public canvasWidth = 400
   public needleValue = 0;
@@ -88,7 +92,7 @@ export class MeasureComponent implements OnInit {
     if (toDateTimestamp < fromDateTimestamp) {
       this.toastr.error("To date should be smaller than From date.", "Filter Validation Error");
     } else {
-      this.commonService.PostAPI('plan/get/by/user', {
+      this.commonService.PostAPI(`${this.slug}plan/get/by/user`, {
         user_id: this.currentuser.user._id,
         fromDate: moment(from_date).format('YYYY-MM-DD'),
         toDate: moment(to_date).format('YYYY-MM-DD')

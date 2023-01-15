@@ -18,6 +18,11 @@ export class TopHeaderComponent implements OnInit {
 
   userDesignation: any;
 
+  // Use slug to connect w/ prod API
+  // Must end with /
+  slug = "https://lionfish-app-czku6.ondigitalocean.app/"
+
+
   constructor(
     private authService: AuthenticationService,
     private router: Router,
@@ -43,7 +48,7 @@ export class TopHeaderComponent implements OnInit {
   }
 
   getUserProfileDetails() {
-    this.commonService.PostAPI('users/profile', { user_id: this.currentUserId }).then((response: any) => {
+    this.commonService.PostAPI(`${this.slug}users/profile`, { user_id: this.currentUserId }).then((response: any) => {
       if (response.status) {
         this.userProfile = response.data;
         this.avatarUrl = response.avatar_url;

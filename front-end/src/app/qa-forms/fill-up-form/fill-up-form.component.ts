@@ -29,6 +29,10 @@ export class FillUpFormComponent implements OnInit {
   formId: any;
   formDetail: any;
 
+  // Use slug to connect w/ prod API
+  // Must end with /
+  slug = "https://lionfish-app-czku6.ondigitalocean.app/"
+
   constructor(
     private toastr: ToastrService,
     public router: Router,
@@ -55,7 +59,7 @@ export class FillUpFormComponent implements OnInit {
   }
 
   getFormDetails(form_id) {
-    this.commonService.PostAPI('qa/get/form/by/id', { form_id: form_id }).then((response: any) => {
+    this.commonService.PostAPI(`${this.slug}qa/get/form/by/id`, { form_id: form_id }).then((response: any) => {
       if (response.status) {
         this.formDetail = response.data;
 
@@ -94,7 +98,7 @@ export class FillUpFormComponent implements OnInit {
       data.user_id = this.currentUserId;
       data.form_name = this.formDetail.form_name;
 
-      this.commonService.PostAPI('qa/form/save', data).then((response: any) => {
+      this.commonService.PostAPI(`${this.slug}qa/form/save`, data).then((response: any) => {
         if (response.status) {
           this.toastr.success(response.message, "Success");
           this.router.navigate(['/qa/forms']);

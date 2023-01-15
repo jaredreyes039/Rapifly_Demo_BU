@@ -20,6 +20,10 @@ export class RegisterInviteUserComponent implements OnInit {
   invite_user_id: any;
   invite_user_details: any;  
 
+  // Use slug to connect w/ prod API
+  // Must end with /
+  slug = "https://lionfish-app-czku6.ondigitalocean.app/"
+
   constructor(
     private commonService: CommonService,
     private formBuilder: FormBuilder,
@@ -49,7 +53,7 @@ export class RegisterInviteUserComponent implements OnInit {
   }
 
   getRole(role_name) {
-    this.commonService.PostAPI('role/get', {role_name:role_name}).then((response: any) => {
+    this.commonService.PostAPI(`${this.slug}role/get`, {role_name:role_name}).then((response: any) => {
       if (response && response.data) {
         this.userRoles = response.data;
       }
@@ -57,7 +61,7 @@ export class RegisterInviteUserComponent implements OnInit {
   }
 
   getUserDetails() {
-    this.commonService.PostAPI('users/get/invite/user/details', { id: this.invite_user_id }).then((response: any) => {
+    this.commonService.PostAPI(`${this.slug}users/get/invite/user/details`, { id: this.invite_user_id }).then((response: any) => {
       if (response.status) {
         if (response.data) {
           if (response.data.has_registered == 1) {
@@ -99,7 +103,7 @@ export class RegisterInviteUserComponent implements OnInit {
       data.parent_user_id = this.invite_user_details.parent_user_id;
       data.hierarchy_id = this.invite_user_details.hierarchy_id;
 
-      this.commonService.PostAPI('users/save', data).then((response: any) => {
+      this.commonService.PostAPI(`${this.slug}users/save`, data).then((response: any) => {
         if (response.status) {
           this.toastr.success("Your Registration  has been successfully.", "Success");
           this.router.navigate(['/sign-in']);

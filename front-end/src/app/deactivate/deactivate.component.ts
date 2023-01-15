@@ -26,6 +26,11 @@ export class DeactivateComponent implements OnInit {
   plan_id;
   currentchildUser;
   currentparentUser;
+
+  // Use slug to connect w/ prod API
+  // Must end with /
+  slug = "https://lionfish-app-czku6.ondigitalocean.app/"
+
   constructor(
     private toastr: ToastrService,
     public authenticationService: AuthenticationService,
@@ -46,7 +51,7 @@ export class DeactivateComponent implements OnInit {
       this.currentchildUser = [];
     }
     var children = this.currentchildUser.concat(this.currentparentUser);
-    this.commonService.PostAPI('plan/get/allplanselectbox', { id: this.currentuser.user._id, childids: this.currentchildUser }).then((response: any) => {
+    this.commonService.PostAPI(`${this.slug}plan/get/allplanselectbox`, { id: this.currentuser.user._id, childids: this.currentchildUser }).then((response: any) => {
       if (response.status) {
         this.plans = response.data;
 
@@ -62,7 +67,7 @@ export class DeactivateComponent implements OnInit {
       this.dividearrayintothreepart = 0
     } else {
       this.plan_id = planid;
-      this.commonService.PostAPI('goal/get/all/by/plan', { id: planid }).then((response: any) => {
+      this.commonService.PostAPI(`${this.slug}goal/get/all/by/plan`, { id: planid }).then((response: any) => {
         if (response.status) {
           this.goals = response.data;
           console.log(this.goals);
@@ -81,7 +86,7 @@ export class DeactivateComponent implements OnInit {
     }
   }
   changedeactivate(id, change) {
-    this.commonService.PostAPI('goal/deactivate/changebyid', { id: id, deactivate: change }).then((response: any) => {
+    this.commonService.PostAPI(`${this.slug}goal/deactivate/changebyid`, { id: id, deactivate: change }).then((response: any) => {
       if (response.status) {
         this.toastr.success(response.message, "Success");
         this.getgoal(this.plan_id);
