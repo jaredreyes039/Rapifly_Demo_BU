@@ -6,6 +6,7 @@
 - **CRITICAL UPDATE**: BEGAN WORK ON FRONT END RECOVERY -> SO FAR, SO GOOD!!
 - **HOLY SHIT MOMENT**: JUST CONNECTED THE BACK END AND FRONT END BACK TOGETHER IN A DEV ENVIRONMENT- WITH SOME CONFIGURATION IM CERTAIN WE WILL BE ON TRACK TO MVP IN NO TIME!!! (See proof image below)
 - **IMPORTANT**: API routes tested w/ Postman- what is testable, is functional!
+- **CRITICAL**: The entire module section for the Brainstorm phase is in working order from my understanding of its functionality, and we are now free to move onto the next area of focus once any final corrections and issues are ironed out following further necessitated discussion.
 
 <img src="https://www.dl.dropboxusercontent.com/s/2jg188n7qtg10mm/BEFETie.png?dl=0" alt="Confirmed back end to front end tie">
 
