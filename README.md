@@ -6,7 +6,6 @@
 - **CRITICAL UPDATE**: BEGAN WORK ON FRONT END RECOVERY -> SO FAR, SO GOOD!!
 - **HOLY SHIT MOMENT**: JUST CONNECTED THE BACK END AND FRONT END BACK TOGETHER IN A DEV ENVIRONMENT- WITH SOME CONFIGURATION IM CERTAIN WE WILL BE ON TRACK TO MVP IN NO TIME!!! (See proof image below)
 - **IMPORTANT**: API routes tested w/ Postman- what is testable, is functional!
-- **CRITICAL**: The entire module section for the Brainstorm phase is in working order from my understanding of its functionality, and we are now free to move onto the next area of focus once any final corrections and issues are ironed out following further necessitated discussion.
 
 <img src="https://www.dl.dropboxusercontent.com/s/2jg188n7qtg10mm/BEFETie.png?dl=0" alt="Confirmed back end to front end tie">
 
@@ -22,6 +21,7 @@
 <img src="https://www.dl.dropboxusercontent.com/s/dv6hml34g4xybb3/2023-01-15_16-29.png?dl=0" alt="Weird code snippet">
 
 - **CRITICAL**: We have a functioning, interwoven frontend and backend -> This is what we've been working towards, now we can begin bug fixing, feature additions, and overall user experience improvments!
+- **CRITICAL**: The entire module section for the Brainstorm phase is in working order from my understanding of its functionality, and we are now free to move onto the next area of focus once any final corrections and issues are ironed out following further necessitated discussion.
 
 ## Docs
 - **EXCALIDRAW**: [Back End Architecture Analysis](https://excalidraw.com/#json=0p3dGlWgO5SEZTntivmFW,uLbi-t_aRWrDYNE_vR9-0g)
