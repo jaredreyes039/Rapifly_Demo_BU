@@ -260,7 +260,7 @@ exports.get_plan_by_id2 = async function(request, response) {
             path: 'user_id'
         };
 
-        Plan.find({ '_id': body.plan_id }, {
+        await Plan.find({ '_id': body.plan_id }, {
             status: 0,
             plan_id: 0,
             created_at: 0,
@@ -633,7 +633,7 @@ module.exports.getPlanAndGoalsByUser = function(request, response) {
                         status: true,
                         data: data
                     });
-                });
+                }).clone();
             } else {
                 return response.send({
                     status: false,
