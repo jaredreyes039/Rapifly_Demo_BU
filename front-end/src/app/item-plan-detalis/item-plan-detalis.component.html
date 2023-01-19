@@ -123,9 +123,9 @@
                                     [ngClass]="{'active-phase' : selectedPhase == 'M'}">
                                     {{ (selectedPhase == 'M') ? 'Measure' : 'M' }}
                                 </p>&nbsp;|
-                                <p (click)="selectPhase('I')" title="Imporve" class="cursor-pointer"
+                                <p (click)="selectPhase('I')" title="improve" class="cursor-pointer"
                                     [ngClass]="{'active-phase' : selectedPhase == 'I'}">
-                                    {{ (selectedPhase == 'I') ? 'Imporve' : 'I' }}
+                                    {{ (selectedPhase == 'I') ? 'improve' : 'I' }}
                                 </p>
                             </div>
                         </div>
@@ -764,14 +764,14 @@
             </div>
         </div>
 
-        <!-- Brainstorm && Imporve -->
+        <!-- Brainstorm && improve -->
         <div class="col-md-3" *ngIf="selectedPhase === 'B' || selectedPhase === 'I'"
             [hidden]="selectedModules && selectedModules != ''"></div>
         <div class="col-md-9" *ngIf="selectedPhase === 'B' || selectedPhase === 'I'"
             [hidden]="selectedModules && selectedModules != ''">
             <div class="">
                 <div class="page-title">
-                    <h3>{{ (selectedPhase == 'I') ? 'Imporve' : 'Sub Item' }}</h3>
+                    <h3>{{ (selectedPhase == 'I') ? 'improve' : 'Sub Item' }}</h3>
                 </div>
             </div>
             <form #kform="ngForm" class="p-3" [formGroup]="childPlanForm">
@@ -1055,7 +1055,7 @@
                 </div>
             </div> -->
         </div>
-        <!-- End Brainstorm && Imporve -->
+        <!-- End Brainstorm && improve -->
 
         <!-- Deactivate -->
         <div class="col-md-9" *ngIf="selectedPhase == 'D'">
