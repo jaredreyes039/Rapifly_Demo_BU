@@ -42,90 +42,61 @@ module.exports.manage = async function(request, response) {
 
         UserDesignation.findOne({ user_id: body.user_id })
             .populate(hierarchyObj)
-            .exec(function(error, result) {
-                if (error) {
-                    return response.send({
-                        status: false,
-                        message: "Something went wrong"
-                    });
-                } else {
-                    if (result) {
-                        Propose.findOne({
-                                goal_id: body.goal_id,
-                                plan_id: body.plan_id
-                            },
-                            async function(error, detail) {
-                                if (error) {
-                                    return response.send({
-                                        status: false,
-                                        message: "Something went wrong"
+            .exec(async function(error, result) {
+                if (result) {
+                    await Propose.findOne({
+                            goal_id: body.goal_id,
+                            plan_id: body.plan_id
+                        },
+                        async function(error, detail) {
+                            if (error) {
+                                return response.send({
+                                    status: false,
+                                    message: "Something went wrong"
+                                });
+                            } else {
+                                var superior_id = "";
+
+                                var data = {
+                                    goal_id: body.goal_id,
+                                    plan_id: body.plan_id,
+                                    user_id: body.user_id
+                                };
+
+                                if (result.hierarchy_id.parent_hierarchy_id) {
+                                    var superiorDetails = await UserDesignation.findOne({
+                                        hierarchy_id: result.hierarchy_id.parent_hierarchy_id
                                     });
-                                } else {
-                                    var superior_id = "";
 
-                                    var data = {
-                                        goal_id: body.goal_id,
-                                        plan_id: body.plan_id,
-                                        user_id: body.user_id
-                                    };
-
-                                    if (result.hierarchy_id.parent_hierarchy_id) {
-                                        var superiorDetails = await UserDesignation.findOne({
-                                            hierarchy_id: result.hierarchy_id.parent_hierarchy_id
-                                        });
-
-                                        if (superiorDetails) {
-                                            superior_id = superiorDetails.user_id;
-                                        }
-                                    } else {
-                                        data.status = 0;
-                                        await Goal.updateOne({ _id: body.goal_id }, { propose: 1 });
+                                    if (superiorDetails) {
+                                        superior_id = superiorDetails.user_id;
                                     }
+                                } else {
+                                    data.status = 0;
+                                    await Goal.updateOne({ _id: body.goal_id }, { propose: 1 });
+                                }
 
-                                    if (detail) {
-                                        console.log("sdffsdf");
-                                        var propose_id = detail._id;
-                                        console.log(data);
-                                        data.superior_id = superior_id;
+                                if (detail) {
+                                    console.log("sdffsdf");
+                                    var propose_id = detail._id;
+                                    console.log(data);
+                                    data.superior_id = superior_id;
 
 
-                                        Propose.updateOne({ _id: propose_id }, data, async function(
-                                            error,
-                                            propose
-                                        ) {
-                                            if (error) {
-                                                console.log(error);
+                                    Propose.updateOne({ _id: propose_id }, data, async function(
+                                        error,
+                                        propose
+                                    ) {
+                                        if (error) {
+                                            console.log(error);
 
-                                                return response.send({
-                                                    status: false,
-                                                    message: "Something went wrong with update propose details."
-                                                });
-                                            } else {
-                                                var proposeHistoryData = {
-                                                    propose_id: propose_id,
-                                                    goal_id: body.goal_id,
-                                                    plan_id: body.plan_id,
-                                                    user_id: body.user_id,
-                                                    superior_id: superior_id
-                                                };
-
-                                                await saveProposeHistory(proposeHistoryData);
-
-                                                return response.send({
-                                                    status: true,
-                                                    message: "Plan item has been proposed to your superior."
-                                                });
-                                            }
-                                        });
-                                    } else {
-                                        data.superior_id = superior_id;
-
-                                        const propose = new Propose(data);
-                                        propose.save();
-
-                                        if (propose) {
+                                            return response.send({
+                                                status: false,
+                                                message: "Something went wrong with update propose details."
+                                            });
+                                        } else {
                                             var proposeHistoryData = {
-                                                propose_id: propose._id,
+                                                propose_id: propose_id,
                                                 goal_id: body.goal_id,
                                                 plan_id: body.plan_id,
                                                 user_id: body.user_id,
@@ -139,16 +110,38 @@ module.exports.manage = async function(request, response) {
                                                 message: "Plan item has been proposed to your superior."
                                             });
                                         }
+                                    });
+                                } else {
+                                    data.superior_id = superior_id;
+
+                                    const propose = new Propose(data);
+                                    propose.save();
+
+                                    if (propose) {
+                                        var proposeHistoryData = {
+                                            propose_id: propose._id,
+                                            goal_id: body.goal_id,
+                                            plan_id: body.plan_id,
+                                            user_id: body.user_id,
+                                            superior_id: superior_id
+                                        };
+
+                                        await saveProposeHistory(proposeHistoryData);
+
+                                        return response.send({
+                                            status: true,
+                                            message: "Plan item has been proposed to your superior."
+                                        });
                                     }
                                 }
                             }
-                        );
-                    } else {
-                        return response.send({
-                            status: false,
-                            message: "Something went wrong"
-                        });
-                    }
+                        }
+                    ).clone();
+                } else {
+                    return response.send({
+                        status: false,
+                        message: "User designation not found."
+                    });
                 }
             });
     } catch (error) {
