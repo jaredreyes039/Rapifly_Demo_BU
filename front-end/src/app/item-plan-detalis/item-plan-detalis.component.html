@@ -135,8 +135,8 @@
                                 <p>Modules:</p>
                             </div>
                             <div class="col-md-9 space-stage">
-                                <p title="Challanges" class="cursor-pointer" (click)="selectChallangeModule()"
-                                    *ngIf="selectedModules != 'opportunity'" [hidden]="selectedModules == 'problem'">
+                                <p title="Challanges" class="cursor-pointer" (click)="selectChallangeModule()" [ngClass]="{'active-phase' : isSelectedChallange}"
+                                    *ngIf="selectedModules != 'opportunity'" [hidden]="selectedModules == 'opportunity' || selectedModules == 'problem'">
                                     C&nbsp;|
                                 </p>
                                 <p title="Opportunity" *ngIf="selectedModules == 'opportunity'" class="cursor-pointer"
