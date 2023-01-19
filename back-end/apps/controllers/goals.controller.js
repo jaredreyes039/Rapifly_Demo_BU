@@ -440,7 +440,8 @@ exports.priority_change_by_id = async function (request, response) {
     }
 
     try {
-        Goals.findOne({ prioritize: body.new_priority, plan_id: body.plan_id }, async function (error, result) {
+        Goals.findOne({goal_id: body.goal_id }, async function (error, result) {
+            console.log(body.new_priority, body.plan_id)
             if (error) {
                 return response.send({
                     status: false,
@@ -448,7 +449,7 @@ exports.priority_change_by_id = async function (request, response) {
                 });
             } else {
                 if (result) {
-                    await Goals.updateOne({ _id: body.goal_id }, { prioritize: result.prioritize }, async function (error, is_update_current_goal) {
+                    await Goals.updateOne({ _id: body.goal_id }, { prioritize: body.new_priority }, async function (error, is_update_current_goal) {
                         if (error) {
                             return response.send({
                                 status: false,
@@ -467,10 +468,11 @@ exports.priority_change_by_id = async function (request, response) {
                                         message: "Goal priority has been updated successfully"
                                     });
                                 }
-                            });
+                            }).clone();
                         }
-                    });
-                } else {
+                    }).clone();
+                } 
+                else {
                     return response.send({
                         status: false,
                         message: "Goal not found."
