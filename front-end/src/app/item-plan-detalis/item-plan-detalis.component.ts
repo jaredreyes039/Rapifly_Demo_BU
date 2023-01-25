@@ -239,7 +239,7 @@ export class ItemPlanDetailsComponent implements OnInit {
   // selected = [];
   selectedUsers = [];
   users: any = [];
-
+  selectedModItem: boolean = false;
   final = [];
   datafinal = this.final;
 
@@ -253,6 +253,7 @@ export class ItemPlanDetailsComponent implements OnInit {
   dtTriggerCoaches: Subject<any> = new Subject();
 
   moduleType: any = 'goal';
+  moduleDetails: any = [];
 
   // Invite User
   designations: any = [];
@@ -1890,7 +1891,8 @@ export class ItemPlanDetailsComponent implements OnInit {
 
       $('#jstree-module-tree').jstree("destroy");
       $("#jstree-module-tree").on("select_node.jstree",
-        function (evt, data) { }
+        function (evt, data) {
+         }
       );
       $('#jstree-module-tree').jstree({ core: { data: treeArray } });
     });
