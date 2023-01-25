@@ -319,6 +319,7 @@ export class ItemPlanDetailsComponent implements OnInit {
     this.getPlanDetails();
     this.launchgoalalert();
     this.getDesignations();
+    
 
     $(function () {
       $('button').on('click', function () {
@@ -1593,11 +1594,17 @@ export class ItemPlanDetailsComponent implements OnInit {
     });
   }
 
+  convertStringToInt(str){
+    console.log(str)
+    return Number(str);
+}
+
   // Report
   getReportGoals(planid) {
     this.commonService.PostAPI(`report/get/all`, { plan_id: planid, user_id: this.currentuser.user._id }).then((response: any) => {
       if (response.status && response.data && response.data.length > 0) {
         this.reportGoals = response.data;
+        console.log(this.reportGoals)
       } else {
         this.reportGoals = [];
       }
@@ -1607,6 +1614,8 @@ export class ItemPlanDetailsComponent implements OnInit {
       this.dataTableAfterViewInit();
     });
   }
+
+  
 
   showreportform(goalid, reportid, data) {
     this.reportGoalId = goalid

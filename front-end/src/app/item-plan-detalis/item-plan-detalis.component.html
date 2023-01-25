@@ -136,18 +136,18 @@
                             </div>
                             <div class="col-md-9 space-stage">
                                 <p title="Challanges" class="cursor-pointer" (click)="selectChallangeModule()" [ngClass]="{'active-phase' : isSelectedChallange}"
-                                    *ngIf="selectedModules != 'opportunity'" [hidden]="selectedModules == 'opportunity' || selectedModules == 'problem'">
-                                    C&nbsp;|
+                                    >
+                                    {{ (isSelectedChallange) ? 'Challenges' : 'C' }}&nbsp;|
                                 </p>
                                 <p title="Opportunity" *ngIf="selectedModules == 'opportunity'" class="cursor-pointer"
-                                    [ngClass]="{'active-phase' : selectedModules == 'opportunity'}"
+                                    [ngClass]="{'active-phase' : selectedModules == 'opportunity' && !isSelectedChallange}"
                                     (click)="selectModule('opportunity')">
-                                    {{ (selectedModules == 'opportunity') ? 'Opportunity' : 'O' }}&nbsp;|
+                                    {{ (selectedModules == 'opportunity' && !isSelectedChallange) ? 'Opportunity' : 'O' }}&nbsp;|
                                 </p>
                                 <p title="Problem" *ngIf="selectedModules == 'problem'" class="cursor-pointer"
                                     (click)="selectModule('problem')"
-                                    [ngClass]="{'active-phase' : selectedModules == 'problem'}">
-                                    {{ (selectedModules == 'problem') ? 'Problem' : 'P' }}&nbsp;|
+                                    [ngClass]="{'active-phase' : selectedModules == 'problem' && !isSelectedChallange}">
+                                    {{ (selectedModules == 'problem' && !isSelectedChallange) ? 'Problem' : 'P' }}&nbsp;|
                                 </p>
                                 <p title="Stretegy" class="cursor-pointer" (click)="selectModule('strategy')"
                                     [ngClass]="{'active-phase' : selectedModules == 'strategy'}">
@@ -171,7 +171,7 @@
                                 </p>
                             </div>
                             <div class="col-md-3 space-stage" *ngIf="isSelectedChallange">
-                                <p>Challanges: </p>
+                                <p>Challenges: </p>
                             </div>
                             <div class="col-md-9 space-stage" *ngIf="isSelectedChallange">
                                 <p title="Opportunity" class="cursor-pointer" (click)="selectModule('opportunity')">
@@ -1815,19 +1815,15 @@
                     <tbody>
                         <tr *ngFor="let p of reportGoals; let i=index;">
                             <td>(G) {{ p.element.short_name }}</td>
-                            <td class="text-center"> {{ p.element.production_target === "null" ? "--" : p.element.production_target}}</td>
+                            <td class="text-center"> {{ p.element.production_target }}</td>
                             <td *ngIf="p.actual_production >= p.element.production_target" class="up">
-                                {{ p.actual_production == "null" ? "--" : p.actual_production}}</td>
+                                {{ p.actual_production }}</td>
                             <td *ngIf="p.actual_production < p.element.production_target" class="down">
-                                {{ p.actual_production == "null" ? "--" : p.actual_production }}</td>
-                            <td *ngIf="p.element.production_target === 'null'" class="down">
-                                {{ "--" }}</td>
-                            <td class="text-center">{{ p.element.expense_target === "null" ? "--" : p.element.expense_target}}</td>
+                                {{ p.actual_production }}</td>
+                            <td class="text-center">{{ p.element.expense_target }}</td>
                             <td *ngIf="p.actual_expense >= p.element.expense_target" class="up">{{ p.actual_expense }}
                             </td>
                             <td *ngIf="p.actual_expense < p.element.expense_target" class="down">{{ p.actual_expense }}
-                            </td>
-                            <td *ngIf="p.element.expense_target === 'null'" class="down">{{ "--" }}
                             </td>
                             <td>{{ p.element.start_date | prioritizegoaldate }}</td>
                             <td>{{ p.element.end_date | prioritizegoaldate}}</td>
