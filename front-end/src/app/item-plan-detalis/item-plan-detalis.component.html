@@ -1561,8 +1561,8 @@
                     <table class="table table-striped">
                         <thead>
                             <tr>
-                                <th class="prioritize-blue">Send To Team Page</th>
-                                <th class="prioritize-blue">Propose</th>
+                                <th class="prioritize-blue">Send To Voting</th>
+                                <!-- <th class="prioritize-blue">Propose</th> -->
                                 <th class="prioritize-blue">Priority</th>
                                 <th class="prioritize-blue">(G) Short Name</th>
                                 <th class="prioritize-blue">Start Date</th>
@@ -1576,14 +1576,14 @@
                             </tr>
                             <tr *ngFor="let p of proposeGoals; let i=index;">
                                 <td><input type="checkbox" (change)="handleChange($event,p._id)"></td>
-                                <td>
+                                <!-- <td>
                                     <a style="cursor: pointer;" data-toggle="tooltip" title="Click for Send Proposal!"
                                         *ngIf="p.propose==undefined || p.propose==0 "
                                         (click)="changeproposal(p._id,1)"><img src="assets/images/avatars/quit.png"></a>
                                     <a style="cursor: pointer;" data-toggle="tooltip" title="Click for Cancel Proposal!"
                                         *ngIf="p.propose==1" (click)="changeproposal(p._id,0)"><img
                                             src="assets/images/avatars/correct.png"></a>
-                                </td>
+                                </td> -->
                                 <td>{{ p.prioritize }}</td>
                                 <td>(G) {{ p.short_name }}</td>
                                 <td>{{ p.start_date | prioritizegoaldate }}</td>
@@ -2082,7 +2082,7 @@
             *ngIf="(selectedPhase == 'B' || selectedPhase == 'I') && (selectedModules && selectedModules != '')"></div>
         <div class="col-md-9"
             *ngIf="(selectedPhase == 'B' || selectedPhase == 'I') && (selectedModules && selectedModules != '')">
-            <!-- <div class="">
+            <div class="">
                 <div class="page-title">
                     <h3>{{ textDecoration(selectedModules) }}</h3>
                 </div>
@@ -2113,7 +2113,7 @@
                         </tbody>
                     </table>
                 </div>
-            </div> -->
+            </div>
             <div class="page-title">
                 <h3>Add {{ textDecoration(selectedModules) }}</h3>
             </div>
