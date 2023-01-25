@@ -42,6 +42,7 @@ export class ItemPlanDetailsComponent implements OnInit {
   goalid;
   goalplanid;
   checkforgoaledit = false
+  parentIsActiveSelection: boolean;
 
   pparentplanDetails;
   planstartdate;
@@ -652,10 +653,11 @@ export class ItemPlanDetailsComponent implements OnInit {
               a.getplandetail(data.selected[0]);
               a.getGoalReportByPlan(data.selected[0]);
               plan_id = data.selected[0];
+              a.parentIsActiveSelection = true;
             } else {
               a.getgoaldetail(data.selected[0], data.node.parent);
               a.getGoalReportByPlan(data.node.parent);
-
+              a.parentIsActiveSelection = false;
               plan_id = data.node.parent;
               a.getGoalAttachments(data.selected[0]);
               a.getGoalSharedUsers(data.selected[0]);

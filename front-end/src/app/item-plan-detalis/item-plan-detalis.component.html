@@ -732,46 +732,203 @@
             </div>
         </div>
 
-        <div class="col-md-9" *ngIf="selectedPhase == 'B' && planGoals && planGoals.length > 0">
-            <div class="page-title">
-                <h3>{{ textDecoration(moduleType) }} List</h3>
-            </div>
-
-            <div class="panel panel-cutom-blue" *ngIf="selectedPhase == 'B' && planGoals && planGoals.length > 0">
-                <div class="row">
-                    <table id="table-goals" datatable [dtOptions]="dtOptionsPlanGoals"
-                        class="display table table-data-width">
-                        <thead>
-                            <tr>
-                                <th class="prioritize-blue">(G) Short Name</th>
-                                <th class="prioritize-blue">Start Date</th>
-                                <th class="prioritize-blue">End Date</th>
-                                <th class="prioritize-blue">Production Target</th>
-                                <th class="prioritize-blue">Expense Target</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let p of planGoals; let i=index">
-                                <td>(G) {{ p.short_name }}</td>
-                                <td>{{ p.start_date | prioritizegoaldate }}</td>
-                                <td>{{ p.end_date | prioritizegoaldate}}</td>
-                                <td>{{ (p.production_target) ? p.production_target : 0 }}</td>
-                                <td>{{ (p.expense_target) ? p.expense_target : 0 }}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
 
         <!-- Brainstorm && improve -->
+
+        <!-- IF PARENT IS SELECTED -->
         <div class="col-md-3" *ngIf="selectedPhase === 'B' || selectedPhase === 'I'"
-            [hidden]="selectedModules && selectedModules != ''"></div>
+            [hidden]="selectedModules && selectedModules != '' || !parentIsActiveSelection"></div>
+        
         <div class="col-md-9" *ngIf="selectedPhase === 'B' || selectedPhase === 'I'"
-            [hidden]="selectedModules && selectedModules != ''">
+            [hidden]="selectedModules && selectedModules != '' || !parentIsActiveSelection">
+            <div class="" *ngIf="selectedPhase == 'B' && planGoals && planGoals.length > 0">
+                <div class="page-title">
+                    <h3>{{ textDecoration(moduleType) }} List</h3>
+                </div>
+    
+                <div class="panel panel-cutom-blue" *ngIf="selectedPhase == 'B' && planGoals && planGoals.length > 0">
+                    <div class="row">
+                        <table id="table-goals" datatable [dtOptions]="dtOptionsPlanGoals"
+                            class="display table table-data-width">
+                            <thead>
+                                <tr>
+                                    <th class="prioritize-blue">(G) Short Name</th>
+                                    <th class="prioritize-blue">Start Date</th>
+                                    <th class="prioritize-blue">End Date</th>
+                                    <th class="prioritize-blue">Production Target</th>
+                                    <th class="prioritize-blue">Expense Target</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let p of planGoals; let i=index">
+                                    <td>(G) {{ p.short_name }}</td>
+                                    <td>{{ p.start_date | prioritizegoaldate }}</td>
+                                    <td>{{ p.end_date | prioritizegoaldate}}</td>
+                                    <td>{{ (p.production_target) ? p.production_target : 0 }}</td>
+                                    <td>{{ (p.expense_target) ? p.expense_target : 0 }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div>
             <div class="">
                 <div class="page-title">
-                    <h3>{{ (selectedPhase == 'I') ? 'improve' : 'Sub Item' }}</h3>
+                    <h3>{{ (selectedPhase == 'I') ? 'Improve' : 'Sub Item' }}</h3>
+                </div>
+            </div>
+            <form #kform="ngForm" class="p-3" [formGroup]="childPlanForm">
+                <div class="panel panel-cutom-blue">
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                <label for="exampleInputEmail1">Short Name<span>*</span></label>
+                                <input type="text" formControlName="short_name" class="form-control"
+                                    placeholder="Short name"
+                                    [ngClass]="{ 'is-invalid': submitted && f.short_name.errors }" autocomplete="off">
+                                <div *ngIf="submitted && f.short_name.errors" class="invalid-feedback">
+                                    <div *ngIf="f.short_name.errors.required">Short name is required</div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label for="exampleInputPassword1">Long Name<span>*</span></label>
+                                <input type="text" id="long_name" formControlName="long_name" class="form-control"
+                                    placeholder="Long name"
+                                    [ngClass]="{ 'is-invalid': submitted && f.long_name.errors }" autocomplete="off">
+                                <div *ngIf="submitted && f.long_name.errors" class="invalid-feedback">
+                                    <div *ngIf="f.long_name.errors.required">Long name is required</div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label for="exampleInputPassword1">Start Date<span>*</span></label>
+                                <div class="input-group input-append bootstrap-datepicker">
+                                    <input type="text" id="date-input5" formControlName="start_date"
+                                        class="form-control date-picker" placeholder="Start Date" autocomplete="off">
+                                    <span style="background-color: #8869c2;" class="input-group-addon add-on"><i
+                                            class="fa fa-calendar"></i></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label for="exampleInputPassword1">End Date<span>*</span></label>
+                                <div class="input-group input-append bootstrap-datepicker">
+                                    <input type="text" id="date-input6" formControlName="end_date"
+                                        class="form-control date-picker" placeholder="End Date" autocomplete="off">
+                                    <span style="background-color: #8869c2;" class="input-group-addon add-on"><i
+                                            class="fa fa-calendar"></i></span>
+                                </div>
+                            </div>
+                            <div class="col-md-12 form-group" *ngIf="isSharedPlanPermission">
+                                <label>Select Users</label>
+                                <ng-select [items]="items" bindLabel="name" placeholder="Select Users"
+                                    formControlName="shared_users" appendTo="body" multiple="true"
+                                    [(ngModel)]="selected" (change)="onChange($event)">
+                                </ng-select>
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <label for="exampleInputPassword1">Description</label>
+                                <textarea type="text" formControlName="description" class="form-control"
+                                    placeholder="Description"></textarea>
+                                <div *ngIf="submitted && f.description.errors" class="invalid-feedback">
+                                    <div *ngIf="f.description.errors.required">Description is required</div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 form-group text-right">
+                                <button type="submit " (click)="onSubmit()"
+                                    [disabled]="!checkforgoaledit && !isSharedPlanPermission"
+                                    class="btn btn-primary btn-space">Save</button>
+                                <button type="reset" (click)="reset()" [disabled]="!checkforgoaledit "
+                                    class="btn btn-default">Clear</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            </div>
+            
+            <div>
+                
+            </div>
+            <div class="page-title">
+                <h3>Discussion</h3>
+            </div>
+            <div class="panel panel-cutom-blue">
+                <div class="panel-body">
+                    <form [formGroup]="DiscussionForm">
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                <label>Security</label>
+                                <select class="form-control" formControlName="security">
+                                    <option value="">Select Security</option>
+                                    <option value="public">Public</option>
+                                    <option value="private">Private</option>
+                                </select>
+                                <div *ngIf="isSubmittedDiscussionForm && dscf.security.errors" class="invalid-feedback">
+                                    <label *ngIf="dscf.security.errors.required" class="error">Security is
+                                        required</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>Recipients</label>
+                                <select class="form-control" formControlName="recipient_id" id="recipient_id" (change)="onRecipient($event)">
+                                    <option value="">Select Recipient</option>
+                                    <option *ngFor="let hu of users;" value="{{hu.user_id._id}}">
+                                        {{ hu.user_id.first_name }} {{ hu.user_id.last_name }}
+                                        ({{hu.hierarchy_id.designation}})</option>
+                                    <option value="invite">Invite New Recipient</option>
+                                </select>
+                                <div *ngIf="isSubmittedDiscussionForm && dscf.recipient_id.errors"
+                                    class="invalid-feedback">
+                                    <label *ngIf="dscf.recipient_id.errors.required" class="error">Recipient is
+                                        required</label>
+                                </div>
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <label>Subject</label>
+                                <input type="text" class="form-control" placeholder="Subject" formControlName="subject"
+                                    [ngClass]="{ 'is-invalid': isSubmittedDiscussionForm && dscf.subject.errors }">
+                                <div *ngIf="isSubmittedDiscussionForm && dscf.subject.errors" class="invalid-feedback">
+                                    <label *ngIf="dscf.subject.errors.required" class="error">Subject is
+                                        required</label>
+                                </div>
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <label>Message</label>
+                                <textarea class="form-control" placeholder="Message" formControlName="message"
+                                    [ngClass]="{ 'is-invalid': isSubmittedDiscussionForm && dscf.message.errors }"></textarea>
+                                <div *ngIf="isSubmittedDiscussionForm && dscf.message.errors" class="invalid-feedback">
+                                    <label *ngIf="dscf.message.errors.required" class="error">Message is
+                                        required</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>Attachment</label>
+                                <input type="file" (change)="uploadDiscussionAttachment($event.target.files)">
+                            </div>
+                            <div class="col-md-12 form-group text-right">
+                                <button type="submit" class="btn btn-primary btn-space"
+                                    (click)="onSubmitDiscussion()">Save</button>
+                                <button type="reset" class="btn btn-default"
+                                    (click)="resetDiscussionForm()">Cancel</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- IF CHILD IS SELECTED -->
+        <div class="col-md-3" *ngIf="selectedPhase === 'B' || selectedPhase === 'I'"
+            [hidden]="selectedModules && selectedModules != '' || parentIsActiveSelection"></div>
+        
+        <div class="col-md-9" *ngIf="selectedPhase === 'B' || selectedPhase === 'I'"
+            [hidden]="selectedModules && selectedModules != '' || parentIsActiveSelection">
+            <div>
+            <div class="">
+                <div class="page-title">
+                    <h3>{{ (selectedPhase == 'I') ? 'Improve' : 'Sub Item' }}</h3>
                 </div>
             </div>
             <form #kform="ngForm" class="p-3" [formGroup]="childPlanForm">
@@ -950,6 +1107,42 @@
                     </div>
                 </div> -->
             </form>
+            </div>
+            <div class="" *ngIf="selectedPhase == 'B' && planGoals && planGoals.length > 0">
+                <div class="page-title">
+                    <h3>{{ textDecoration(moduleType) }} List</h3>
+                </div>
+    
+                <div class="panel panel-cutom-blue" *ngIf="selectedPhase == 'B' && planGoals && planGoals.length > 0">
+                    <div class="row">
+                        <table id="table-goals" datatable [dtOptions]="dtOptionsPlanGoals"
+                            class="display table table-data-width">
+                            <thead>
+                                <tr>
+                                    <th class="prioritize-blue">(G) Short Name</th>
+                                    <th class="prioritize-blue">Start Date</th>
+                                    <th class="prioritize-blue">End Date</th>
+                                    <th class="prioritize-blue">Production Target</th>
+                                    <th class="prioritize-blue">Expense Target</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let p of planGoals; let i=index">
+                                    <td>(G) {{ p.short_name }}</td>
+                                    <td>{{ p.start_date | prioritizegoaldate }}</td>
+                                    <td>{{ p.end_date | prioritizegoaldate}}</td>
+                                    <td>{{ (p.production_target) ? p.production_target : 0 }}</td>
+                                    <td>{{ (p.expense_target) ? p.expense_target : 0 }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <div>
+                
+            </div>
             <div class="page-title">
                 <h3>Discussion</h3>
             </div>
@@ -1016,44 +1209,7 @@
                     </form>
                 </div>
             </div>
-            <!-- <div class=" ">
-                <div class="page-title ">
-                    <h3>Dashboard</h3>
-                </div>
-            </div>
-            <div class="panel panel-cutom-blue dashboard " id="style-2">
-                <div class="row" [hidden]="!goalReportDetails ">
-                    <div class="col-md-6 pb-10 ">
-                        <div class="col-md-6 text-blue ">Total Expected Target</div>
-                        <div class="col-md-6 text-white ">: {{goalReportDetails.total_expected_target}}</div>
-                    </div>
-                    <div class="col-md-6 pb-10 ">
-                        <div class="col-md-6 text-blue ">Total Revenue Target</div>
-                        <div class="col-md-6 text-white ">: {{goalReportDetails.total_revenue_target}}</div>
-                    </div>
-                    <div class="col-md-6 pb-10 ">
-                        <div class="col-md-6 text-blue ">Actual Expected</div>
-                        <div class="col-md-6 text-white ">: {{goalReportDetails.actual_expected_target}}</div>
-                    </div>
-                    <div class="col-md-6 pb-10 ">
-                        <div class="col-md-6 text-blue ">Actual Revenue</div>
-                        <div class="col-md-6 text-white ">: {{goalReportDetails.actual_revenue_target}}</div>
-                    </div>
-                    <div class="col-md-6 pb-10 ">
-                        <div class="col-md-6 text-blue ">Actual Expected (%)</div>
-                        <div class="col-md-6 text-white ">: {{goalReportDetails.plan_expected}}%</div>
-                    </div>
-                    <div class="col-md-6 pb-10 ">
-                        <div class="col-md-6 text-blue ">Actual Revenue (%)</div>
-                        <div class="col-md-6 text-white ">: {{goalReportDetails.plan_revenue}}%</div>
-                    </div>
-                </div>
-                <div class="row" [hidden]="goalReportDetails ">
-                    <div class="col-md-12 text-center ">
-                        <p>No details found.</p>
-                    </div>
-                </div>
-            </div> -->
+
         </div>
         <!-- End Brainstorm && improve -->
 
