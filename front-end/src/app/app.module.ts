@@ -43,7 +43,7 @@ import { VoteComponent } from './vote/vote.component';
 import { SelectedVoteComponent } from './selected-vote/selected-vote.component';
 
 import { HierarchyDiagramComponent } from './hierarchy-diagram/hierarchy-diagram.component';
-import { MatFormFieldModule, MatInputModule, MatCardModule, MatExpansionModule } from '@angular/material';
+import { MatFormFieldModule, MatInputModule, MatCardModule, MatExpansionModule, MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle, MatExpansionPanelDescription } from '@angular/material';
 import { DelegateComponent } from './delegate/delegate.component';
 import { CountdownComponent } from './countdown/countdown.component';
 import { LaunchComponent } from './launch/launch.component';
@@ -68,6 +68,8 @@ import { ViewQaFormResultsComponent } from './qa-forms/view-qa-form-results/view
 import { RegisterComponent } from './coach/register/register.component';
 import { ListComponent } from './coach/list/list.component';
 import { EditPlanComponent } from './edit-plan/edit-plan.component';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+
 
 @NgModule({
   declarations: [
@@ -147,6 +149,8 @@ import { EditPlanComponent } from './edit-plan/edit-plan.component';
     NgSelectModule,
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
+    MatSlideToggleModule,
+    MatExpansionModule,
   ],
 
   providers: [{ provide: LOCALE_ID, useValue: 'en-IN' }, ChatService],

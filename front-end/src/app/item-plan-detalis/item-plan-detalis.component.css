@@ -112,12 +112,20 @@ ul,
     font-size: 15px;
     font-weight: 900;
 }
+.expanse-panel {
+    background-color: transparent !important;
+    margin-bottom: 24px;
+}
+.expanse-panel > h3 {
+    padding: 0px;
+}
 
 .text-white {
     color: #fff;
     font-size: 15px;
     /* font-weight: 900; */
 }
+
 
 .pb-10 {
     padding-bottom: 10px;
@@ -133,6 +141,8 @@ ul,
 
 .space-stage {
     display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .space-stage p {
