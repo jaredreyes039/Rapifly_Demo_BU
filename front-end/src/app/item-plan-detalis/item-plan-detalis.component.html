@@ -22,15 +22,15 @@
                                     <p (click)="selectPanel('user')" title="User" class="cursor-pointer"
                                         [ngClass]="{'active-phase' : selectedPhase == 'user'}">
                                         User
-                                    </p>&nbsp;|
+                                    </p><p>&nbsp;|</p>
                                     <p (click)="selectPanel('project')" title="Project" class="cursor-pointer"
                                         [ngClass]="{'active-phase' : selectedPhase == 'project'}">
                                         Project
-                                    </p>&nbsp;|
+                                    </p><p>&nbsp;|</p>
                                     <p (click)="selectPanel('team')" title="Team" class="cursor-pointer"
                                         [ngClass]="{'active-phase' : selectedPhase == 'team'}">
                                         Team
-                                    </p>&nbsp;|
+                                    </p><p>&nbsp;|</p>
                                     <p (click)="selectPanel('security')" title="Security" class="cursor-pointer"
                                         [ngClass]="{'active-phase' : selectedPhase == 'security'}">
                                         Security
@@ -45,31 +45,38 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- HUD UI -->
+
                     <div class="panel panel-cutom-blue hud" id="style-2">
                         <div class="panel-heading panel-green" role="tab" id="headingOne1">
                             <h4 class="panel-title text-center">
                                 <a aria-controls="collapseOne">HUD</a>
                             </h4>
                         </div>
+
+                        <!-- STAGE -->
                         <div class="panel-body">
                             <div class="col-md-3 space-stage">
                                 <p>Stage:</p>
                             </div>
                             <div class="col-md-9 space-stage">
-                                <p (click)="selecteStage('create')" title="Create" class="cursor-pointer"
+                                <p (click)="selecteStage('create'); selectPhase('project')" title="Create" class="cursor-pointer"
                                     [ngClass]="{'active-phase' : selectedStage == 'create'}">
                                     Create
-                                </p>&nbsp;|
+                                </p><p>&nbsp;|</p>
                                 <p (click)="selecteStage('execute')" title="Execute" class="cursor-pointer"
                                     [ngClass]="{'active-phase' : selectedStage == 'execute'}">
                                     Execute
-                                </p>&nbsp;|
+                                </p><p>&nbsp;|</p>
                                 <p (click)="selecteStage('evaluate')" title="Deactivate" class="cursor-pointer"
                                     [ngClass]="{'active-phase' : selectedStage == 'evaluate'}">
                                     Evaluate
                                 </p>
                             </div>
                         </div>
+
+                        <!-- PHASE -->
                         <div class="panel-body">
                             <div class="col-md-3 space-stage">
                                 <p>Phase:</p>
@@ -78,23 +85,23 @@
                                 <p (click)="selectPhase('B')" title="Brainstorm" class="cursor-pointer"
                                     [ngClass]="{'active-phase' : selectedPhase == 'B'}">
                                     {{ (selectedPhase == 'B') ? 'Brainstorm' : 'B' }}
-                                </p>&nbsp;|
+                                </p><p>&nbsp;|</p>
                                 <p (click)="selectPhase('P')" title="Prioritize" class="cursor-pointer"
                                     [ngClass]="{'active-phase' : selectedPhase == 'P'}">
                                     {{ (selectedPhase == 'P') ? 'Prioritize' : 'P' }}
-                                </p>&nbsp;|
+                                </p><p>&nbsp;|</p>
                                 <p (click)="selectPhase('D')" title="Deactivate" class="cursor-pointer"
                                     [ngClass]="{'active-phase' : selectedPhase == 'D'}">
                                     {{ (selectedPhase == 'D') ? 'Deactivate' : 'D' }}
-                                </p>&nbsp;|
+                                </p><p>&nbsp;|</p>
                                 <p (click)="selectPhase('PR')" title="Propose" class="cursor-pointer"
                                     [ngClass]="{'active-phase' : selectedPhase == 'PR'}">
                                     {{ (selectedPhase == 'PR') ? 'Propose' : 'P' }}
-                                </p>&nbsp;|
+                                </p><p>&nbsp;|</p>
                                 <p (click)="selectPhase('V')" title="Vote" class="cursor-pointer"
                                     [ngClass]="{'active-phase' : selectedPhase == 'V'}">
                                     {{ (selectedPhase == 'V') ? 'Vote' : 'V' }}
-                                </p>&nbsp;|
+                                </p><p>&nbsp;|</p>
                                 <p (click)="selectPhase('S')" title="Select" class="cursor-pointer"
                                     [ngClass]="{'active-phase' : selectedPhase == 'S'}">
                                     {{ (selectedPhase == 'S') ? 'Select' : 'S' }}
@@ -104,15 +111,15 @@
                                 <p (click)="selectPhase('DG')" title="Delegate" class="cursor-pointer"
                                     [ngClass]="{'active-phase' : selectedPhase == 'DG'}">
                                     {{ (selectedPhase == 'DG') ? 'Delegate' : 'D' }}
-                                </p>&nbsp;|
+                                </p><p>&nbsp;|</p>
                                 <p (click)="selectPhase('C')" title="Countdown" class="cursor-pointer"
                                     [ngClass]="{'active-phase' : selectedPhase == 'C'}">
                                     {{ (selectedPhase == 'C') ? 'Countdown' : 'C' }}
-                                </p>&nbsp;|
+                                </p><p>&nbsp;|</p>
                                 <p (click)="selectPhase('L')" title="Launch" class="cursor-pointer"
                                     [ngClass]="{'active-phase' : selectedPhase == 'L'}">
                                     {{ (selectedPhase == 'L') ? 'Launch' : 'L' }}
-                                </p>&nbsp;|
+                                </p><p>&nbsp;|</p>
                                 <p (click)="selectPhase('R')" title="Report" class="cursor-pointer"
                                     [ngClass]="{'active-phase' : selectedPhase == 'R'}">
                                     {{ (selectedPhase == 'R') ? 'Report' : 'R' }}
@@ -122,7 +129,7 @@
                                 <p (click)="selectPhase('M')" title="Measure" class="cursor-pointer"
                                     [ngClass]="{'active-phase' : selectedPhase == 'M'}">
                                     {{ (selectedPhase == 'M') ? 'Measure' : 'M' }}
-                                </p>&nbsp;|
+                                </p><p>&nbsp;|</p>
                                 <p (click)="selectPhase('I')" title="improve" class="cursor-pointer"
                                     [ngClass]="{'active-phase' : selectedPhase == 'I'}">
                                     {{ (selectedPhase == 'I') ? 'improve' : 'I' }}
@@ -130,16 +137,17 @@
                             </div>
                         </div>
 
+                        <!-- MODULE -->
                         <div class="panel-body">
                             <div class="col-md-3 space-stage">
                                 <p>Modules:</p>
                             </div>
                             <div class="col-md-9 space-stage">
-                                <p title="Challanges" class="cursor-pointer" (click)="selectChallangeModule()" [ngClass]="{'active-phase' : isSelectedChallange}"
+                                <!-- <p title="Challanges" class="cursor-pointer" (click)="selectChallangeModule()" [ngClass]="{'active-phase' : isSelectedChallange}"
                                     >
                                     {{ (isSelectedChallange) ? 'Challenges' : 'C' }}&nbsp;|
-                                </p>
-                                <p title="Opportunity" *ngIf="selectedModules == 'opportunity'" class="cursor-pointer"
+                                </p> -->
+                                <!-- <p title="Opportunity" *ngIf="selectedModules == 'opportunity'" class="cursor-pointer"
                                     [ngClass]="{'active-phase' : selectedModules == 'opportunity' && !isSelectedChallange}"
                                     (click)="selectModule('opportunity')">
                                     {{ (selectedModules == 'opportunity' && !isSelectedChallange) ? 'Opportunity' : 'O' }}&nbsp;|
@@ -148,36 +156,38 @@
                                     (click)="selectModule('problem')"
                                     [ngClass]="{'active-phase' : selectedModules == 'problem' && !isSelectedChallange}">
                                     {{ (selectedModules == 'problem' && !isSelectedChallange) ? 'Problem' : 'P' }}&nbsp;|
-                                </p>
+                                </p> -->
                                 <p title="Stretegy" class="cursor-pointer" (click)="selectModule('strategy')"
                                     [ngClass]="{'active-phase' : selectedModules == 'strategy'}">
                                     {{ (selectedModules == 'strategy') ? 'Strategy' : 'S' }}
-                                </p>&nbsp;|
+                                </p><p>&nbsp;|</p>
                                 <p title="Process" class="cursor-pointer" (click)="selectModule('process')"
                                     [ngClass]="{'active-phase' : selectedModules == 'process'}">
                                     {{ (selectedModules == 'process') ? 'Process' : 'P' }}
-                                </p>&nbsp;|
+                                </p><p>&nbsp;|</p>
                                 <p title="Motive" class="cursor-pointer" (click)="selectModule('motive')"
                                     [ngClass]="{'active-phase' : selectedModules == 'motive'}">
                                     {{ (selectedModules == 'motive') ? 'Motive' : 'M' }}
-                                </p>&nbsp;|
+                                </p><p>&nbsp;|</p>
                                 <p title="Analysis" class="cursor-pointer" (click)="selectModule('analysis')"
                                     [ngClass]="{'active-phase' : selectedModules == 'analysis'}">
                                     {{ (selectedModules == 'analysis') ? 'Analysis' : 'A' }}
-                                </p>&nbsp;|
+                                </p><p>&nbsp;|</p>
                                 <p title="Intelligence" class="cursor-pointer" (click)="selectModule('intelligence')"
                                     [ngClass]="{'active-phase' : selectedModules == 'intelligence'}">
                                     {{ (selectedModules == 'intelligence') ? 'Intelligence' : 'I' }}
                                 </p>
                             </div>
-                            <div class="col-md-3 space-stage" *ngIf="isSelectedChallange">
+                            <div class="col-md-3 space-stage">
                                 <p>Challenges: </p>
                             </div>
-                            <div class="col-md-9 space-stage" *ngIf="isSelectedChallange">
-                                <p title="Opportunity" class="cursor-pointer" (click)="selectModule('opportunity')">
+                            <div class="col-md-9 space-stage">
+                                <p title="Opportunity" class="cursor-pointer" (click)="selectModule('opportunity')"
+                                [ngClass]="{'active-phase' : selectedModules == 'opportunity'}">
                                     Opportunity
-                                </p>&nbsp;|
-                                <p title="Problem" class="cursor-pointer" (click)="selectModule('problem')">
+                                </p><p>&nbsp;|</p>
+                                <p title="Problem" class="cursor-pointer" (click)="selectModule('problem')"
+                                [ngClass]="{'active-phase' : selectedModules == 'problem'}">
                                     Problem
                                 </p>
                             </div>
@@ -249,7 +259,8 @@
             </div>
         </div>
 
-        <div class="col-md-9" *ngIf="parentplanDetails[0] && parentplanDetails[0] != ''">
+        <div class="col-md-9" *ngIf="parentplanDetails[0] && parentplanDetails[0] != '' && selectedPhase !='project' && selectedPhase != 'user'
+        && selectedPhase != 'team' && selectedPhase !== 'security' && selectedPhase != 'coaches-corner'">
             <div class="page-title">
                 Project Profile
             </div>
@@ -264,25 +275,25 @@
                             <div class="col-md-6 row pb-10"
                                 *ngIf="parentplan.key !='_id' && parentplan.key !='shared_permission_users' && parentplan.key !='share_users' && parentplan.key !='shared_plan_users' && parentplan.key !='user_group_id' && parentplan.key !='number' && parentplan.key !='motivation' && parentplan.value ">
                                 <div *ngIf="parentplan.key=='user_id' ">
-                                    <div class="col-md-6 text-blue ">Creator</div>
-                                    <div class="col-md-6 text-white " *ngIf="parentplan.key !='userid' ">:
+                                    <div class="text-blue ">Creator:</div>
+                                    <div class="col-md-6 text-white " *ngIf="parentplan.key !='userid' ">
                                         {{parentplan.value.first_name}} {{parentplan.value.last_name}}</div>
                                 </div>
                                 <div *ngIf="parentplan.key=='start_date' || parentplan.key=='end_date' ">
-                                    <div class="col-md-6 text-blue ">{{textDecoration(parentplan.key)}}</div>
-                                    <div class="col-md-6 text-white " *ngIf="parentplan.key !='userid' ">:
+                                    <div class=" text-blue ">{{textDecoration(parentplan.key)}}:</div>
+                                    <div class="col-md-6 text-white " *ngIf="parentplan.key !='userid' ">
                                         {{parentplan.value | itemplanitemdate }}</div>
                                 </div>
                                 <div
                                     *ngIf="parentplan.key !='start_date' && parentplan.key !='end_date' && parentplan.key !='user_id' && parentplan.key !='security' ">
-                                    <div class="col-md-6 text-blue ">{{textDecoration(parentplan.key)}}</div>
-                                    <div class="col-md-6 text-white " *ngIf="parentplan.key !='userid' ">:
+                                    <div class="text-blue ">{{textDecoration(parentplan.key)}}:</div>
+                                    <div class="col-md-6 text-white " *ngIf="parentplan.key !='userid' ">
                                         {{parentplan.value}}</div>
                                 </div>
                                 <div *ngIf="parentplan.key=='security' ">
-                                    <div class="col-md-6 text-blue ">{{textDecoration(parentplan.key)}}</div>
-                                    <div class="col-md-6 text-white " *ngIf="parentplan.value==0 ">: Private</div>
-                                    <div class="col-md-6 text-white " *ngIf="parentplan.value==1 ">: Shared </div>
+                                    <div class="text-blue ">{{textDecoration(parentplan.key)}}:</div>
+                                    <div class="col-md-6 text-white " *ngIf="parentplan.value==0 "> Private</div>
+                                    <div class="col-md-6 text-white " *ngIf="parentplan.value==1 "> Shared </div>
                                 </div>
                             </div>
                         </div>
@@ -294,7 +305,7 @@
         <div class="col-md-9" *ngIf="selectedPhase == 'project'">
             <form #kform="ngForm" [formGroup]="parentplangroup">
                 <div class="page-title">
-                    <h3>Parent Plan Item</h3>
+                    <h3>Create Parent Project Item</h3>
                 </div>
                 <div class="col-md-12 form-group text-right">
                     <button type="button" class="btn btn-warning mt-20" (click)="fetch()">Add Form Control</button>
@@ -359,6 +370,51 @@
                                 <textarea type="text" formControlName="description" class="form-control"
                                     placeholder="Description"></textarea>
                             </div>
+
+                            <div class="col-md-6 form-group">
+                                <label>Production Target<span>*</span></label>
+                                <input type="number" class="form-control" placeholder="Production Target"
+                                    formControlName="production_target"
+                                    [ngClass]="{ 'is-invalid': IsLoginFormValid && jval.production_target.errors }">
+                                <div *ngIf="IsLoginFormValid && jval.production_target.errors" class="invalid-feedback">
+                                    <label *ngIf="jval.production_target.errors.required" class="error">Production
+                                        target is required</label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 form-group">
+                                <label>Expense Target<span>*</span></label>
+                                <input type="number" class="form-control" placeholder="Expense Target"
+                                    formControlName="expense_target"
+                                    [ngClass]="{ 'is-invalid': IsLoginFormValid && jval.expense_target.errors }">
+                                <div *ngIf="IsLoginFormValid && jval.expense_target.errors" class="invalid-feedback">
+                                    <label *ngIf="jval.expense_target.errors.required" class="error">Expense target is
+                                        required</label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3 form-group">
+                                <label>Target Type</label>
+                                <select class="form-control" formControlName="production_type">
+                                    <option value="">Select Type</option>
+                                    <option value="dollars">Dollars</option>
+                                    <option value="units">Units</option>
+                                    <option value="percentage">Percentage</option>
+                                </select>
+                                <div *ngIf="IsLoginFormValid && jval.production_type.errors" class="invalid-feedback">
+                                    <label *ngIf="jval.production_type.errors.required" class="error">Production type is
+                                        required</label>
+                                </div>
+                            </div>             
+                            <div class="row"></div>
+                            <div style="padding: 40px;">
+                                <div class="form-group">
+                                    <button type="submit" (click)="resetPlanForm()"
+                                        class="btn btn-default pull-right">Reset</button>
+                                    <button type="submit" (click)="submitPlanForm()"
+                                        class="btn btn-primary btn-space pull-right">Submit</button>
+                                </div>
+                            </div>
                             <!-- <div class="col-md-12 form-group">
                                 <label>Security<span>*</span></label>
                                 <select class="form-control" style="padding: 0px 0px!important"
@@ -375,109 +431,13 @@
                         </div>
                     </div>
                 </div>
-                <div class="page-title">
-                    <h3>Dashboard</h3>
-                </div>
+                <mat-expansion-panel class="expanse-panel">
+                <mat-expansion-panel-header class="page-title">
+                    <h3>Extra Details</h3>
+                </mat-expansion-panel-header>
                 <div class="panel panel-cutom-blue">
                     <div class="panel-body">
                         <div class="row">
-                            <div class="col-md-3 form-group">
-                                <label>Production Target<span>*</span></label>
-                                <input type="number" class="form-control" placeholder="Production Target"
-                                    formControlName="production_target"
-                                    [ngClass]="{ 'is-invalid': IsLoginFormValid && jval.production_target.errors }">
-                                <div *ngIf="IsLoginFormValid && jval.production_target.errors" class="invalid-feedback">
-                                    <label *ngIf="jval.production_target.errors.required" class="error">Production
-                                        target is required</label>
-                                </div>
-                            </div>
-                            <div class="col-md-3 form-group">
-                                <label>Type</label>
-                                <select class="form-control" formControlName="production_type">
-                                    <option value="">Select Type</option>
-                                    <option value="dollars">Dollars</option>
-                                    <option value="units">Units</option>
-                                    <option value="percentage">Percentage</option>
-                                </select>
-                                <div *ngIf="IsLoginFormValid && jval.production_type.errors" class="invalid-feedback">
-                                    <label *ngIf="jval.production_type.errors.required" class="error">Production type is
-                                        required</label>
-                                </div>
-                            </div>
-                            <div class="col-md-6 form-group">
-                                <label>Expense Target<span>*</span></label>
-                                <input type="number" class="form-control" placeholder="Expense Target"
-                                    formControlName="expense_target"
-                                    [ngClass]="{ 'is-invalid': IsLoginFormValid && jval.expense_target.errors }">
-                                <div *ngIf="IsLoginFormValid && jval.expense_target.errors" class="invalid-feedback">
-                                    <label *ngIf="jval.expense_target.errors.required" class="error">Expense target is
-                                        required</label>
-                                </div>
-                            </div>
-                            <!-- <div class="col-md-6 form-group">
-                                <label>Low Variance Alert For Production</label>
-                                <input type="number" class="form-control" placeholder="Low Variance Alert"
-                                    formControlName="production_low_variance_alert"
-                                    [ngClass]="{ 'is-invalid': IsLoginFormValid && jval.production_low_variance_alert.errors }">
-                                <div *ngIf="IsLoginFormValid && jval.production_low_variance_alert.errors"
-                                    class="invalid-feedback">
-                                    <label *ngIf="jval.production_low_variance_alert.errors.required" class="error">Low
-                                        Variance Alert is required</label>
-                                </div>
-                            </div>
-                            <div class="col-md-6 form-group">
-                                <label>Low Variance Alert For Expense</label>
-                                <input type="number" class="form-control" placeholder="Low Variance Alert"
-                                    formControlName="expense_low_variance_alert"
-                                    [ngClass]="{ 'is-invalid': IsLoginFormValid && jval.expense_low_variance_alert.errors }">
-                                <div *ngIf="IsLoginFormValid && jval.expense_low_variance_alert.errors"
-                                    class="invalid-feedback">
-                                    <label *ngIf="jval.expense_low_variance_alert.errors.required" class="error">Low
-                                        Variance Alert is required</label>
-                                </div>
-                            </div>
-                            <div class="col-md-6 form-group">
-                                <label>Hight Variance Alert For Production</label>
-                                <input type="number" class="form-control" placeholder="Hight Variance Alert"
-                                    formControlName="production_high_variance_alert"
-                                    [ngClass]="{ 'is-invalid': IsLoginFormValid && jval.production_high_variance_alert.errors }">
-                                <div *ngIf="IsLoginFormValid && jval.production_high_variance_alert.errors"
-                                    class="invalid-feedback">
-                                    <label *ngIf="jval.production_high_variance_alert.errors.required"
-                                        class="error">Hight Variance Alert is required</label>
-                                </div>
-                            </div>
-                            <div class="col-md-6 form-group">
-                                <label>Hight Variance Alert For Expense</label>
-                                <input type="number" class="form-control" placeholder="Hight Variance Alert"
-                                    formControlName="expense_high_variance_alert"
-                                    [ngClass]="{ 'is-invalid': IsLoginFormValid && jval.expense_high_variance_alert.errors }">
-                                <div *ngIf="IsLoginFormValid && jval.expense_high_variance_alert.errors"
-                                    class="invalid-feedback">
-                                    <label *ngIf="jval.expense_high_variance_alert.errors.required" class="error">Hight
-                                        Variance Alert is required</label>
-                                </div>
-                            </div>
-                            <div class="col-md-6 form-group">
-                                <label>Production Weight</label>
-                                <input type="number" class="form-control" placeholder="Production weight"
-                                    formControlName="production_weight"
-                                    [ngClass]="{ 'is-invalid': IsLoginFormValid && jval.production_weight.errors }">
-                                <div *ngIf="IsLoginFormValid && jval.production_weight.errors" class="invalid-feedback">
-                                    <label *ngIf="jval.production_weight.errors.required" class="error">Expense weight
-                                        is required</label>
-                                </div>
-                            </div>
-                            <div class="col-md-6 form-group">
-                                <label>Expense Weight</label>
-                                <input type="number" class="form-control" placeholder="Expense weight"
-                                    formControlName="expense_weight"
-                                    [ngClass]="{ 'is-invalid': IsLoginFormValid && jval.expense_weight.errors }">
-                                <div *ngIf="IsLoginFormValid && jval.expense_weight.errors" class="invalid-feedback">
-                                    <label *ngIf="jval.expense_weight.errors.required" class="error">Expense weight is
-                                        required</label>
-                                </div>
-                            </div> -->
                             <div class="col-md-12 form-group">
                                 <label>Share Goal(s) Permission To Users</label>
                                 <ng-select [items]="childUsersList" bindLabel="name" placeholder="Select Users"
@@ -522,54 +482,50 @@
                                 </div>
                             </div>
                         </div>
-                        <div style="padding: 40px;">
-                            <div class="form-group">
-                                <button type="submit" (click)="resetPlanForm()"
-                                    class="btn btn-default pull-right">Reset</button>
-                                <button type="submit" (click)="submitPlanForm()"
-                                    class="btn btn-primary btn-space pull-right">Submit</button>
+                    </div>
+                </div>
+                </mat-expansion-panel>
+            </form>
+
+            <mat-expansion-panel class="expanse-panel expanse-panel-discussion">
+                <mat-expansion-panel-header class="page-title">
+                    <h3>Discussion</h3>
+                </mat-expansion-panel-header>
+                <div class="panel panel-cutom-blue">
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                <label>Security</label>
+                                <select class="form-control">
+                                    <option value="">Select Security</option>
+                                    <option value="public">Public</option>
+                                    <option value="private">Private</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>Recipient</label>
+                                <input type="text" class="form-control" placeholder="Recipient">
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <label>Subject</label>
+                                <input type="text" class="form-control" placeholder="Subject">
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <textarea class="form-control" placeholder="Message"></textarea>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>Attachment</label>
+                                <input type="file">
+                            </div>
+                            <div class="col-md-12 form-group text-right">
+                                <button type="submit" class="btn btn-primary btn-space">Save</button>
+                                <button type="reset" class="btn btn-default">Cancel</button>
                             </div>
                         </div>
                     </div>
                 </div>
-            </form>
+            </mat-expansion-panel>
 
-            <div class="page-title">
-                <h3>Discussion</h3>
-            </div>
-            <div class="panel panel-cutom-blue">
-                <div class="panel-body">
-                    <div class="row">
-                        <div class="col-md-6 form-group">
-                            <label>Security</label>
-                            <select class="form-control">
-                                <option value="">Select Security</option>
-                                <option value="public">Public</option>
-                                <option value="private">Private</option>
-                            </select>
-                        </div>
-                        <div class="col-md-6 form-group">
-                            <label>Recipient</label>
-                            <input type="text" class="form-control" placeholder="Recipient">
-                        </div>
-                        <div class="col-md-12 form-group">
-                            <label>Subject</label>
-                            <input type="text" class="form-control" placeholder="Subject">
-                        </div>
-                        <div class="col-md-12 form-group">
-                            <textarea class="form-control" placeholder="Message"></textarea>
-                        </div>
-                        <div class="col-md-6 form-group">
-                            <label>Attachment</label>
-                            <input type="file">
-                        </div>
-                        <div class="col-md-12 form-group text-right">
-                            <button type="submit" class="btn btn-primary btn-space">Save</button>
-                            <button type="reset" class="btn btn-default">Cancel</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
 
         <div class="col-md-9" *ngIf="selectedPhase == 'coaches-corner'">
@@ -741,10 +697,10 @@
         
         <div class="col-md-9" *ngIf="selectedPhase === 'B' || selectedPhase === 'I'"
             [hidden]="selectedModules && selectedModules != '' || !parentIsActiveSelection">
-            <div class="" *ngIf="selectedPhase == 'B' && planGoals && planGoals.length > 0">
-                <div class="page-title">
-                    <h3>{{ textDecoration(moduleType) }} List</h3>
-                </div>
+            <mat-expansion-panel class="expanse-panel" *ngIf="selectedPhase == 'B' && planGoals && planGoals.length > 0">
+                <mat-expansion-panel-header class="page-title">
+                    <h3>View {{ textDecoration(moduleType) }} List</h3>
+                </mat-expansion-panel-header>
     
                 <div class="panel panel-cutom-blue" *ngIf="selectedPhase == 'B' && planGoals && planGoals.length > 0">
                     <div class="row">
@@ -771,14 +727,14 @@
                         </table>
                     </div>
                 </div>
-            </div>
+            </mat-expansion-panel>
 
-            <div>
-            <div class="">
+            <mat-expansion-panel class="expanse-panel">
+            <mat-expansion-panel-header class="">
                 <div class="page-title">
-                    <h3>{{ (selectedPhase == 'I') ? 'Improve' : 'Sub Item' }}</h3>
+                    <h3>{{ (selectedPhase == 'I') ? 'Improve' : 'Add Sub Item' }}</h3>
                 </div>
-            </div>
+            </mat-expansion-panel-header>
             <form #kform="ngForm" class="p-3" [formGroup]="childPlanForm">
                 <div class="panel panel-cutom-blue">
                     <div class="panel-body">
@@ -845,14 +801,16 @@
                     </div>
                 </div>
             </form>
-            </div>
+            </mat-expansion-panel>
             
             <div>
                 
             </div>
-            <div class="page-title">
+            <mat-expansion-panel class="expanse-panel expanse-panel-discussion">
+            <mat-expansion-panel-header class="page-title">
                 <h3>Discussion</h3>
-            </div>
+            </mat-expansion-panel-header>
+
             <div class="panel panel-cutom-blue">
                 <div class="panel-body">
                     <form [formGroup]="DiscussionForm">
@@ -916,6 +874,7 @@
                     </form>
                 </div>
             </div>
+        </mat-expansion-panel>
 
         </div>
 
@@ -925,12 +884,13 @@
         
         <div class="col-md-9" *ngIf="selectedPhase === 'B' || selectedPhase === 'I'"
             [hidden]="selectedModules && selectedModules != '' || parentIsActiveSelection">
-            <div>
-            <div class="">
+
+            <mat-expansion-panel class="expanse-panel">
+            <mat-expansion-panel-header class="">
                 <div class="page-title">
-                    <h3>{{ (selectedPhase == 'I') ? 'Improve' : 'Sub Item' }}</h3>
+                    <h3>{{ (selectedPhase == 'I') ? 'Improve' : 'View Sub Item' }}</h3>
                 </div>
-            </div>
+            </mat-expansion-panel-header>
             <form #kform="ngForm" class="p-3" [formGroup]="childPlanForm">
                 <div class="panel panel-cutom-blue">
                     <div class="panel-body">
@@ -996,122 +956,13 @@
                         </div>
                     </div>
                 </div>
-                <!-- <div class="page-title">
-                    <h3 class="">Dashboard</h3>
-                </div>
-                <div class="panel panel-cutom-blue">
-                    <div class="panel-body">
-                        <div class="row">
-                            <div class="col-md-3 form-group">
-                                <label>Production Target<span>*</span></label>
-                                <input type="number" class="form-control" placeholder="Production Target"
-                                    formControlName="production_target"
-                                    [ngClass]="{ 'is-invalid': submitted && f.production_target.errors }">
-                                <div *ngIf="submitted && f.production_target.errors" class="invalid-feedback">
-                                    <label *ngIf="f.production_target.errors.required" class="error">Production target
-                                        is required</label>
-                                </div>
-                            </div>
-                            <div class="col-md-3 form-group">
-                                <label>Type</label>
-                                <select class="form-control" formControlName="production_type">
-                                    <option value="">Select Type</option>
-                                    <option value="units">Units</option>
-                                    <option value="dollars">Dollars</option>
-                                </select>
-                                <div *ngIf="submitted && f.production_type.errors" class="invalid-feedback">
-                                    <label *ngIf="f.production_type.errors.required" class="error">Production type is
-                                        required</label>
-                                </div>
-                            </div>
-                            <div class="col-md-6 form-group">
-                                <label>Expense Target<span>*</span></label>
-                                <input type="number" class="form-control" placeholder="Expense Target"
-                                    formControlName="expense_target"
-                                    [ngClass]="{ 'is-invalid': submitted && f.expense_target.errors }">
-                                <div *ngIf="submitted && f.expense_target.errors" class="invalid-feedback">
-                                    <label *ngIf="f.expense_target.errors.required" class="error">Expense target is
-                                        required</label>
-                                </div>
-                            </div>
-                            <div class="col-md-6 form-group">
-                                <label>Low Production Alert</label>
-                                <input type="number" class="form-control" placeholder="Low Production Alert"
-                                    formControlName="production_low_variance_alert"
-                                    [ngClass]="{ 'is-invalid': submitted && f.production_low_variance_alert.errors }">
-                                <div *ngIf="submitted && f.production_low_variance_alert.errors"
-                                    class="invalid-feedback">
-                                    <label *ngIf="f.production_low_variance_alert.errors.required" class="error">Low
-                                        Production Alert is required</label>
-                                </div>
-                            </div>
-                            <div class="col-md-6 form-group">
-                                <label>Low Expense Alert</label>
-                                <input type="number" class="form-control" placeholder="Low Expense Alert"
-                                    formControlName="expense_low_variance_alert"
-                                    [ngClass]="{ 'is-invalid': submitted && f.expense_low_variance_alert.errors }">
-                                <div *ngIf="submitted && f.expense_low_variance_alert.errors" class="invalid-feedback">
-                                    <label *ngIf="f.expense_low_variance_alert.errors.required" class="error">Low
-                                        Expense Alert is required</label>
-                                </div>
-                            </div>
-                            <div class="col-md-6 form-group">
-                                <label>Hight Production Alert</label>
-                                <input type="number" class="form-control" placeholder="Hight Production Alert"
-                                    formControlName="production_high_variance_alert"
-                                    [ngClass]="{ 'is-invalid': submitted && f.production_high_variance_alert.errors }">
-                                <div *ngIf="submitted && f.production_high_variance_alert.errors"
-                                    class="invalid-feedback">
-                                    <label *ngIf="f.production_high_variance_alert.errors.required" class="error">Hight
-                                        Production Alert is required</label>
-                                </div>
-                            </div>
-                            <div class="col-md-6 form-group">
-                                <label>Hight Expense Alert</label>
-                                <input type="number" class="form-control" placeholder="Hight Expense Alert"
-                                    formControlName="expense_high_variance_alert"
-                                    [ngClass]="{ 'is-invalid': submitted && f.expense_high_variance_alert.errors }">
-                                <div *ngIf="submitted && f.expense_high_variance_alert.errors" class="invalid-feedback">
-                                    <label *ngIf="f.expense_high_variance_alert.errors.required" class="error">Hight
-                                        Expense Alert is required</label>
-                                </div>
-                            </div>
-                            <div class="col-md-6 form-group">
-                                <label>Production Weight</label>
-                                <input type="number" class="form-control" placeholder="Production weight"
-                                    formControlName="production_weight"
-                                    [ngClass]="{ 'is-invalid': submitted && f.production_weight.errors }">
-                                <div *ngIf="submitted && f.production_weight.errors" class="invalid-feedback">
-                                    <label *ngIf="f.production_weight.errors.required" class="error">Expense weight is
-                                        required</label>
-                                </div>
-                            </div>
-                            <div class="col-md-6 form-group">
-                                <label>Expense Weight</label>
-                                <input type="number" class="form-control" placeholder="Expense weight"
-                                    formControlName="expense_weight"
-                                    [ngClass]="{ 'is-invalid': submitted && f.expense_weight.errors }">
-                                <div *ngIf="submitted && f.expense_weight.errors" class="invalid-feedback">
-                                    <label *ngIf="f.expense_weight.errors.required" class="error">Expense weight is
-                                        required</label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-12 form-group text-right">
-                            <button type="submit " (click)="onSubmit()"
-                                [disabled]="!checkforgoaledit && !isSharedPlanPermission"
-                                class="btn btn-primary btn-space">Save</button>
-                            <button type="reset" (click)="reset()" [disabled]="!checkforgoaledit "
-                                class="btn btn-default">Clear</button>
-                        </div>
-                    </div>
-                </div> -->
             </form>
-            </div>
-            <div class="" *ngIf="selectedPhase == 'B' && planGoals && planGoals.length > 0">
-                <div class="page-title">
-                    <h3>{{ textDecoration(moduleType) }} List</h3>
-                </div>
+            </mat-expansion-panel>
+
+            <mat-expansion-panel class="expanse-panel" *ngIf="selectedPhase == 'B' && planGoals && planGoals.length > 0">
+                <mat-expansion-panel-header class="page-title">
+                    <h3>View {{ textDecoration(moduleType) }} List</h3>
+                </mat-expansion-panel-header>
     
                 <div class="panel panel-cutom-blue" *ngIf="selectedPhase == 'B' && planGoals && planGoals.length > 0">
                     <div class="row">
@@ -1138,247 +989,254 @@
                         </table>
                     </div>
                 </div>
-            </div>
+            </mat-expansion-panel>
             
             <div>
                 
             </div>
-            <div class="page-title">
-                <h3>Discussion</h3>
-            </div>
-            <div class="panel panel-cutom-blue">
-                <div class="panel-body">
-                    <form [formGroup]="DiscussionForm">
-                        <div class="row">
-                            <div class="col-md-6 form-group">
-                                <label>Security</label>
-                                <select class="form-control" formControlName="security">
-                                    <option value="">Select Security</option>
-                                    <option value="public">Public</option>
-                                    <option value="private">Private</option>
-                                </select>
-                                <div *ngIf="isSubmittedDiscussionForm && dscf.security.errors" class="invalid-feedback">
-                                    <label *ngIf="dscf.security.errors.required" class="error">Security is
-                                        required</label>
-                                </div>
-                            </div>
-                            <div class="col-md-6 form-group">
-                                <label>Recipients</label>
-                                <select class="form-control" formControlName="recipient_id" id="recipient_id" (change)="onRecipient($event)">
-                                    <option value="">Select Recipient</option>
-                                    <option *ngFor="let hu of users;" value="{{hu.user_id._id}}">
-                                        {{ hu.user_id.first_name }} {{ hu.user_id.last_name }}
-                                        ({{hu.hierarchy_id.designation}})</option>
-                                    <option value="invite">Invite New Recipient</option>
-                                </select>
-                                <div *ngIf="isSubmittedDiscussionForm && dscf.recipient_id.errors"
-                                    class="invalid-feedback">
-                                    <label *ngIf="dscf.recipient_id.errors.required" class="error">Recipient is
-                                        required</label>
-                                </div>
-                            </div>
-                            <div class="col-md-12 form-group">
-                                <label>Subject</label>
-                                <input type="text" class="form-control" placeholder="Subject" formControlName="subject"
-                                    [ngClass]="{ 'is-invalid': isSubmittedDiscussionForm && dscf.subject.errors }">
-                                <div *ngIf="isSubmittedDiscussionForm && dscf.subject.errors" class="invalid-feedback">
-                                    <label *ngIf="dscf.subject.errors.required" class="error">Subject is
-                                        required</label>
-                                </div>
-                            </div>
-                            <div class="col-md-12 form-group">
-                                <label>Message</label>
-                                <textarea class="form-control" placeholder="Message" formControlName="message"
-                                    [ngClass]="{ 'is-invalid': isSubmittedDiscussionForm && dscf.message.errors }"></textarea>
-                                <div *ngIf="isSubmittedDiscussionForm && dscf.message.errors" class="invalid-feedback">
-                                    <label *ngIf="dscf.message.errors.required" class="error">Message is
-                                        required</label>
-                                </div>
-                            </div>
-                            <div class="col-md-6 form-group">
-                                <label>Attachment</label>
-                                <input type="file" (change)="uploadDiscussionAttachment($event.target.files)">
-                            </div>
-                            <div class="col-md-12 form-group text-right">
-                                <button type="submit" class="btn btn-primary btn-space"
-                                    (click)="onSubmitDiscussion()">Save</button>
-                                <button type="reset" class="btn btn-default"
-                                    (click)="resetDiscussionForm()">Cancel</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
 
+            <!-- BEGIN DISCUSSION EXPANSION PANEL -->
+            <mat-expansion-panel class="expanse-panel expanse-panel-discussion">
+                <mat-expansion-panel-header class="page-title">
+                    <h3>Discussion</h3>
+                </mat-expansion-panel-header>
+                <div class="panel panel-cutom-blue">
+                    <div class="panel-body">
+                        <form [formGroup]="DiscussionForm">
+                            <div class="row">
+                                <div class="col-md-6 form-group">
+                                    <label>Security</label>
+                                    <select class="form-control" formControlName="security">
+                                        <option value="">Select Security</option>
+                                        <option value="public">Public</option>
+                                        <option value="private">Private</option>
+                                    </select>
+                                    <div *ngIf="isSubmittedDiscussionForm && dscf.security.errors" class="invalid-feedback">
+                                        <label *ngIf="dscf.security.errors.required" class="error">Security is
+                                            required</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label>Recipients</label>
+                                    <select class="form-control" formControlName="recipient_id" id="recipient_id" (change)="onRecipient($event)">
+                                        <option value="">Select Recipient</option>
+                                        <option *ngFor="let hu of users;" value="{{hu.user_id._id}}">
+                                            {{ hu.user_id.first_name }} {{ hu.user_id.last_name }}
+                                            ({{hu.hierarchy_id.designation}})</option>
+                                        <option value="invite">Invite New Recipient</option>
+                                    </select>
+                                    <div *ngIf="isSubmittedDiscussionForm && dscf.recipient_id.errors"
+                                        class="invalid-feedback">
+                                        <label *ngIf="dscf.recipient_id.errors.required" class="error">Recipient is
+                                            required</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 form-group">
+                                    <label>Subject</label>
+                                    <input type="text" class="form-control" placeholder="Subject" formControlName="subject"
+                                        [ngClass]="{ 'is-invalid': isSubmittedDiscussionForm && dscf.subject.errors }">
+                                    <div *ngIf="isSubmittedDiscussionForm && dscf.subject.errors" class="invalid-feedback">
+                                        <label *ngIf="dscf.subject.errors.required" class="error">Subject is
+                                            required</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 form-group">
+                                    <label>Message</label>
+                                    <textarea class="form-control" placeholder="Message" formControlName="message"
+                                        [ngClass]="{ 'is-invalid': isSubmittedDiscussionForm && dscf.message.errors }"></textarea>
+                                    <div *ngIf="isSubmittedDiscussionForm && dscf.message.errors" class="invalid-feedback">
+                                        <label *ngIf="dscf.message.errors.required" class="error">Message is
+                                            required</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label>Attachment</label>
+                                    <input type="file" (change)="uploadDiscussionAttachment($event.target.files)">
+                                </div>
+                                <div class="col-md-12 form-group text-right">
+                                    <button type="submit" class="btn btn-primary btn-space"
+                                        (click)="onSubmitDiscussion()">Save</button>
+                                    <button type="reset" class="btn btn-default"
+                                        (click)="resetDiscussionForm()">Cancel</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </mat-expansion-panel>
+            <!-- END DISCUSSION EXPANSION PANEL -->
         </div>
         <!-- End Brainstorm && improve -->
 
         <!-- Deactivate -->
         <div class="col-md-9" *ngIf="selectedPhase == 'D'">
-            <div class="">
-                <div class="page-title">
-                    <h3>Deactivate</h3>
-                </div>
-            </div>
-            <div class="panel panel-cutom-blue">
-                <div class="panel-body">
-                    <div class="table-responsive" *ngIf="dividearrayintothreepart !== 2">
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th class="prioritize-blue">Deactivate</th>
-                                    <th class="prioritize-blue">Priority</th>
-                                    <th class="prioritize-blue">(G) Short Name</th>
-                                    <th class="prioritize-blue">Start Date</th>
-                                    <th class="prioritize-blue">End Date</th>
-                                    <th class="prioritize-blue">Creator</th>
-                                </tr>
-                            </thead>
-                            <tbody *ngIf="goals && goals.length > 0">
-                                <tr *ngFor="let p of goals; let i=index">
-                                    <td class="text-center">
-                                        <a style="cursor: pointer;" data-toggle="tooltip" title="Click for Activate!"
-                                            *ngIf="p.deactivate==1" (click)="changedeactivate(p._id,0)"><img
-                                                src="assets/images/avatars/quit.png"></a>
-                                        <a style="cursor: pointer;" data-toggle="tooltip" title="Click for Deactivate!"
-                                            *ngIf="p.deactivate==0" (click)="changedeactivate(p._id,1)"><img
-                                                src="assets/images/avatars/correct.png"></a>
-                                    </td>
-                                    <td>{{ p.prioritize }}</td>
-                                    <td>(G) {{ p.short_name }}</td>
-                                    <td>{{ p.start_date | prioritizegoaldate }}</td>
-                                    <td>{{ p.end_date | prioritizegoaldate}}</td>
-                                    <td>{{ p.user_id.first_name }} {{ p.user_id.last_name }}</td>
-                                </tr>
-                            </tbody>
-                            <tbody *ngIf="goals && goals.length == 0">
-                                <tr>
-                                    <td class="text-center" colspan="8"> No Data Available</td>
-                                </tr>
-                            </tbody>
-                        </table>
+            <mat-expansion-panel class="expanse-panel">
+                <mat-expansion-panel-header class="">
+                    <div class="page-title">
+                        <h3>Deactivate</h3>
                     </div>
-
-                    <div class="table-responsive" *ngIf="dividearrayintothreepart == 2">
-                        <div>
-                            <h4>Deactivate : High</h4>
+                </mat-expansion-panel-header>
+                <div class="panel panel-cutom-blue">
+                    <div class="panel-body">
+                        <div class="table-responsive" *ngIf="dividearrayintothreepart !== 2">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th class="prioritize-blue">Deactivate</th>
+                                        <th class="prioritize-blue">Priority</th>
+                                        <th class="prioritize-blue">(G) Short Name</th>
+                                        <th class="prioritize-blue">Start Date</th>
+                                        <th class="prioritize-blue">End Date</th>
+                                        <th class="prioritize-blue">Creator</th>
+                                    </tr>
+                                </thead>
+                                <tbody *ngIf="goals && goals.length > 0">
+                                    <tr *ngFor="let p of goals; let i=index">
+                                        <td class="text-center">
+                                            <a style="cursor: pointer;" data-toggle="tooltip" title="Click for Activate!"
+                                                *ngIf="p.deactivate==1" (click)="changedeactivate(p._id,0)"><img
+                                                    src="assets/images/avatars/quit.png"></a>
+                                            <a style="cursor: pointer;" data-toggle="tooltip" title="Click for Deactivate!"
+                                                *ngIf="p.deactivate==0" (click)="changedeactivate(p._id,1)"><img
+                                                    src="assets/images/avatars/correct.png"></a>
+                                        </td>
+                                        <td>{{ p.prioritize }}</td>
+                                        <td>(G) {{ p.short_name }}</td>
+                                        <td>{{ p.start_date | prioritizegoaldate }}</td>
+                                        <td>{{ p.end_date | prioritizegoaldate}}</td>
+                                        <td>{{ p.user_id.first_name }} {{ p.user_id.last_name }}</td>
+                                    </tr>
+                                </tbody>
+                                <tbody *ngIf="goals && goals.length == 0">
+                                    <tr>
+                                        <td class="text-center" colspan="8"> No Data Available</td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th class="prioritize-blue">Deactivate</th>
-                                    <!-- <th class="prioritize-blue">Number</th> -->
-                                    <th class="prioritize-blue">Priority</th>
-                                    <th class="prioritize-blue">(G) Short Name</th>
-                                    <th class="prioritize-blue">Start Date</th>
-                                    <th class="prioritize-blue">End Date</th>
-                                    <th class="prioritize-blue">Creator</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr *ngFor="let p of high ; let i=index">
-                                    <td style="text-align: center;">
-                                        <a style="cursor: pointer;" data-toggle="tooltip" title="Click for Activate!"
-                                            *ngIf="p.deactivate==1" (click)="changedeactivate(p._id,0)"><img
-                                                src="assets/images/avatars/quit.png"></a>
-                                        <a style="cursor: pointer;" data-toggle="tooltip" title="Click for Deactivate!"
-                                            *ngIf="p.deactivate==0" (click)="changedeactivate(p._id,1)"><img
-                                                src="assets/images/avatars/correct.png"></a>
-                                    </td>
-                                    <!-- <td>{{ p.numbers }}</td> -->
-                                    <td>{{ p.prioritize }}</td>
-                                    <td>(G) {{ p.short_name }}</td>
-                                    <td>{{ p.start_date | prioritizegoaldate }}</td>
-                                    <td>{{ p.end_date | prioritizegoaldate}}</td>
-                                    <td>{{ p.user_id.first_name }} {{ p.user_id.last_name }}</td>
 
-                                </tr>
-                            </tbody>
-                        </table>
+                        <div class="table-responsive" *ngIf="dividearrayintothreepart == 2">
+                            <div>
+                                <h4>Deactivate : High</h4>
+                            </div>
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th class="prioritize-blue">Deactivate</th>
+                                        <!-- <th class="prioritize-blue">Number</th> -->
+                                        <th class="prioritize-blue">Priority</th>
+                                        <th class="prioritize-blue">(G) Short Name</th>
+                                        <th class="prioritize-blue">Start Date</th>
+                                        <th class="prioritize-blue">End Date</th>
+                                        <th class="prioritize-blue">Creator</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let p of high ; let i=index">
+                                        <td style="text-align: center;">
+                                            <a style="cursor: pointer;" data-toggle="tooltip" title="Click for Activate!"
+                                                *ngIf="p.deactivate==1" (click)="changedeactivate(p._id,0)"><img
+                                                    src="assets/images/avatars/quit.png"></a>
+                                            <a style="cursor: pointer;" data-toggle="tooltip" title="Click for Deactivate!"
+                                                *ngIf="p.deactivate==0" (click)="changedeactivate(p._id,1)"><img
+                                                    src="assets/images/avatars/correct.png"></a>
+                                        </td>
+                                        <!-- <td>{{ p.numbers }}</td> -->
+                                        <td>{{ p.prioritize }}</td>
+                                        <td>(G) {{ p.short_name }}</td>
+                                        <td>{{ p.start_date | prioritizegoaldate }}</td>
+                                        <td>{{ p.end_date | prioritizegoaldate}}</td>
+                                        <td>{{ p.user_id.first_name }} {{ p.user_id.last_name }}</td>
 
-                        <div>
-                            <h4>Deactivate : Medium</h4>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <div>
+                                <h4>Deactivate : Medium</h4>
+                            </div>
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th class="prioritize-medium">Deactivate</th>
+                                        <!-- <th class="prioritize-medium">Number</th> -->
+                                        <th class="prioritize-medium">Priority</th>
+                                        <th class="prioritize-medium">(G) Short Name</th>
+                                        <th class="prioritize-medium">Start Date</th>
+                                        <th class="prioritize-medium">End Date</th>
+                                        <th class="prioritize-medium">Creator</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let p of medium ; let i=index">
+                                        <td style="text-align: center;">
+                                            <a style="cursor: pointer;" data-toggle="tooltip" title="Click for Activate!"
+                                                *ngIf="p.deactivate==1" (click)="changedeactivate(p._id,0)"><img
+                                                    src="assets/images/avatars/quit.png"></a>
+                                            <a style="cursor: pointer;" data-toggle="tooltip" title="Click for Deactivate!"
+                                                *ngIf="p.deactivate==0" (click)="changedeactivate(p._id,1)"><img
+                                                    src="assets/images/avatars/correct.png"></a>
+                                        </td>
+                                        <!-- <td>{{ p.numbers }}</td> -->
+                                        <td>{{ p.prioritize }}</td>
+                                        <td>(G) {{ p.short_name }}</td>
+                                        <td>{{ p.start_date | prioritizegoaldate }}</td>
+                                        <td>{{ p.end_date | prioritizegoaldate}}</td>
+                                        <td>{{ p.user_id.first_name }} {{ p.user_id.last_name }}</td>
+
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <div>
+                                <h4>Deactivate : Low</h4>
+                            </div>
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th class="prioritize-low">Deactivate</th>
+                                        <!-- <th class="prioritize-low">Number</th> -->
+                                        <th class="prioritize-low">Priority</th>
+                                        <th class="prioritize-low">(G) Short Name</th>
+                                        <th class="prioritize-low">Start Date</th>
+                                        <th class="prioritize-low">End Date</th>
+                                        <th class="prioritize-low">Creator</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let p of low ; let i=index">
+                                        <td style="text-align: center;">
+                                            <a style="cursor: pointer;" data-toggle="tooltip" title="Click for Activate!"
+                                                *ngIf="p.deactivate==1" (click)="changedeactivate(p._id,0)"><img
+                                                    src="assets/images/avatars/quit.png"></a>
+                                            <a style="cursor: pointer;" data-toggle="tooltip" title="Click for Deactivate!"
+                                                *ngIf="p.deactivate==0" (click)="changedeactivate(p._id,1)"><img
+                                                    src="assets/images/avatars/correct.png"></a>
+                                        </td>
+                                        <!-- <td>{{ p.numbers }}</td> -->
+                                        <td>{{ p.prioritize }}</td>
+                                        <td>(G) {{ p.short_name }}</td>
+                                        <td>{{ p.start_date | prioritizegoaldate }}</td>
+                                        <td>{{ p.end_date | prioritizegoaldate}}</td>
+                                        <td>{{ p.user_id.first_name }} {{ p.user_id.last_name }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th class="prioritize-medium">Deactivate</th>
-                                    <!-- <th class="prioritize-medium">Number</th> -->
-                                    <th class="prioritize-medium">Priority</th>
-                                    <th class="prioritize-medium">(G) Short Name</th>
-                                    <th class="prioritize-medium">Start Date</th>
-                                    <th class="prioritize-medium">End Date</th>
-                                    <th class="prioritize-medium">Creator</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr *ngFor="let p of medium ; let i=index">
-                                    <td style="text-align: center;">
-                                        <a style="cursor: pointer;" data-toggle="tooltip" title="Click for Activate!"
-                                            *ngIf="p.deactivate==1" (click)="changedeactivate(p._id,0)"><img
-                                                src="assets/images/avatars/quit.png"></a>
-                                        <a style="cursor: pointer;" data-toggle="tooltip" title="Click for Deactivate!"
-                                            *ngIf="p.deactivate==0" (click)="changedeactivate(p._id,1)"><img
-                                                src="assets/images/avatars/correct.png"></a>
-                                    </td>
-                                    <!-- <td>{{ p.numbers }}</td> -->
-                                    <td>{{ p.prioritize }}</td>
-                                    <td>(G) {{ p.short_name }}</td>
-                                    <td>{{ p.start_date | prioritizegoaldate }}</td>
-                                    <td>{{ p.end_date | prioritizegoaldate}}</td>
-                                    <td>{{ p.user_id.first_name }} {{ p.user_id.last_name }}</td>
-
-                                </tr>
-                            </tbody>
-                        </table>
-
-                        <div>
-                            <h4>Deactivate : Low</h4>
-                        </div>
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th class="prioritize-low">Deactivate</th>
-                                    <!-- <th class="prioritize-low">Number</th> -->
-                                    <th class="prioritize-low">Priority</th>
-                                    <th class="prioritize-low">(G) Short Name</th>
-                                    <th class="prioritize-low">Start Date</th>
-                                    <th class="prioritize-low">End Date</th>
-                                    <th class="prioritize-low">Creator</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr *ngFor="let p of low ; let i=index">
-                                    <td style="text-align: center;">
-                                        <a style="cursor: pointer;" data-toggle="tooltip" title="Click for Activate!"
-                                            *ngIf="p.deactivate==1" (click)="changedeactivate(p._id,0)"><img
-                                                src="assets/images/avatars/quit.png"></a>
-                                        <a style="cursor: pointer;" data-toggle="tooltip" title="Click for Deactivate!"
-                                            *ngIf="p.deactivate==0" (click)="changedeactivate(p._id,1)"><img
-                                                src="assets/images/avatars/correct.png"></a>
-                                    </td>
-                                    <!-- <td>{{ p.numbers }}</td> -->
-                                    <td>{{ p.prioritize }}</td>
-                                    <td>(G) {{ p.short_name }}</td>
-                                    <td>{{ p.start_date | prioritizegoaldate }}</td>
-                                    <td>{{ p.end_date | prioritizegoaldate}}</td>
-                                    <td>{{ p.user_id.first_name }} {{ p.user_id.last_name }}</td>
-                                </tr>
-                            </tbody>
-                        </table>
                     </div>
                 </div>
-            </div>
+            </mat-expansion-panel>
         </div>
         <!-- End Deactivate -->
 
         <!-- Prioritize -->
         <div class="col-md-9" *ngIf="selectedPhase == 'P'">
-            <div class="">
+        <mat-expansion-panel class="expanse-panel">
+            <mat-expansion-panel-header class="">
                 <div class="page-title">
                     <h3>Prioritize</h3>
                 </div>
-            </div>
+            </mat-expansion-panel-header>
             <div class="panel panel-cutom-blue">
                 <div class="panel-body">
                     <div class="table-responsive" *ngIf="isDevidedInParts == 1">
@@ -1546,16 +1404,18 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </mat-expansion-panel>
+    </div>
         <!-- End Prioritize -->
 
         <!-- Propose -->
         <div class="col-md-9" *ngIf="selectedPhase == 'PR'">
-            <div class="">
+            <mat-expansion-panel class="expanse-panel">
+            <mat-expansion-panel-header class="">
                 <div class="page-title">
                     <h3>Propose</h3>
                 </div>
-            </div>
+            </mat-expansion-panel-header>
             <div class="panel panel-cutom-blue">
                 <div class="table-responsive" *ngIf="isProposeDevidedInParts == 1">
                     <table class="table table-striped">
@@ -1701,15 +1561,18 @@
                     </table>
                 </div>
             </div>
+            </mat-expansion-panel>
         </div>
         <!-- End Propose -->
 
         <!-- Vote -->
         <div class="col-md-9" *ngIf="selectedPhase == 'V'">
-            <div class="">
+            <mat-expansion-panel>
+            <mat-expansion-panel-header>
                 <div class="page-title">
                     <h3>Vote</h3>
                 </div>
+            </mat-expansion-panel-header>
                 <div class="panel panel-cutom-blue">
                     <!-- <table class="display table table-data-width"> -->
                     <table id="table-vote" datatable [dtOptions]="dtOptionsVote" class="display table table-data-width">
@@ -1749,17 +1612,18 @@
                         </tbody>
                     </table>
                 </div>
-            </div>
+            </mat-expansion-panel>
         </div>
         <!-- End Vote -->
 
         <!-- Select -->
         <div class="col-md-9" *ngIf="selectedPhase == 'S'">
-            <div class="">
+            <mat-expansion-panel class="expanse-panel">
+            <mat-expansion-panel-header class="">
                 <div class="page-title">
                     <h3>Select</h3>
                 </div>
-            </div>
+            </mat-expansion-panel-header>
             <div class="panel panel-cutom-blue">
                 <div class="table-responsive">
                     <table id="table-select" datatable [dtOptions]="dtOptionsSelect"
@@ -1801,6 +1665,7 @@
                     </table>
                 </div>
             </div>
+        </mat-expansion-panel>
         </div>
         <!-- End Select -->
 
@@ -2082,11 +1947,12 @@
             *ngIf="(selectedPhase == 'B' || selectedPhase == 'I') && (selectedModules && selectedModules != '')"></div>
         <div class="col-md-9"
             *ngIf="(selectedPhase == 'B' || selectedPhase == 'I') && (selectedModules && selectedModules != '')">
-            <div class="">
+            <mat-expansion-panel class="expanse-panel">
+            <mat-expansion-panel-header class="">
                 <div class="page-title">
-                    <h3>{{ textDecoration(selectedModules) }}</h3>
+                    <h3>View {{ textDecoration(selectedModules) }} List</h3>
                 </div>
-            </div>
+            </mat-expansion-panel-header>
             <div class="panel panel-cutom-blue">
                 <div class="panel-body">
                     <table class="display table table-data-width" id="table-module" datatable [dtOptions]="dtOptionsModule">
@@ -2114,9 +1980,12 @@
                     </table>
                 </div>
             </div>
-            <div class="page-title">
+            </mat-expansion-panel>
+            <!-- FORM -->
+            <mat-expansion-panel class="expanse-panel">
+            <mat-expansion-panel-header class="page-title">
                 <h3>Add {{ textDecoration(selectedModules) }}</h3>
-            </div>
+            </mat-expansion-panel-header>
             <div class="panel panel-cutom-blue">
                 <form class="p-3" [formGroup]="ModuleForm">
                     <div class="row">
@@ -2350,10 +2219,12 @@
                     </div>
                 </form>
             </div>
+            </mat-expansion-panel>
 
-            <div class="page-title">
+            <mat-expansion-panel class="expanse-panel">
+            <mat-expansion-panel-header class="page-title">
                 <h3>Discussion</h3>
-            </div>
+            </mat-expansion-panel-header>
             <div class="panel panel-cutom-blue">
                 <div class="panel-body">
                     <div class="row">
@@ -2387,6 +2258,7 @@
                     </div>
                 </div>
             </div>
+            </mat-expansion-panel>
         </div>
         <!-- End Modules -->
     </div>
