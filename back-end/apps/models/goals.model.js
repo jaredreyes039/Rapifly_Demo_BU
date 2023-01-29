@@ -96,7 +96,7 @@ let GoalsSchema = new Schema({
     shared_users: [],
     production_type: {
         type: String,
-        require: false
+        required: false
     },
     production_target: {
         type: String,
