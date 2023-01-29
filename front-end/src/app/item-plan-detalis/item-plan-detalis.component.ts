@@ -1607,7 +1607,6 @@ export class ItemPlanDetailsComponent implements OnInit {
     this.commonService.PostAPI(`report/get/all`, { plan_id: planid, user_id: this.currentuser.user._id }).then((response: any) => {
       if (response.status && response.data && response.data.length > 0) {
         this.reportGoals = response.data;
-        console.log(this.reportGoals)
       } else {
         this.reportGoals = [];
       }
@@ -2229,8 +2228,7 @@ export class ItemPlanDetailsComponent implements OnInit {
           data.plan_id = 1;
           data.add = this.final;
           data.start_date = $('#date-input5').val();
-          data.end_date = $('#date-input6').val();
-
+          data.end_date = $('#date-input6').val();  
           if (this.selectedSharedPlanUser && this.selectedSharedPlanUser.length > 0) {
             data.shared_permission_users = this.selectedSharedPlanUser.map(data => data.id);
           } else {

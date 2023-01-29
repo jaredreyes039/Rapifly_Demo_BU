@@ -1067,10 +1067,8 @@ module.exports.updateUserAvatar = function (request, response) {
     try {
         if (request.files && request.files.avatar) {
             var file = request.files.avatar;
-
             //Save images in public/avatars folder
             var extenstion = file.name.split('.').pop();
-
             var allowExtensions = ['jpg', 'png', 'jpeg'];
 
             if (allowExtensions.includes(extenstion) == false) {
@@ -1082,6 +1080,7 @@ module.exports.updateUserAvatar = function (request, response) {
 
             var timestamp = new Date().getTime();
             var fileName = body.user_id + '-' + timestamp + '.' + extenstion;
+
             fs.writeFileSync('./public/avatars/' + fileName, file.data);
 
             User.updateOne({

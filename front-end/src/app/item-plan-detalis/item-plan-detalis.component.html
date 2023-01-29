@@ -266,34 +266,82 @@
             </div>
             <div class="panel panel-cutom-blue">
                 <div class="panel-body">
-                    <div class="row" style="padding: 10px;">
-                        <div class="col-md-12 text-right">
+                    <div style="padding: 10px;">
+                        <div class="text-right" style="margin-bottom: 24px;">
                             <button routerLink="/item-plans/{{ goalplanid }}" class="btn btn-warning"><i
                                     class="fa fa-comments"></i></button>
                         </div>
-                        <div *ngFor="let parentplan of parentplanDetails[0] | keyvalue ">
-                            <div class="col-md-6 row pb-10"
-                                *ngIf="parentplan.key !='_id' && parentplan.key !='shared_permission_users' && parentplan.key !='share_users' && parentplan.key !='shared_plan_users' && parentplan.key !='user_group_id' && parentplan.key !='number' && parentplan.key !='motivation' && parentplan.value ">
-                                <div *ngIf="parentplan.key=='user_id' ">
-                                    <div class="text-blue ">Creator:</div>
-                                    <div class="col-md-6 text-white " *ngIf="parentplan.key !='userid' ">
+                        <div style="display: flex; flex-direction: row; gap: 24px; margin-bottom: 24px;">
+                                <!-- <div *ngIf="parentplan.key=='user_id' ">
+                                    <div class="parent-item-label">Creator:</div>
+                                    <div class=" text-white " *ngIf="parentplan.key !='userid' ">
                                         {{parentplan.value.first_name}} {{parentplan.value.last_name}}</div>
+                                </div> -->
+                                <div style="display: flex; flex-direction: column; flex-basis: 45%;">
+                                    <div  style="display: flex;  margin-bottom: 12px;">
+                                        <div class="parent-item-label">Short Name:</div>
+                                        <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
+                                            {{parentplanDetails[0].short_name}}</div>
+                                    </div>
+                                    <div  style="display: flex;">
+                                        <div class="parent-item-label">Long Name:</div>
+                                        <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
+                                            {{parentplanDetails[0].long_name}}</div>
+                                    </div>
                                 </div>
-                                <div *ngIf="parentplan.key=='start_date' || parentplan.key=='end_date' ">
-                                    <div class=" text-blue ">{{textDecoration(parentplan.key)}}:</div>
-                                    <div class="col-md-6 text-white " *ngIf="parentplan.key !='userid' ">
-                                        {{parentplan.value | itemplanitemdate }}</div>
+                                
+                                <div style="display: flex; flex-direction: column; flex-basis: 45%;">
+                                    <div style="display: flex; margin-bottom: 12px;">
+                                        <div class=" parent-item-label">Start Date:</div>
+                                        <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
+                                            {{parentplanDetails[0].start_date | itemplanitemdate }}</div>
+                                    </div>
+                                    <div style="display: flex;">
+                                        <div class=" parent-item-label">End Date:</div>
+                                        <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
+                                            {{parentplanDetails[0].end_date | itemplanitemdate }}</div>
+                                    </div>
                                 </div>
-                                <div
+                                <div style="display: flex; flex-direction: column; flex-basis: 45%;">
+                                    <div style="display: flex; margin-bottom: 12px;">
+                                        <div class=" parent-item-label parent-item-label-alert">Production Target:</div>
+                                        <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
+                                            {{parentplanDetails[0].production_target }}</div>
+                                    </div>
+                                    <div style="display: flex;">
+                                        <div class=" parent-item-label parent-item-label-alert">Expense Target:</div>
+                                        <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
+                                            {{parentplanDetails[0].expense_target }}</div>
+                                    </div>
+                                </div>
+                                <!-- <div style="display: flex;"
                                     *ngIf="parentplan.key !='start_date' && parentplan.key !='end_date' && parentplan.key !='user_id' && parentplan.key !='security' ">
-                                    <div class="text-blue ">{{textDecoration(parentplan.key)}}:</div>
-                                    <div class="col-md-6 text-white " *ngIf="parentplan.key !='userid' ">
+                                    <div class="parent-item-label">{{textDecoration(parentplan.key)}}:</div>
+                                    <div class="text-white bg-dark parent-item-val" style="padding: 6px;" *ngIf="parentplan.key !='userid' ">
                                         {{parentplan.value}}</div>
-                                </div>
-                                <div *ngIf="parentplan.key=='security' ">
-                                    <div class="text-blue ">{{textDecoration(parentplan.key)}}:</div>
+                                </div> -->
+                                <!-- <div *ngIf="parentplan.key=='security' ">
+                                    <div class="parent-item-label ">{{textDecoration(parentplan.key)}}:</div>
                                     <div class="col-md-6 text-white " *ngIf="parentplan.value==0 "> Private</div>
                                     <div class="col-md-6 text-white " *ngIf="parentplan.value==1 "> Shared </div>
+                                </div> -->
+                        </div>
+                        <div style="display: flex; margin-bottom: 12px;">
+                            <div class="text-white bg-dark parent-item-val-spec" style="padding: 6px;">
+                                <div class=" parent-item-label-spec">Description</div>
+                                <p>{{parentplanDetails[0].description}}</p>
+                            </div>
+                        </div>
+                        <hr>
+                        <div *ngFor="let parentplan of parentplanDetails[0] | keyvalue ">
+                            <div
+                                *ngIf="parentplan.key !='_id' && parentplan.key !='shared_permission_users' && parentplan.key !='share_users' && parentplan.key !='shared_plan_users' && parentplan.key !='user_group_id' && parentplan.key !='number' && parentplan.key !='motivation' && parentplan.value ">
+                                <div style="display: flex; flex-direction: row;"
+                                    *ngIf="parentplan.key !='start_date' && parentplan.key !='end_date' && parentplan.key !='user_id' && parentplan.key !='security' && parentplan.key != 'short_name' && parentplan.key != 'long_name' && parentplan.key != 'production_target' && parentplan.key != 'expense_target' && parentplan.key != 'production_type'
+                                    && parentplan.key != 'description' && parentplan.key != 'numbers'">
+                                    <div class="parent-item-label">{{textDecoration(parentplan.key)}}:</div>
+                                    <div class="text-white bg-dark parent-item-val" style="width: 100%; max-width: unset; display: flex; align-items: center;" *ngIf="parentplan.key !='userid' ">
+                                        {{parentplan.value}}</div>
                                 </div>
                             </div>
                         </div>
@@ -371,50 +419,7 @@
                                     placeholder="Description"></textarea>
                             </div>
 
-                            <div class="col-md-6 form-group">
-                                <label>Production Target<span>*</span></label>
-                                <input type="number" class="form-control" placeholder="Production Target"
-                                    formControlName="production_target"
-                                    [ngClass]="{ 'is-invalid': IsLoginFormValid && jval.production_target.errors }">
-                                <div *ngIf="IsLoginFormValid && jval.production_target.errors" class="invalid-feedback">
-                                    <label *ngIf="jval.production_target.errors.required" class="error">Production
-                                        target is required</label>
-                                </div>
-                            </div>
 
-                            <div class="col-md-6 form-group">
-                                <label>Expense Target<span>*</span></label>
-                                <input type="number" class="form-control" placeholder="Expense Target"
-                                    formControlName="expense_target"
-                                    [ngClass]="{ 'is-invalid': IsLoginFormValid && jval.expense_target.errors }">
-                                <div *ngIf="IsLoginFormValid && jval.expense_target.errors" class="invalid-feedback">
-                                    <label *ngIf="jval.expense_target.errors.required" class="error">Expense target is
-                                        required</label>
-                                </div>
-                            </div>
-
-                            <div class="col-md-3 form-group">
-                                <label>Target Type</label>
-                                <select class="form-control" formControlName="production_type">
-                                    <option value="">Select Type</option>
-                                    <option value="dollars">Dollars</option>
-                                    <option value="units">Units</option>
-                                    <option value="percentage">Percentage</option>
-                                </select>
-                                <div *ngIf="IsLoginFormValid && jval.production_type.errors" class="invalid-feedback">
-                                    <label *ngIf="jval.production_type.errors.required" class="error">Production type is
-                                        required</label>
-                                </div>
-                            </div>             
-                            <div class="row"></div>
-                            <div style="padding: 40px;">
-                                <div class="form-group">
-                                    <button type="submit" (click)="resetPlanForm()"
-                                        class="btn btn-default pull-right">Reset</button>
-                                    <button type="submit" (click)="submitPlanForm()"
-                                        class="btn btn-primary btn-space pull-right">Submit</button>
-                                </div>
-                            </div>
                             <!-- <div class="col-md-12 form-group">
                                 <label>Security<span>*</span></label>
                                 <select class="form-control" style="padding: 0px 0px!important"
@@ -437,13 +442,57 @@
                 </mat-expansion-panel-header>
                 <div class="panel panel-cutom-blue">
                     <div class="panel-body">
+                        <div class="col-md-6 form-group">
+                            <label>Production Target<span>*</span></label>
+                            <input type="number" class="form-control" placeholder="Production Target"
+                                formControlName="production_target"
+                                [ngClass]="{ 'is-invalid': IsLoginFormValid && jval.production_target.errors }">
+                            <div *ngIf="IsLoginFormValid && jval.production_target.errors" class="invalid-feedback">
+                                <label *ngIf="jval.production_target.errors.required" class="error">Production
+                                    target is required</label>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 form-group">
+                            <label>Expense Target<span>*</span></label>
+                            <input type="number" class="form-control" placeholder="Expense Target"
+                                formControlName="expense_target"
+                                [ngClass]="{ 'is-invalid': IsLoginFormValid && jval.expense_target.errors }">
+                            <div *ngIf="IsLoginFormValid && jval.expense_target.errors" class="invalid-feedback">
+                                <label *ngIf="jval.expense_target.errors.required" class="error">Expense target is
+                                    required</label>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3 form-group">
+                            <label>Target Type*</label>
+                            <select class="form-control" formControlName="production_type">
+                                <option value="">Select Type</option>
+                                <option value="dollars">Dollars</option>
+                                <option value="units">Units</option>
+                                <option value="percentage">Percentage</option>
+                            </select>
+                            <div *ngIf="IsLoginFormValid && jval.production_type.errors" class="invalid-feedback">
+                                <label *ngIf="jval.production_type.errors.required" class="error">Production type is
+                                    required</label>
+                            </div>
+                        </div>             
                         <div class="row">
-                            <div class="col-md-12 form-group">
+                            <div class="col-md-8 form-group">
                                 <label>Share Goal(s) Permission To Users</label>
                                 <ng-select [items]="childUsersList" bindLabel="name" placeholder="Select Users"
                                     formControlName="share_users" appendTo="body" multiple="true"
                                     [(ngModel)]="selectedSharedPlanUser" (change)="onChangePlan($event)">
                                 </ng-select>
+                            </div>
+                            <div class="row"></div>
+                            <div style="padding: 40px;">
+                                <div class="form-group">
+                                    <button type="submit" (click)="resetPlanForm()"
+                                        class="btn btn-default pull-right">Reset</button>
+                                    <button type="submit" (click)="submitPlanForm()"
+                                        class="btn btn-primary btn-space pull-right">Submit</button>
+                                </div>
                             </div>
                             <div class="col-md-6 form-group" *ngFor="let dev of datafinal">
                                 <div *ngIf="(dev.type=='text');">
@@ -697,37 +746,6 @@
         
         <div class="col-md-9" *ngIf="selectedPhase === 'B' || selectedPhase === 'I'"
             [hidden]="selectedModules && selectedModules != '' || !parentIsActiveSelection">
-            <mat-expansion-panel class="expanse-panel" *ngIf="selectedPhase == 'B' && planGoals && planGoals.length > 0">
-                <mat-expansion-panel-header class="page-title">
-                    <h3>View {{ textDecoration(moduleType) }} List</h3>
-                </mat-expansion-panel-header>
-    
-                <div class="panel panel-cutom-blue" *ngIf="selectedPhase == 'B' && planGoals && planGoals.length > 0">
-                    <div class="row">
-                        <table id="table-goals" datatable [dtOptions]="dtOptionsPlanGoals"
-                            class="display table table-data-width">
-                            <thead>
-                                <tr>
-                                    <th class="prioritize-blue">(G) Short Name</th>
-                                    <th class="prioritize-blue">Start Date</th>
-                                    <th class="prioritize-blue">End Date</th>
-                                    <th class="prioritize-blue">Production Target</th>
-                                    <th class="prioritize-blue">Expense Target</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr *ngFor="let p of planGoals; let i=index">
-                                    <td>(G) {{ p.short_name }}</td>
-                                    <td>{{ p.start_date | prioritizegoaldate }}</td>
-                                    <td>{{ p.end_date | prioritizegoaldate}}</td>
-                                    <td>{{ (p.production_target) ? p.production_target : 0 }}</td>
-                                    <td>{{ (p.expense_target) ? p.expense_target : 0 }}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </mat-expansion-panel>
 
             <mat-expansion-panel class="expanse-panel">
             <mat-expansion-panel-header class="">
@@ -790,6 +808,27 @@
                                     <div *ngIf="f.description.errors.required">Description is required</div>
                                 </div>
                             </div>
+                            <div class="col-md-6 form-group">
+                                <label>Production Target<span>*</span></label>
+                                <input type="number" class="form-control" placeholder="Production Target"
+                                    formControlName="production_target"
+                                    [ngClass]="{ 'is-invalid': IsLoginFormValid && jval.production_target.errors }">
+                                <div *ngIf="IsLoginFormValid && jval.production_target.errors" class="invalid-feedback">
+                                    <label *ngIf="jval.production_target.errors.required" class="error">Production
+                                        target is required</label>
+                                </div>
+                            </div>
+    
+                            <div class="col-md-6 form-group">
+                                <label>Expense Target<span>*</span></label>
+                                <input type="number" class="form-control" placeholder="Expense Target"
+                                    formControlName="expense_target"
+                                    [ngClass]="{ 'is-invalid': IsLoginFormValid && jval.expense_target.errors }">
+                                <div *ngIf="IsLoginFormValid && jval.expense_target.errors" class="invalid-feedback">
+                                    <label *ngIf="jval.expense_target.errors.required" class="error">Expense target is
+                                        required</label>
+                                </div>
+                            </div>
                             <div class="col-md-12 form-group text-right">
                                 <button type="submit " (click)="onSubmit()"
                                     [disabled]="!checkforgoaledit && !isSharedPlanPermission"
@@ -802,7 +841,37 @@
                 </div>
             </form>
             </mat-expansion-panel>
-            
+            <mat-expansion-panel class="expanse-panel" *ngIf="selectedPhase == 'B' && planGoals && planGoals.length > 0">
+                <mat-expansion-panel-header class="page-title">
+                    <h3>View {{ textDecoration(moduleType) }} List</h3>
+                </mat-expansion-panel-header>
+    
+                <div class="panel panel-cutom-blue" *ngIf="selectedPhase == 'B' && planGoals && planGoals.length > 0">
+                    <div class="row">
+                        <table id="table-goals" datatable [dtOptions]="dtOptionsPlanGoals"
+                            class="display table table-data-width">
+                            <thead>
+                                <tr>
+                                    <th class="prioritize-blue">(G) Short Name</th>
+                                    <th class="prioritize-blue">Start Date</th>
+                                    <th class="prioritize-blue">End Date</th>
+                                    <th class="prioritize-blue">Production Target</th>
+                                    <th class="prioritize-blue">Expense Target</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let p of planGoals; let i=index">
+                                    <td>(G) {{ p.short_name }}</td>
+                                    <td>{{ p.start_date | prioritizegoaldate }}</td>
+                                    <td>{{ p.end_date | prioritizegoaldate}}</td>
+                                    <td>{{ (p.production_target) ? p.production_target : 0 }}</td>
+                                    <td>{{ (p.expense_target) ? p.expense_target : 0 }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </mat-expansion-panel>
             <div>
                 
             </div>
@@ -1575,7 +1644,7 @@
             </mat-expansion-panel-header>
                 <div class="panel panel-cutom-blue">
                     <!-- <table class="display table table-data-width"> -->
-                    <table id="table-vote" datatable [dtOptions]="dtOptionsVote" class="display table table-data-width">
+                    <table id="table-vote"  class="display table table-data-width">
                         <thead>
                             <tr>
                                 <th class="prioritize-blue">Vote Up</th>
@@ -1584,7 +1653,7 @@
                                 <th class="prioritize-blue">(G) Short Name</th>
                                 <th class="prioritize-blue">Start Date</th>
                                 <th class="prioritize-blue">End Date</th>
-                                <th class="prioritize-blue">Creator</th>
+                                <!-- <th class="prioritize-blue">Creator</th> -->
                             </tr>
                         </thead>
                         <tbody *ngIf="voteGoals && voteGoals.length > 0">
@@ -1602,10 +1671,17 @@
                                 <td>(G) {{ p.short_name }}</td>
                                 <td>{{ p.start_date | prioritizegoaldate }}</td>
                                 <td>{{ p.end_date | prioritizegoaldate}}</td>
-                                <td>{{ p.user_id.first_name }} {{ p.user_id.last_name }}</td>
+                                <!-- <td>{{ p.user_id.first_name }} {{ p.user_id.last_name }}</td> -->
                             </tr>
                         </tbody>
-                        <tbody *ngIf="voteGoals && voteGoals.length == 0">
+                    </table>
+                    <table *ngIf="voteGoals.length == 0" id="table-vote" class="display table table-data-width">
+                        <thead>
+                            <tr>
+                                <th colspan="7" class="text-center prioritize-blue">Voting</th>
+                            </tr>
+                        </thead>
+                        <tbody>
                             <tr>
                                 <td colspan="7" class="text-center">Details not found</td>
                             </tr>
@@ -1955,7 +2031,7 @@
             </mat-expansion-panel-header>
             <div class="panel panel-cutom-blue">
                 <div class="panel-body">
-                    <table class="display table table-data-width" id="table-module" datatable [dtOptions]="dtOptionsModule">
+                    <table class="display table table-data-width" id="table-module" datatable [dtOptions]="dtOptionsModule" *ngIf="moduleGoals.length != 0"> 
                         <thead>
                             <tr>
                                 <th class="prioritize-blue">Short Name</th>
@@ -1973,9 +2049,28 @@
                                 <td>{{ p.production_target }}</td>
                                 <td>{{ p.expense_target }}</td>
                             </tr>
-                            <tr *ngIf="moduleGoals && moduleGoals.length == 0">
-                                <td colspan="5" class="text-center">Details not found</td>
+
+                        </tbody>
+                    </table>
+                    <table class="display table table-data-width" id="table-module" *ngIf="moduleGoals.length == 0">
+                        <thead>
+                            <tr>
+                                <th class="prioritize-blue">Short Name</th>
+                                <th class="prioritize-blue">Start Date</th>
+                                <th class="prioritize-blue">End Date</th>
+                                <th class="prioritize-blue">Production Target</th>
+                                <th class="prioritize-blue">Expense Target</th>
                             </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                               <td colspan="5">Data not found</td>
+                               <td style="display: none;">-</td>
+                               <td style="display: none;">-</td>
+                               <td style="display: none;">-</td>
+                               <td style="display: none;">-</td>
+                            </tr>
+
                         </tbody>
                     </table>
                 </div>
