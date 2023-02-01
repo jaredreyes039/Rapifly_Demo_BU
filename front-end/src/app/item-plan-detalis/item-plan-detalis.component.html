@@ -136,7 +136,19 @@
                                 </p>
                             </div>
                         </div>
-
+                        <div class="col-md-3 space-stage">
+                            <p>Challenges: </p>
+                        </div>
+                        <div class="col-md-9 space-stage">
+                            <p title="Opportunity" class="cursor-pointer" (click)="selectModule('opportunity')"
+                            [ngClass]="{'active-phase' : selectedModules == 'opportunity'}">
+                                Opportunity
+                            </p><p>&nbsp;|</p>
+                            <p title="Problem" class="cursor-pointer" (click)="selectModule('problem')"
+                            [ngClass]="{'active-phase' : selectedModules == 'problem'}">
+                                Problem
+                            </p>
+                        </div>
                         <!-- MODULE -->
                         <div class="panel-body">
                             <div class="col-md-3 space-stage">
@@ -178,19 +190,7 @@
                                     {{ (selectedModules == 'intelligence') ? 'Intelligence' : 'I' }}
                                 </p>
                             </div>
-                            <div class="col-md-3 space-stage">
-                                <p>Challenges: </p>
-                            </div>
-                            <div class="col-md-9 space-stage">
-                                <p title="Opportunity" class="cursor-pointer" (click)="selectModule('opportunity')"
-                                [ngClass]="{'active-phase' : selectedModules == 'opportunity'}">
-                                    Opportunity
-                                </p><p>&nbsp;|</p>
-                                <p title="Problem" class="cursor-pointer" (click)="selectModule('problem')"
-                                [ngClass]="{'active-phase' : selectedModules == 'problem'}">
-                                    Problem
-                                </p>
-                            </div>
+
                         </div>
                     </div>
                     <div class="page-title">
@@ -416,6 +416,42 @@
                                 </div>
                             </div>
 
+                            <div class="col-md-6 form-group">
+                                <label>Production Target<span>*</span></label>
+                                <input type="number" class="form-control" placeholder="Production Target"
+                                    formControlName="production_target"
+                                    [ngClass]="{ 'is-invalid': IsLoginFormValid && jval.production_target.errors }">
+                                <div *ngIf="IsLoginFormValid && jval.production_target.errors" class="invalid-feedback">
+                                    <label *ngIf="jval.production_target.errors.required" class="error">Production
+                                        target is required</label>
+                                </div>
+                            </div>
+    
+                            <div class="col-md-6 form-group">
+                                <label>Expense Target<span>*</span></label>
+                                <input type="number" class="form-control" placeholder="Expense Target"
+                                    formControlName="expense_target"
+                                    [ngClass]="{ 'is-invalid': IsLoginFormValid && jval.expense_target.errors }">
+                                <div *ngIf="IsLoginFormValid && jval.expense_target.errors" class="invalid-feedback">
+                                    <label *ngIf="jval.expense_target.errors.required" class="error">Expense target is
+                                        required</label>
+                                </div>
+                            </div>
+    
+                            <div class="col-md-3 form-group">
+                                <label>Target Type*</label>
+                                <select class="form-control" formControlName="production_type">
+                                    <option value="">Select Type</option>
+                                    <option value="dollars">Dollars</option>
+                                    <option value="units">Units</option>
+                                    <option value="percentage">Percentage</option>
+                                </select>
+                                <div *ngIf="IsLoginFormValid && jval.production_type.errors" class="invalid-feedback">
+                                    <label *ngIf="jval.production_type.errors.required" class="error">Production type is
+                                        required</label>
+                                </div>
+                            </div>   
+
                             <div class="col-md-12 form-group">
                                 <label>Description</label>
                                 <textarea type="text" formControlName="description" class="form-control"
@@ -441,45 +477,10 @@
                 </div>
                 <mat-expansion-panel class="expanse-panel">
                 <mat-expansion-panel-header class="page-title">
-                    <h3>Extra Details</h3>
+                    <h3>Additional Fields</h3>
                 </mat-expansion-panel-header>
                 <div class="panel panel-cutom-blue">
-                    <div class="panel-body">
-                        <div class="col-md-6 form-group">
-                            <label>Production Target<span>*</span></label>
-                            <input type="number" class="form-control" placeholder="Production Target"
-                                formControlName="production_target"
-                                [ngClass]="{ 'is-invalid': IsLoginFormValid && jval.production_target.errors }">
-                            <div *ngIf="IsLoginFormValid && jval.production_target.errors" class="invalid-feedback">
-                                <label *ngIf="jval.production_target.errors.required" class="error">Production
-                                    target is required</label>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6 form-group">
-                            <label>Expense Target<span>*</span></label>
-                            <input type="number" class="form-control" placeholder="Expense Target"
-                                formControlName="expense_target"
-                                [ngClass]="{ 'is-invalid': IsLoginFormValid && jval.expense_target.errors }">
-                            <div *ngIf="IsLoginFormValid && jval.expense_target.errors" class="invalid-feedback">
-                                <label *ngIf="jval.expense_target.errors.required" class="error">Expense target is
-                                    required</label>
-                            </div>
-                        </div>
-
-                        <div class="col-md-3 form-group">
-                            <label>Target Type*</label>
-                            <select class="form-control" formControlName="production_type">
-                                <option value="">Select Type</option>
-                                <option value="dollars">Dollars</option>
-                                <option value="units">Units</option>
-                                <option value="percentage">Percentage</option>
-                            </select>
-                            <div *ngIf="IsLoginFormValid && jval.production_type.errors" class="invalid-feedback">
-                                <label *ngIf="jval.production_type.errors.required" class="error">Production type is
-                                    required</label>
-                            </div>
-                        </div>             
+                    <div class="panel-body">          
                         <div class="row">
                             <div class="col-md-8 form-group">
                                 <label>Share Goal(s) Permission To Users</label>
@@ -489,14 +490,6 @@
                                 </ng-select>
                             </div>
                             <div class="row"></div>
-                            <div style="padding: 40px;">
-                                <div class="form-group">
-                                    <button type="submit" (click)="resetPlanForm()"
-                                        class="btn btn-default pull-right">Reset</button>
-                                    <button type="submit" (click)="submitPlanForm()"
-                                        class="btn btn-primary btn-space pull-right">Submit</button>
-                                </div>
-                            </div>
                             <div class="col-md-6 form-group" *ngFor="let dev of datafinal">
                                 <div *ngIf="(dev.type=='text');">
                                     <label>{{dev.name}}<span *ngIf="dev.required=='true'">*</span></label>
@@ -531,6 +524,15 @@
                                         <label *ngIf="jval[dev.name].errors.required" class="error">{{dev.name}} is
                                             required</label>
                                     </div>
+                                </div>
+                                
+                            </div>
+                            <div style="padding: 40px;">
+                                <div class="form-group">
+                                    <button type="submit" (click)="resetPlanForm()"
+                                        class="btn btn-default pull-right">Reset</button>
+                                    <button type="submit" (click)="submitPlanForm()"
+                                        class="btn btn-primary btn-space pull-right">Submit</button>
                                 </div>
                             </div>
                         </div>
@@ -844,6 +846,7 @@
                 </div>
             </form>
             </mat-expansion-panel>
+            
             <mat-expansion-panel class="expanse-panel" *ngIf="selectedPhase == 'B' && planGoals && planGoals.length > 0">
                 <mat-expansion-panel-header class="page-title">
                     <h3>View {{ textDecoration(moduleType) }} List</h3>
@@ -1013,29 +1016,6 @@
                                     </div>
                                     </div>
                                 </div>
-
-                                <div style="display: flex; flex-direction: column; flex-basis: 45%;">
-                                    <div style="display: flex;  margin-bottom: 12px;">
-                                    <label class="parent-item-label parent-item-label-alert" for="exampleInputEmail1">Production Target<span>*</span></label>
-                                    <input type="text" formControlName="production_target" class="text-white bg-dark parent-item-val form-control form-control-spec"
-                                        placeholder="Short name"
-                                        [ngClass]="{ 'is-invalid': submitted && f.production_target.errors }" autocomplete="off">
-                                    <div *ngIf="submitted && f.production_target.errors" class="invalid-feedback">
-                                        <div *ngIf="f.production_target.errors.required">Production target is required</div>
-                                    </div>
-                                    </div>
-
-                                    <div style="display: flex;  margin-bottom: 12px;">
-
-                                    <label class="parent-item-label parent-item-label-alert" for="exampleInputPassword1">Expense Target<span>*</span></label>
-                                    <input type="text" id="long_name" formControlName="expense_target" class="text-white bg-dark parent-item-val form-control form-control-spec"
-                                        placeholder="Long name"
-                                        [ngClass]="{ 'is-invalid': submitted && f.expense_target.errors }" autocomplete="off">
-                                    <div *ngIf="submitted && f.expense_target.errors" class="invalid-feedback">
-                                        <div *ngIf="f.expense_target.errors.required">Expense target is required</div>
-                                    </div>
-                                    </div>
-                                </div>
                             </div>
                                 <div style="display: flex; flex-direction: column; flex-basis: 45%;">
                                     <!-- <div style="display: flex;  margin-bottom: 12px;">
@@ -1058,6 +1038,92 @@
                                     </div>
                                     </div>
                                 </div>
+
+                                <div class="page-title">
+                                    <h3>Metrics Dashboard</h3>
+                                </div>
+                                <hr style="margin-bottom: 24px;">
+                                <div style="display: flex; flex-direction: row; gap: 24px; margin-bottom: 24px;">
+                                <!-- <div class="col-md-3 form-group">
+                                    <label>Production Target</label>
+                                    <input type="number" class="form-control" placeholder="Production Target" formControlName="production_target" [ngClass]="{ 'is-invalid': submitted && f.production_target.errors }">
+                                    <div *ngIf="submitted && f.production_target.errors" class="invalid-feedback">
+                                        <label *ngIf="f.production_target.errors.required" class="error">Production target is required</label>
+                                    </div>
+                                </div> -->
+                                <!-- <div class="col-md-3 form-group">
+                                    <label>Type</label>
+                                    <select class="form-control" formControlName="production_type">
+                                        <option value="">Select Type</option>
+                                        <option value="units">Units</option>
+                                    </select>
+                                    <div *ngIf="submitted && f.production_type.errors" class="invalid-feedback">
+                                        <label *ngIf="f.production_type.errors.required" class="error">Production type is required</label>
+                                    </div>
+                                </div> -->
+                                <!-- <div class="col-md-6 form-group">
+                                    <label>Expense Target</label>
+                                    <input type="number" class="form-control" placeholder="Expense Target" formControlName="expense_target" [ngClass]="{ 'is-invalid': submitted && f.expense_target.errors }">
+                                    <div *ngIf="submitted && f.expense_target.errors" class="invalid-feedback">
+                                        <label *ngIf="f.expense_target.errors.required" class="error">Expense target is required</label>
+                                    </div>
+                                </div> -->
+                                <div style="display: flex; flex-direction: column; flex-basis: 45%;">
+                                    <div style="display: flex;  margin-bottom: 12px;">
+                                    <label class="parent-item-label parent-item-label-alert" for="exampleInputEmail1">Production Target<span>*</span></label>
+                                    <input type="text" formControlName="production_target" class="text-white bg-dark parent-item-val form-control form-control-spec"
+                                        placeholder="Short name"
+                                        [ngClass]="{ 'is-invalid': submitted && f.production_target.errors }" autocomplete="off">
+                                    <div *ngIf="submitted && f.production_target.errors" class="invalid-feedback">
+                                        <div *ngIf="f.production_target.errors.required">Production target is required</div>
+                                    </div>
+                                    </div>
+
+                                    <div style="display: flex;  margin-bottom: 12px;">
+
+                                    <label class="parent-item-label parent-item-label-alert" for="exampleInputPassword1">Expense Target<span>*</span></label>
+                                    <input type="text" id="long_name" formControlName="expense_target" class="text-white bg-dark parent-item-val form-control form-control-spec"
+                                        placeholder="Long name"
+                                        [ngClass]="{ 'is-invalid': submitted && f.expense_target.errors }" autocomplete="off">
+                                    <div *ngIf="submitted && f.expense_target.errors" class="invalid-feedback">
+                                        <div *ngIf="f.expense_target.errors.required">Expense target is required</div>
+                                    </div>
+                                    </div>
+                                </div>
+
+                                <div style="display: flex; flex-direction: column; flex-basis: 45%;">
+                                    <div style="display: flex;  margin-bottom: 12px;">
+                                    <label class="parent-item-label">Low Variance Alert</label>
+                                    <input type="number" class="text-white bg-dark parent-item-val form-control form-control-spec" placeholder="Low Variance Alert" formControlName="production_low_variance_alert" [ngClass]="{ 'is-invalid': submitted && f.production_low_variance_alert.errors }">
+                                    <div *ngIf="submitted && f.production_low_variance_alert.errors" class="invalid-feedback">
+                                        <label *ngIf="f.production_low_variance_alert.errors.required" class="error">Low Variance Alert is required</label>
+                                    </div>
+                                    </div>
+                                    <div style="display: flex;  margin-bottom: 12px;">
+                                    <label class="parent-item-label">Hight Variance Alert</label>
+                                    <input type="number" class="text-white bg-dark parent-item-val form-control form-control-spec" placeholder="Hight Variance Alert" formControlName="production_high_variance_alert" [ngClass]="{ 'is-invalid': submitted && f.production_high_variance_alert.errors }">
+                                    <div *ngIf="submitted && f.production_high_variance_alert.errors" class="invalid-feedback">
+                                        <label *ngIf="f.production_high_variance_alert.errors.required" class="error">Hight Variance Alert is required</label>
+                                    </div>
+                                </div>
+                                </div>
+                                <div style="display: flex; flex-direction: column; flex-basis: 45%;">
+                                    <div style="display: flex;  margin-bottom: 12px;">
+                                    <label class="parent-item-label">Production Weight</label>
+                                    <input type="number"class="text-white bg-dark parent-item-val form-control form-control-spec" placeholder="Production weight" formControlName="production_weight" [ngClass]="{ 'is-invalid': submitted && f.production_weight.errors }">
+                                    <div *ngIf="submitted && f.production_weight.errors" class="invalid-feedback">
+                                        <label *ngIf="f.production_weight.errors.required" class="error">Expense weight is required</label>
+                                    </div>
+                                    </div>
+                                    <div style="display: flex;  margin-bottom: 12px;">
+                                    <label class="parent-item-label">Expense Weight</label>
+                                    <input type="number" class="text-white bg-dark parent-item-val form-control form-control-spec" placeholder="Expense weight" formControlName="expense_weight" [ngClass]="{ 'is-invalid': submitted && f.expense_weight.errors }">
+                                    <div *ngIf="submitted && f.expense_weight.errors" class="invalid-feedback">
+                                        <label *ngIf="f.expense_weight.errors.required" class="error">Expense weight is required</label>
+                                    </div>
+                                    </div>
+                                </div>
+                                </div>
                             <div class="col-md-12 form-group text-right">
                                 <button type="submit " (click)="onSubmit()"
                                     [disabled]="!checkforgoaledit && !isSharedPlanPermission"
@@ -1070,6 +1136,8 @@
                 </div>
             </form>
         </div>
+        
+        
 
             <mat-expansion-panel class="expanse-panel" *ngIf="parentplanDetails[0] && parentplanDetails[0] != '' && selectedPhase !='project' && selectedPhase != 'user'
             && selectedPhase != 'team' && selectedPhase !== 'security' && selectedPhase != 'coaches-corner' "
