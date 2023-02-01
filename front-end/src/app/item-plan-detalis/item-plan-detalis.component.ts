@@ -748,7 +748,6 @@ export class ItemPlanDetailsComponent implements OnInit {
         } else {
           this.checkforgoaledit = false;
         }
-
         this.moduleType = this.childgoalDetails.module_type;
 
         this.goalid = this.childgoalDetails._id

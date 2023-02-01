@@ -259,8 +259,11 @@
             </div>
         </div>
 
+        <!-- PARENT ITEM PROJECT PROFILE DISPLAY -->
+
         <div class="col-md-9" *ngIf="parentplanDetails[0] && parentplanDetails[0] != '' && selectedPhase !='project' && selectedPhase != 'user'
-        && selectedPhase != 'team' && selectedPhase !== 'security' && selectedPhase != 'coaches-corner'">
+        && selectedPhase != 'team' && selectedPhase !== 'security' && selectedPhase != 'coaches-corner' "
+        [hidden]="!parentIsActiveSelection">
             <div class="page-title">
                 Project Profile
             </div>
@@ -326,7 +329,7 @@
                                     <div class="col-md-6 text-white " *ngIf="parentplan.value==1 "> Shared </div>
                                 </div> -->
                         </div>
-                        <div style="display: flex; margin-bottom: 12px;">
+                        <div style="display: flex; margin-bottom: 24px;">
                             <div class="text-white bg-dark parent-item-val-spec" style="padding: 6px;">
                                 <div class=" parent-item-label-spec">Description</div>
                                 <p>{{parentplanDetails[0].description}}</p>
@@ -334,9 +337,9 @@
                         </div>
                         <hr>
                         <div *ngFor="let parentplan of parentplanDetails[0] | keyvalue ">
-                            <div
-                                *ngIf="parentplan.key !='_id' && parentplan.key !='shared_permission_users' && parentplan.key !='share_users' && parentplan.key !='shared_plan_users' && parentplan.key !='user_group_id' && parentplan.key !='number' && parentplan.key !='motivation' && parentplan.value ">
-                                <div style="display: flex; flex-direction: row;"
+                            <div style="display: flex; flex-direction: column;"
+                                *ngIf="parentplan.key !='_id' && parentplan.key !='shared_permission_users' && parentplan.key !='share_users' && parentplan.key !='shared_plan_users' && parentplan.key !='user_group_id' && parentplan.key !='number' && parentplan.key !='motivation' && parentplan.value " [hidden]="parentplan.value==''">
+                                <div style="display: flex; flex-direction: row; margin-bottom: 12px;"
                                     *ngIf="parentplan.key !='start_date' && parentplan.key !='end_date' && parentplan.key !='user_id' && parentplan.key !='security' && parentplan.key != 'short_name' && parentplan.key != 'long_name' && parentplan.key != 'production_target' && parentplan.key != 'expense_target' && parentplan.key != 'production_type'
                                     && parentplan.key != 'description' && parentplan.key != 'numbers'">
                                     <div class="parent-item-label">{{textDecoration(parentplan.key)}}:</div>
@@ -353,7 +356,7 @@
         <div class="col-md-9" *ngIf="selectedPhase == 'project'">
             <form #kform="ngForm" [formGroup]="parentplangroup">
                 <div class="page-title">
-                    <h3>Create Parent Project Item</h3>
+                    Create Parent Project Item
                 </div>
                 <div class="col-md-12 form-group text-right">
                     <button type="button" class="btn btn-warning mt-20" (click)="fetch()">Add Form Control</button>
@@ -954,67 +957,107 @@
         <div class="col-md-9" *ngIf="selectedPhase === 'B' || selectedPhase === 'I'"
             [hidden]="selectedModules && selectedModules != '' || parentIsActiveSelection">
 
-            <mat-expansion-panel class="expanse-panel">
-            <mat-expansion-panel-header class="">
+            <div class="expanse-panel">
+            <div class="">
                 <div class="page-title">
-                    <h3>{{ (selectedPhase == 'I') ? 'Improve' : 'View Sub Item' }}</h3>
+                    {{ (selectedPhase == 'I') ? 'Improve' : 'View & Edit Sub Item' }}
                 </div>
-            </mat-expansion-panel-header>
+            </div>
             <form #kform="ngForm" class="p-3" [formGroup]="childPlanForm">
                 <div class="panel panel-cutom-blue">
                     <div class="panel-body">
-                        <div class="row">
-                            <div class="col-md-6 form-group">
-                                <label for="exampleInputEmail1">Short Name<span>*</span></label>
-                                <input type="text" formControlName="short_name" class="form-control"
-                                    placeholder="Short name"
-                                    [ngClass]="{ 'is-invalid': submitted && f.short_name.errors }" autocomplete="off">
-                                <div *ngIf="submitted && f.short_name.errors" class="invalid-feedback">
-                                    <div *ngIf="f.short_name.errors.required">Short name is required</div>
+                        <div style="padding: 10px;">
+                            <div style="display: flex; flex-direction: row; gap: 24px; margin-bottom: 24px;">
+
+                                <div style="display: flex; flex-direction: column; flex-basis: 45%;">
+                                    <div style="display: flex;  margin-bottom: 12px;">
+                                    <label class="parent-item-label" for="exampleInputEmail1">Short Name<span>*</span></label>
+                                    <input type="text" formControlName="short_name" class="text-white bg-dark parent-item-val form-control form-control-spec"
+                                        placeholder="Short name"
+                                        [ngClass]="{ 'is-invalid': submitted && f.short_name.errors }" autocomplete="off">
+                                    <div *ngIf="submitted && f.short_name.errors" class="invalid-feedback">
+                                        <div *ngIf="f.short_name.errors.required">Short name is required</div>
+                                    </div>
+                                    </div>
+
+                                    <div style="display: flex;  margin-bottom: 12px;">
+
+                                    <label class="parent-item-label" for="exampleInputPassword1">Long Name<span>*</span></label>
+                                    <input type="text" id="long_name" formControlName="long_name" class="text-white bg-dark parent-item-val form-control form-control-spec"
+                                        placeholder="Long name"
+                                        [ngClass]="{ 'is-invalid': submitted && f.long_name.errors }" autocomplete="off">
+                                    <div *ngIf="submitted && f.long_name.errors" class="invalid-feedback">
+                                        <div *ngIf="f.long_name.errors.required">Long name is required</div>
+                                    </div>
+                                    </div>
+                                </div>
+                            
+                                <div style="display: flex; flex-direction: column; flex-basis: 45%;">
+                                    <div style="display: flex;  margin-bottom: 12px;">
+
+                                    <label class="parent-item-label" for="exampleInputPassword1">Start Date<span>*</span></label>
+                                    <div class="input-group input-append bootstrap-datepicker">
+                                        <input type="text" id="date-input5" formControlName="start_date"
+                                        class="text-white bg-dark parent-item-val form-control form-control-spec bg-dark date-picker" placeholder="Start Date" autocomplete="off">
+                                        <span style="background-color: #8869c2;" class="input-group-addon add-on"><i
+                                                class="fa fa-calendar"></i></span>
+                                    </div>
+                                    </div>
+                                    <div style="display: flex;  margin-bottom: 12px;">
+                                    <label class="parent-item-label" for="exampleInputPassword1">End Date<span>*</span></label>
+                                    <div class="bg-dark input-group input-append bootstrap-datepicker">
+                                        <input type="text" id="date-input6" formControlName="end_date"
+                                        class="text-white bg-dark parent-item-val form-control form-control-spec date-picker" placeholder="End Date" autocomplete="off">
+                                        <span style="background-color: #8869c2;" class="input-group-addon add-on"><i
+                                                class="fa fa-calendar"></i></span>
+                                    </div>
+                                    </div>
+                                </div>
+
+                                <div style="display: flex; flex-direction: column; flex-basis: 45%;">
+                                    <div style="display: flex;  margin-bottom: 12px;">
+                                    <label class="parent-item-label parent-item-label-alert" for="exampleInputEmail1">Production Target<span>*</span></label>
+                                    <input type="text" formControlName="production_target" class="text-white bg-dark parent-item-val form-control form-control-spec"
+                                        placeholder="Short name"
+                                        [ngClass]="{ 'is-invalid': submitted && f.production_target.errors }" autocomplete="off">
+                                    <div *ngIf="submitted && f.production_target.errors" class="invalid-feedback">
+                                        <div *ngIf="f.production_target.errors.required">Production target is required</div>
+                                    </div>
+                                    </div>
+
+                                    <div style="display: flex;  margin-bottom: 12px;">
+
+                                    <label class="parent-item-label parent-item-label-alert" for="exampleInputPassword1">Expense Target<span>*</span></label>
+                                    <input type="text" id="long_name" formControlName="expense_target" class="text-white bg-dark parent-item-val form-control form-control-spec"
+                                        placeholder="Long name"
+                                        [ngClass]="{ 'is-invalid': submitted && f.expense_target.errors }" autocomplete="off">
+                                    <div *ngIf="submitted && f.expense_target.errors" class="invalid-feedback">
+                                        <div *ngIf="f.expense_target.errors.required">Expense target is required</div>
+                                    </div>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-md-6 form-group">
-                                <label for="exampleInputPassword1">Long Name<span>*</span></label>
-                                <input type="text" id="long_name" formControlName="long_name" class="form-control"
-                                    placeholder="Long name"
-                                    [ngClass]="{ 'is-invalid': submitted && f.long_name.errors }" autocomplete="off">
-                                <div *ngIf="submitted && f.long_name.errors" class="invalid-feedback">
-                                    <div *ngIf="f.long_name.errors.required">Long name is required</div>
+                                <div style="display: flex; flex-direction: column; flex-basis: 45%;">
+                                    <!-- <div style="display: flex;  margin-bottom: 12px;">
+
+                                    <label class="parent-item-label">Select Users</label>
+                                    <ng-select [items]="items" bindLabel="name" placeholder="Select Users"
+                                        formControlName="shared_users" appendTo="body" multiple="true"
+                                        [(ngModel)]="selected" (change)="onChange($event)">
+                                    </ng-select>
+                                    </div> -->
+                                    <div style="display: flex;  margin-bottom: 12px;">
+
+                                        <div class="text-white bg-dark parent-item-val-spec" style="padding: 6px;">
+                                        <div class=" parent-item-label-spec">Description</div>
+                                        <textarea type="text" formControlName="description" class="form-control bg-dark"
+                                        placeholder="Click to edit description" style="border-radius: 0px; border: none; border-left: 2px solid #fff; padding-left: 12px;"></textarea>
+                                        <div *ngIf="submitted && f.description.errors" class="invalid-feedback">
+                                            <div *ngIf="f.description.errors.required">Description is required</div>
+                                        </div>                                    
+                                    </div>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-6 form-group">
-                                <label for="exampleInputPassword1">Start Date<span>*</span></label>
-                                <div class="input-group input-append bootstrap-datepicker">
-                                    <input type="text" id="date-input5" formControlName="start_date"
-                                        class="form-control date-picker" placeholder="Start Date" autocomplete="off">
-                                    <span style="background-color: #8869c2;" class="input-group-addon add-on"><i
-                                            class="fa fa-calendar"></i></span>
-                                </div>
-                            </div>
-                            <div class="col-md-6 form-group">
-                                <label for="exampleInputPassword1">End Date<span>*</span></label>
-                                <div class="input-group input-append bootstrap-datepicker">
-                                    <input type="text" id="date-input6" formControlName="end_date"
-                                        class="form-control date-picker" placeholder="End Date" autocomplete="off">
-                                    <span style="background-color: #8869c2;" class="input-group-addon add-on"><i
-                                            class="fa fa-calendar"></i></span>
-                                </div>
-                            </div>
-                            <div class="col-md-12 form-group" *ngIf="isSharedPlanPermission">
-                                <label>Select Users</label>
-                                <ng-select [items]="items" bindLabel="name" placeholder="Select Users"
-                                    formControlName="shared_users" appendTo="body" multiple="true"
-                                    [(ngModel)]="selected" (change)="onChange($event)">
-                                </ng-select>
-                            </div>
-                            <div class="col-md-12 form-group">
-                                <label for="exampleInputPassword1">Description</label>
-                                <textarea type="text" formControlName="description" class="form-control"
-                                    placeholder="Description"></textarea>
-                                <div *ngIf="submitted && f.description.errors" class="invalid-feedback">
-                                    <div *ngIf="f.description.errors.required">Description is required</div>
-                                </div>
-                            </div>
                             <div class="col-md-12 form-group text-right">
                                 <button type="submit " (click)="onSubmit()"
                                     [disabled]="!checkforgoaledit && !isSharedPlanPermission"
@@ -1026,6 +1069,98 @@
                     </div>
                 </div>
             </form>
+        </div>
+
+            <mat-expansion-panel class="expanse-panel" *ngIf="parentplanDetails[0] && parentplanDetails[0] != '' && selectedPhase !='project' && selectedPhase != 'user'
+            && selectedPhase != 'team' && selectedPhase !== 'security' && selectedPhase != 'coaches-corner' "
+            [hidden]="parentIsActiveSelection">
+                <mat-expansion-panel-header class="page-title">
+                    <h3>Main Project Details</h3>
+                </mat-expansion-panel-header>
+                <div class="panel panel-cutom-blue">
+                    <div class="panel-body">
+                        <div style="padding: 10px;">
+                            <div class="text-right" style="margin-bottom: 24px;">
+                                <button routerLink="/item-plans/{{ goalplanid }}" class="btn btn-warning"><i
+                                        class="fa fa-comments"></i></button>
+                            </div>
+                            <div style="display: flex; flex-direction: row; gap: 24px; margin-bottom: 24px;">
+                                    <!-- <div *ngIf="parentplan.key=='user_id' ">
+                                        <div class="parent-item-label">Creator:</div>
+                                        <div class=" text-white " *ngIf="parentplan.key !='userid' ">
+                                            {{parentplan.value.first_name}} {{parentplan.value.last_name}}</div>
+                                    </div> -->
+                                    <div style="display: flex; flex-direction: column; flex-basis: 45%;">
+                                        <div  style="display: flex;  margin-bottom: 12px;">
+                                            <div class="parent-item-label">Short Name:</div>
+                                            <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
+                                                {{parentplanDetails[0].short_name}}</div>
+                                        </div>
+                                        <div  style="display: flex;">
+                                            <div class="parent-item-label">Long Name:</div>
+                                            <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
+                                                {{parentplanDetails[0].long_name}}</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div style="display: flex; flex-direction: column; flex-basis: 45%;">
+                                        <div style="display: flex; margin-bottom: 12px;">
+                                            <div class=" parent-item-label">Start Date:</div>
+                                            <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
+                                                {{parentplanDetails[0].start_date | itemplanitemdate }}</div>
+                                        </div>
+                                        <div style="display: flex;">
+                                            <div class=" parent-item-label">End Date:</div>
+                                            <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
+                                                {{parentplanDetails[0].end_date | itemplanitemdate }}</div>
+                                        </div>
+                                    </div>
+                                    <div style="display: flex; flex-direction: column; flex-basis: 45%;">
+                                        <div style="display: flex; margin-bottom: 12px;">
+                                            <div class=" parent-item-label parent-item-label-alert">Production Target:</div>
+                                            <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
+                                                {{parentplanDetails[0].production_target }}</div>
+                                        </div>
+                                        <div style="display: flex;">
+                                            <div class=" parent-item-label parent-item-label-alert">Expense Target:</div>
+                                            <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
+                                                {{parentplanDetails[0].expense_target }}</div>
+                                        </div>
+                                    </div>
+                                    <!-- <div style="display: flex;"
+                                        *ngIf="parentplan.key !='start_date' && parentplan.key !='end_date' && parentplan.key !='user_id' && parentplan.key !='security' ">
+                                        <div class="parent-item-label">{{textDecoration(parentplan.key)}}:</div>
+                                        <div class="text-white bg-dark parent-item-val" style="padding: 6px;" *ngIf="parentplan.key !='userid' ">
+                                            {{parentplan.value}}</div>
+                                    </div> -->
+                                    <!-- <div *ngIf="parentplan.key=='security' ">
+                                        <div class="parent-item-label ">{{textDecoration(parentplan.key)}}:</div>
+                                        <div class="col-md-6 text-white " *ngIf="parentplan.value==0 "> Private</div>
+                                        <div class="col-md-6 text-white " *ngIf="parentplan.value==1 "> Shared </div>
+                                    </div> -->
+                            </div>
+                            <div style="display: flex; margin-bottom: 12px;">
+                                <div class="text-white bg-dark parent-item-val-spec" style="padding: 6px;">
+                                    <div class=" parent-item-label-spec">Description</div>
+                                    <p>{{parentplanDetails[0].description}}</p>
+                                </div>
+                            </div>
+                            <hr>
+                            <div *ngFor="let parentplan of parentplanDetails[0] | keyvalue ">
+                                <div style="display: flex; flex-direction: column;"
+                                    *ngIf="parentplan.key !='_id' && parentplan.key !='shared_permission_users' && parentplan.key !='share_users' && parentplan.key !='shared_plan_users' && parentplan.key !='user_group_id' && parentplan.key !='number' && parentplan.key !='motivation' && parentplan.value " [hidden]="parentplan.value==''">
+                                    <div style="display: flex; flex-direction: row; margin-bottom: 12px;"
+                                        *ngIf="parentplan.key !='start_date' && parentplan.key !='end_date' && parentplan.key !='user_id' && parentplan.key !='security' && parentplan.key != 'short_name' && parentplan.key != 'long_name' && parentplan.key != 'production_target' && parentplan.key != 'expense_target' && parentplan.key != 'production_type'
+                                        && parentplan.key != 'description' && parentplan.key != 'numbers'">
+                                        <div class="parent-item-label">{{textDecoration(parentplan.key)}}:</div>
+                                        <div class="text-white bg-dark parent-item-val" style="width: 100%; max-width: unset; display: flex; align-items: center;" *ngIf="parentplan.key !='userid' ">
+                                            {{parentplan.value}}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </mat-expansion-panel>
 
             <mat-expansion-panel class="expanse-panel" *ngIf="selectedPhase == 'B' && planGoals && planGoals.length > 0">
@@ -1135,6 +1270,124 @@
             </mat-expansion-panel>
             <!-- END DISCUSSION EXPANSION PANEL -->
         </div>
+
+        <div class="col-md-9" *ngIf="selectedPhase === 'B' || selectedPhase === 'I'"
+        [hidden]="!selectedModules && selectedModules == '' || parentIsActiveSelection">
+
+        <div class="expanse-panel">
+        <div class="">
+            <div class="page-title">
+                {{ (selectedPhase == 'I') ? 'Improve' : 'View & Edit Sub Item' }}
+            </div>
+        </div>
+        <form #kform="ngForm" class="p-3" [formGroup]="childPlanForm">
+            <div class="panel panel-cutom-blue">
+                <div class="panel-body">
+                    <div style="padding: 10px;">
+                        <div style="display: flex; flex-direction: row; gap: 24px; margin-bottom: 24px;">
+
+                            <div style="display: flex; flex-direction: column; flex-basis: 45%;">
+                                <div style="display: flex;  margin-bottom: 12px;">
+                                <label class="parent-item-label" for="exampleInputEmail1">Short Name<span>*</span></label>
+                                <input type="text" formControlName="short_name" class="text-white bg-dark parent-item-val form-control form-control-spec"
+                                    placeholder="Short name"
+                                    [ngClass]="{ 'is-invalid': submitted && f.short_name.errors }" autocomplete="off">
+                                <div *ngIf="submitted && f.short_name.errors" class="invalid-feedback">
+                                    <div *ngIf="f.short_name.errors.required">Short name is required</div>
+                                </div>
+                                </div>
+
+                                <div style="display: flex;  margin-bottom: 12px;">
+
+                                <label class="parent-item-label" for="exampleInputPassword1">Long Name<span>*</span></label>
+                                <input type="text" id="long_name" formControlName="long_name" class="text-white bg-dark parent-item-val form-control form-control-spec"
+                                    placeholder="Long name"
+                                    [ngClass]="{ 'is-invalid': submitted && f.long_name.errors }" autocomplete="off">
+                                <div *ngIf="submitted && f.long_name.errors" class="invalid-feedback">
+                                    <div *ngIf="f.long_name.errors.required">Long name is required</div>
+                                </div>
+                                </div>
+                            </div>
+                        
+                            <div style="display: flex; flex-direction: column; flex-basis: 45%;">
+                                <div style="display: flex;  margin-bottom: 12px;">
+
+                                <label class="parent-item-label" for="exampleInputPassword1">Start Date<span>*</span></label>
+                                <div class="input-group input-append bootstrap-datepicker">
+                                    <input type="text" id="date-input5" formControlName="start_date"
+                                    class="text-white bg-dark parent-item-val form-control form-control-spec bg-dark date-picker" placeholder="Start Date" autocomplete="off">
+                                    <span style="background-color: #8869c2;" class="input-group-addon add-on"><i
+                                            class="fa fa-calendar"></i></span>
+                                </div>
+                                </div>
+                                <div style="display: flex;  margin-bottom: 12px;">
+                                <label class="parent-item-label" for="exampleInputPassword1">End Date<span>*</span></label>
+                                <div class="bg-dark input-group input-append bootstrap-datepicker">
+                                    <input type="text" id="date-input6" formControlName="end_date"
+                                    class="text-white bg-dark parent-item-val form-control form-control-spec date-picker" placeholder="End Date" autocomplete="off">
+                                    <span style="background-color: #8869c2;" class="input-group-addon add-on"><i
+                                            class="fa fa-calendar"></i></span>
+                                </div>
+                                </div>
+                            </div>
+
+                            <div style="display: flex; flex-direction: column; flex-basis: 45%;">
+                                <div style="display: flex;  margin-bottom: 12px;">
+                                <label class="parent-item-label parent-item-label-alert" for="exampleInputEmail1">Production Target<span>*</span></label>
+                                <input type="text" formControlName="production_target" class="text-white bg-dark parent-item-val form-control form-control-spec"
+                                    placeholder="Short name"
+                                    [ngClass]="{ 'is-invalid': submitted && f.production_target.errors }" autocomplete="off">
+                                <div *ngIf="submitted && f.production_target.errors" class="invalid-feedback">
+                                    <div *ngIf="f.production_target.errors.required">Production target is required</div>
+                                </div>
+                                </div>
+
+                                <div style="display: flex;  margin-bottom: 12px;">
+
+                                <label class="parent-item-label parent-item-label-alert" for="exampleInputPassword1">Expense Target<span>*</span></label>
+                                <input type="text" id="long_name" formControlName="expense_target" class="text-white bg-dark parent-item-val form-control form-control-spec"
+                                    placeholder="Long name"
+                                    [ngClass]="{ 'is-invalid': submitted && f.expense_target.errors }" autocomplete="off">
+                                <div *ngIf="submitted && f.expense_target.errors" class="invalid-feedback">
+                                    <div *ngIf="f.expense_target.errors.required">Expense target is required</div>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                            <div style="display: flex; flex-direction: column; flex-basis: 45%;">
+                                <!-- <div style="display: flex;  margin-bottom: 12px;">
+
+                                <label class="parent-item-label">Select Users</label>
+                                <ng-select [items]="items" bindLabel="name" placeholder="Select Users"
+                                    formControlName="shared_users" appendTo="body" multiple="true"
+                                    [(ngModel)]="selected" (change)="onChange($event)">
+                                </ng-select>
+                                </div> -->
+                                <div style="display: flex;  margin-bottom: 12px;">
+
+                                    <div class="text-white bg-dark parent-item-val-spec" style="padding: 6px;">
+                                    <div class=" parent-item-label-spec">Description</div>
+                                    <textarea type="text" formControlName="description" class="form-control bg-dark"
+                                    placeholder="Click to edit description" style="border-radius: 0px; border: none; border-left: 2px solid #fff; padding-left: 12px;"></textarea>
+                                    <div *ngIf="submitted && f.description.errors" class="invalid-feedback">
+                                        <div *ngIf="f.description.errors.required">Description is required</div>
+                                    </div>                                    
+                                </div>
+                                </div>
+                            </div>
+                        <div class="col-md-12 form-group text-right">
+                            <button type="submit " (click)="onSubmit()"
+                                [disabled]="!checkforgoaledit && !isSharedPlanPermission"
+                                class="btn btn-primary btn-space">Save</button>
+                            <button type="reset" (click)="reset()" [disabled]="!checkforgoaledit "
+                                class="btn btn-default">Clear</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    </div>
         <!-- End Brainstorm && improve -->
 
         <!-- Deactivate -->

@@ -98,6 +98,9 @@
 /*Additional properties for button version
    iOS requires the button element instead of an anchor tag.
    If you want the anchor version, it requires `href="#"`.*/
+.jstree-clicked {
+    color: yellow !important;
+}
 
 button.toast-close-button {
     padding: 0;
