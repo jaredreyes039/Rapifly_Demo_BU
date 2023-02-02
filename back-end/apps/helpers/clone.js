@@ -21,7 +21,7 @@ module.exports.countdownGoal = function() {
         Goals.find({}).populate(planObj).exec(async function(error, goals) {
             if (!error && goals && goals.length > 0) {
                 for await (const element of goals) {
-                    if (element.plan_id.security == 1) {
+                    if (element.security == 1) {
                         var delegation = await Delegation.find({ goal_id: element._id, is_accept: 1 });
 
                         if (delegation && delegation.length > 0) {
