@@ -532,7 +532,7 @@
                         </div>
                     </div>
                 </div>
-                <mat-expansion-panel class="expanse-panel">
+                <mat-expansion-panel  [expanded]="true" class="expanse-panel">
                 <mat-expansion-panel-header class="page-title">
                     <h3>Additional Fields</h3>
                 </mat-expansion-panel-header>
@@ -598,7 +598,7 @@
                 </mat-expansion-panel>
             </form>
 
-            <mat-expansion-panel class="expanse-panel expanse-panel-discussion">
+            <mat-expansion-panel  class="expanse-panel expanse-panel-discussion">
                 <mat-expansion-panel-header class="page-title">
                     <h3>Discussion</h3>
                 </mat-expansion-panel-header>
@@ -809,7 +809,7 @@
         <div class="col-md-9" *ngIf="selectedPhase === 'B' || selectedPhase === 'I'"
             [hidden]="selectedModules && selectedModules != '' || !parentIsActiveSelection">
 
-            <mat-expansion-panel class="expanse-panel">
+            <mat-expansion-panel  [expanded]="true" class="expanse-panel">
             <mat-expansion-panel-header class="">
                 <div class="page-title">
                     <h3>{{ (selectedPhase == 'I') ? 'Improve' : 'Add Sub Item' }}</h3>
@@ -1042,11 +1042,10 @@
                                     </div>
                                 </div>
 
-                                <mat-expansion-panel style="margin-bottom: 24px;">
-                                <mat-expansion-panel-header class="page-title">
+                                <mat-expansion-panel  [expanded]="true">
+                                <mat-expansion-panel-header class="page-title" style="margin-bottom: 24px;" >
                                     <h3>Dashboard</h3>
                                 </mat-expansion-panel-header>
-                                <hr style="margin-bottom: 24px;">
                                 <div style="display: flex; flex-direction: row; gap: 24px; margin-bottom: 24px;">
                                 <!-- <div class="col-md-3 form-group">
                                     <label>Production Target</label>
@@ -1462,11 +1461,10 @@
                                     </div>
                                 </div>
 
-                                <mat-expansion-panel style="margin-bottom: 24px;">
-                                <mat-expansion-panel-header class="page-title">
+                                <mat-expansion-panel [expanded]="true">
+                                <mat-expansion-panel-header class="page-title" style="margin-bottom: 24px;" >
                                     <h3>Dashboard</h3>
                                 </mat-expansion-panel-header>
-                                <hr style="margin-bottom: 24px;">
                                 <div style="display: flex; flex-direction: row; gap: 24px; margin-bottom: 24px;">
                                 <!-- <div class="col-md-3 form-group">
                                     <label>Production Target</label>
@@ -1650,7 +1648,268 @@
 
         <!-- Deactivate -->
         <div class="col-md-9" *ngIf="selectedPhase == 'D'">
-            <mat-expansion-panel class="expanse-panel">
+            <div class="expanse-panel" [hidden]="parentIsActiveSelection">
+                <div class="">
+                    <div class="page-title">
+                        {{ (selectedPhase == 'I') ? 'Improve' : 'View & Edit Sub Item' }}
+                    </div>
+                </div>
+                <form #kform="ngForm" class="p-3" [formGroup]="childPlanForm">
+                    <div class="panel panel-cutom-blue">
+                        <div class="panel-body">
+                            <div style="padding: 10px;">
+                                <div style="display: flex; flex-direction: row; gap: 24px; margin-bottom: 24px;">
+    
+                                    <div style="display: flex; flex-direction: column; flex-basis: 45%;">
+                                        <div style="display: flex;  margin-bottom: 12px;">
+                                        <label class="parent-item-label" for="exampleInputEmail1">Short Name<span>*</span></label>
+                                        <input type="text" formControlName="short_name" class="text-white bg-dark parent-item-val form-control form-control-spec"
+                                            placeholder="Short name"
+                                            [ngClass]="{ 'is-invalid': submitted && f.short_name.errors }" autocomplete="off">
+                                        <div *ngIf="submitted && f.short_name.errors" class="invalid-feedback">
+                                            <div *ngIf="f.short_name.errors.required">Short name is required</div>
+                                        </div>
+                                        </div>
+    
+                                        <div style="display: flex;  margin-bottom: 12px;">
+    
+                                        <label class="parent-item-label" for="exampleInputPassword1">Long Name<span>*</span></label>
+                                        <input type="text" id="long_name" formControlName="long_name" class="text-white bg-dark parent-item-val form-control form-control-spec"
+                                            placeholder="Long name"
+                                            [ngClass]="{ 'is-invalid': submitted && f.long_name.errors }" autocomplete="off">
+                                        <div *ngIf="submitted && f.long_name.errors" class="invalid-feedback">
+                                            <div *ngIf="f.long_name.errors.required">Long name is required</div>
+                                        </div>
+                                        </div>
+                                    </div>
+                                
+                                    <div style="display: flex; flex-direction: column; flex-basis: 45%;">
+                                        <div style="display: flex;  margin-bottom: 12px;">
+    
+                                        <label class="parent-item-label" for="exampleInputPassword1">Start Date<span>*</span></label>
+                                        <div class="input-group input-append bootstrap-datepicker">
+                                            <input type="text" id="date-input5" formControlName="start_date"
+                                            class="text-white bg-dark parent-item-val form-control form-control-spec bg-dark date-picker" placeholder="Start Date" autocomplete="off">
+                                            <span style="background-color: #8869c2;" class="input-group-addon add-on"><i
+                                                    class="fa fa-calendar"></i></span>
+                                        </div>
+                                        </div>
+                                        <div style="display: flex;  margin-bottom: 12px;">
+                                        <label class="parent-item-label" for="exampleInputPassword1">End Date<span>*</span></label>
+                                        <div class="bg-dark input-group input-append bootstrap-datepicker">
+                                            <input type="text" id="date-input6" formControlName="end_date"
+                                            class="text-white bg-dark parent-item-val form-control form-control-spec date-picker" placeholder="End Date" autocomplete="off">
+                                            <span style="background-color: #8869c2;" class="input-group-addon add-on"><i
+                                                    class="fa fa-calendar"></i></span>
+                                        </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                    <div style="display: flex; flex-direction: column; flex-basis: 45%;">
+                                        <!-- <div style="display: flex;  margin-bottom: 12px;">
+    
+                                        <label class="parent-item-label">Select Users</label>
+                                        <ng-select [items]="items" bindLabel="name" placeholder="Select Users"
+                                            formControlName="shared_users" appendTo="body" multiple="true"
+                                            [(ngModel)]="selected" (change)="onChange($event)">
+                                        </ng-select>
+                                        </div> -->
+                                        <div style="display: flex;  margin-bottom: 12px;">
+    
+                                            <div class="text-white bg-dark parent-item-val-spec" style="padding: 6px;">
+                                            <div class=" parent-item-label-spec">Description</div>
+                                            <textarea type="text" formControlName="description" class="form-control bg-dark"
+                                            placeholder="Click to edit description" style="border-radius: 0px; border: none; border-left: 2px solid #fff; padding-left: 12px;"></textarea>
+                                            <div *ngIf="submitted && f.description.errors" class="invalid-feedback">
+                                                <div *ngIf="f.description.errors.required">Description is required</div>
+                                            </div>                                    
+                                        </div>
+                                        </div>
+                                    </div>
+    
+                                    <mat-expansion-panel  [expanded]="true">
+                                    <mat-expansion-panel-header class="page-title" style="margin-bottom: 24px;" >
+                                        <h3>Dashboard</h3>
+                                    </mat-expansion-panel-header>
+                                    <div style="display: flex; flex-direction: row; gap: 24px; margin-bottom: 24px;">
+                                    <!-- <div class="col-md-3 form-group">
+                                        <label>Production Target</label>
+                                        <input type="number" class="form-control" placeholder="Production Target" formControlName="production_target" [ngClass]="{ 'is-invalid': submitted && f.production_target.errors }">
+                                        <div *ngIf="submitted && f.production_target.errors" class="invalid-feedback">
+                                            <label *ngIf="f.production_target.errors.required" class="error">Production target is required</label>
+                                        </div>
+                                    </div> -->
+                                    <!-- <div class="col-md-3 form-group">
+                                        <label>Type</label>
+                                        <select class="form-control" formControlName="production_type">
+                                            <option value="">Select Type</option>
+                                            <option value="units">Units</option>
+                                        </select>
+                                        <div *ngIf="submitted && f.production_type.errors" class="invalid-feedback">
+                                            <label *ngIf="f.production_type.errors.required" class="error">Production type is required</label>
+                                        </div>
+                                    </div> -->
+                                    <!-- <div class="col-md-6 form-group">
+                                        <label>Expense Target</label>
+                                        <input type="number" class="form-control" placeholder="Expense Target" formControlName="expense_target" [ngClass]="{ 'is-invalid': submitted && f.expense_target.errors }">
+                                        <div *ngIf="submitted && f.expense_target.errors" class="invalid-feedback">
+                                            <label *ngIf="f.expense_target.errors.required" class="error">Expense target is required</label>
+                                        </div>
+                                    </div> -->
+                                    <div style="display: flex; flex-direction: column; flex-basis: 45%;">
+                                        <div style="display: flex;  margin-bottom: 12px;">
+                                        <label class="parent-item-label parent-item-label-alert" for="exampleInputEmail1">Production Target</label>
+                                        <input type="text" formControlName="production_target" class="text-white bg-dark parent-item-val form-control form-control-spec"
+                                            placeholder="Short name"
+                                            [ngClass]="{ 'is-invalid': submitted && f.production_target.errors }" autocomplete="off">
+                                        <div *ngIf="submitted && f.production_target.errors" class="invalid-feedback">
+                                            <div *ngIf="f.production_target.errors.required">Production target is required</div>
+                                        </div>
+                                        </div>
+    
+                                        <div style="display: flex;  margin-bottom: 12px;">
+    
+                                        <label class="parent-item-label parent-item-label-alert" for="exampleInputPassword1">Expense Target</label>
+                                        <input type="text" id="long_name" formControlName="expense_target" class="text-white bg-dark parent-item-val form-control form-control-spec"
+                                            placeholder="Long name"
+                                            [ngClass]="{ 'is-invalid': submitted && f.expense_target.errors }" autocomplete="off">
+                                        <div *ngIf="submitted && f.expense_target.errors" class="invalid-feedback">
+                                            <div *ngIf="f.expense_target.errors.required">Expense target is required</div>
+                                        </div>
+                                        </div>
+    
+                                        <div style="display: flex;  margin-bottom: 12px;">
+                                            <label class="parent-item-label parent-item-label-alert">Target Type</label>
+                                            <select class="text-white bg-dark parent-item-val form-control form-control-spec" formControlName="production_type">
+                                                <option value="">Select Type</option>
+                                                <option value="dollars">Dollars</option>
+                                                <option value="units">Units</option>
+                                                <option value="percentage">Percentage</option>
+                                            </select>
+                                            <div *ngIf="IsLoginFormValid && jval.production_type.errors" class="invalid-feedback">
+                                                <label *ngIf="jval.production_type.errors.required" class="error">Production type is
+                                                    required</label>
+                                            </div>
+                                        </div>   
+                                    </div>
+    
+                                    <div style="display: flex; flex-direction: column; flex-basis: 45%;">
+                                        <div style="display: flex;  margin-bottom: 12px;">
+                                        <label class="parent-item-label">LVA</label>
+                                        <input type="number" class="text-white bg-dark parent-item-val form-control form-control-spec" placeholder="Low Variance Alert" formControlName="production_low_variance_alert" [ngClass]="{ 'is-invalid': submitted && f.production_low_variance_alert.errors }">
+                                        <div *ngIf="submitted && f.production_low_variance_alert.errors" class="invalid-feedback">
+                                            <label *ngIf="f.production_low_variance_alert.errors.required" class="error">LVA is required</label>
+                                        </div>
+                                        </div>
+                                        <div style="display: flex;  margin-bottom: 12px;">
+                                        <label class="parent-item-label">HVA</label>
+                                        <input type="number" class="text-white bg-dark parent-item-val form-control form-control-spec" placeholder="Hight Variance Alert" formControlName="production_high_variance_alert" [ngClass]="{ 'is-invalid': submitted && f.production_high_variance_alert.errors }">
+                                        <div *ngIf="submitted && f.production_high_variance_alert.errors" class="invalid-feedback">
+                                            <label *ngIf="f.production_high_variance_alert.errors.required" class="error">Hight Variance Alert is required</label>
+                                        </div>
+                                    </div>
+                                    </div>
+                                    <div style="display: flex; flex-direction: column; flex-basis: 45%;">
+                                        <div style="display: flex;  margin-bottom: 12px;">
+                                        <label class="parent-item-label">Production Weight</label>
+                                        <input type="number"class="text-white bg-dark parent-item-val form-control form-control-spec" placeholder="Production weight" formControlName="production_weight" [ngClass]="{ 'is-invalid': submitted && f.production_weight.errors }">
+                                        <div *ngIf="submitted && f.production_weight.errors" class="invalid-feedback">
+                                            <label *ngIf="f.production_weight.errors.required" class="error">Expense weight is required</label>
+                                        </div>
+                                        </div>
+                                        <div style="display: flex;  margin-bottom: 12px;">
+                                        <label class="parent-item-label">Expense Weight</label>
+                                        <input type="number" class="text-white bg-dark parent-item-val form-control form-control-spec" placeholder="Expense weight" formControlName="expense_weight" [ngClass]="{ 'is-invalid': submitted && f.expense_weight.errors }">
+                                        <div *ngIf="submitted && f.expense_weight.errors" class="invalid-feedback">
+                                            <label *ngIf="f.expense_weight.errors.required" class="error">Expense weight is required</label>
+                                        </div>
+                                        </div>
+    
+                                    </div>
+                                    </div>
+                                    <div class="col-md-12 form-group text-right">
+                                        <button type="submit " (click)="onSubmit()"
+                                            [disabled]="!checkforgoaledit && !isSharedPlanPermission"
+                                            class="btn btn-primary btn-space">Save</button>
+                                        <button type="reset" (click)="reset()" [disabled]="!checkforgoaledit "
+                                            class="btn btn-default">Clear</button>
+                                    </div>
+                                    </mat-expansion-panel>
+    
+                                    <mat-expansion-panel class="expanse-panel expanse-panel-discussion">
+                                        <mat-expansion-panel-header class="page-title">
+                                            <h3>Discussion</h3>
+                                        </mat-expansion-panel-header>
+                                        <div class="panel panel-cutom-blue">
+                                            <div class="panel-body">
+                                                <form [formGroup]="DiscussionForm">
+                                                    <div class="row">
+                                                        <div class="col-md-6 form-group">
+                                                            <label>Security</label>
+                                                            <select class="form-control" formControlName="security">
+                                                                <option value="">Select Security</option>
+                                                                <option value="public">Public</option>
+                                                                <option value="private">Private</option>
+                                                            </select>
+                                                            <div *ngIf="isSubmittedDiscussionForm && dscf.security.errors" class="invalid-feedback">
+                                                                <label *ngIf="dscf.security.errors.required" class="error">Security is
+                                                                    required</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6 form-group">
+                                                            <label>Recipients</label>
+                                                            <select class="form-control" formControlName="recipient_id" id="recipient_id" (change)="onRecipient($event)">
+                                                                <option value="">Select Recipient</option>
+                                                                <option *ngFor="let hu of users;" value="{{hu.user_id._id}}">
+                                                                    {{ hu.user_id.first_name }} {{ hu.user_id.last_name }}
+                                                                    ({{hu.hierarchy_id.designation}})</option>
+                                                                <option value="invite">Invite New Recipient</option>
+                                                            </select>
+                                                            <div *ngIf="isSubmittedDiscussionForm && dscf.recipient_id.errors"
+                                                                class="invalid-feedback">
+                                                                <label *ngIf="dscf.recipient_id.errors.required" class="error">Recipient is
+                                                                    required</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-12 form-group">
+                                                            <label>Subject</label>
+                                                            <input type="text" class="form-control" placeholder="Subject" formControlName="subject"
+                                                                [ngClass]="{ 'is-invalid': isSubmittedDiscussionForm && dscf.subject.errors }">
+                                                            <div *ngIf="isSubmittedDiscussionForm && dscf.subject.errors" class="invalid-feedback">
+                                                                <label *ngIf="dscf.subject.errors.required" class="error">Subject is
+                                                                    required</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-12 form-group">
+                                                            <label>Message</label>
+                                                            <textarea class="form-control" placeholder="Message" formControlName="message"
+                                                                [ngClass]="{ 'is-invalid': isSubmittedDiscussionForm && dscf.message.errors }"></textarea>
+                                                            <div *ngIf="isSubmittedDiscussionForm && dscf.message.errors" class="invalid-feedback">
+                                                                <label *ngIf="dscf.message.errors.required" class="error">Message is
+                                                                    required</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6 form-group">
+                                                            <label>Attachment</label>
+                                                            <input type="file" (change)="uploadDiscussionAttachment($event.target.files)">
+                                                        </div>
+                                                        <div class="col-md-12 form-group text-right">
+                                                            <button type="submit" class="btn btn-primary btn-space"
+                                                                (click)="onSubmitDiscussion()">Save</button>
+                                                            <button type="reset" class="btn btn-default"
+                                                                (click)="resetDiscussionForm()">Cancel</button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </mat-expansion-panel>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <mat-expansion-panel class="expanse-panel" [expanded]="true">
                 <mat-expansion-panel-header class="">
                     <div class="page-title">
                         <h3>Deactivate</h3>
@@ -1811,119 +2070,293 @@
 
         <!-- Prioritize -->
         <div class="col-md-9" *ngIf="selectedPhase == 'P'">
-        <mat-expansion-panel class="expanse-panel">
-            <mat-expansion-panel-header class="">
-                <div class="page-title">
-                    <h3>Prioritize</h3>
-                </div>
-            </mat-expansion-panel-header>
-            <div class="panel panel-cutom-blue">
-                <div class="panel-body">
-                    <div class="table-responsive" *ngIf="isDevidedInParts == 1">
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th class="prioritize-blue">Up</th>
-                                    <th class="prioritize-blue">Down</th>
-                                    <th class="prioritize-blue" style="max-width: 50px;">Priority</th>
-                                    <th class="prioritize-blue">(G) Short Name</th>
-                                    <th class="prioritize-blue">Start Date</th>
-                                    <th class="prioritize-blue">End Date</th>
-                                    <th class="prioritize-blue">Creator</th>
-                                </tr>
-                            </thead>
-                            <tbody id="tbl">
-                                <tr *ngIf="priorityGoals.length == 0">
-                                    <td style="text-align: center;" colspan="8"> No Data Available</td>
-                                </tr>
-                                <tr *ngFor="let p of priorityGoals; let i=index">
-                                    <td style="text-align: center;">
-                                        <a style="cursor: pointer;"
-                                            (click)="changepriority(p._id,p.prioritize, p.prioritize-1)"><img
-                                                src="assets/images/avatars/arrow-up.png"></a>
-                                    </td>
-                                    <td style="text-align: center;">
-                                        <a style="cursor: pointer;"
-                                            (click)="changepriority(p._id,p.prioritize, p.prioritize+1)"><img
-                                                src="assets/images/avatars/arrow-down.png"></a>
-                                    </td>
-                                    <td>
-                                        <span class="editable" id="label-priority-{{i}}"
-                                            (click)="updatepriority(i)">{{ p.prioritize }}</span>
-                                        <span style="display: none;" id="priority-text-{{i}}">
-                                            <input class="form-control" value="{{ p.prioritize }}"
-                                                id="input-priority-{{i}}" type="number" min="1"
-                                                style="float: left;width: 50px;">&nbsp;
-                                            <a style="cursor:pointer" (click)="updategoalpriority(p._id,i)">
-                                                <img style="width:20px;height: 20px;margin-top: 7px;"
-                                                    src="assets/images/avatars/correct.png">
-                                            </a>
-                                        </span>
-                                    </td>
-                                    <td>(G) {{ p.short_name }}</td>
-                                    <td>{{ p.start_date | prioritizegoaldate }}</td>
-                                    <td>{{ p.end_date | prioritizegoaldate}}</td>
-                                    <td>{{ p.user_id.first_name }} {{ p.user_id.last_name }}</td>
-                                </tr>
-                            </tbody>
-                        </table>
+            <div class="expanse-panel" [hidden]="parentIsActiveSelection">
+                <div class="">
+                    <div class="page-title">
+                        {{ (selectedPhase == 'I') ? 'Improve' : 'View & Edit Sub Item' }}
                     </div>
-                    <div class="table-responsive" *ngIf="isDevidedInParts == 2">
-                        <div class="panel panel-cutom-blue">
-                            <div style="text-align: center;">
-                                <h4>Prioritize : High</h4>
+                </div>
+                <form #kform="ngForm" class="p-3" [formGroup]="childPlanForm">
+                    <div class="panel panel-cutom-blue">
+                        <div class="panel-body">
+                            <div style="padding: 10px;">
+                                <div style="display: flex; flex-direction: row; gap: 24px; margin-bottom: 24px;">
+    
+                                    <div style="display: flex; flex-direction: column; flex-basis: 45%;">
+                                        <div style="display: flex;  margin-bottom: 12px;">
+                                        <label class="parent-item-label" for="exampleInputEmail1">Short Name<span>*</span></label>
+                                        <input type="text" formControlName="short_name" class="text-white bg-dark parent-item-val form-control form-control-spec"
+                                            placeholder="Short name"
+                                            [ngClass]="{ 'is-invalid': submitted && f.short_name.errors }" autocomplete="off">
+                                        <div *ngIf="submitted && f.short_name.errors" class="invalid-feedback">
+                                            <div *ngIf="f.short_name.errors.required">Short name is required</div>
+                                        </div>
+                                        </div>
+    
+                                        <div style="display: flex;  margin-bottom: 12px;">
+    
+                                        <label class="parent-item-label" for="exampleInputPassword1">Long Name<span>*</span></label>
+                                        <input type="text" id="long_name" formControlName="long_name" class="text-white bg-dark parent-item-val form-control form-control-spec"
+                                            placeholder="Long name"
+                                            [ngClass]="{ 'is-invalid': submitted && f.long_name.errors }" autocomplete="off">
+                                        <div *ngIf="submitted && f.long_name.errors" class="invalid-feedback">
+                                            <div *ngIf="f.long_name.errors.required">Long name is required</div>
+                                        </div>
+                                        </div>
+                                    </div>
+                                
+                                    <div style="display: flex; flex-direction: column; flex-basis: 45%;">
+                                        <div style="display: flex;  margin-bottom: 12px;">
+    
+                                        <label class="parent-item-label" for="exampleInputPassword1">Start Date<span>*</span></label>
+                                        <div class="input-group input-append bootstrap-datepicker">
+                                            <input type="text" id="date-input5" formControlName="start_date"
+                                            class="text-white bg-dark parent-item-val form-control form-control-spec bg-dark date-picker" placeholder="Start Date" autocomplete="off">
+                                            <span style="background-color: #8869c2;" class="input-group-addon add-on"><i
+                                                    class="fa fa-calendar"></i></span>
+                                        </div>
+                                        </div>
+                                        <div style="display: flex;  margin-bottom: 12px;">
+                                        <label class="parent-item-label" for="exampleInputPassword1">End Date<span>*</span></label>
+                                        <div class="bg-dark input-group input-append bootstrap-datepicker">
+                                            <input type="text" id="date-input6" formControlName="end_date"
+                                            class="text-white bg-dark parent-item-val form-control form-control-spec date-picker" placeholder="End Date" autocomplete="off">
+                                            <span style="background-color: #8869c2;" class="input-group-addon add-on"><i
+                                                    class="fa fa-calendar"></i></span>
+                                        </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                    <div style="display: flex; flex-direction: column; flex-basis: 45%;">
+                                        <!-- <div style="display: flex;  margin-bottom: 12px;">
+    
+                                        <label class="parent-item-label">Select Users</label>
+                                        <ng-select [items]="items" bindLabel="name" placeholder="Select Users"
+                                            formControlName="shared_users" appendTo="body" multiple="true"
+                                            [(ngModel)]="selected" (change)="onChange($event)">
+                                        </ng-select>
+                                        </div> -->
+                                        <div style="display: flex;  margin-bottom: 12px;">
+    
+                                            <div class="text-white bg-dark parent-item-val-spec" style="padding: 6px;">
+                                            <div class=" parent-item-label-spec">Description</div>
+                                            <textarea type="text" formControlName="description" class="form-control bg-dark"
+                                            placeholder="Click to edit description" style="border-radius: 0px; border: none; border-left: 2px solid #fff; padding-left: 12px;"></textarea>
+                                            <div *ngIf="submitted && f.description.errors" class="invalid-feedback">
+                                                <div *ngIf="f.description.errors.required">Description is required</div>
+                                            </div>                                    
+                                        </div>
+                                        </div>
+                                    </div>
+    
+                                    <mat-expansion-panel  [expanded]="true">
+                                    <mat-expansion-panel-header class="page-title" style="margin-bottom: 24px;" >
+                                        <h3>Dashboard</h3>
+                                    </mat-expansion-panel-header>
+                                    <div style="display: flex; flex-direction: row; gap: 24px; margin-bottom: 24px;">
+                                    <!-- <div class="col-md-3 form-group">
+                                        <label>Production Target</label>
+                                        <input type="number" class="form-control" placeholder="Production Target" formControlName="production_target" [ngClass]="{ 'is-invalid': submitted && f.production_target.errors }">
+                                        <div *ngIf="submitted && f.production_target.errors" class="invalid-feedback">
+                                            <label *ngIf="f.production_target.errors.required" class="error">Production target is required</label>
+                                        </div>
+                                    </div> -->
+                                    <!-- <div class="col-md-3 form-group">
+                                        <label>Type</label>
+                                        <select class="form-control" formControlName="production_type">
+                                            <option value="">Select Type</option>
+                                            <option value="units">Units</option>
+                                        </select>
+                                        <div *ngIf="submitted && f.production_type.errors" class="invalid-feedback">
+                                            <label *ngIf="f.production_type.errors.required" class="error">Production type is required</label>
+                                        </div>
+                                    </div> -->
+                                    <!-- <div class="col-md-6 form-group">
+                                        <label>Expense Target</label>
+                                        <input type="number" class="form-control" placeholder="Expense Target" formControlName="expense_target" [ngClass]="{ 'is-invalid': submitted && f.expense_target.errors }">
+                                        <div *ngIf="submitted && f.expense_target.errors" class="invalid-feedback">
+                                            <label *ngIf="f.expense_target.errors.required" class="error">Expense target is required</label>
+                                        </div>
+                                    </div> -->
+                                    <div style="display: flex; flex-direction: column; flex-basis: 45%;">
+                                        <div style="display: flex;  margin-bottom: 12px;">
+                                        <label class="parent-item-label parent-item-label-alert" for="exampleInputEmail1">Production Target</label>
+                                        <input type="text" formControlName="production_target" class="text-white bg-dark parent-item-val form-control form-control-spec"
+                                            placeholder="Short name"
+                                            [ngClass]="{ 'is-invalid': submitted && f.production_target.errors }" autocomplete="off">
+                                        <div *ngIf="submitted && f.production_target.errors" class="invalid-feedback">
+                                            <div *ngIf="f.production_target.errors.required">Production target is required</div>
+                                        </div>
+                                        </div>
+    
+                                        <div style="display: flex;  margin-bottom: 12px;">
+    
+                                        <label class="parent-item-label parent-item-label-alert" for="exampleInputPassword1">Expense Target</label>
+                                        <input type="text" id="long_name" formControlName="expense_target" class="text-white bg-dark parent-item-val form-control form-control-spec"
+                                            placeholder="Long name"
+                                            [ngClass]="{ 'is-invalid': submitted && f.expense_target.errors }" autocomplete="off">
+                                        <div *ngIf="submitted && f.expense_target.errors" class="invalid-feedback">
+                                            <div *ngIf="f.expense_target.errors.required">Expense target is required</div>
+                                        </div>
+                                        </div>
+    
+                                        <div style="display: flex;  margin-bottom: 12px;">
+                                            <label class="parent-item-label parent-item-label-alert">Target Type</label>
+                                            <select class="text-white bg-dark parent-item-val form-control form-control-spec" formControlName="production_type">
+                                                <option value="">Select Type</option>
+                                                <option value="dollars">Dollars</option>
+                                                <option value="units">Units</option>
+                                                <option value="percentage">Percentage</option>
+                                            </select>
+                                            <div *ngIf="IsLoginFormValid && jval.production_type.errors" class="invalid-feedback">
+                                                <label *ngIf="jval.production_type.errors.required" class="error">Production type is
+                                                    required</label>
+                                            </div>
+                                        </div>   
+                                    </div>
+    
+                                    <div style="display: flex; flex-direction: column; flex-basis: 45%;">
+                                        <div style="display: flex;  margin-bottom: 12px;">
+                                        <label class="parent-item-label">LVA</label>
+                                        <input type="number" class="text-white bg-dark parent-item-val form-control form-control-spec" placeholder="Low Variance Alert" formControlName="production_low_variance_alert" [ngClass]="{ 'is-invalid': submitted && f.production_low_variance_alert.errors }">
+                                        <div *ngIf="submitted && f.production_low_variance_alert.errors" class="invalid-feedback">
+                                            <label *ngIf="f.production_low_variance_alert.errors.required" class="error">LVA is required</label>
+                                        </div>
+                                        </div>
+                                        <div style="display: flex;  margin-bottom: 12px;">
+                                        <label class="parent-item-label">HVA</label>
+                                        <input type="number" class="text-white bg-dark parent-item-val form-control form-control-spec" placeholder="Hight Variance Alert" formControlName="production_high_variance_alert" [ngClass]="{ 'is-invalid': submitted && f.production_high_variance_alert.errors }">
+                                        <div *ngIf="submitted && f.production_high_variance_alert.errors" class="invalid-feedback">
+                                            <label *ngIf="f.production_high_variance_alert.errors.required" class="error">Hight Variance Alert is required</label>
+                                        </div>
+                                    </div>
+                                    </div>
+                                    <div style="display: flex; flex-direction: column; flex-basis: 45%;">
+                                        <div style="display: flex;  margin-bottom: 12px;">
+                                        <label class="parent-item-label">Production Weight</label>
+                                        <input type="number"class="text-white bg-dark parent-item-val form-control form-control-spec" placeholder="Production weight" formControlName="production_weight" [ngClass]="{ 'is-invalid': submitted && f.production_weight.errors }">
+                                        <div *ngIf="submitted && f.production_weight.errors" class="invalid-feedback">
+                                            <label *ngIf="f.production_weight.errors.required" class="error">Expense weight is required</label>
+                                        </div>
+                                        </div>
+                                        <div style="display: flex;  margin-bottom: 12px;">
+                                        <label class="parent-item-label">Expense Weight</label>
+                                        <input type="number" class="text-white bg-dark parent-item-val form-control form-control-spec" placeholder="Expense weight" formControlName="expense_weight" [ngClass]="{ 'is-invalid': submitted && f.expense_weight.errors }">
+                                        <div *ngIf="submitted && f.expense_weight.errors" class="invalid-feedback">
+                                            <label *ngIf="f.expense_weight.errors.required" class="error">Expense weight is required</label>
+                                        </div>
+                                        </div>
+    
+                                    </div>
+                                    </div>
+                                    <div class="col-md-12 form-group text-right">
+                                        <button type="submit " (click)="onSubmit()"
+                                            [disabled]="!checkforgoaledit && !isSharedPlanPermission"
+                                            class="btn btn-primary btn-space">Save</button>
+                                        <button type="reset" (click)="reset()" [disabled]="!checkforgoaledit "
+                                            class="btn btn-default">Clear</button>
+                                    </div>
+                                    </mat-expansion-panel>
+    
+                                    <mat-expansion-panel class="expanse-panel expanse-panel-discussion">
+                                        <mat-expansion-panel-header class="page-title">
+                                            <h3>Discussion</h3>
+                                        </mat-expansion-panel-header>
+                                        <div class="panel panel-cutom-blue">
+                                            <div class="panel-body">
+                                                <form [formGroup]="DiscussionForm">
+                                                    <div class="row">
+                                                        <div class="col-md-6 form-group">
+                                                            <label>Security</label>
+                                                            <select class="form-control" formControlName="security">
+                                                                <option value="">Select Security</option>
+                                                                <option value="public">Public</option>
+                                                                <option value="private">Private</option>
+                                                            </select>
+                                                            <div *ngIf="isSubmittedDiscussionForm && dscf.security.errors" class="invalid-feedback">
+                                                                <label *ngIf="dscf.security.errors.required" class="error">Security is
+                                                                    required</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6 form-group">
+                                                            <label>Recipients</label>
+                                                            <select class="form-control" formControlName="recipient_id" id="recipient_id" (change)="onRecipient($event)">
+                                                                <option value="">Select Recipient</option>
+                                                                <option *ngFor="let hu of users;" value="{{hu.user_id._id}}">
+                                                                    {{ hu.user_id.first_name }} {{ hu.user_id.last_name }}
+                                                                    ({{hu.hierarchy_id.designation}})</option>
+                                                                <option value="invite">Invite New Recipient</option>
+                                                            </select>
+                                                            <div *ngIf="isSubmittedDiscussionForm && dscf.recipient_id.errors"
+                                                                class="invalid-feedback">
+                                                                <label *ngIf="dscf.recipient_id.errors.required" class="error">Recipient is
+                                                                    required</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-12 form-group">
+                                                            <label>Subject</label>
+                                                            <input type="text" class="form-control" placeholder="Subject" formControlName="subject"
+                                                                [ngClass]="{ 'is-invalid': isSubmittedDiscussionForm && dscf.subject.errors }">
+                                                            <div *ngIf="isSubmittedDiscussionForm && dscf.subject.errors" class="invalid-feedback">
+                                                                <label *ngIf="dscf.subject.errors.required" class="error">Subject is
+                                                                    required</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-12 form-group">
+                                                            <label>Message</label>
+                                                            <textarea class="form-control" placeholder="Message" formControlName="message"
+                                                                [ngClass]="{ 'is-invalid': isSubmittedDiscussionForm && dscf.message.errors }"></textarea>
+                                                            <div *ngIf="isSubmittedDiscussionForm && dscf.message.errors" class="invalid-feedback">
+                                                                <label *ngIf="dscf.message.errors.required" class="error">Message is
+                                                                    required</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6 form-group">
+                                                            <label>Attachment</label>
+                                                            <input type="file" (change)="uploadDiscussionAttachment($event.target.files)">
+                                                        </div>
+                                                        <div class="col-md-12 form-group text-right">
+                                                            <button type="submit" class="btn btn-primary btn-space"
+                                                                (click)="onSubmitDiscussion()">Save</button>
+                                                            <button type="reset" class="btn btn-default"
+                                                                (click)="resetDiscussionForm()">Cancel</button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </mat-expansion-panel>
                             </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <mat-expansion-panel class="expanse-panel" [expanded]="true">
+                <mat-expansion-panel-header class="">
+                    <div class="page-title">
+                        <h3>Prioritize</h3>
+                    </div>
+                </mat-expansion-panel-header>
+                <div class="panel panel-cutom-blue">
+                    <div class="panel-body">
+                        <div class="table-responsive" *ngIf="isDevidedInParts == 1">
                             <table class="table table-striped">
                                 <thead>
                                     <tr>
                                         <th class="prioritize-blue">Up</th>
                                         <th class="prioritize-blue">Down</th>
-                                        <th class="prioritize-blue">Priority</th>
+                                        <th class="prioritize-blue" style="max-width: 50px;">Priority</th>
                                         <th class="prioritize-blue">(G) Short Name</th>
                                         <th class="prioritize-blue">Start Date</th>
                                         <th class="prioritize-blue">End Date</th>
                                         <th class="prioritize-blue">Creator</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    <tr *ngFor="let p of highPriorityGoals; let i=index">
-                                        <td style="text-align: center;">
-                                            <a style="cursor: pointer;"
-                                                (click)="changepriority(p._id,p.prioritize,p.prioritize-1)"><img
-                                                    src="assets/images/avatars/arrow-up.png"></a>
-                                        </td>
-                                        <td style="text-align: center;">
-                                            <a style="cursor: pointer;"
-                                                (click)="changepriority(p._id,p.prioritize,p.prioritize+1)"><img
-                                                    src="assets/images/avatars/arrow-down.png"></a>
-                                        </td>
-                                        <td>{{ p.prioritize }}</td>
-                                        <td>(G) {{ p.short_name }}</td>
-                                        <td>{{ p.start_date | prioritizegoaldate }}</td>
-                                        <td>{{ p.end_date | prioritizegoaldate}}</td>
-                                        <td>{{ p.user_id.first_name }} {{ p.user_id.last_name }}</td>
+                                <tbody id="tbl">
+                                    <tr *ngIf="priorityGoals.length == 0">
+                                        <td style="text-align: center;" colspan="8"> No Data Available</td>
                                     </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="panel panel-cutom-blue">
-                            <div style="text-align: center;">
-                                <h4>Prioritize : Medium</h4>
-                            </div>
-                            <table class="table table-striped">
-                                <thead>
-                                    <tr>
-                                        <th class="prioritize-medium">Up</th>
-                                        <th class="prioritize-medium">Down</th>
-                                        <th class="prioritize-medium">Priority</th>
-                                        <th class="prioritize-medium">(G) Short Name</th>
-                                        <th class="prioritize-medium">Start Date</th>
-                                        <th class="prioritize-medium">End Date</th>
-                                        <th class="prioritize-medium">Creator</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr *ngFor="let p of mediumPriorityGoals; let i=index">
+                                    <tr *ngFor="let p of priorityGoals; let i=index">
                                         <td style="text-align: center;">
                                             <a style="cursor: pointer;"
                                                 (click)="changepriority(p._id,p.prioritize, p.prioritize-1)"><img
@@ -1934,7 +2367,19 @@
                                                 (click)="changepriority(p._id,p.prioritize, p.prioritize+1)"><img
                                                     src="assets/images/avatars/arrow-down.png"></a>
                                         </td>
-                                        <td>{{ p.prioritize }}</td>
+                                        <td>
+                                            <span class="editable" id="label-priority-{{i}}"
+                                                (click)="updatepriority(i)">{{ p.prioritize }}</span>
+                                            <span style="display: none;" id="priority-text-{{i}}">
+                                                <input class="form-control" value="{{ p.prioritize }}"
+                                                    id="input-priority-{{i}}" type="number" min="1"
+                                                    style="float: left;width: 50px;">&nbsp;
+                                                <a style="cursor:pointer" (click)="updategoalpriority(p._id,i)">
+                                                    <img style="width:20px;height: 20px;margin-top: 7px;"
+                                                        src="assets/images/avatars/correct.png">
+                                                </a>
+                                            </span>
+                                        </td>
                                         <td>(G) {{ p.short_name }}</td>
                                         <td>{{ p.start_date | prioritizegoaldate }}</td>
                                         <td>{{ p.end_date | prioritizegoaldate}}</td>
@@ -1943,54 +2388,390 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div class="panel panel-cutom-blue">
-                            <div style="text-align: center;">
-                                <h4>Prioritize : Low</h4>
+                        <div class="table-responsive" *ngIf="isDevidedInParts == 2">
+                            <div class="panel panel-cutom-blue">
+                                <div style="text-align: center;">
+                                    <h4>Prioritize : High</h4>
+                                </div>
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th class="prioritize-blue">Up</th>
+                                            <th class="prioritize-blue">Down</th>
+                                            <th class="prioritize-blue">Priority</th>
+                                            <th class="prioritize-blue">(G) Short Name</th>
+                                            <th class="prioritize-blue">Start Date</th>
+                                            <th class="prioritize-blue">End Date</th>
+                                            <th class="prioritize-blue">Creator</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let p of highPriorityGoals; let i=index">
+                                            <td style="text-align: center;">
+                                                <a style="cursor: pointer;"
+                                                    (click)="changepriority(p._id,p.prioritize,p.prioritize-1)"><img
+                                                        src="assets/images/avatars/arrow-up.png"></a>
+                                            </td>
+                                            <td style="text-align: center;">
+                                                <a style="cursor: pointer;"
+                                                    (click)="changepriority(p._id,p.prioritize,p.prioritize+1)"><img
+                                                        src="assets/images/avatars/arrow-down.png"></a>
+                                            </td>
+                                            <td>{{ p.prioritize }}</td>
+                                            <td>(G) {{ p.short_name }}</td>
+                                            <td>{{ p.start_date | prioritizegoaldate }}</td>
+                                            <td>{{ p.end_date | prioritizegoaldate}}</td>
+                                            <td>{{ p.user_id.first_name }} {{ p.user_id.last_name }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
-                            <table class="table table-striped">
-                                <thead>
-                                    <tr>
-                                        <th class="prioritize-low">Up</th>
-                                        <th class="prioritize-low">Down</th>
-                                        <th class="prioritize-low">Priority</th>
-                                        <th class="prioritize-low">(G) Short Name</th>
-                                        <th class="prioritize-low">Start Date</th>
-                                        <th class="prioritize-low">End Date</th>
-                                        <th class="prioritize-low">Creator</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr *ngFor="let p of lowPriorityGoals; let i=index">
-                                        <td style="text-align: center;">
-                                            <a style="cursor: pointer;"
-                                                (click)="changepriority(p._id,p.prioritize,p.prioritize-1)"><img
-                                                    src="assets/images/avatars/arrow-up.png"></a>
-                                        </td>
-                                        <td style="text-align: center;">
-                                            <a style="cursor: pointer;"
-                                                (click)="changepriority(p._id,p.prioritize,p.prioritize+1)"><img
-                                                    src="assets/images/avatars/arrow-down.png"></a>
-                                        </td>
-                                        <!-- <td>{{ p.numbers }}</td> -->
-                                        <td>{{ p.prioritize }}</td>
-                                        <td>(G) {{ p.short_name }}</td>
-                                        <td>{{ p.start_date | prioritizegoaldate }}</td>
-                                        <td>{{ p.end_date | prioritizegoaldate}}</td>
-                                        <td>{{ p.user_id.first_name }} {{ p.user_id.last_name }}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                            <div class="panel panel-cutom-blue">
+                                <div style="text-align: center;">
+                                    <h4>Prioritize : Medium</h4>
+                                </div>
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th class="prioritize-medium">Up</th>
+                                            <th class="prioritize-medium">Down</th>
+                                            <th class="prioritize-medium">Priority</th>
+                                            <th class="prioritize-medium">(G) Short Name</th>
+                                            <th class="prioritize-medium">Start Date</th>
+                                            <th class="prioritize-medium">End Date</th>
+                                            <th class="prioritize-medium">Creator</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let p of mediumPriorityGoals; let i=index">
+                                            <td style="text-align: center;">
+                                                <a style="cursor: pointer;"
+                                                    (click)="changepriority(p._id,p.prioritize, p.prioritize-1)"><img
+                                                        src="assets/images/avatars/arrow-up.png"></a>
+                                            </td>
+                                            <td style="text-align: center;">
+                                                <a style="cursor: pointer;"
+                                                    (click)="changepriority(p._id,p.prioritize, p.prioritize+1)"><img
+                                                        src="assets/images/avatars/arrow-down.png"></a>
+                                            </td>
+                                            <td>{{ p.prioritize }}</td>
+                                            <td>(G) {{ p.short_name }}</td>
+                                            <td>{{ p.start_date | prioritizegoaldate }}</td>
+                                            <td>{{ p.end_date | prioritizegoaldate}}</td>
+                                            <td>{{ p.user_id.first_name }} {{ p.user_id.last_name }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="panel panel-cutom-blue">
+                                <div style="text-align: center;">
+                                    <h4>Prioritize : Low</h4>
+                                </div>
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th class="prioritize-low">Up</th>
+                                            <th class="prioritize-low">Down</th>
+                                            <th class="prioritize-low">Priority</th>
+                                            <th class="prioritize-low">(G) Short Name</th>
+                                            <th class="prioritize-low">Start Date</th>
+                                            <th class="prioritize-low">End Date</th>
+                                            <th class="prioritize-low">Creator</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let p of lowPriorityGoals; let i=index">
+                                            <td style="text-align: center;">
+                                                <a style="cursor: pointer;"
+                                                    (click)="changepriority(p._id,p.prioritize,p.prioritize-1)"><img
+                                                        src="assets/images/avatars/arrow-up.png"></a>
+                                            </td>
+                                            <td style="text-align: center;">
+                                                <a style="cursor: pointer;"
+                                                    (click)="changepriority(p._id,p.prioritize,p.prioritize+1)"><img
+                                                        src="assets/images/avatars/arrow-down.png"></a>
+                                            </td>
+                                            <!-- <td>{{ p.numbers }}</td> -->
+                                            <td>{{ p.prioritize }}</td>
+                                            <td>(G) {{ p.short_name }}</td>
+                                            <td>{{ p.start_date | prioritizegoaldate }}</td>
+                                            <td>{{ p.end_date | prioritizegoaldate}}</td>
+                                            <td>{{ p.user_id.first_name }} {{ p.user_id.last_name }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </mat-expansion-panel>
-    </div>
+            </mat-expansion-panel>
+        </div>
         <!-- End Prioritize -->
 
         <!-- Propose -->
         <div class="col-md-9" *ngIf="selectedPhase == 'PR'">
-            <mat-expansion-panel class="expanse-panel">
+            <div class="expanse-panel" [hidden]="parentIsActiveSelection">
+                <div class="">
+                    <div class="page-title">
+                        {{ (selectedPhase == 'I') ? 'Improve' : 'View & Edit Sub Item' }}
+                    </div>
+                </div>
+                <form #kform="ngForm" class="p-3" [formGroup]="childPlanForm">
+                    <div class="panel panel-cutom-blue">
+                        <div class="panel-body">
+                            <div style="padding: 10px;">
+                                <div style="display: flex; flex-direction: row; gap: 24px; margin-bottom: 24px;">
+    
+                                    <div style="display: flex; flex-direction: column; flex-basis: 45%;">
+                                        <div style="display: flex;  margin-bottom: 12px;">
+                                        <label class="parent-item-label" for="exampleInputEmail1">Short Name<span>*</span></label>
+                                        <input type="text" formControlName="short_name" class="text-white bg-dark parent-item-val form-control form-control-spec"
+                                            placeholder="Short name"
+                                            [ngClass]="{ 'is-invalid': submitted && f.short_name.errors }" autocomplete="off">
+                                        <div *ngIf="submitted && f.short_name.errors" class="invalid-feedback">
+                                            <div *ngIf="f.short_name.errors.required">Short name is required</div>
+                                        </div>
+                                        </div>
+    
+                                        <div style="display: flex;  margin-bottom: 12px;">
+    
+                                        <label class="parent-item-label" for="exampleInputPassword1">Long Name<span>*</span></label>
+                                        <input type="text" id="long_name" formControlName="long_name" class="text-white bg-dark parent-item-val form-control form-control-spec"
+                                            placeholder="Long name"
+                                            [ngClass]="{ 'is-invalid': submitted && f.long_name.errors }" autocomplete="off">
+                                        <div *ngIf="submitted && f.long_name.errors" class="invalid-feedback">
+                                            <div *ngIf="f.long_name.errors.required">Long name is required</div>
+                                        </div>
+                                        </div>
+                                    </div>
+                                
+                                    <div style="display: flex; flex-direction: column; flex-basis: 45%;">
+                                        <div style="display: flex;  margin-bottom: 12px;">
+    
+                                        <label class="parent-item-label" for="exampleInputPassword1">Start Date<span>*</span></label>
+                                        <div class="input-group input-append bootstrap-datepicker">
+                                            <input type="text" id="date-input5" formControlName="start_date"
+                                            class="text-white bg-dark parent-item-val form-control form-control-spec bg-dark date-picker" placeholder="Start Date" autocomplete="off">
+                                            <span style="background-color: #8869c2;" class="input-group-addon add-on"><i
+                                                    class="fa fa-calendar"></i></span>
+                                        </div>
+                                        </div>
+                                        <div style="display: flex;  margin-bottom: 12px;">
+                                        <label class="parent-item-label" for="exampleInputPassword1">End Date<span>*</span></label>
+                                        <div class="bg-dark input-group input-append bootstrap-datepicker">
+                                            <input type="text" id="date-input6" formControlName="end_date"
+                                            class="text-white bg-dark parent-item-val form-control form-control-spec date-picker" placeholder="End Date" autocomplete="off">
+                                            <span style="background-color: #8869c2;" class="input-group-addon add-on"><i
+                                                    class="fa fa-calendar"></i></span>
+                                        </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                    <div style="display: flex; flex-direction: column; flex-basis: 45%;">
+                                        <!-- <div style="display: flex;  margin-bottom: 12px;">
+    
+                                        <label class="parent-item-label">Select Users</label>
+                                        <ng-select [items]="items" bindLabel="name" placeholder="Select Users"
+                                            formControlName="shared_users" appendTo="body" multiple="true"
+                                            [(ngModel)]="selected" (change)="onChange($event)">
+                                        </ng-select>
+                                        </div> -->
+                                        <div style="display: flex;  margin-bottom: 12px;">
+    
+                                            <div class="text-white bg-dark parent-item-val-spec" style="padding: 6px;">
+                                            <div class=" parent-item-label-spec">Description</div>
+                                            <textarea type="text" formControlName="description" class="form-control bg-dark"
+                                            placeholder="Click to edit description" style="border-radius: 0px; border: none; border-left: 2px solid #fff; padding-left: 12px;"></textarea>
+                                            <div *ngIf="submitted && f.description.errors" class="invalid-feedback">
+                                                <div *ngIf="f.description.errors.required">Description is required</div>
+                                            </div>                                    
+                                        </div>
+                                        </div>
+                                    </div>
+    
+                                    <mat-expansion-panel  [expanded]="true">
+                                    <mat-expansion-panel-header class="page-title" style="margin-bottom: 24px;" >
+                                        <h3>Dashboard</h3>
+                                    </mat-expansion-panel-header>
+                                    <div style="display: flex; flex-direction: row; gap: 24px; margin-bottom: 24px;">
+                                    <!-- <div class="col-md-3 form-group">
+                                        <label>Production Target</label>
+                                        <input type="number" class="form-control" placeholder="Production Target" formControlName="production_target" [ngClass]="{ 'is-invalid': submitted && f.production_target.errors }">
+                                        <div *ngIf="submitted && f.production_target.errors" class="invalid-feedback">
+                                            <label *ngIf="f.production_target.errors.required" class="error">Production target is required</label>
+                                        </div>
+                                    </div> -->
+                                    <!-- <div class="col-md-3 form-group">
+                                        <label>Type</label>
+                                        <select class="form-control" formControlName="production_type">
+                                            <option value="">Select Type</option>
+                                            <option value="units">Units</option>
+                                        </select>
+                                        <div *ngIf="submitted && f.production_type.errors" class="invalid-feedback">
+                                            <label *ngIf="f.production_type.errors.required" class="error">Production type is required</label>
+                                        </div>
+                                    </div> -->
+                                    <!-- <div class="col-md-6 form-group">
+                                        <label>Expense Target</label>
+                                        <input type="number" class="form-control" placeholder="Expense Target" formControlName="expense_target" [ngClass]="{ 'is-invalid': submitted && f.expense_target.errors }">
+                                        <div *ngIf="submitted && f.expense_target.errors" class="invalid-feedback">
+                                            <label *ngIf="f.expense_target.errors.required" class="error">Expense target is required</label>
+                                        </div>
+                                    </div> -->
+                                    <div style="display: flex; flex-direction: column; flex-basis: 45%;">
+                                        <div style="display: flex;  margin-bottom: 12px;">
+                                        <label class="parent-item-label parent-item-label-alert" for="exampleInputEmail1">Production Target</label>
+                                        <input type="text" formControlName="production_target" class="text-white bg-dark parent-item-val form-control form-control-spec"
+                                            placeholder="Short name"
+                                            [ngClass]="{ 'is-invalid': submitted && f.production_target.errors }" autocomplete="off">
+                                        <div *ngIf="submitted && f.production_target.errors" class="invalid-feedback">
+                                            <div *ngIf="f.production_target.errors.required">Production target is required</div>
+                                        </div>
+                                        </div>
+    
+                                        <div style="display: flex;  margin-bottom: 12px;">
+    
+                                        <label class="parent-item-label parent-item-label-alert" for="exampleInputPassword1">Expense Target</label>
+                                        <input type="text" id="long_name" formControlName="expense_target" class="text-white bg-dark parent-item-val form-control form-control-spec"
+                                            placeholder="Long name"
+                                            [ngClass]="{ 'is-invalid': submitted && f.expense_target.errors }" autocomplete="off">
+                                        <div *ngIf="submitted && f.expense_target.errors" class="invalid-feedback">
+                                            <div *ngIf="f.expense_target.errors.required">Expense target is required</div>
+                                        </div>
+                                        </div>
+    
+                                        <div style="display: flex;  margin-bottom: 12px;">
+                                            <label class="parent-item-label parent-item-label-alert">Target Type</label>
+                                            <select class="text-white bg-dark parent-item-val form-control form-control-spec" formControlName="production_type">
+                                                <option value="">Select Type</option>
+                                                <option value="dollars">Dollars</option>
+                                                <option value="units">Units</option>
+                                                <option value="percentage">Percentage</option>
+                                            </select>
+                                            <div *ngIf="IsLoginFormValid && jval.production_type.errors" class="invalid-feedback">
+                                                <label *ngIf="jval.production_type.errors.required" class="error">Production type is
+                                                    required</label>
+                                            </div>
+                                        </div>   
+                                    </div>
+    
+                                    <div style="display: flex; flex-direction: column; flex-basis: 45%;">
+                                        <div style="display: flex;  margin-bottom: 12px;">
+                                        <label class="parent-item-label">LVA</label>
+                                        <input type="number" class="text-white bg-dark parent-item-val form-control form-control-spec" placeholder="Low Variance Alert" formControlName="production_low_variance_alert" [ngClass]="{ 'is-invalid': submitted && f.production_low_variance_alert.errors }">
+                                        <div *ngIf="submitted && f.production_low_variance_alert.errors" class="invalid-feedback">
+                                            <label *ngIf="f.production_low_variance_alert.errors.required" class="error">LVA is required</label>
+                                        </div>
+                                        </div>
+                                        <div style="display: flex;  margin-bottom: 12px;">
+                                        <label class="parent-item-label">HVA</label>
+                                        <input type="number" class="text-white bg-dark parent-item-val form-control form-control-spec" placeholder="Hight Variance Alert" formControlName="production_high_variance_alert" [ngClass]="{ 'is-invalid': submitted && f.production_high_variance_alert.errors }">
+                                        <div *ngIf="submitted && f.production_high_variance_alert.errors" class="invalid-feedback">
+                                            <label *ngIf="f.production_high_variance_alert.errors.required" class="error">Hight Variance Alert is required</label>
+                                        </div>
+                                    </div>
+                                    </div>
+                                    <div style="display: flex; flex-direction: column; flex-basis: 45%;">
+                                        <div style="display: flex;  margin-bottom: 12px;">
+                                        <label class="parent-item-label">Production Weight</label>
+                                        <input type="number"class="text-white bg-dark parent-item-val form-control form-control-spec" placeholder="Production weight" formControlName="production_weight" [ngClass]="{ 'is-invalid': submitted && f.production_weight.errors }">
+                                        <div *ngIf="submitted && f.production_weight.errors" class="invalid-feedback">
+                                            <label *ngIf="f.production_weight.errors.required" class="error">Expense weight is required</label>
+                                        </div>
+                                        </div>
+                                        <div style="display: flex;  margin-bottom: 12px;">
+                                        <label class="parent-item-label">Expense Weight</label>
+                                        <input type="number" class="text-white bg-dark parent-item-val form-control form-control-spec" placeholder="Expense weight" formControlName="expense_weight" [ngClass]="{ 'is-invalid': submitted && f.expense_weight.errors }">
+                                        <div *ngIf="submitted && f.expense_weight.errors" class="invalid-feedback">
+                                            <label *ngIf="f.expense_weight.errors.required" class="error">Expense weight is required</label>
+                                        </div>
+                                        </div>
+    
+                                    </div>
+                                    </div>
+                                    <div class="col-md-12 form-group text-right">
+                                        <button type="submit " (click)="onSubmit()"
+                                            [disabled]="!checkforgoaledit && !isSharedPlanPermission"
+                                            class="btn btn-primary btn-space">Save</button>
+                                        <button type="reset" (click)="reset()" [disabled]="!checkforgoaledit "
+                                            class="btn btn-default">Clear</button>
+                                    </div>
+                                    </mat-expansion-panel>
+    
+                                    <mat-expansion-panel class="expanse-panel expanse-panel-discussion">
+                                        <mat-expansion-panel-header class="page-title">
+                                            <h3>Discussion</h3>
+                                        </mat-expansion-panel-header>
+                                        <div class="panel panel-cutom-blue">
+                                            <div class="panel-body">
+                                                <form [formGroup]="DiscussionForm">
+                                                    <div class="row">
+                                                        <div class="col-md-6 form-group">
+                                                            <label>Security</label>
+                                                            <select class="form-control" formControlName="security">
+                                                                <option value="">Select Security</option>
+                                                                <option value="public">Public</option>
+                                                                <option value="private">Private</option>
+                                                            </select>
+                                                            <div *ngIf="isSubmittedDiscussionForm && dscf.security.errors" class="invalid-feedback">
+                                                                <label *ngIf="dscf.security.errors.required" class="error">Security is
+                                                                    required</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6 form-group">
+                                                            <label>Recipients</label>
+                                                            <select class="form-control" formControlName="recipient_id" id="recipient_id" (change)="onRecipient($event)">
+                                                                <option value="">Select Recipient</option>
+                                                                <option *ngFor="let hu of users;" value="{{hu.user_id._id}}">
+                                                                    {{ hu.user_id.first_name }} {{ hu.user_id.last_name }}
+                                                                    ({{hu.hierarchy_id.designation}})</option>
+                                                                <option value="invite">Invite New Recipient</option>
+                                                            </select>
+                                                            <div *ngIf="isSubmittedDiscussionForm && dscf.recipient_id.errors"
+                                                                class="invalid-feedback">
+                                                                <label *ngIf="dscf.recipient_id.errors.required" class="error">Recipient is
+                                                                    required</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-12 form-group">
+                                                            <label>Subject</label>
+                                                            <input type="text" class="form-control" placeholder="Subject" formControlName="subject"
+                                                                [ngClass]="{ 'is-invalid': isSubmittedDiscussionForm && dscf.subject.errors }">
+                                                            <div *ngIf="isSubmittedDiscussionForm && dscf.subject.errors" class="invalid-feedback">
+                                                                <label *ngIf="dscf.subject.errors.required" class="error">Subject is
+                                                                    required</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-12 form-group">
+                                                            <label>Message</label>
+                                                            <textarea class="form-control" placeholder="Message" formControlName="message"
+                                                                [ngClass]="{ 'is-invalid': isSubmittedDiscussionForm && dscf.message.errors }"></textarea>
+                                                            <div *ngIf="isSubmittedDiscussionForm && dscf.message.errors" class="invalid-feedback">
+                                                                <label *ngIf="dscf.message.errors.required" class="error">Message is
+                                                                    required</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6 form-group">
+                                                            <label>Attachment</label>
+                                                            <input type="file" (change)="uploadDiscussionAttachment($event.target.files)">
+                                                        </div>
+                                                        <div class="col-md-12 form-group text-right">
+                                                            <button type="submit" class="btn btn-primary btn-space"
+                                                                (click)="onSubmitDiscussion()">Save</button>
+                                                            <button type="reset" class="btn btn-default"
+                                                                (click)="resetDiscussionForm()">Cancel</button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </mat-expansion-panel>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <mat-expansion-panel class="expanse-panel" [expanded]="true">
             <mat-expansion-panel-header class="">
                 <div class="page-title">
                     <h3>Propose</h3>
@@ -2147,7 +2928,268 @@
 
         <!-- Vote -->
         <div class="col-md-9" *ngIf="selectedPhase == 'V'">
-            <mat-expansion-panel>
+            <div class="expanse-panel" [hidden]="parentIsActiveSelection">
+                <div class="">
+                    <div class="page-title">
+                        {{ (selectedPhase == 'I') ? 'Improve' : 'View & Edit Sub Item' }}
+                    </div>
+                </div>
+                <form #kform="ngForm" class="p-3" [formGroup]="childPlanForm">
+                    <div class="panel panel-cutom-blue">
+                        <div class="panel-body">
+                            <div style="padding: 10px;">
+                                <div style="display: flex; flex-direction: row; gap: 24px; margin-bottom: 24px;">
+    
+                                    <div style="display: flex; flex-direction: column; flex-basis: 45%;">
+                                        <div style="display: flex;  margin-bottom: 12px;">
+                                        <label class="parent-item-label" for="exampleInputEmail1">Short Name<span>*</span></label>
+                                        <input type="text" formControlName="short_name" class="text-white bg-dark parent-item-val form-control form-control-spec"
+                                            placeholder="Short name"
+                                            [ngClass]="{ 'is-invalid': submitted && f.short_name.errors }" autocomplete="off">
+                                        <div *ngIf="submitted && f.short_name.errors" class="invalid-feedback">
+                                            <div *ngIf="f.short_name.errors.required">Short name is required</div>
+                                        </div>
+                                        </div>
+    
+                                        <div style="display: flex;  margin-bottom: 12px;">
+    
+                                        <label class="parent-item-label" for="exampleInputPassword1">Long Name<span>*</span></label>
+                                        <input type="text" id="long_name" formControlName="long_name" class="text-white bg-dark parent-item-val form-control form-control-spec"
+                                            placeholder="Long name"
+                                            [ngClass]="{ 'is-invalid': submitted && f.long_name.errors }" autocomplete="off">
+                                        <div *ngIf="submitted && f.long_name.errors" class="invalid-feedback">
+                                            <div *ngIf="f.long_name.errors.required">Long name is required</div>
+                                        </div>
+                                        </div>
+                                    </div>
+                                
+                                    <div style="display: flex; flex-direction: column; flex-basis: 45%;">
+                                        <div style="display: flex;  margin-bottom: 12px;">
+    
+                                        <label class="parent-item-label" for="exampleInputPassword1">Start Date<span>*</span></label>
+                                        <div class="input-group input-append bootstrap-datepicker">
+                                            <input type="text" id="date-input5" formControlName="start_date"
+                                            class="text-white bg-dark parent-item-val form-control form-control-spec bg-dark date-picker" placeholder="Start Date" autocomplete="off">
+                                            <span style="background-color: #8869c2;" class="input-group-addon add-on"><i
+                                                    class="fa fa-calendar"></i></span>
+                                        </div>
+                                        </div>
+                                        <div style="display: flex;  margin-bottom: 12px;">
+                                        <label class="parent-item-label" for="exampleInputPassword1">End Date<span>*</span></label>
+                                        <div class="bg-dark input-group input-append bootstrap-datepicker">
+                                            <input type="text" id="date-input6" formControlName="end_date"
+                                            class="text-white bg-dark parent-item-val form-control form-control-spec date-picker" placeholder="End Date" autocomplete="off">
+                                            <span style="background-color: #8869c2;" class="input-group-addon add-on"><i
+                                                    class="fa fa-calendar"></i></span>
+                                        </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                    <div style="display: flex; flex-direction: column; flex-basis: 45%;">
+                                        <!-- <div style="display: flex;  margin-bottom: 12px;">
+    
+                                        <label class="parent-item-label">Select Users</label>
+                                        <ng-select [items]="items" bindLabel="name" placeholder="Select Users"
+                                            formControlName="shared_users" appendTo="body" multiple="true"
+                                            [(ngModel)]="selected" (change)="onChange($event)">
+                                        </ng-select>
+                                        </div> -->
+                                        <div style="display: flex;  margin-bottom: 12px;">
+    
+                                            <div class="text-white bg-dark parent-item-val-spec" style="padding: 6px;">
+                                            <div class=" parent-item-label-spec">Description</div>
+                                            <textarea type="text" formControlName="description" class="form-control bg-dark"
+                                            placeholder="Click to edit description" style="border-radius: 0px; border: none; border-left: 2px solid #fff; padding-left: 12px;"></textarea>
+                                            <div *ngIf="submitted && f.description.errors" class="invalid-feedback">
+                                                <div *ngIf="f.description.errors.required">Description is required</div>
+                                            </div>                                    
+                                        </div>
+                                        </div>
+                                    </div>
+    
+                                    <mat-expansion-panel  [expanded]="true">
+                                    <mat-expansion-panel-header class="page-title" style="margin-bottom: 24px;" >
+                                        <h3>Dashboard</h3>
+                                    </mat-expansion-panel-header>
+                                    <div style="display: flex; flex-direction: row; gap: 24px; margin-bottom: 24px;">
+                                    <!-- <div class="col-md-3 form-group">
+                                        <label>Production Target</label>
+                                        <input type="number" class="form-control" placeholder="Production Target" formControlName="production_target" [ngClass]="{ 'is-invalid': submitted && f.production_target.errors }">
+                                        <div *ngIf="submitted && f.production_target.errors" class="invalid-feedback">
+                                            <label *ngIf="f.production_target.errors.required" class="error">Production target is required</label>
+                                        </div>
+                                    </div> -->
+                                    <!-- <div class="col-md-3 form-group">
+                                        <label>Type</label>
+                                        <select class="form-control" formControlName="production_type">
+                                            <option value="">Select Type</option>
+                                            <option value="units">Units</option>
+                                        </select>
+                                        <div *ngIf="submitted && f.production_type.errors" class="invalid-feedback">
+                                            <label *ngIf="f.production_type.errors.required" class="error">Production type is required</label>
+                                        </div>
+                                    </div> -->
+                                    <!-- <div class="col-md-6 form-group">
+                                        <label>Expense Target</label>
+                                        <input type="number" class="form-control" placeholder="Expense Target" formControlName="expense_target" [ngClass]="{ 'is-invalid': submitted && f.expense_target.errors }">
+                                        <div *ngIf="submitted && f.expense_target.errors" class="invalid-feedback">
+                                            <label *ngIf="f.expense_target.errors.required" class="error">Expense target is required</label>
+                                        </div>
+                                    </div> -->
+                                    <div style="display: flex; flex-direction: column; flex-basis: 45%;">
+                                        <div style="display: flex;  margin-bottom: 12px;">
+                                        <label class="parent-item-label parent-item-label-alert" for="exampleInputEmail1">Production Target</label>
+                                        <input type="text" formControlName="production_target" class="text-white bg-dark parent-item-val form-control form-control-spec"
+                                            placeholder="Short name"
+                                            [ngClass]="{ 'is-invalid': submitted && f.production_target.errors }" autocomplete="off">
+                                        <div *ngIf="submitted && f.production_target.errors" class="invalid-feedback">
+                                            <div *ngIf="f.production_target.errors.required">Production target is required</div>
+                                        </div>
+                                        </div>
+    
+                                        <div style="display: flex;  margin-bottom: 12px;">
+    
+                                        <label class="parent-item-label parent-item-label-alert" for="exampleInputPassword1">Expense Target</label>
+                                        <input type="text" id="long_name" formControlName="expense_target" class="text-white bg-dark parent-item-val form-control form-control-spec"
+                                            placeholder="Long name"
+                                            [ngClass]="{ 'is-invalid': submitted && f.expense_target.errors }" autocomplete="off">
+                                        <div *ngIf="submitted && f.expense_target.errors" class="invalid-feedback">
+                                            <div *ngIf="f.expense_target.errors.required">Expense target is required</div>
+                                        </div>
+                                        </div>
+    
+                                        <div style="display: flex;  margin-bottom: 12px;">
+                                            <label class="parent-item-label parent-item-label-alert">Target Type</label>
+                                            <select class="text-white bg-dark parent-item-val form-control form-control-spec" formControlName="production_type">
+                                                <option value="">Select Type</option>
+                                                <option value="dollars">Dollars</option>
+                                                <option value="units">Units</option>
+                                                <option value="percentage">Percentage</option>
+                                            </select>
+                                            <div *ngIf="IsLoginFormValid && jval.production_type.errors" class="invalid-feedback">
+                                                <label *ngIf="jval.production_type.errors.required" class="error">Production type is
+                                                    required</label>
+                                            </div>
+                                        </div>   
+                                    </div>
+    
+                                    <div style="display: flex; flex-direction: column; flex-basis: 45%;">
+                                        <div style="display: flex;  margin-bottom: 12px;">
+                                        <label class="parent-item-label">LVA</label>
+                                        <input type="number" class="text-white bg-dark parent-item-val form-control form-control-spec" placeholder="Low Variance Alert" formControlName="production_low_variance_alert" [ngClass]="{ 'is-invalid': submitted && f.production_low_variance_alert.errors }">
+                                        <div *ngIf="submitted && f.production_low_variance_alert.errors" class="invalid-feedback">
+                                            <label *ngIf="f.production_low_variance_alert.errors.required" class="error">LVA is required</label>
+                                        </div>
+                                        </div>
+                                        <div style="display: flex;  margin-bottom: 12px;">
+                                        <label class="parent-item-label">HVA</label>
+                                        <input type="number" class="text-white bg-dark parent-item-val form-control form-control-spec" placeholder="Hight Variance Alert" formControlName="production_high_variance_alert" [ngClass]="{ 'is-invalid': submitted && f.production_high_variance_alert.errors }">
+                                        <div *ngIf="submitted && f.production_high_variance_alert.errors" class="invalid-feedback">
+                                            <label *ngIf="f.production_high_variance_alert.errors.required" class="error">Hight Variance Alert is required</label>
+                                        </div>
+                                    </div>
+                                    </div>
+                                    <div style="display: flex; flex-direction: column; flex-basis: 45%;">
+                                        <div style="display: flex;  margin-bottom: 12px;">
+                                        <label class="parent-item-label">Production Weight</label>
+                                        <input type="number"class="text-white bg-dark parent-item-val form-control form-control-spec" placeholder="Production weight" formControlName="production_weight" [ngClass]="{ 'is-invalid': submitted && f.production_weight.errors }">
+                                        <div *ngIf="submitted && f.production_weight.errors" class="invalid-feedback">
+                                            <label *ngIf="f.production_weight.errors.required" class="error">Expense weight is required</label>
+                                        </div>
+                                        </div>
+                                        <div style="display: flex;  margin-bottom: 12px;">
+                                        <label class="parent-item-label">Expense Weight</label>
+                                        <input type="number" class="text-white bg-dark parent-item-val form-control form-control-spec" placeholder="Expense weight" formControlName="expense_weight" [ngClass]="{ 'is-invalid': submitted && f.expense_weight.errors }">
+                                        <div *ngIf="submitted && f.expense_weight.errors" class="invalid-feedback">
+                                            <label *ngIf="f.expense_weight.errors.required" class="error">Expense weight is required</label>
+                                        </div>
+                                        </div>
+    
+                                    </div>
+                                    </div>
+                                    <div class="col-md-12 form-group text-right">
+                                        <button type="submit " (click)="onSubmit()"
+                                            [disabled]="!checkforgoaledit && !isSharedPlanPermission"
+                                            class="btn btn-primary btn-space">Save</button>
+                                        <button type="reset" (click)="reset()" [disabled]="!checkforgoaledit "
+                                            class="btn btn-default">Clear</button>
+                                    </div>
+                                    </mat-expansion-panel>
+    
+                                    <mat-expansion-panel class="expanse-panel expanse-panel-discussion">
+                                        <mat-expansion-panel-header class="page-title">
+                                            <h3>Discussion</h3>
+                                        </mat-expansion-panel-header>
+                                        <div class="panel panel-cutom-blue">
+                                            <div class="panel-body">
+                                                <form [formGroup]="DiscussionForm">
+                                                    <div class="row">
+                                                        <div class="col-md-6 form-group">
+                                                            <label>Security</label>
+                                                            <select class="form-control" formControlName="security">
+                                                                <option value="">Select Security</option>
+                                                                <option value="public">Public</option>
+                                                                <option value="private">Private</option>
+                                                            </select>
+                                                            <div *ngIf="isSubmittedDiscussionForm && dscf.security.errors" class="invalid-feedback">
+                                                                <label *ngIf="dscf.security.errors.required" class="error">Security is
+                                                                    required</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6 form-group">
+                                                            <label>Recipients</label>
+                                                            <select class="form-control" formControlName="recipient_id" id="recipient_id" (change)="onRecipient($event)">
+                                                                <option value="">Select Recipient</option>
+                                                                <option *ngFor="let hu of users;" value="{{hu.user_id._id}}">
+                                                                    {{ hu.user_id.first_name }} {{ hu.user_id.last_name }}
+                                                                    ({{hu.hierarchy_id.designation}})</option>
+                                                                <option value="invite">Invite New Recipient</option>
+                                                            </select>
+                                                            <div *ngIf="isSubmittedDiscussionForm && dscf.recipient_id.errors"
+                                                                class="invalid-feedback">
+                                                                <label *ngIf="dscf.recipient_id.errors.required" class="error">Recipient is
+                                                                    required</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-12 form-group">
+                                                            <label>Subject</label>
+                                                            <input type="text" class="form-control" placeholder="Subject" formControlName="subject"
+                                                                [ngClass]="{ 'is-invalid': isSubmittedDiscussionForm && dscf.subject.errors }">
+                                                            <div *ngIf="isSubmittedDiscussionForm && dscf.subject.errors" class="invalid-feedback">
+                                                                <label *ngIf="dscf.subject.errors.required" class="error">Subject is
+                                                                    required</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-12 form-group">
+                                                            <label>Message</label>
+                                                            <textarea class="form-control" placeholder="Message" formControlName="message"
+                                                                [ngClass]="{ 'is-invalid': isSubmittedDiscussionForm && dscf.message.errors }"></textarea>
+                                                            <div *ngIf="isSubmittedDiscussionForm && dscf.message.errors" class="invalid-feedback">
+                                                                <label *ngIf="dscf.message.errors.required" class="error">Message is
+                                                                    required</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6 form-group">
+                                                            <label>Attachment</label>
+                                                            <input type="file" (change)="uploadDiscussionAttachment($event.target.files)">
+                                                        </div>
+                                                        <div class="col-md-12 form-group text-right">
+                                                            <button type="submit" class="btn btn-primary btn-space"
+                                                                (click)="onSubmitDiscussion()">Save</button>
+                                                            <button type="reset" class="btn btn-default"
+                                                                (click)="resetDiscussionForm()">Cancel</button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </mat-expansion-panel>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <mat-expansion-panel [expanded]="true">
             <mat-expansion-panel-header>
                 <div class="page-title">
                     <h3>Vote</h3>
@@ -2187,11 +3229,6 @@
                         </tbody>
                     </table>
                     <table *ngIf="voteGoals.length == 0" id="table-vote" class="display table table-data-width">
-                        <thead>
-                            <tr>
-                                <th colspan="7" class="text-center prioritize-blue">Voting</th>
-                            </tr>
-                        </thead>
                         <tbody>
                             <tr>
                                 <td colspan="7" class="text-center">Details not found</td>
@@ -2205,7 +3242,268 @@
 
         <!-- Select -->
         <div class="col-md-9" *ngIf="selectedPhase == 'S'">
-            <mat-expansion-panel class="expanse-panel">
+            <div class="expanse-panel" [hidden]="parentIsActiveSelection">
+                <div class="">
+                    <div class="page-title">
+                        {{ (selectedPhase == 'I') ? 'Improve' : 'View & Edit Sub Item' }}
+                    </div>
+                </div>
+                <form #kform="ngForm" class="p-3" [formGroup]="childPlanForm">
+                    <div class="panel panel-cutom-blue">
+                        <div class="panel-body">
+                            <div style="padding: 10px;">
+                                <div style="display: flex; flex-direction: row; gap: 24px; margin-bottom: 24px;">
+    
+                                    <div style="display: flex; flex-direction: column; flex-basis: 45%;">
+                                        <div style="display: flex;  margin-bottom: 12px;">
+                                        <label class="parent-item-label" for="exampleInputEmail1">Short Name<span>*</span></label>
+                                        <input type="text" formControlName="short_name" class="text-white bg-dark parent-item-val form-control form-control-spec"
+                                            placeholder="Short name"
+                                            [ngClass]="{ 'is-invalid': submitted && f.short_name.errors }" autocomplete="off">
+                                        <div *ngIf="submitted && f.short_name.errors" class="invalid-feedback">
+                                            <div *ngIf="f.short_name.errors.required">Short name is required</div>
+                                        </div>
+                                        </div>
+    
+                                        <div style="display: flex;  margin-bottom: 12px;">
+    
+                                        <label class="parent-item-label" for="exampleInputPassword1">Long Name<span>*</span></label>
+                                        <input type="text" id="long_name" formControlName="long_name" class="text-white bg-dark parent-item-val form-control form-control-spec"
+                                            placeholder="Long name"
+                                            [ngClass]="{ 'is-invalid': submitted && f.long_name.errors }" autocomplete="off">
+                                        <div *ngIf="submitted && f.long_name.errors" class="invalid-feedback">
+                                            <div *ngIf="f.long_name.errors.required">Long name is required</div>
+                                        </div>
+                                        </div>
+                                    </div>
+                                
+                                    <div style="display: flex; flex-direction: column; flex-basis: 45%;">
+                                        <div style="display: flex;  margin-bottom: 12px;">
+    
+                                        <label class="parent-item-label" for="exampleInputPassword1">Start Date<span>*</span></label>
+                                        <div class="input-group input-append bootstrap-datepicker">
+                                            <input type="text" id="date-input5" formControlName="start_date"
+                                            class="text-white bg-dark parent-item-val form-control form-control-spec bg-dark date-picker" placeholder="Start Date" autocomplete="off">
+                                            <span style="background-color: #8869c2;" class="input-group-addon add-on"><i
+                                                    class="fa fa-calendar"></i></span>
+                                        </div>
+                                        </div>
+                                        <div style="display: flex;  margin-bottom: 12px;">
+                                        <label class="parent-item-label" for="exampleInputPassword1">End Date<span>*</span></label>
+                                        <div class="bg-dark input-group input-append bootstrap-datepicker">
+                                            <input type="text" id="date-input6" formControlName="end_date"
+                                            class="text-white bg-dark parent-item-val form-control form-control-spec date-picker" placeholder="End Date" autocomplete="off">
+                                            <span style="background-color: #8869c2;" class="input-group-addon add-on"><i
+                                                    class="fa fa-calendar"></i></span>
+                                        </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                    <div style="display: flex; flex-direction: column; flex-basis: 45%;">
+                                        <!-- <div style="display: flex;  margin-bottom: 12px;">
+    
+                                        <label class="parent-item-label">Select Users</label>
+                                        <ng-select [items]="items" bindLabel="name" placeholder="Select Users"
+                                            formControlName="shared_users" appendTo="body" multiple="true"
+                                            [(ngModel)]="selected" (change)="onChange($event)">
+                                        </ng-select>
+                                        </div> -->
+                                        <div style="display: flex;  margin-bottom: 12px;">
+    
+                                            <div class="text-white bg-dark parent-item-val-spec" style="padding: 6px;">
+                                            <div class=" parent-item-label-spec">Description</div>
+                                            <textarea type="text" formControlName="description" class="form-control bg-dark"
+                                            placeholder="Click to edit description" style="border-radius: 0px; border: none; border-left: 2px solid #fff; padding-left: 12px;"></textarea>
+                                            <div *ngIf="submitted && f.description.errors" class="invalid-feedback">
+                                                <div *ngIf="f.description.errors.required">Description is required</div>
+                                            </div>                                    
+                                        </div>
+                                        </div>
+                                    </div>
+    
+                                    <mat-expansion-panel  [expanded]="true">
+                                    <mat-expansion-panel-header class="page-title" style="margin-bottom: 24px;" >
+                                        <h3>Dashboard</h3>
+                                    </mat-expansion-panel-header>
+                                    <div style="display: flex; flex-direction: row; gap: 24px; margin-bottom: 24px;">
+                                    <!-- <div class="col-md-3 form-group">
+                                        <label>Production Target</label>
+                                        <input type="number" class="form-control" placeholder="Production Target" formControlName="production_target" [ngClass]="{ 'is-invalid': submitted && f.production_target.errors }">
+                                        <div *ngIf="submitted && f.production_target.errors" class="invalid-feedback">
+                                            <label *ngIf="f.production_target.errors.required" class="error">Production target is required</label>
+                                        </div>
+                                    </div> -->
+                                    <!-- <div class="col-md-3 form-group">
+                                        <label>Type</label>
+                                        <select class="form-control" formControlName="production_type">
+                                            <option value="">Select Type</option>
+                                            <option value="units">Units</option>
+                                        </select>
+                                        <div *ngIf="submitted && f.production_type.errors" class="invalid-feedback">
+                                            <label *ngIf="f.production_type.errors.required" class="error">Production type is required</label>
+                                        </div>
+                                    </div> -->
+                                    <!-- <div class="col-md-6 form-group">
+                                        <label>Expense Target</label>
+                                        <input type="number" class="form-control" placeholder="Expense Target" formControlName="expense_target" [ngClass]="{ 'is-invalid': submitted && f.expense_target.errors }">
+                                        <div *ngIf="submitted && f.expense_target.errors" class="invalid-feedback">
+                                            <label *ngIf="f.expense_target.errors.required" class="error">Expense target is required</label>
+                                        </div>
+                                    </div> -->
+                                    <div style="display: flex; flex-direction: column; flex-basis: 45%;">
+                                        <div style="display: flex;  margin-bottom: 12px;">
+                                        <label class="parent-item-label parent-item-label-alert" for="exampleInputEmail1">Production Target</label>
+                                        <input type="text" formControlName="production_target" class="text-white bg-dark parent-item-val form-control form-control-spec"
+                                            placeholder="Short name"
+                                            [ngClass]="{ 'is-invalid': submitted && f.production_target.errors }" autocomplete="off">
+                                        <div *ngIf="submitted && f.production_target.errors" class="invalid-feedback">
+                                            <div *ngIf="f.production_target.errors.required">Production target is required</div>
+                                        </div>
+                                        </div>
+    
+                                        <div style="display: flex;  margin-bottom: 12px;">
+    
+                                        <label class="parent-item-label parent-item-label-alert" for="exampleInputPassword1">Expense Target</label>
+                                        <input type="text" id="long_name" formControlName="expense_target" class="text-white bg-dark parent-item-val form-control form-control-spec"
+                                            placeholder="Long name"
+                                            [ngClass]="{ 'is-invalid': submitted && f.expense_target.errors }" autocomplete="off">
+                                        <div *ngIf="submitted && f.expense_target.errors" class="invalid-feedback">
+                                            <div *ngIf="f.expense_target.errors.required">Expense target is required</div>
+                                        </div>
+                                        </div>
+    
+                                        <div style="display: flex;  margin-bottom: 12px;">
+                                            <label class="parent-item-label parent-item-label-alert">Target Type</label>
+                                            <select class="text-white bg-dark parent-item-val form-control form-control-spec" formControlName="production_type">
+                                                <option value="">Select Type</option>
+                                                <option value="dollars">Dollars</option>
+                                                <option value="units">Units</option>
+                                                <option value="percentage">Percentage</option>
+                                            </select>
+                                            <div *ngIf="IsLoginFormValid && jval.production_type.errors" class="invalid-feedback">
+                                                <label *ngIf="jval.production_type.errors.required" class="error">Production type is
+                                                    required</label>
+                                            </div>
+                                        </div>   
+                                    </div>
+    
+                                    <div style="display: flex; flex-direction: column; flex-basis: 45%;">
+                                        <div style="display: flex;  margin-bottom: 12px;">
+                                        <label class="parent-item-label">LVA</label>
+                                        <input type="number" class="text-white bg-dark parent-item-val form-control form-control-spec" placeholder="Low Variance Alert" formControlName="production_low_variance_alert" [ngClass]="{ 'is-invalid': submitted && f.production_low_variance_alert.errors }">
+                                        <div *ngIf="submitted && f.production_low_variance_alert.errors" class="invalid-feedback">
+                                            <label *ngIf="f.production_low_variance_alert.errors.required" class="error">LVA is required</label>
+                                        </div>
+                                        </div>
+                                        <div style="display: flex;  margin-bottom: 12px;">
+                                        <label class="parent-item-label">HVA</label>
+                                        <input type="number" class="text-white bg-dark parent-item-val form-control form-control-spec" placeholder="Hight Variance Alert" formControlName="production_high_variance_alert" [ngClass]="{ 'is-invalid': submitted && f.production_high_variance_alert.errors }">
+                                        <div *ngIf="submitted && f.production_high_variance_alert.errors" class="invalid-feedback">
+                                            <label *ngIf="f.production_high_variance_alert.errors.required" class="error">Hight Variance Alert is required</label>
+                                        </div>
+                                    </div>
+                                    </div>
+                                    <div style="display: flex; flex-direction: column; flex-basis: 45%;">
+                                        <div style="display: flex;  margin-bottom: 12px;">
+                                        <label class="parent-item-label">Production Weight</label>
+                                        <input type="number"class="text-white bg-dark parent-item-val form-control form-control-spec" placeholder="Production weight" formControlName="production_weight" [ngClass]="{ 'is-invalid': submitted && f.production_weight.errors }">
+                                        <div *ngIf="submitted && f.production_weight.errors" class="invalid-feedback">
+                                            <label *ngIf="f.production_weight.errors.required" class="error">Expense weight is required</label>
+                                        </div>
+                                        </div>
+                                        <div style="display: flex;  margin-bottom: 12px;">
+                                        <label class="parent-item-label">Expense Weight</label>
+                                        <input type="number" class="text-white bg-dark parent-item-val form-control form-control-spec" placeholder="Expense weight" formControlName="expense_weight" [ngClass]="{ 'is-invalid': submitted && f.expense_weight.errors }">
+                                        <div *ngIf="submitted && f.expense_weight.errors" class="invalid-feedback">
+                                            <label *ngIf="f.expense_weight.errors.required" class="error">Expense weight is required</label>
+                                        </div>
+                                        </div>
+    
+                                    </div>
+                                    </div>
+                                    <div class="col-md-12 form-group text-right">
+                                        <button type="submit " (click)="onSubmit()"
+                                            [disabled]="!checkforgoaledit && !isSharedPlanPermission"
+                                            class="btn btn-primary btn-space">Save</button>
+                                        <button type="reset" (click)="reset()" [disabled]="!checkforgoaledit "
+                                            class="btn btn-default">Clear</button>
+                                    </div>
+                                    </mat-expansion-panel>
+    
+                                    <mat-expansion-panel class="expanse-panel expanse-panel-discussion">
+                                        <mat-expansion-panel-header class="page-title">
+                                            <h3>Discussion</h3>
+                                        </mat-expansion-panel-header>
+                                        <div class="panel panel-cutom-blue">
+                                            <div class="panel-body">
+                                                <form [formGroup]="DiscussionForm">
+                                                    <div class="row">
+                                                        <div class="col-md-6 form-group">
+                                                            <label>Security</label>
+                                                            <select class="form-control" formControlName="security">
+                                                                <option value="">Select Security</option>
+                                                                <option value="public">Public</option>
+                                                                <option value="private">Private</option>
+                                                            </select>
+                                                            <div *ngIf="isSubmittedDiscussionForm && dscf.security.errors" class="invalid-feedback">
+                                                                <label *ngIf="dscf.security.errors.required" class="error">Security is
+                                                                    required</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6 form-group">
+                                                            <label>Recipients</label>
+                                                            <select class="form-control" formControlName="recipient_id" id="recipient_id" (change)="onRecipient($event)">
+                                                                <option value="">Select Recipient</option>
+                                                                <option *ngFor="let hu of users;" value="{{hu.user_id._id}}">
+                                                                    {{ hu.user_id.first_name }} {{ hu.user_id.last_name }}
+                                                                    ({{hu.hierarchy_id.designation}})</option>
+                                                                <option value="invite">Invite New Recipient</option>
+                                                            </select>
+                                                            <div *ngIf="isSubmittedDiscussionForm && dscf.recipient_id.errors"
+                                                                class="invalid-feedback">
+                                                                <label *ngIf="dscf.recipient_id.errors.required" class="error">Recipient is
+                                                                    required</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-12 form-group">
+                                                            <label>Subject</label>
+                                                            <input type="text" class="form-control" placeholder="Subject" formControlName="subject"
+                                                                [ngClass]="{ 'is-invalid': isSubmittedDiscussionForm && dscf.subject.errors }">
+                                                            <div *ngIf="isSubmittedDiscussionForm && dscf.subject.errors" class="invalid-feedback">
+                                                                <label *ngIf="dscf.subject.errors.required" class="error">Subject is
+                                                                    required</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-12 form-group">
+                                                            <label>Message</label>
+                                                            <textarea class="form-control" placeholder="Message" formControlName="message"
+                                                                [ngClass]="{ 'is-invalid': isSubmittedDiscussionForm && dscf.message.errors }"></textarea>
+                                                            <div *ngIf="isSubmittedDiscussionForm && dscf.message.errors" class="invalid-feedback">
+                                                                <label *ngIf="dscf.message.errors.required" class="error">Message is
+                                                                    required</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6 form-group">
+                                                            <label>Attachment</label>
+                                                            <input type="file" (change)="uploadDiscussionAttachment($event.target.files)">
+                                                        </div>
+                                                        <div class="col-md-12 form-group text-right">
+                                                            <button type="submit" class="btn btn-primary btn-space"
+                                                                (click)="onSubmitDiscussion()">Save</button>
+                                                            <button type="reset" class="btn btn-default"
+                                                                (click)="resetDiscussionForm()">Cancel</button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </mat-expansion-panel>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <mat-expansion-panel class="expanse-panel" [expanded]="true">
             <mat-expansion-panel-header class="">
                 <div class="page-title">
                     <h3>Select</h3>
@@ -2535,8 +3833,8 @@
         <div class="col-md-9"
             *ngIf="(selectedPhase == 'B' || selectedPhase == 'I') && (selectedModules && selectedModules != '')">
 
-            <mat-expansion-panel class="expanse-panel">
-                <mat-expansion-panel-header class="page-title">
+            <mat-expansion-panel class="expanse-panel" [expanded]="true">
+                <mat-expansion-panel-header class="page-title" >
                     <h3>Add {{ textDecoration(selectedModules) }}</h3>
                 </mat-expansion-panel-header>
                 <div class="panel panel-cutom-blue">
@@ -2774,7 +4072,7 @@
                 </div>
                 </mat-expansion-panel>
 
-                
+
             <mat-expansion-panel class="expanse-panel">
             <mat-expansion-panel-header class="">
                 <div class="page-title">
