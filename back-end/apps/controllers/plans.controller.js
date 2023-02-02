@@ -13,6 +13,25 @@ const ProblemOpportunity = require('../models/problem_opportunity.model');
 const ChallangeAttachments = require('../models/challange_attachments.model');
 const ChallangeChats = require('../models/challange_chats.model');
 
+exports.plan_delete = async function(req, res){
+    const body = req.body;
+    const plan_id = body.plan_id;
+
+    const deletedPlan = await Plan.findOneAndDelete({_id: plan_id})
+    if (deletedPlan) {
+        return res.status(200).send({
+            status: true,
+            message: "Plan permanently deleted."
+        })
+    }
+    else {
+        return res.status(400).send({
+            status: false,
+            message: "Failed to delete plan."
+        })
+    }
+}
+
 exports.plan_create = async function(request, response) {
     var body = request.body;
 

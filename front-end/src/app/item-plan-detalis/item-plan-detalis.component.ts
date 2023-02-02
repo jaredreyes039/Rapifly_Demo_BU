@@ -535,12 +535,12 @@ export class ItemPlanDetailsComponent implements OnInit {
     this.data[0]["end_date"] = ['', Validators.required];
     this.data[0]["security"] = ['0', Validators.required];
     this.data[0]["share_users"] = [''];
-    this.data[0]["production_target"] = ['', Validators.required];
+    this.data[0]["production_target"] = [''];
     this.data[0]["production_type"] = [''];
     this.data[0]["production_low_variance_alert"] = [''];
     this.data[0]["production_high_variance_alert"] = [''];
     this.data[0]["production_weight"] = [''];
-    this.data[0]["expense_target"] = ['', Validators.required];
+    this.data[0]["expense_target"] = [''];
     this.data[0]["expense_low_variance_alert"] = [''];
     this.data[0]["expense_high_variance_alert"] = [''];
     this.data[0]["expense_weight"] = [''];
@@ -593,6 +593,22 @@ export class ItemPlanDetailsComponent implements OnInit {
     }
   }
   
+  deletePlanById(plan) {
+    this.commonService.PostAPI(`plan/delete`, {
+      plan_id: plan,
+      user_id: this.currentUserId
+    }).then((res: any)=>{
+      if (res.status) {
+        this.getPlanDetails()
+        this.selectPhase("project")
+        this.toastr.success(res.message, "Success")
+      }
+      else {
+        this.toastr.error(res.message, "Error")
+      }
+    })
+  }
+
   //For validation
   get formVal() {
     return this.inviteUserForm.controls;

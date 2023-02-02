@@ -5,7 +5,7 @@ const plansController = require('../controllers/plans.controller');
 
 
 router.post('/create/form', plansController.planform_create);
-
+router.post('/delete', plansController.plan_delete)
 router.post('/remove/field', plansController.plan_field_remove);
 router.post('/create/parent', plansController.plan_create);
 router.get('/get/allplan', plansController.get_plan);
