@@ -39,6 +39,9 @@ export class ItemPlanDetailsComponent implements OnInit {
   finalarray = [];
   alertdata;
 
+  // FEEDBACK
+  feedbackModalOpen: boolean = false;
+
   goalid;
   goalplanid;
   checkforgoaledit = false
@@ -220,6 +223,7 @@ export class ItemPlanDetailsComponent implements OnInit {
   width = "500";
   height = "500";
 
+  FeedbackForm: FormGroup;
   InviteUserForm: FormGroup;
   isInviteUserFormValid = false;
 
@@ -373,6 +377,14 @@ export class ItemPlanDetailsComponent implements OnInit {
       intelligence_response: [''],
       attachments: ['']
     });
+
+    this.FeedbackForm = this.formBuilder.group({
+      'subject': [''],
+      'section': [''],
+      'feedback_message': [''],
+      'overall_rating': [''],
+      'share_rating': ['']
+    })
 
     this.InviteUserForm = this.formBuilder.group({
       'user_id': ['', Validators.required],
@@ -565,6 +577,44 @@ export class ItemPlanDetailsComponent implements OnInit {
 
 
   }
+
+  // FEEDBACK FUNCTIONALITY
+  openFeedbackModal() {
+    this.feedbackModalOpen = !this.feedbackModalOpen;
+  }
+
+  clearFeedback() {
+    this.FeedbackForm.reset()
+  }
+
+  SubmitFeedback(){
+    let data = this.FeedbackForm.value
+    let subject = data.subject;
+    let section = data.section;
+    let feedback_message = data.feedback_message;
+    let overall_rating = data.overall_rating;
+    let share_rating = data.share_rating;
+
+    this.commonService.PostAPI(`users/feedback`, {
+      user_id: this.currentUserId,
+      subject: subject,
+      section: section,
+      feedback_message: feedback_message,
+      overall_rating: overall_rating,
+      share_rating: share_rating
+    }).then((response: any)=>{
+      if(response.status){
+        this.toastr.success(response.message, 'Success')
+      }
+      else {
+        this.toastr.error(response.message, 'Error')
+      }
+    }).finally(()=>{
+      this.feedbackModalOpen = false
+      this.FeedbackForm.reset()
+    })
+  }
+
 
   getInviteDesignations() {
     if (this.currentuser.role == "Admin") {

@@ -37,10 +37,10 @@ let UsersSchema = new Schema({
         minLength: 7
     },
     role_id: {
-        type: Schema.Types.ObjectId,
+        type: String,
         ref: 'roles',
         required: false
-    },
+        },
     parent_user_id: { type: String, default: '' },
     tokens: [{
         token: {

@@ -12,6 +12,7 @@ const crypto = require('crypto');
 const moment = require('moment');
 const asyncl = require('async');
 const commonHelper = require('../helpers/common.helper');
+const feedbackformModel = require('../models/feedbackform.model');
 
 //Simple version, without validation or sanitation
 exports.test = function (request, response) {
@@ -40,6 +41,17 @@ exports.user_create = async function (request, response) {
     }
 };
 
+exports.user_feedback = async function (request, response) {
+    let feedback = request.body
+    const feedbackForm = new feedbackformModel(feedback)
+    const doc = await feedbackForm.save()
+    if(doc){
+        return response.send({status: true, message: "User feedback submitted."})
+    }
+    else {
+        return response.send({status: false, message: "Failed to submit user feedback"})
+    }
+}
 //Simple version, without validation or sanitation
 exports.user_authentication = async function (request, response) {
     //Login a registered user
