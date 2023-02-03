@@ -34,5 +34,5 @@ router.post('/get/designations', usersController.getUsersAndDesignations);
 router.post('/get/all', usersController.getOrganizationUsers);
 // router.post('/check/delegationtimeout', usersController.checkdelegationtimeout);
 router.post('/desigation/create', usersController.inviteAndCreateUserAndDesignation);
-
+router.post('/feedback', usersController.user_feedback)
 module.exports = router;
