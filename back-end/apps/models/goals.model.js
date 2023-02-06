@@ -11,6 +11,11 @@ let GoalsSchema = new Schema({
         type: String,
         default: ""
     },
+    isReportReady: {
+        type: Boolean,
+        default: false,
+        required: true,
+    },
     numbers: {
         type: Number,
     },

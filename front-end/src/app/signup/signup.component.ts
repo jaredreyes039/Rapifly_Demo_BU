@@ -4,6 +4,7 @@ import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms'
 import { ToastrService } from 'ngx-toastr';
 import { CommonService } from "../services/common.service";
 import { AuthenticationService } from 'src/app/services/authentication.service';
+import { data } from 'jquery';
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.component.html',
@@ -43,7 +44,7 @@ export class SignupComponent implements OnInit {
   checkUser(email) {
     this.commonService.PostAPI(`users/check/user`, { email: email }).then((response: any) => {
       var role_name = "";
-      if (response && response.data && response.data.length > 0) {
+      if (response && response.data.length != 0) {
         role_name = "User";
       } else {
         role_name = "Admin";
@@ -74,6 +75,7 @@ export class SignupComponent implements OnInit {
     } else {
       var data = this.signupForm.value;
       data.role_id = this.userRoles._id;
+      console.log(data.role_id)
 
       this.commonService.PostAPI(`users/create`, data).then((response: any) => {
         if (response.status) {

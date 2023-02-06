@@ -724,6 +724,7 @@ exports.get_goals_by_delegate = async function (request, response) {
     }
 };
 
+
 exports.get_goals_by_countdown = async function (request, response) {
     var body = request.body;
 
@@ -938,18 +939,40 @@ exports.updateselect = async function (request, response) {
  */
 
 module.exports.launchgoal = function (request, response) {
+    // try {
+    //     GoalAlert.find({
+    //         user_id: request.body.user_id,
+    //         date: new Date()
+    //     }, function (error, record) {
+    //         console.log(record);
+
+    //     });
+
+        
+    // } catch (error) {
+    //     console.log(error)
+    // }
     try {
-        console.log(new Date());
-
-        GoalAlert.find({
-            user_id: request.body.user_id,
-            date: new Date()
-        }, function (error, record) {
-            console.log(record);
-
-        });
-    } catch (error) {
-        console.log(error)
+        Goals.findOneAndUpdate({_id: request.body.goal_id},{ $set :{isReportReady: request.body.isReportReady}}, {returnOriginal: true}).then((res, err)=>{
+            if(res){
+                return response.status(200).send({
+                    status: true,
+                    message: "Successfully launched goal for reporting, congrats- this is a big milestone!"
+                })
+            }
+            else {
+                return response.status(400).send({
+                    status: false,
+                    message: "Sorry, the goal could not be launched. Please, check your permissions, or try again at a later time."
+                })
+            }
+        })
+    }
+    catch {
+        return response.status(400).send({
+            status: false,
+            message: "Something went wrong, please, try again later."
+        })
     }
 };
 

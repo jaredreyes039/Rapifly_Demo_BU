@@ -28,6 +28,7 @@ exports.test = function (request, response) {
  */
 exports.user_create = async function (request, response) {
     // Create a new user
+    console.log(request.body)
     try {
         const user = new User(request.body)
         await user.save()
@@ -54,7 +55,7 @@ exports.user_feedback = async function (request, response) {
 }
 //Simple version, without validation or sanitation
 exports.user_authentication = async function (request, response) {
-    //Login a registered user
+    //Login a registered user\
     try {
         const { email, password } = request.body
 
@@ -63,7 +64,6 @@ exports.user_authentication = async function (request, response) {
         if (!user) {
             return response.send({ status: false, message: 'Email has not been match with our records.' })
         }
-
         // Search for a user by email and password.
         const is_user_active = await User.findOne({ email: email, status: 1 })
         if (!is_user_active) {
@@ -81,7 +81,14 @@ exports.user_authentication = async function (request, response) {
 
         //Generate and update JWT token to user account
         const token = await user.generateAuthToken();
-        return response.send({ status: true, data: { user, token, role: "User"} })
+        if (user.role_id === "63df45c46006f7e016449ebf"){
+            return response.send({ status: true, data: { user, token, role: "Admin"} })
+
+        }
+        else {
+            return response.send({ status: true, data: { user, token, role: "User"} })
+
+        }
     } catch (error) {
         return response.status(400).send({ status: false, message: "Something went wrong" })
     }

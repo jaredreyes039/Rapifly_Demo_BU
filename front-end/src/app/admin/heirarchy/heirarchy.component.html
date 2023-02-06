@@ -31,7 +31,7 @@
                                 <div class="col-sm-6">
                                     <select class="form-control" formControlName="user_id" id="user_id" (change)="getHierarchyId($event)" [ngClass]="{ 'is-invalid': isHierarchyFormValid && formVal.user_id.errors }">
                                         <option value="">Select Superior</option>
-                                        <option *ngFor="let hu of users;" value="{{hu._id}}" [attr.data-hierarchy-id]="hu.hierarchy_id._id">{{ hu.user_id.first_name }} {{ hu.user_id.last_name }} ({{hu.hierarchy_id.designation}})</option>
+                                        <option *ngFor="let hu of users;" value="{{hu[2]}}" [attr.data-hierarchy-id]="hu[1]">{{hu[0]}}</option>
                                     </select>
                                 </div>
                             </div>
@@ -53,7 +53,7 @@
                         </div>
                     </div>
                     <div class="panel-body">
-                        <div *ngIf="isShowHierarchy" class="overflow-div" id="style-2">
+                        <div *ngIf="isShowHierarchy" id="style-2">
                             <google-chart style="margin: 0 auto;" #chart (click)="getHierarchyDetails($event)" [title]="title" [type]="type" [data]="data" [columnNames]="columnNames" [options]="options" [width]="width" [height]="height">
                             </google-chart>
                         </div>
