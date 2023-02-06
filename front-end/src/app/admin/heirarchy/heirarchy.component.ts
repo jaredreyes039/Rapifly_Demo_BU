@@ -77,26 +77,34 @@ export class HeirarchyComponent implements OnInit {
 
   //Get users that assigned by designations
   getHierarchyUsers() {
-    if (this.currentuser.role == "Admin") {
-      this.commonService.PostAPI(`hierarchy/get/by/parent`, { parent_user_id: this.parent_user_id }).then((response: any) => {
-        console.log("HeirarchyComponent -> getHierarchyUsers -> response", response)
-        if (response.status) {
+    // if (this.currentuser.role === "Admin") {
+    //   this.commonService.PostAPI(`hierarchy/get/by/parent`, { parent_user_id: this.parent_user_id }).then((response: any) => {
+    //     console.log("HeirarchyComponent -> getHierarchyUsers -> response", response)
+    //     if (response.status) {
+    //       this.users = response.data;
+    //     } else {
+    //       this.toastr.error(response.message, 'Error');
+    //     }
+    //   });
+    // } else if (this.currentuser.role === "User") {
+    //   this.commonService.PostAPI(`hierarchy/get/by/user`, { user_id: this.currentUserId }).then((response: any) => {
+    //     console.log("HeirarchyComponent -> getHierarchyUsers -> responseTest", response)
+    //     if (response.status) {
+    //       this.users = response.data;
+    //     } else {
+    //       this.toastr.error(response.message, 'Error');
+    //     }
+    //   });
+    // }
+
+    this.commonService.PostAPI(`hierarchy/designations`, { parent_user_id: this.parent_user_id === "" ? this.currentUserId : this.parent_user_id}).then((response: any) => {
+        if (response.data && response.data.length > 0) {
           this.users = response.data;
+          console.log(this.users)
         } else {
-          this.toastr.error(response.message, 'Error');
+          this.users = [];
         }
-      });
-    } else if (this.currentuser.role == "User") {
-      this.commonService.PostAPI(`hierarchy/get/by/user`, { user_id: this.currentUserId }).then((response: any) => {
-        console.log("HeirarchyComponent -> getHierarchyUsers -> response", response)
-        if (response.status) {
-          this.users = response.data;
-        } else {
-          this.toastr.error(response.message, 'Error');
-        }
-      });
-    }
-  }
+      })};
 
   //For validation
   get formVal() {
@@ -118,13 +126,19 @@ export class HeirarchyComponent implements OnInit {
       return;
     } else {
       const data = this.hierarchyForm.value;
-      data.parent_user_id = this.parent_user_id;
-      data.parent_hierarchy_id = this.hierarchy_id;
+      if(this.parent_user_id === ""){
+        data.parent_user_id = this.currentUserId
+      }
+      else {
+        data.parent_user_id = this.parent_user_id;
 
+      }
+      data.parent_hierarchy_id = this.hierarchy_id;
+      console.log(data)
       this.commonService.PostAPI(`hierarchy/save`, data).then((response: any) => {
         if (response.status) {
           this.hierarchyDiagram();
-
+          this.isShowHierarchy = true;
           this.hierarchyForm.reset();
           this.isHierarchyFormValid = false;
           this.toastr.success(response.message, "Success");
@@ -137,7 +151,7 @@ export class HeirarchyComponent implements OnInit {
 
   //fetch data of designations and display in organization chart
   hierarchyDiagram() {
-    this.commonService.PostAPI(`hierarchy/designations`, { parent_user_id: this.parent_user_id }).then((response: any) => {
+    this.commonService.PostAPI(`hierarchy/designations`, { parent_user_id: this.parent_user_id === "" ? this.currentUserId : this.parent_user_id}).then((response: any) => {
       if (response.status) {
         if (response.data && response.data.length > 0) {
           this.data = response.data;
@@ -156,8 +170,9 @@ export class HeirarchyComponent implements OnInit {
   //fetch data of users and its designations and display in organization chart
   getHierarchyDetails(event) {
     var hierarchy_id = event.target.title;
-
-    this.commonService.PostAPI(`hierarchy/users`, { parent_user_id: this.parent_user_id, hierarchy_id: hierarchy_id }).then((response: any) => {
+    console.log(this.parent_user_id)
+    this.commonService.PostAPI(`hierarchy/users`, { parent_user_id: this.parent_user_id === "" ? this.currentUserId : this.parent_user_id, hierarchy_id: hierarchy_id }).then((response: any) => {
+      console.log(response)
       if (response.status) {
         if (response.data && response.data.length > 0) {
           this.userHierarchyData = response.data;

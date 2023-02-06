@@ -677,10 +677,7 @@ module.exports.get_by_user = function(request, response) {
                         }
                     );
                 } else {
-                    return response.send({
-                        status: false,
-                        message: "Designation not found."
-                    });
+                    return;
                 }
             }
         });

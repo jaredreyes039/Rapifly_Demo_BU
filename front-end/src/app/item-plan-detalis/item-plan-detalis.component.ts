@@ -268,7 +268,7 @@ export class ItemPlanDetailsComponent implements OnInit {
 
   currentUserId;
   parent_user_id: any;
-
+  instructionBoxOpen: Boolean = true;
   constructor(
     private toastr: ToastrService,
     public authenticationService: AuthenticationService,
@@ -283,9 +283,8 @@ export class ItemPlanDetailsComponent implements OnInit {
   ) {
     this.currentUrl = (this.platformLocation as any).location.origin;
     this.currentuser = JSON.parse(window.localStorage.getItem("currentUser"));
-
     this.currentUserId = this.currentuser.user._id;
-    if (this.currentuser.role == "Admin") {
+    if (this.currentuser.role == "Admin" || this.currentuser.role == "User") {
       this.parent_user_id = this.currentuser.user._id;
     } else {
       this.parent_user_id = this.currentuser.user.parent_user_id;
@@ -308,6 +307,7 @@ export class ItemPlanDetailsComponent implements OnInit {
 
   ngOnInit() {
     var a = this;
+    console.log(this.currentuser)
 
     this.route.queryParams.subscribe(params => {
       if (params && params.stage && params.stage != '') {
@@ -578,6 +578,11 @@ export class ItemPlanDetailsComponent implements OnInit {
 
   }
 
+  toggleInstructionBox(){
+    this.instructionBoxOpen = !this.instructionBoxOpen
+    console.log(this.parentplanDetails[0])
+  }
+
   // FEEDBACK FUNCTIONALITY
   openFeedbackModal() {
     this.feedbackModalOpen = !this.feedbackModalOpen;
@@ -746,6 +751,22 @@ export class ItemPlanDetailsComponent implements OnInit {
         this.toastr.error(response.message, "Error");
       }
     });
+  }
+
+  sendForReport(event){
+    this.commonService.PostAPI(`goal/getgoals/launch`, {
+      user_id: this.currentUserId,
+      isReportReady: true,
+      goal_id: event.srcElement.id
+    }).then((res: any)=>{
+      if (res.status){
+        return this.toastr.success(res.message, "Success")
+      }
+      else {
+        return this.toastr.error(res.message, "Error")
+      }
+    })
+    this.getLaunchGoals(this.planId)
   }
 
   getPlanGoals(planid) {
@@ -1160,6 +1181,7 @@ export class ItemPlanDetailsComponent implements OnInit {
       }
     }
   }
+
 
   // Deactivate
   getgoal(planid) {
@@ -1623,6 +1645,7 @@ export class ItemPlanDetailsComponent implements OnInit {
     this.commonService.PostAPI(`goal/getgoals/bycountdown`, { id: planid, module_type: this.moduleType }).then((response: any) => {
       if (response.status && response.data && response.data.length > 0) {
         this.launchGoals = response.data;
+        console.log(this.launchGoals)
         this.launchGoals.forEach((element1, index) => {
           var finalhours = 0;
           var finalminutes = 0;
