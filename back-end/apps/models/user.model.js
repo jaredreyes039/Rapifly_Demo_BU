@@ -39,7 +39,7 @@ let UsersSchema = new Schema({
     role_id: {
         type: String,
         ref: 'roles',
-        required: true
+        required: false
         },
     parent_user_id: { type: String, default: '' },
     tokens: [{

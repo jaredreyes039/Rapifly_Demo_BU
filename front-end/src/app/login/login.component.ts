@@ -43,6 +43,7 @@ export class LoginComponent implements OnInit {
       this.authenticationService.login(this.jval.email.value, this.jval.password.value)
         .pipe(first())
         .subscribe((response: any) => {
+          console.log(response)
           if (response.status) {
             console.log(typeof response.data.user.passwordChanged);
             if (response.data.user.passwordChanged) {
@@ -55,9 +56,11 @@ export class LoginComponent implements OnInit {
               this.router.navigate(['/profile'])
             }
           } else {
+            console.log(response)
             this.toastr.error(response.message, "Error");
           }
         }, (error: any) => {
+          console.log(error)
           this.toastr.error(error, "Error");
         });
     }
