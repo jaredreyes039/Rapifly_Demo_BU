@@ -58,7 +58,6 @@ exports.user_authentication = async function (request, response) {
     //Login a registered user\
     try {
         const { email, password } = request.body
-
         // Search for a user by email and password.
         const user = await User.findOne({ email })
         if (!user) {
@@ -81,15 +80,10 @@ exports.user_authentication = async function (request, response) {
 
         //Generate and update JWT token to user account
         const token = await user.generateAuthToken();
-        if (user.role_id === "63df45c46006f7e016449ebf"){
-            return response.send({ status: true, data: { user, token, role: "Admin"} })
-
-        }
-        else {
-            return response.send({ status: true, data: { user, token, role: "User"} })
-
-        }
+        return response.send({ status: true, data: { user, token, role: "User" } })
+        ;
     } catch (error) {
+        console.log(error)
         return response.status(400).send({ status: false, message: "Something went wrong" })
     }
 };
