@@ -41,6 +41,7 @@ export class ItemPlanDetailsComponent implements OnInit {
 
   // FEEDBACK
   feedbackModalOpen: boolean = false;
+  keepGetStartedOpenOnVist: boolean;
 
   goalid;
   goalplanid;
@@ -90,6 +91,9 @@ export class ItemPlanDetailsComponent implements OnInit {
   lowProposeGoals: any = []
   mediumProposeGoals: any = []
 
+
+  // Edit Mode
+  editChildEnabled: boolean = false;
 
   // DataTables
   @ViewChild(DataTableDirective, { static: false })
@@ -268,7 +272,7 @@ export class ItemPlanDetailsComponent implements OnInit {
 
   currentUserId;
   parent_user_id: any;
-  instructionBoxOpen: Boolean = true;
+  instructionBoxOpen: Boolean = false;
   constructor(
     private toastr: ToastrService,
     public authenticationService: AuthenticationService,
@@ -283,6 +287,7 @@ export class ItemPlanDetailsComponent implements OnInit {
   ) {
     this.currentUrl = (this.platformLocation as any).location.origin;
     this.currentuser = JSON.parse(window.localStorage.getItem("currentUser"));
+    this.keepGetStartedOpenOnVist = this.currentuser.instructionBoxOpen
     this.currentUserId = this.currentuser.user._id;
     if (this.currentuser.role == "Admin" || this.currentuser.role == "User") {
       this.parent_user_id = this.currentuser.user._id;
@@ -307,7 +312,7 @@ export class ItemPlanDetailsComponent implements OnInit {
 
   ngOnInit() {
     var a = this;
-    console.log(this.currentuser)
+   
 
     this.route.queryParams.subscribe(params => {
       if (params && params.stage && params.stage != '') {
@@ -578,9 +583,29 @@ export class ItemPlanDetailsComponent implements OnInit {
 
   }
 
+  
+  toggleInstructionBoxOpenOnVisit(){
+    this.keepGetStartedOpenOnVist = false
+    this.commonService.PostAPI(`users/update/insBoxView`, {
+      user_id: this.currentUserId,
+      instructionBoxOpen: this.keepGetStartedOpenOnVist
+    }).then((res: any)=>{
+      if(res.status){
+        return;
+      }
+      else {
+        return;
+      }
+    })
+  }
+
   toggleInstructionBox(){
+    this.toggleInstructionBoxOpenOnVisit()
     this.instructionBoxOpen = !this.instructionBoxOpen
     console.log(this.parentplanDetails[0])
+    if (!this.instructionBoxOpen){
+      this.keepGetStartedOpenOnVist = this.currentuser.instructionBoxOpen
+    }
   }
 
   // FEEDBACK FUNCTIONALITY
@@ -826,10 +851,15 @@ export class ItemPlanDetailsComponent implements OnInit {
     });
   }
 
+  toggleEditChild(){
+    this.editChildEnabled = !this.editChildEnabled
+  }
+
   getgoaldetail(goal, parent) {
     this.commonService.PostAPI(`goal/get/by/id`, { goal_id: goal }).then((response: any) => {
       if (response.status) {
         this.childgoalDetails = response.data;
+        console.log(this.childgoalDetails)
         if (this.currentuser.user._id == this.childgoalDetails.user_id) {
           this.checkforgoaledit = true;
         } else {
@@ -1255,7 +1285,7 @@ export class ItemPlanDetailsComponent implements OnInit {
     changevalue = parseInt(changevalue)
 
     if (changevalue > 0) {
-      this.commonService.PostAPI(`goal/update/priority`, { goal_id: goalid, prioritize: changevalue }).then((response: any) => {
+      this.commonService.PostAPI('goal/update/priority', { goal_id: goalid, prioritize: changevalue }).then((response: any) => {
         if (response.status) {
           this.toastr.success(response.message, "Success");
           this.getPriorityGoals(this.planId);
