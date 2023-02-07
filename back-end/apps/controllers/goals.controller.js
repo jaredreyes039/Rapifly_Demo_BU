@@ -1226,7 +1226,7 @@ module.exports.updateGoalPrioroty = function (request, response) {
                     message: "Goal priority has been updated successfully."
                 });
             }
-        })
+        }).clone()
     } catch (error) {
         return response.send({
             status: false,
@@ -1234,6 +1234,7 @@ module.exports.updateGoalPrioroty = function (request, response) {
         });
     }
 }
+
 
 /**
  * This function get goal attachments

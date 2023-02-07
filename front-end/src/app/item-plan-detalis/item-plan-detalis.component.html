@@ -5,7 +5,53 @@
     <app-top-header></app-top-header>
     <div class="page-inner no-page-title">
         <!-- INSTRUCTION MODAL -->
-        <div *ngIf="instructionBoxOpen" [hidden]="!instructionBoxOpen" class="modal" style="display: unset !important;" id="myModal" tabindex="-1" aria-labelledby="myModalLabel">
+        <div *ngIf="keepGetStartedOpenOnVist" [hidden]="!instructionBoxOpen" class="modal" style="display: unset !important;" id="myModal" tabindex="-1" aria-labelledby="myModalLabel"
+        [ngClass]="instructionBoxOpen ? 'backdrop-active' : ''">
+        <div class="modal-dialog" style="min-width: 880px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button (click)="toggleInstructionBox()" type="button" class="close" data-dismiss="modal" aria-label="Close"
+                    ><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Welcome || <span style="color: yellow;">{{currentuser.user.first_name}} {{currentuser.user.last_name}}</span> </h4>
+                </div>
+                <div class="modal-body" style="display: flex; flex-direction: column;">
+                    <h3 style="border-bottom: 2px solid yellow; padding-bottom: 12px;">Getting Started</h3>
+                    <p>
+                        Welcome to Rapifly, a community-centered, problem-oriented dashboard designed
+                        to find solutions through a unique methodology- Create, Execute, Evaluate <strong>(CEE)</strong>.
+                    </p>
+                    <p>To the left you have the Administrations Panel, HUD, Project Tree, Module Tree (when active), and Alerts</p>
+                    <ul>
+                        <li style="margin-bottom: 12px;">The <strong>Administrations Panel</strong> is a guide to all things project creation, control, security, and assistance. With access
+                            to the Coaches Corner- a contact catalogue of the latest experts across various fields- you'll find the Administrations
+                            Panel will soon be one of your greatest tools.
+                        </li>
+                        <li style="margin-bottom: 12px;">
+                            The <strong>HUD</strong> is the heart of Rapifly, and here is where the beauty of the CEE methodology exists. With the
+                            ability to quickly navigate a problem-centered project/task throughout the CEE methodology, the HUD is a powerful tool
+                            that you'll soon be well acquainted with.
+                        </li>
+                        <li style="margin-bottom: 12px;">
+                            The <strong>Project</strong> and <strong>Module Trees</strong> are quick navigation views of you and your team's
+                            overall project hierarchy.
+                        </li>
+                    </ul>
+                    <p>
+                        That's a lot of power, feeling a bit overwhelmed? It's okay, getting started is incredibly simple- fill out
+                        a project profile, and soon you'll find yourself deeply invested in the power of the CEE methodology. <strong>Welcome
+                        {{currentuser.user.first_name}}, to Rapifly!</strong>
+                    </p>
+                    <br>
+                    <p style="text-align: center; background-color: #524fb1; width: 66%; border-radius: 4px; align-self: center;">
+                        To see this again, click on 'Getting Started' under the Administrations Panel!
+                    </p>
+                </div>
+            </div>
+        </div>
+        </div>
+        <div *ngIf="instructionBoxOpen && !keepGetStartedOpenOnVist" [hidden]="!instructionBoxOpen || keepGetStartedOpenOnVist" class="modal" style="display: unset !important;" id="myModal" tabindex="-1" aria-labelledby="myModalLabel"
+        [ngClass]="instructionBoxOpen ? 'backdrop-active' : ''">
         <div class="modal-dialog" style="min-width: 880px;">
             <div class="modal-content">
                 <div class="modal-header">
@@ -1035,7 +1081,7 @@
                     {{ (selectedPhase == 'I') ? 'Improve' : 'Add Sub Item' }}
                 </div>
             </div>
-            <form #kform="ngForm" class="p-3" [formGroup]="childPlanForm">
+            <form #kform="ngForm" class="p-3" [formGroup]="childPlanForm" *ngIf="editChildEnabled || parentIsActiveSelection">
                 <div class="panel panel-cutom-blue">
                     <div class="panel-body">
                         <div style="padding: 10px;">
@@ -1211,7 +1257,7 @@
                                 </div>
                             </div>
                                 <div class="col-md-12 form-group text-right">
-                                    <button type="submit " (click)="onSubmit()"
+                                    <button type="submit " (click)="onSubmit(); toggleEditChild()"
                                         [disabled]="!checkforgoaledit && !isSharedPlanPermission"
                                         class="btn btn-primary btn-space">Save</button>
                                     <button type="reset" (click)="reset()" [disabled]="!checkforgoaledit "
@@ -1291,6 +1337,172 @@
                     </div>
                 </div>
             </form>
+            <div *ngIf="!editChildEnabled && !parentIsActiveSelection" class="panel panel-cutom-blue">
+                <div class="panel-body">
+                    <div style="padding: 10px;">
+                        <div style="display: flex; flex-direction: row; gap: 24px; margin-bottom: 24px;">
+                                <div style="display: flex; flex-direction: column; flex-basis: 45%;">
+                                    <div  style="display: flex;  margin-bottom: 12px;">
+                                        <div class="parent-item-label">Short Name:</div>
+                                        <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
+                                            {{childgoalDetails.short_name}}</div>
+                                    </div>
+                                    <div  style="display: flex;">
+                                        <div class="parent-item-label">Long Name:</div>
+                                        <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
+                                            {{childgoalDetails.long_name}}</div>
+                                    </div>
+                                </div>
+                                
+                                <div style="display: flex; flex-direction: column; flex-basis: 45%;">
+                                    <div style="display: flex; margin-bottom: 12px;">
+                                        <div class=" parent-item-label">Start Date:</div>
+                                        <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
+                                            {{childgoalDetails.start_date | itemplanitemdate }}</div>
+                                    </div>
+                                    <div style="display: flex;">
+                                        <div class=" parent-item-label">End Date:</div>
+                                        <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
+                                            {{childgoalDetails.end_date | itemplanitemdate }}</div>
+                                    </div>
+                                </div>
+                        </div>
+                        <div style="display: flex;  margin-bottom: 12px;">
+                            <div class="text-white bg-dark parent-item-val-spec" style="padding: 6px;">
+                                <div class=" parent-item-label-spec">Description</div>
+                                <div class="">{{childgoalDetails.description}}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <mat-expansion-panel  [expanded]="true">
+                        <mat-expansion-panel-header class="page-title" style="margin-bottom: 24px;" >
+                            <h3>Dashboard</h3>
+                        </mat-expansion-panel-header>
+                        <div style="display: flex; flex-directon: row;">
+                            <div style="display: flex; flex-direction: column; flex-basis: 45%;">
+                                <div  style="display: flex;  margin-bottom: 12px;">
+                                    <div class="parent-item-label parent-item-label-alert">Production Target:</div>
+                                    <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
+                                        {{childgoalDetails.production_target === 'null' ? "Edit plan to add target" : childgoalDetails.production_target}}</div>
+                                </div>
+                                <div  style="display: flex; margin-bottom: 12px;">
+                                    <div class="parent-item-label">Production Weight:</div>
+                                    <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
+                                        {{childgoalDetails.production_weight === 'null' ? "Edit plan to add weight" : childgoalDetails.production_weight}}</div>
+                                </div>
+                                <div  style="display: flex;">
+                                    <div class="parent-item-label">Expense Weight:</div>
+                                    <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
+                                        {{childgoalDetails.expense_weight === 'null' ? "Edit plan to add weight" : childgoalDetails.expense_weight}}</div>
+                                </div>
+                            </div>
+                            <div style="display: flex; flex-direction: column; flex-basis: 45%;">
+                                <div  style="display: flex;  margin-bottom: 12px;">
+                                    <div class="parent-item-label parent-item-label-alert">Expense Target:</div>
+                                    <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
+                                        {{childgoalDetails.expense_target === 'null' ? "Edit plan to add target" : childgoalDetails.expense_target}}</div>
+                                </div>
+                                <div  style="display: flex; margin-bottom: 12px;">
+                                    <div class="parent-item-label">Production LVA:</div>
+                                    <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
+                                        {{childgoalDetails.production_low_variance_alert === 'null' ? "Edit plan to add LVA" : childgoalDetails.production_low_variance_alert}}</div>
+                                </div>
+                                <div  style="display: flex;">
+                                    <div class="parent-item-label">Production HVA:</div>
+                                    <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
+                                        {{childgoalDetails.production_high_variance_alert === 'null' ? "Edit plan to add HVA" : childgoalDetails.production_high_variance_alert}}</div>
+                                </div>
+                            </div>
+                            <div style="display: flex; flex-direction: column; flex-basis: 45%;">
+                                <div  style="display: flex; margin-bottom: 12px;">
+                                    <div class="parent-item-label">Expense LVA:</div>
+                                    <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
+                                        {{childgoalDetails.expense_low_variance_alert === 'null' ? "Edit plan to add LVA" : childgoalDetails.expense_low_variance_alert}}</div>
+                                </div>
+                                <div  style="display: flex;">
+                                    <div class="parent-item-label">Expense HVA:</div>
+                                    <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
+                                        {{childgoalDetails.expense_high_variance_alert === 'null' ? "Edit plan to add HVA" : childgoalDetails.expense_high_variance_alert}}</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 form-group text-right">
+                            <button (click)="toggleEditChild()"
+                                class="btn btn-primary btn-space">Edit</button>
+                        </div>
+                    </mat-expansion-panel>
+
+                    <mat-expansion-panel *ngIf="!parentIsActiveSelection" [hidden]="parentIsActiveSelection" class="expanse-panel expanse-panel-discussion">
+                        <mat-expansion-panel-header class="page-title">
+                            <h3>Communication</h3>
+                        </mat-expansion-panel-header>
+                        <div class="panel panel-cutom-blue" style="border: none; box-shadow: none;">
+                            <div class="panel-body">
+                                <form [formGroup]="DiscussionForm">
+                                    <div class="row">
+                                        <div class="col-md-6 form-group">
+                                            <label>Security</label>
+                                            <select class="form-control" formControlName="security">
+                                                <option value="">Select Security</option>
+                                                <option value="public">Public</option>
+                                                <option value="private">Private</option>
+                                            </select>
+                                            <div *ngIf="isSubmittedDiscussionForm && dscf.security.errors" class="invalid-feedback">
+                                                <label *ngIf="dscf.security.errors.required" class="error">Security is
+                                                    required</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 form-group">
+                                            <label>Recipients</label>
+                                            <select class="form-control" formControlName="recipient_id" id="recipient_id" (change)="onRecipient($event)">
+                                                <option value="">Select Recipient</option>
+                                                <option *ngFor="let hu of users;" value="{{hu.user_id._id}}">
+                                                    {{ hu.user_id.first_name }} {{ hu.user_id.last_name }}
+                                                    ({{hu.hierarchy_id.designation}})</option>
+                                                <option value="invite">Invite New Recipient</option>
+                                            </select>
+                                            <div *ngIf="isSubmittedDiscussionForm && dscf.recipient_id.errors"
+                                                class="invalid-feedback">
+                                                <label *ngIf="dscf.recipient_id.errors.required" class="error">Recipient is
+                                                    required</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12 form-group">
+                                            <label>Subject</label>
+                                            <input type="text" class="form-control" placeholder="Subject" formControlName="subject"
+                                                [ngClass]="{ 'is-invalid': isSubmittedDiscussionForm && dscf.subject.errors }">
+                                            <div *ngIf="isSubmittedDiscussionForm && dscf.subject.errors" class="invalid-feedback">
+                                                <label *ngIf="dscf.subject.errors.required" class="error">Subject is
+                                                    required</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12 form-group">
+                                            <label>Message</label>
+                                            <textarea class="form-control" placeholder="Message" formControlName="message"
+                                                [ngClass]="{ 'is-invalid': isSubmittedDiscussionForm && dscf.message.errors }"></textarea>
+                                            <div *ngIf="isSubmittedDiscussionForm && dscf.message.errors" class="invalid-feedback">
+                                                <label *ngIf="dscf.message.errors.required" class="error">Message is
+                                                    required</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 form-group">
+                                            <label>Attachment</label>
+                                            <input type="file" (change)="uploadDiscussionAttachment($event.target.files)">
+                                        </div>
+                                        <div class="col-md-12 form-group text-right">
+                                            <button type="submit" class="btn btn-primary btn-space"
+                                                (click)="onSubmitDiscussion()">Save</button>
+                                            <button type="reset" class="btn btn-default"
+                                                (click)="resetDiscussionForm()">Cancel</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </mat-expansion-panel>
+                </div>
+            </div>
         </div>
         
         

@@ -689,6 +689,10 @@ module.exports.get_by_user = function(request, response) {
     }
 };
 
+
+// NEEDS CONTEXT AND REPAIRS
+// Executes on init of item-plan-details
+// Does this relate to the role_id problem?
 module.exports.get_child_designation = function(request, response) {
     var body = request.body;
     var errors = [];
@@ -706,6 +710,7 @@ module.exports.get_child_designation = function(request, response) {
     }
 
     try {
+        console.log(request.body)
         //Get all the details of users and hierachy
         UsersDesignation.findOne({ user_id: body.user_id }).exec(function(
             error,
@@ -738,10 +743,7 @@ module.exports.get_child_designation = function(request, response) {
                         }
                     });
                 } else {
-                    return response.send({
-                        status: false,
-                        message: "Designation not found."
-                    });
+                    return;
                 }
             }
         });

@@ -53,6 +53,22 @@ exports.user_feedback = async function (request, response) {
         return response.send({status: false, message: "Failed to submit user feedback"})
     }
 }
+
+exports.user_instruction_box = async function (request, response) {
+    try {
+        const {user_id, instructionBoxOpen} = request.body
+        const user = await User.findOneAndUpdate({user_id}, {$set: {instructionBoxOpen: instructionBoxOpen}})
+        if (user) {
+            return response.status(200).send({status: true, message: "Preferences updated."})
+        }
+        else {
+            return response.status(400).send({status: false, message: 'Something went wrong.'})
+        }
+    }
+    catch (err) {
+        return response.status(400).send({status: false, message: err})
+    }
+}
 //Simple version, without validation or sanitation
 exports.user_authentication = async function (request, response) {
     //Login a registered user\
@@ -60,6 +76,7 @@ exports.user_authentication = async function (request, response) {
         const { email, password } = request.body
         // Search for a user by email and password.
         const user = await User.findOne({ email })
+        console.log(user)
         if (!user) {
             return response.send({ status: false, message: 'Email has not been match with our records.' })
         }
@@ -80,10 +97,15 @@ exports.user_authentication = async function (request, response) {
 
         //Generate and update JWT token to user account
         const token = await user.generateAuthToken();
-        return response.send({ status: true, data: { user, token, role: "User" } })
-        ;
+        if (user.role_id === "63df45c46006f7e016449ebf"){
+            return response.send({ status: true, data: { user: token, role: "User"} })
+
+        }
+        else {
+            return response.send({ status: true, data: { user, token, role: "User"} })
+
+        }
     } catch (error) {
-        console.log(error)
         return response.status(400).send({ status: false, message: "Something went wrong" })
     }
 };

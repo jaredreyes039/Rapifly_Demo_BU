@@ -60,6 +60,11 @@ let UsersSchema = new Schema({
     },
     delegationtimeout: {
         type: Number
+    },
+    instructionBoxOpen: {
+        type: Boolean,
+        require: false,
+        default: true
     }
 });
 
