@@ -335,7 +335,6 @@ export class ItemPlanDetailsComponent implements OnInit {
     this.launchgoalalert();
     this.getDesignations();
     
-    console.log(this.designations)
     $(function () {
       $('button').on('click', function () {
         $('#jstree').jstree(true).select_node('child_node_1');
@@ -606,7 +605,6 @@ export class ItemPlanDetailsComponent implements OnInit {
   toggleInstructionBox(){
     this.toggleInstructionBoxOpenOnVisit()
     this.instructionBoxOpen = !this.instructionBoxOpen
-    console.log(this.parentplanDetails[0])
     if (!this.instructionBoxOpen){
       this.keepGetStartedOpenOnVist = this.currentuser.instructionBoxOpen
     }
@@ -863,7 +861,6 @@ export class ItemPlanDetailsComponent implements OnInit {
     this.commonService.PostAPI(`goal/get/by/id`, { goal_id: goal }).then((response: any) => {
       if (response.status) {
         this.childgoalDetails = response.data;
-        console.log(this.childgoalDetails)
         if (this.currentuser.user._id == this.childgoalDetails.user_id) {
           this.checkforgoaledit = true;
         } else {
@@ -1186,11 +1183,9 @@ export class ItemPlanDetailsComponent implements OnInit {
 
       if (type !== 'C'){
         try {
-          console.log('Interval cleared')
           clearInterval(this.cdInterval);
         }
         catch (err) {
-          console.log(err)
           return ;
         }
       }
@@ -1657,7 +1652,6 @@ export class ItemPlanDetailsComponent implements OnInit {
     this.commonService.PostAPI(`goal/getgoals/bycountdown`, { id: planid, module_type: this.moduleType }).then((response: any) => {
       if (response.status) {
         this.countdownGoals = response.data;
-        console.log(this.countdownGoals)
         this.countdownGoals.forEach((element1, index) => {
           var finalhours = 0;
           var finalminutes = 0;
@@ -1671,9 +1665,7 @@ export class ItemPlanDetailsComponent implements OnInit {
             if (new Date(this.countdownGoals[0].start_date).getTime() <= new Date().getTime()) {
               var end_time = new Date(this.countdownGoals[0].start_date).getTime();
             }
-            console.log(this.parentplanDetails[0].end_date, element1.end_date)
             var diff = new Date(element1.end_date).getTime() - new Date().getTime();
-            console.log(diff)
             var days = Math.floor(diff / (60 * 60 * 24 * 1000));
             var hours = Math.floor(diff / (60 * 60 * 1000)) - (days * 24);
             var minutes = Math.floor(diff / (60 * 1000)) - ((days * 24 * 60) + (hours * 60));
@@ -1704,7 +1696,6 @@ export class ItemPlanDetailsComponent implements OnInit {
     this.commonService.PostAPI(`goal/getgoals/bycountdown`, { id: planid, module_type: this.moduleType }).then((response: any) => {
       if (response.status && response.data && response.data.length > 0) {
         this.launchGoals = response.data;
-        console.log(this.launchGoals)
         this.launchGoals.forEach((element1, index) => {
           var finalhours = 0;
           var finalminutes = 0;
