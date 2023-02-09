@@ -46,6 +46,7 @@ exports.create = async function (request, response) {
     Goals.find({ plan_id: body.plan_id }, async (err, res) => {
         if (err) throw err;
         if (res) {
+            console.log(res)
             if (res.length == 0) {
                 request.body.prioritize = 1;
             } else {

@@ -519,7 +519,7 @@
                     Create Project Profile
                 </div>
                 <div class="col-md-12 form-group text-right">
-                    <button type="button" class="btn btn-warning mt-20" (click)="fetch()">Add Form Control</button>
+                    <button type="button" class="btn btn-warning mt-20" (click)="fetch()">Manage Additional Fields</button>
                 </div>
                 <div class="panel panel-cutom-blue">
                     <div class="panel-body">
@@ -612,17 +612,79 @@
                                 </div>
                             </div>   
 
-                            <div  class="col-md-12 form-group" style="display: flex;  margin-bottom: 12px;">
+                            <div  class="col-md-12 form-group" style="display: flex;  margin-bottom: 12px; flex-direction: column;">
 
-                                <div class="text-white bg-dark parent-item-val-spec" style="padding: 6px;">
+                                <div class="text-white bg-dark parent-item-val-spec" style="padding: 6px; margin-bottom: 24px;">
                                 <div class=" parent-item-label-spec">Description</div>
                                 <textarea type="text" formControlName="description" class="form-control bg-dark"
                                 placeholder="Click to edit description" style="border-radius: 0px; border: none; border-left: 2px solid #fff; padding-left: 12px;"></textarea>
                                 <div *ngIf="submitted && f.description.errors" class="invalid-feedback">
                                     <div *ngIf="f.description.errors.required">Description is required</div>
-                                </div>                                    
+                                </div>
+                                
+                                
+                                </div>
+
+                                <div class="col-md-12 form-group" style="display: flex; padding: 0px;">
+                                <mat-expansion-panel  [expanded]="false" class="expanse-panel" style="width: 100%; margin-bottom: 12px !important;">
+                                    <mat-expansion-panel-header class="page-title">
+                                        <h3>Additional Fields</h3>
+                                    </mat-expansion-panel-header>
+                                    <div class="panel-cutom-blue" style="padding: 12px;">
+                                        <div class="panel-body">          
+                                            <div class="row">
+                                                <div class="col-md-8 form-group">
+                                                    <label>Share Goal(s) Permission To Users</label>
+                                                    <ng-select [items]="childUsersList" bindLabel="name" placeholder="Select Users"
+                                                        formControlName="share_users" appendTo="body" multiple="true"
+                                                        [(ngModel)]="selectedSharedPlanUser" (change)="onChangePlan($event)">
+                                                    </ng-select>
+                                                </div>
+                                                <div class="row"></div>
+                                                <div class="col-md-6 form-group" *ngFor="let dev of datafinal">
+                                                    <div *ngIf="(dev.type=='text');">
+                                                        <label>{{dev.name}}<span *ngIf="dev.required=='true'">*</span></label>
+                                                        <input type="text" formControlName="{{dev.name}}" id="long_name"
+                                                            class="form-control" placeholder="Enter {{dev.name}}" autocomplete="off"
+                                                            required="{{dev.required}}"
+                                                            [ngClass]="{ 'is-invalid': IsLoginFormValid && jval[dev.name].errors }">
+                                                        <div *ngIf="IsLoginFormValid && jval[dev.name].errors" class="invalid-feedback">
+                                                            <label *ngIf="jval[dev.name].errors.required" class="error">{{dev.name}} is
+                                                                required</label>
+                                                        </div>
+                                                    </div>
+                                                    <div *ngIf="(dev.type=='number');">
+                                                        <label>{{dev.name}}<span *ngIf="dev.required=='true'">*</span></label>
+                                                        <input type="number" formControlName="{{dev.name}}" class="form-control"
+                                                            placeholder="Enter {{dev.name}}" autocomplete="off" required="{{dev.required}}"
+                                                            [ngClass]="{ 'is-invalid': IsLoginFormValid && jval[dev.name].errors }">
+                                                        <div *ngIf="IsLoginFormValid && jval[dev.name].errors" class="invalid-feedback">
+                                                            <label *ngIf="jval[dev.name].errors.required" class="error">{{dev.name}} is
+                                                                required</label>
+                                                        </div>
+                                                    </div>
+                                                    <div *ngIf="(dev.type=='select')">
+                                                        <label>{{dev.name}}<span *ngIf="dev.required=='true'">*</span></label>
+                                                        <select class="form-control" formControlName="{{dev.name}}" #selectField
+                                                            required="{{dev.required}}"
+                                                            [ngClass]="{ 'is-invalid': IsLoginFormValid && jval[dev.name].errors }">
+                                                            <option value="">Select {{dev.name}}</option>
+                                                            <option *ngFor="let plan of dev.option" value="{{plan.id}}">{{plan.id}}</option>
+                                                        </select>
+                                                        <div *ngIf="IsLoginFormValid && jval[dev.name].errors" class="invalid-feedback">
+                                                            <label *ngIf="jval[dev.name].errors.required" class="error">{{dev.name}} is
+                                                                required</label>
+                                                        </div>
+                                                    </div>
+                                                
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    </mat-expansion-panel>
                             </div>
                             </div>
+                            
 
                             <div style="padding: 40px;">
                                 <div class="form-group">
@@ -649,62 +711,8 @@
                         </div>
                     </div>
                 </div>
-                <mat-expansion-panel  [expanded]="true" class="expanse-panel">
-                <mat-expansion-panel-header class="page-title">
-                    <h3>Additional Fields</h3>
-                </mat-expansion-panel-header>
-                <div class="panel panel-cutom-blue">
-                    <div class="panel-body">          
-                        <div class="row">
-                            <div class="col-md-8 form-group">
-                                <label>Share Goal(s) Permission To Users</label>
-                                <ng-select [items]="childUsersList" bindLabel="name" placeholder="Select Users"
-                                    formControlName="share_users" appendTo="body" multiple="true"
-                                    [(ngModel)]="selectedSharedPlanUser" (change)="onChangePlan($event)">
-                                </ng-select>
-                            </div>
-                            <div class="row"></div>
-                            <div class="col-md-6 form-group" *ngFor="let dev of datafinal">
-                                <div *ngIf="(dev.type=='text');">
-                                    <label>{{dev.name}}<span *ngIf="dev.required=='true'">*</span></label>
-                                    <input type="text" formControlName="{{dev.name}}" id="long_name"
-                                        class="form-control" placeholder="Enter {{dev.name}}" autocomplete="off"
-                                        required="{{dev.required}}"
-                                        [ngClass]="{ 'is-invalid': IsLoginFormValid && jval[dev.name].errors }">
-                                    <div *ngIf="IsLoginFormValid && jval[dev.name].errors" class="invalid-feedback">
-                                        <label *ngIf="jval[dev.name].errors.required" class="error">{{dev.name}} is
-                                            required</label>
-                                    </div>
-                                </div>
-                                <div *ngIf="(dev.type=='number');">
-                                    <label>{{dev.name}}<span *ngIf="dev.required=='true'">*</span></label>
-                                    <input type="number" formControlName="{{dev.name}}" class="form-control"
-                                        placeholder="Enter {{dev.name}}" autocomplete="off" required="{{dev.required}}"
-                                        [ngClass]="{ 'is-invalid': IsLoginFormValid && jval[dev.name].errors }">
-                                    <div *ngIf="IsLoginFormValid && jval[dev.name].errors" class="invalid-feedback">
-                                        <label *ngIf="jval[dev.name].errors.required" class="error">{{dev.name}} is
-                                            required</label>
-                                    </div>
-                                </div>
-                                <div *ngIf="(dev.type=='select')">
-                                    <label>{{dev.name}}<span *ngIf="dev.required=='true'">*</span></label>
-                                    <select class="form-control" formControlName="{{dev.name}}" #selectField
-                                        required="{{dev.required}}"
-                                        [ngClass]="{ 'is-invalid': IsLoginFormValid && jval[dev.name].errors }">
-                                        <option value="">Select {{dev.name}}</option>
-                                        <option *ngFor="let plan of dev.option" value="{{plan.id}}">{{plan.id}}</option>
-                                    </select>
-                                    <div *ngIf="IsLoginFormValid && jval[dev.name].errors" class="invalid-feedback">
-                                        <label *ngIf="jval[dev.name].errors.required" class="error">{{dev.name}} is
-                                            required</label>
-                                    </div>
-                                </div>
-                            
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                </mat-expansion-panel>
+
+
             </form>
 
             <mat-expansion-panel  class="expanse-panel expanse-panel-discussion">
@@ -1582,29 +1590,18 @@
                                 </div>
                             </div>
                             <hr>
-                            <div *ngFor="let parentplan of parentplanDetails[0] | keyvalue ">
-                                <div style="display: flex; flex-direction: column;"
-                                    *ngIf="parentplan.key !='_id' && parentplan.key !='shared_permission_users' && parentplan.key !='share_users' && parentplan.key !='shared_plan_users' && parentplan.key !='user_group_id' && parentplan.key !='number' && parentplan.key !='motivation' && parentplan.value " [hidden]="parentplan.value==''">
-                                    <div style="display: flex; flex-direction: row; margin-bottom: 12px;"
-                                        *ngIf="parentplan.key !='start_date' && parentplan.key !='end_date' && parentplan.key !='user_id' && parentplan.key !='security' && parentplan.key != 'short_name' && parentplan.key != 'long_name' && parentplan.key != 'production_target' && parentplan.key != 'expense_target' && parentplan.key != 'production_type'
-                                        && parentplan.key != 'description' && parentplan.key != 'numbers'">
-                                        <div class="parent-item-label">{{textDecoration(parentplan.key)}}:</div>
-                                        <div class="text-white bg-dark parent-item-val" style="width: 100%; max-width: unset; display: flex; align-items: center;" *ngIf="parentplan.key !='userid' ">
-                                            {{parentplan.value}}</div>
-                                    </div>
-                                </div>
-                            </div>
+                            
                         </div>
                     </div>
                     <mat-expansion-panel>
                         <mat-expansion-panel-header class="page-title">
                             <h3>Additional Fields</h3>
                         </mat-expansion-panel-header>
-                    <div  *ngFor="let parentplan of parentplanDetails[0] | keyvalue ">
+                    <div  *ngFor="let parentplan of parentplanDetails[0] | keyvalue " style="padding-top: 12px;">
                         <div style="display: flex; flex-direction: column;"
-                            *ngIf="parentplan.key !='_id' && parentplan.key !='shared_permission_users' && parentplan.key !='share_users' && parentplan.key !='shared_plan_users' && parentplan.key !='user_group_id' && parentplan.key !='number' && parentplan.key !='motivation' && parentplan.value " [hidden]="parentplan.value==''">
+                            *ngIf="parentplan.key !='_id' && parentplan.key !='shared_permission_users' && parentplan.key !='share_users' && parentplan.key !='shared_plan_users' && parentplan.key !='user_group_id' && parentplan.key !='number' && parentplan.key !='motivation' && parentplan.value && parentplan.value !== ''" [hidden]="parentplan.value==''">
                             <div style="display: flex; flex-direction: row; margin-bottom: 12px;"
-                                *ngIf="parentplan.key !='start_date' && parentplan.key !='end_date' && parentplan.key !='user_id' && parentplan.key !='security' && parentplan.key != 'short_name' && parentplan.key != 'long_name' && parentplan.key != 'production_target' && parentplan.key != 'expense_target' && parentplan.key != 'production_type'
+                                *ngIf="parentplan.value != '' && parentplan.key !='start_date' && parentplan.key !='end_date' && parentplan.key !='user_id' && parentplan.key !='security' && parentplan.key != 'short_name' && parentplan.key != 'long_name' && parentplan.key != 'production_target' && parentplan.key != 'expense_target' && parentplan.key != 'production_type'
                                 && parentplan.key != 'description' && parentplan.key != 'numbers'">
                                 <div class="parent-item-label">{{textDecoration(parentplan.key)}}:</div>
                                 <div class="text-white bg-dark parent-item-val" style="width: 100%; max-width: unset; display: flex; align-items: center;" *ngIf="parentplan.key !='userid' ">
@@ -3062,7 +3059,7 @@
                     <table class="table table-striped">
                         <thead>
                             <tr>
-                                <th class="prioritize-blue">Send To Voting</th>
+                                <th class="prioritize-blue">Propose for Voting</th>
                                 <!-- <th class="prioritize-blue">Propose</th> -->
                                 <th class="prioritize-blue">Priority</th>
                                 <th class="prioritize-blue">(G) Short Name</th>
@@ -4610,7 +4607,7 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                             aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="fromControlModalLabel">Add Form Control</h4>
+                    <h4 class="modal-title" id="fromControlModalLabel">Manage Additional Fields</h4>
                 </div>
                 <div class="modal-body">
                     <div>

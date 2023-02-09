@@ -12,6 +12,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { DatePipe, PlatformLocation } from '@angular/common'
 import * as moment from 'moment';
 import { NgbDate, NgbCalendar, NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap';
+import { element } from 'protractor';
 
 declare var $: any;
 
@@ -28,6 +29,8 @@ export class ItemPlanDetailsComponent implements OnInit {
   DiscussionForm: FormGroup;
   isSubmittedDiscussionForm: boolean = false;
   discussionAttachments: any = [];
+
+  cdInterval: any;
 
   currentchildUser
   currentuser;
@@ -48,6 +51,7 @@ export class ItemPlanDetailsComponent implements OnInit {
   checkforgoaledit = false
   parentIsActiveSelection: boolean;
 
+  initGrabCD: boolean = false;
   pparentplanDetails;
   planstartdate;
   planenddate;
@@ -331,7 +335,7 @@ export class ItemPlanDetailsComponent implements OnInit {
     this.launchgoalalert();
     this.getDesignations();
     
-
+    console.log(this.designations)
     $(function () {
       $('button').on('click', function () {
         $('#jstree').jstree(true).select_node('child_node_1');
@@ -1168,9 +1172,29 @@ export class ItemPlanDetailsComponent implements OnInit {
         this.getalldelegategoals();
       }
 
-      if (type == 'C') {
+      while (type == 'C') {
         this.getCountdownGoals(this.planId);
+        this.initGrabCD = true;
+        this.cdInterval = setInterval(()=>{
+          if (type === 'C'){
+            this.getCountdownGoals(this.planId)
+          }
+          else return ;
+        }, 60000)
+        break;
       }
+
+      if (type !== 'C'){
+        try {
+          console.log('Interval cleared')
+          clearInterval(this.cdInterval);
+        }
+        catch (err) {
+          console.log(err)
+          return ;
+        }
+      }
+      
 
       if (type == 'L') {
         this.getLaunchGoals(this.planId);
@@ -1437,7 +1461,7 @@ export class ItemPlanDetailsComponent implements OnInit {
   }
 
   dataTableAfterViewInit() {
-    var table = $('#' + this.tableId).DataTable();
+    var table = $('#' + this.tableId).DataTable({destroy: true});
     table.destroy();
 
     // this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
@@ -1633,6 +1657,7 @@ export class ItemPlanDetailsComponent implements OnInit {
     this.commonService.PostAPI(`goal/getgoals/bycountdown`, { id: planid, module_type: this.moduleType }).then((response: any) => {
       if (response.status) {
         this.countdownGoals = response.data;
+        console.log(this.countdownGoals)
         this.countdownGoals.forEach((element1, index) => {
           var finalhours = 0;
           var finalminutes = 0;
@@ -1646,7 +1671,9 @@ export class ItemPlanDetailsComponent implements OnInit {
             if (new Date(this.countdownGoals[0].start_date).getTime() <= new Date().getTime()) {
               var end_time = new Date(this.countdownGoals[0].start_date).getTime();
             }
-            var diff = end_time - element1.countdown;
+            console.log(this.parentplanDetails[0].end_date, element1.end_date)
+            var diff = new Date(element1.end_date).getTime() - new Date().getTime();
+            console.log(diff)
             var days = Math.floor(diff / (60 * 60 * 24 * 1000));
             var hours = Math.floor(diff / (60 * 60 * 1000)) - (days * 24);
             var minutes = Math.floor(diff / (60 * 1000)) - ((days * 24 * 60) + (hours * 60));
@@ -1657,13 +1684,15 @@ export class ItemPlanDetailsComponent implements OnInit {
               finalhours++;
               finalminutes = finalminutes - 60;
             }
-            this.countdownGoals[index]['total_time'] = finalhours + ':' + finalminutes;
+            this.countdownGoals[index]['total_time'] = days + 'D:' + finalhours + 'H:' + finalminutes + 'M';
           }
         })
 
         this.dividearrayintothreepart = 1
-        this.dtTriggerCountdown.next();
-        this.dataTableAfterViewInit();
+        if(!this.initGrabCD) {
+          this.dtTriggerCountdown.next();
+          this.dataTableAfterViewInit();
+        }
       } else {
         this.toastr.error(response.message, "Error");
       }
@@ -1679,30 +1708,31 @@ export class ItemPlanDetailsComponent implements OnInit {
         this.launchGoals.forEach((element1, index) => {
           var finalhours = 0;
           var finalminutes = 0;
-
           if (element1.countdown) {
-            if (new Date(this.launchGoals[0].start_date).getTime() >= new Date().getTime()) {
-              var end_time = new Date().getTime();
-            }
-            if (new Date(this.launchGoals[0].start_date).getTime() == new Date().getTime()) {
-              var end_time = new Date(this.launchGoals[0].start_date).getTime();
-            }
-            if (new Date(this.launchGoals[0].start_date).getTime() <= new Date().getTime()) {
-              var end_time = new Date(this.launchGoals[0].start_date).getTime();
-            }
-
-            var diff = end_time - element1.countdown;
+            var diff = new Date().getTime() - new Date(element1.start_date).getTime();
             var days = Math.floor(diff / (60 * 60 * 24 * 1000));
             var hours = Math.floor(diff / (60 * 60 * 1000)) - (days * 24);
             var minutes = Math.floor(diff / (60 * 1000)) - ((days * 24 * 60) + (hours * 60));
-            var seconds = Math.floor(diff / 1000) - ((days * 24 * 60 * 60) + (hours * 60 * 60) + (minutes * 60));
             finalhours += hours;
             finalminutes += minutes;
             if (finalminutes > 60) {
               finalhours++;
               finalminutes = finalminutes - 60;
             }
-            this.launchGoals[index]['total_time'] = finalhours + ':' + finalminutes;
+            let TimesArr = [days, finalhours, finalminutes]
+            let verifiedTimesArr = TimesArr.map((time)=>{
+              if(time<0){
+                return 'XX'
+              }
+              else return time
+            })
+
+            if (verifiedTimesArr.includes('XX')){
+              this.launchGoals[index]['total_time'] = 'Ahead of start date, check back later!';
+            }
+            else { 
+              this.launchGoals[index]['total_time'] = verifiedTimesArr[0] + 'D:' + verifiedTimesArr[1] + 'H:' + verifiedTimesArr[2] + 'M';
+            }
           }
         });
       } else {
