@@ -278,7 +278,7 @@ export class ItemPlanDetailsComponent implements OnInit {
   parent_user_id: any;
   instructionBoxOpen: Boolean = false;
   constructor(
-    private toastr: ToastrService,
+    public toastr: ToastrService,
     public authenticationService: AuthenticationService,
     public router: Router,
     private route: ActivatedRoute,
