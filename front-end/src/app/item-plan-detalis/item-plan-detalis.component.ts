@@ -1745,7 +1745,7 @@ export class ItemPlanDetailsComponent implements OnInit {
   getReportGoals(planid) {
     this.commonService.PostAPI(`report/get/all`, { plan_id: planid, user_id: this.currentuser.user._id }).then((response: any) => {
       if (response.status && response.data && response.data.length > 0) {
-        this.reportGoals = response.data;
+        this.reportGoals = response.data.filter(report => report.element.isReportReady);
       } else {
         this.reportGoals = [];
       }
@@ -1754,6 +1754,10 @@ export class ItemPlanDetailsComponent implements OnInit {
       this.tableId = 'report-table';
       this.dataTableAfterViewInit();
     });
+  }
+
+  warnConstruction(){
+    alert('Under construction, please check back later for updates!')
   }
 
   
