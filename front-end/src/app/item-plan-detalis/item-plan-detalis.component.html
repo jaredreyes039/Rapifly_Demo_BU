@@ -218,13 +218,13 @@
                                 <p (click)="selectPhase('L')" title="Launch" class="cursor-pointer"
                                     [ngClass]="{'active-phase' : selectedPhase == 'L'}">
                                     {{ (selectedPhase == 'L') ? 'Launch' : 'L' }}
-                                </p><p>&nbsp;|</p>
+                            </div>
+                            <div class="col-md-9 space-stage" *ngIf="selectedStage == 'evaluate'">
                                 <p (click)="selectPhase('R')" title="Report" class="cursor-pointer"
                                     [ngClass]="{'active-phase' : selectedPhase == 'R'}">
                                     {{ (selectedPhase == 'R') ? 'Report' : 'R' }}
                                 </p>
-                            </div>
-                            <div class="col-md-9 space-stage" *ngIf="selectedStage == 'evaluate'">
+                                <p>&nbsp;|</p>
                                 <p (click)="selectPhase('M')" title="Measure" class="cursor-pointer"
                                     [ngClass]="{'active-phase' : selectedPhase == 'M'}">
                                     {{ (selectedPhase == 'M') ? 'Measure' : 'M' }}
@@ -239,12 +239,12 @@
                             <p>Challenges: </p>
                         </div>
                         <div class="col-md-9 space-stage">
-                            <p title="Opportunity" class="cursor-pointer" (click)="selectModule('opportunity')"
-                            [ngClass]="{'active-phase' : selectedModules == 'opportunity'}">
+                            <p title="Opportunity" class="cursor-pointer" (click)="selectedPhase == 'B' ? selectModule('opportunity') : toastr.error(false, 'Must be in brainstorm phase.') ;"
+                            [ngClass]="{'active-phase' : selectedModules == 'opportunity' && selectedPhase == 'B'}">
                                 Opportunity
                             </p><p>&nbsp;|</p>
-                            <p title="Problem" class="cursor-pointer" (click)="selectModule('problem')"
-                            [ngClass]="{'active-phase' : selectedModules == 'problem'}">
+                            <p title="Problem" class="cursor-pointer" (click)="selectedPhase == 'B' ? selectModule('problem') : toastr.error(false, 'Must be in brainstorm phase.') ;"
+                            [ngClass]="{'active-phase' : selectedModules == 'problem' && selectedPhase == 'B'}">
                                 Problem
                             </p>
                         </div>
@@ -811,89 +811,141 @@
 
         <div class="col-md-9" *ngIf="selectedPhase == 'user'">
             <div class="page-title">
-                <h3>Create Hierarchy</h3>
+                User Dashboard
             </div>
 
             <div class="panel panel-cutom-blue">
                 <div class="panel-body">
-                    <div class="row col-md-12 text-right">
-                        <a routerLink="/users" class="btn btn-danger m-b-sm"><i
-                                class="fa fa-users"></i>&nbsp;Users</a>&nbsp;
-                        <a routerLink="/invite/user" class="btn btn-info m-b-sm"><i
-                                class="fa fa-user-plus"></i>&nbsp;Invite User</a>&nbsp;
-                        <a routerLink="/hierarchy" class="btn btn-primary m-b-sm"><i
-                                class="fa fa-link"></i>&nbsp;Hierarchy</a>&nbsp;
-                        <a routerLink="/hierarchy/manage" class="btn btn-success m-b-sm"><i
-                                class="fa fa-user-plus"></i>&nbsp;Manage Hierarchy</a>&nbsp;
-                        <a routerLink="/hierarchy/change" class="btn btn-warning m-b-sm"><i
-                                class="fa fa-pencil"></i>&nbsp;Update Hierarchy</a>
-                    </div>
-                    <form [formGroup]="InviteUserForm">
-                        <div class="row">
-                            <div class="col-md-12 form-group">
-                                <label>Users<span>*</span></label>
-                                <select class="form-control" formControlName="user_id">
-                                    <option value="">Select User</option>
-                                    <option *ngFor="let hu of users;" value="{{hu.user_id._id}}">
-                                        {{ hu.user_id.first_name }} {{ hu.user_id.last_name }}
-                                        ({{hu.hierarchy_id.designation}})</option>
-                                </select>
-                                <div *ngIf="isInviteUserFormValid && iFrm.user_id.errors" class="invalid-feedback">
-                                    <label *ngIf="iFrm.user_id.errors.required" class="error">Select any user</label>
-                                </div>
-                            </div>
-                            <div class="col-md-6 form-group">
-                                <label>First Name<span>*</span></label>
-                                <input type="text" formControlName="first_name" class="form-control"
-                                    placeholder="First Name"
-                                    [ngClass]="{ 'is-invalid': isInviteUserFormValid && iFrm.first_name.errors }"
-                                    autocomplete="off">
-                                <div *ngIf="isInviteUserFormValid && iFrm.first_name.errors" class="invalid-feedback">
-                                    <label *ngIf="iFrm.first_name.errors.required" class="error">First Name is
-                                        required</label>
-                                </div>
-                            </div>
-                            <div class="col-md-6 form-group">
-                                <label>Last Name<span>*</span></label>
-                                <input type="text" formControlName="last_name" class="form-control"
-                                    placeholder="Last Name"
-                                    [ngClass]="{ 'is-invalid': isInviteUserFormValid && iFrm.last_name.errors }"
-                                    autocomplete="off">
-                                <div *ngIf="isInviteUserFormValid && iFrm.last_name.errors" class="invalid-feedback">
-                                    <label *ngIf="iFrm.last_name.errors.required" class="error">Last Name is
-                                        required</label>
-                                </div>
-                            </div>
-                            <div class="col-md-6 form-group">
-                                <label>Role<span>*</span></label>
-                                <input type="text" formControlName="designation" class="form-control" placeholder="Role"
-                                    [ngClass]="{ 'is-invalid': isInviteUserFormValid && iFrm.designation.errors }"
-                                    autocomplete="off">
-                                <div *ngIf="isInviteUserFormValid && iFrm.designation.errors" class="invalid-feedback">
-                                    <label *ngIf="iFrm.designation.errors.required" class="error">Role is
-                                        required</label>
-                                </div>
-                            </div>
-                            <div class="col-md-6 form-group">
-                                <label>Email<span>*</span></label>
-                                <input type="text" formControlName="email" class="form-control" placeholder="Email"
-                                    [ngClass]="{ 'is-invalid': isInviteUserFormValid && iFrm.email.errors }"
-                                    autocomplete="off">
-                                <div *ngIf="isInviteUserFormValid && iFrm.email.errors" class="invalid-feedback">
-                                    <label *ngIf="iFrm.email.errors.required" class="error">Email is required</label>
-                                    <label *ngIf="iFrm.email.errors.email" class="error">Please enter valid email
-                                        address</label>
-                                </div>
-                            </div>
-                            <div class="col-md-12 form-group text-right">
-                                <button type="reset" (click)="resetInviteForm()" class="btn btn-default">Reset</button>
-                                <button type="submit" (click)="submitInviteForm()"
-                                    class="btn btn-primary btn-space ">Submit</button>
-                            </div>
+                    <div class="row col-md-12">
+                        <div style="margin-bottom: 24px;">    
+                            <h4 class="modal-title" id="myModalLabel">{{currentuser.role}} || <span style="color: yellow;">{{currentuser.user.first_name}} {{currentuser.user.last_name}}</span> </h4>
                         </div>
-                    </form>
+                    </div>
+                    <div>
+                        <h2>Project Profiles</h2>
+                        <hr>
+                        <div>
+                            <article style="display: flex; gap: 12px; flex-grow: 1; flex-shrink: 0.75;">
+                                <div style="display: flex;">
+                                    <div class="parent-item-label">Parent Profiles</div>
+                                    <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
+                                        8
+                                    </div>
+                                </div>
+                                <div style="display: flex;">
+                                    <div class="parent-item-label">Total Profiles</div>
+                                    <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
+                                        17
+                                    </div>
+                                </div>
+                                <div style="display: flex;">
+                                    <div class="parent-item-label parent-item-label-alert">Total Delegated Tasks</div>
+                                    <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
+                                        Under Construction...
+                                    </div>
+                                </div>
+                            </article>
+                        </div>
+                        <br>
+                        <div>
+                            <article style="display: flex; gap: 12px; flex-grow: 1; flex-shrink: 0.75;">
+                                <div style="display: flex;">
+                                    <div class="parent-item-label">Launched Profiles</div>
+                                    <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
+                                        2
+                                    </div>
+                                </div>
+                                <div style="display: flex;">
+                                    <div class="parent-item-label">Reported Profiles</div>
+                                    <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
+                                        5
+                                    </div>
+                                </div>
+                                <div style="display: flex;">
+                                    <div class="parent-item-label parent-item-label-alert">Queued for Launch</div>
+                                    <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
+                                        5
+                                    </div>
+                                </div>
+                            </article>
+                        </div>
+                    </div>
                 </div>
             </div>
+            <div class="panel panel-cutom-blue">
+                <div class="panel-body">
+                    <div>
+                        <h2>Organization</h2>
+                        <hr>
+                        <div>
+                            <article style="display: flex; gap: 12px; flex-grow: 1; flex-shrink: 0.75;">
+                                <div style="display: flex;">
+                                    <div class="parent-item-label">Organization</div>
+                                    <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
+                                        Under Construction...
+                                    </div>
+                                </div>
+                                <div style="display: flex;">
+                                    <div class="parent-item-label">Assigned Admin</div>
+                                    <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
+                                        Under Construction...
+                                    </div>
+                                </div>
+                                <div style="display: flex;">
+                                    <div class="parent-item-label parent-item-label-alert">Role</div>
+                                    <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
+                                        Under Construction...
+                                    </div>
+                                </div>
+                            </article>
+                        </div>
+                        <br>
+                        <div>
+                            <article style="display: flex; gap: 12px; flex-grow: 1; flex-shrink: 0.75;">
+                                Welcome, here is the future sight for information regarding your registered organization. Displaying
+                                important data such as roles, admins, production-to-expense ratios, and more...
+                            </article>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-cutom-blue">
+                <div class="panel-body">
+                    <div>
+                        <h2>Contacts</h2>
+                        <hr>
+                        <div>
+                            <article style="display: flex; gap: 12px; flex-grow: 1; flex-shrink: 0.75;">
+                                Welcome, this is the future sight of your Coaches Corner saved contacts. With the critical function of Rapifly
+                                hinging on user ability to connect w/ local and global experts, there is a necessity for users to be able to save and maintain
+                                a simple, organized contacts list for convenience.
+                            </article>
+                        </div>
+                        <div>
+                            <table class="display table table-data-width">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Role</th>
+                                        <th>Email</th>
+                                        <th>Phone #</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Jay Reyes</td>
+                                        <td>Lead Developer</td>
+                                        <td>Jaredreyes039@gmail.com</td>
+                                        <td>+1 (520) 940-1534</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <br>
+                    </div>
+                </div>
+            </div>
+
         </div>
 
         <div class="col-md-9" *ngIf="selectedPhase == 'security'">
@@ -1167,36 +1219,13 @@
                                     <h3>Dashboard</h3>
                                 </mat-expansion-panel-header>
                                 <div style="display: flex; flex-direction: row; margin-bottom: 12px;">
-                                <!-- <div class="col-md-3 form-group">
-                                    <label>Production Target</label>
-                                    <input type="number" class="form-control" placeholder="Production Target" formControlName="production_target" [ngClass]="{ 'is-invalid': submitted && f.production_target.errors }">
-                                    <div *ngIf="submitted && f.production_target.errors" class="invalid-feedback">
-                                        <label *ngIf="f.production_target.errors.required" class="error">Production target is required</label>
-                                    </div>
-                                </div> -->
-                                <!-- <div class="col-md-3 form-group">
-                                    <label>Type</label>
-                                    <select class="form-control" formControlName="production_type">
-                                        <option value="">Select Type</option>
-                                        <option value="units">Units</option>
-                                    </select>
-                                    <div *ngIf="submitted && f.production_type.errors" class="invalid-feedback">
-                                        <label *ngIf="f.production_type.errors.required" class="error">Production type is required</label>
-                                    </div>
-                                </div> -->
-                                <!-- <div class="col-md-6 form-group">
-                                    <label>Expense Target</label>
-                                    <input type="number" class="form-control" placeholder="Expense Target" formControlName="expense_target" [ngClass]="{ 'is-invalid': submitted && f.expense_target.errors }">
-                                    <div *ngIf="submitted && f.expense_target.errors" class="invalid-feedback">
-                                        <label *ngIf="f.expense_target.errors.required" class="error">Expense target is required</label>
-                                    </div>
-                                </div> -->
+
                                 <div style="display: flex; flex-direction: row;">
                                     <div style="display: flex; flex-direction: column;">
                                     <div style="display: flex;">
                                     <label class="parent-item-label parent-item-label-alert" for="exampleInputEmail1">Production Target</label>
                                     <input type="text" formControlName="production_target" class="text-white bg-dark parent-item-val form-control form-control-spec"
-                                        placeholder="Short name"
+                                        placeholder="Production Target"
                                         [ngClass]="{ 'is-invalid': submitted && f.production_target.errors }" autocomplete="off">
                                     <div *ngIf="submitted && f.production_target.errors" class="invalid-feedback">
                                         <div *ngIf="f.production_target.errors.required">Production target is required</div>
@@ -1207,7 +1236,7 @@
 
                                     <label class="parent-item-label parent-item-label-alert" for="exampleInputPassword1">Expense Target</label>
                                     <input type="text" id="long_name" formControlName="expense_target" class="text-white bg-dark parent-item-val form-control form-control-spec"
-                                        placeholder="Long name"
+                                        placeholder="Expense Target"
                                         [ngClass]="{ 'is-invalid': submitted && f.expense_target.errors }" autocomplete="off">
                                     <div *ngIf="submitted && f.expense_target.errors" class="invalid-feedback">
                                         <div *ngIf="f.expense_target.errors.required">Expense target is required</div>
@@ -3856,8 +3885,10 @@
                         <tbody>
                             <tr *ngFor="let p of delegateGoals; let i=index;">
                                 <td>
+                                    <!-- <button class="btn btn-success"
+                                        (click)="goaldelegate(p._id,p.short_name)">Delegate</button> -->
                                     <button class="btn btn-success"
-                                        (click)="goaldelegate(p._id,p.short_name)">Delegate</button>
+                                        (click)="warnConstruction()">Delegate</button>
                                 </td>
                                 <td>{{ p.delegate_percentage }} %</td>
                                 <td>{{ p.prioritize }}</td>
@@ -3956,7 +3987,7 @@
                             <th class="prioritize-blue">Start Date</th>
                             <th class="prioritize-blue">End Date</th>
                             <th class="prioritize-blue">Creator</th>
-                            <th class="prioritize-blue">Countdown</th>
+                            <th class="prioritize-blue">Total Project Time</th>
                             <th class="prioritize-blue">Launch</th>
                         </tr>
                     </thead>
@@ -4698,7 +4729,7 @@
 <!-- End manage options for select modal -->
 
 <!-- Recipient Invite Modal -->
-<div class="modal fade" id="inviteModal" tabindex="-1" role="dialog" aria-labelledby="inviteModalLabel" aria-hidden="true">
+<!-- <div class="modal fade" id="inviteModal" tabindex="-1" role="dialog" aria-labelledby="inviteModalLabel" aria-hidden="true">
     <div class="modal-dialog" style="min-width: 880px;">
         <div class="modal-content">
             <div class="modal-header">
@@ -4740,5 +4771,5 @@
             </div>
         </div>
     </div>
-</div>
+</div> -->
 <!-- End Recipient Invite Modal -->
