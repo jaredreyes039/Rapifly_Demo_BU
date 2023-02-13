@@ -278,7 +278,7 @@ export class ItemPlanDetailsComponent implements OnInit {
   parent_user_id: any;
   instructionBoxOpen: Boolean = false;
   constructor(
-    public toastr: ToastrService,
+    private toastr: ToastrService,
     public authenticationService: AuthenticationService,
     public router: Router,
     private route: ActivatedRoute,
@@ -600,6 +600,10 @@ export class ItemPlanDetailsComponent implements OnInit {
         return;
       }
     })
+  }
+
+  throwToastrError(message: string){
+    return this.toastr.error(message)
   }
 
   toggleInstructionBox(){

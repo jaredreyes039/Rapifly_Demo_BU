@@ -239,11 +239,11 @@
                             <p>Challenges: </p>
                         </div>
                         <div class="col-md-9 space-stage">
-                            <p title="Opportunity" class="cursor-pointer" (click)="selectedPhase == 'B' ? selectModule('opportunity') : toastr.error(false, 'Must be in brainstorm phase.') ;"
+                            <p title="Opportunity" class="cursor-pointer" (click)="selectedPhase == 'B' ? selectModule('opportunity') : throwToastrError('Must be in brainstorm phase.')"
                             [ngClass]="{'active-phase' : selectedModules == 'opportunity' && selectedPhase == 'B'}">
                                 Opportunity
                             </p><p>&nbsp;|</p>
-                            <p title="Problem" class="cursor-pointer" (click)="selectedPhase == 'B' ? selectModule('problem') : toastr.error(false, 'Must be in brainstorm phase.') ;"
+                            <p title="Problem" class="cursor-pointer" (click)="selectedPhase == 'B' ? selectModule('problem') : throwToastrError('Must be in brainstorm phase.')"
                             [ngClass]="{'active-phase' : selectedModules == 'problem' && selectedPhase == 'B'}">
                                 Problem
                             </p>
