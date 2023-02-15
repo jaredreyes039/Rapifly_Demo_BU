@@ -1544,7 +1544,7 @@
             </div>
         </div>
 
-            <div class="expanse-panel">
+            <div class="expanse-panel" *ngIf="!parentIsActiveSelection">
                 <div class="">
                     <div class="page-title" *ngIf="!parentIsActiveSelection && selectedPhase !== 'I' ">
                         Add Sub Item
@@ -1703,7 +1703,7 @@
                                     </div>
                                 </div>
                                     <div class="col-md-12 form-group text-right">
-                                        <button type="submit " (click)="onSubmit(); toggleEditChild()"
+                                        <button type="submit " (click)="onSubmitSub(); toggleEditChild()"
                                             [disabled]="!checkforgoaledit && !isSharedPlanPermission"
                                             class="btn btn-primary btn-space">Save</button>
                                         <button type="reset" (click)="reset()" [disabled]="!checkforgoaledit "

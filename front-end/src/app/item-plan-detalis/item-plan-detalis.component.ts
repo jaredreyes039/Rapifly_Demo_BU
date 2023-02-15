@@ -246,6 +246,20 @@ export class ItemPlanDetailsComponent implements OnInit {
   userid;
   showcustomtag = false;
 
+  // SECOND CHILD PROFILE
+  childPlanFormSub: FormGroup;
+
+  // USER STATS
+
+  totalParentProfiles: Number; 
+  totalProfiles: Number;
+  totalDelegatedTasks: Number;
+  launchedProfiles: Number;
+  reportedProfiles: Number;
+  queuedForLaunch: Number;
+
+  savedContacts: any = [];
+
   //Multiselect Dropdown
   // items = [];
   // selected = [];
@@ -361,6 +375,23 @@ export class ItemPlanDetailsComponent implements OnInit {
       expense_weight: [''],
     });
 
+    this.childPlanFormSub = this.formBuilder.group({
+      short_name: ['', Validators.required],
+      long_name: ['', Validators.required],
+      description: ['', Validators.required],
+      start_date: [''],
+      end_date: [''],
+      shared_users: [''],
+      production_target: [''],
+      production_type: [''],
+      production_low_variance_alert: [''],
+      production_high_variance_alert: [''],
+      production_weight: [''],
+      expense_target: [''],
+      expense_low_variance_alert: [''],
+      expense_high_variance_alert: [''],
+      expense_weight: [''],
+    })
     // Module
     this.ModuleForm = this.formBuilder.group({
       short_name: ['', Validators.required],
@@ -961,7 +992,7 @@ export class ItemPlanDetailsComponent implements OnInit {
             if (new Date(this.planstartdate) <= new Date($('#date-input5').val()) && new Date(this.planenddate) >= new Date($('#date-input5').val()) && new Date(this.planstartdate) <= new Date($('#date-input6').val()) && new Date(this.planenddate) >= new Date($('#date-input6').val())) {
               var data = this.childPlanForm.value;
               data.editid = this.goalid;
-
+              console.log(data)
               data.user_id = this.currentuser.user._id;
               data.plan_id = this.goalplanid;
               data.status = 0;
@@ -969,7 +1000,7 @@ export class ItemPlanDetailsComponent implements OnInit {
               data.start_date = $('#date-input5').val();
               data.end_date = $('#date-input6').val();
               data.shared_users = this.selected.map((data) => data.id);
-
+              
               if (this.moduleType == '') {
                 this.moduleType = 'goal';
               }
@@ -993,6 +1024,77 @@ export class ItemPlanDetailsComponent implements OnInit {
                   this.toastr.success(response.message, "Success");
                   this.getPlanDetails();
                   this.getPlanGoals(this.goalplanid);
+                  this.reset();
+                } else {
+                  this.toastr.error(response.message, "Error");
+                  // this.is_disabled = false;
+                }
+              });
+            } else {
+              this.toastr.error("Your goal's start date and end date are extended from your plan", "Error");
+            }
+          }
+        } else {
+          if ($('#date-input5').val() == '') {
+            this.toastr.error("Please Enter Start Date", "Error");
+          } else if ($('#date-input6').val() == '') {
+            this.toastr.error("Please Enter End Date", "Error");
+          } else {
+
+          }
+        }
+      } else {
+        this.toastr.error("Please Select Project First!!", "Error");
+      }
+    }
+  }
+
+  onSubmitSub(){
+    this.submitted = true;
+    if (this.childPlanFormSub.invalid) {
+      return;
+    } else {
+      if (this.goalplanid != undefined) {
+        if ($('#date-input5').val() != '' && $('#date-input6').val() != '') {
+          if (new Date($('#date-input5').val()) > new Date($('#date-input6').val())) {
+            this.toastr.error("Your start date is greater than End Date", "Error");
+          } else {
+            if (new Date(this.planstartdate) <= new Date($('#date-input5').val()) && new Date(this.planenddate) >= new Date($('#date-input5').val()) && new Date(this.planstartdate) <= new Date($('#date-input6').val()) && new Date(this.planenddate) >= new Date($('#date-input6').val())) {
+              var data = this.childPlanFormSub.value;
+              data.editid = "";
+              data.parent_goal_id = this.childgoalDetails._id;
+              data.user_id = this.currentuser.user._id;
+              data.plan_id = this.goalplanid;
+              data.status = 0;
+              data.numbers = 0;
+              data.start_date = $('#date-input5').val();
+              data.end_date = $('#date-input6').val();
+              data.shared_users = this.selected.map((data) => data.id);
+              
+              if (this.moduleType == '') {
+                this.moduleType = 'goal';
+              }
+
+              data.module_type = this.moduleType;
+
+              const formData: any = new FormData();
+              const files: Array<File> = this.attachments;
+
+              for (let i = 0; i < files.length; i++) {
+                formData.append("attachments", files[i], files[i]['name']);
+              }
+
+              for (const key in data) {
+                const element = data[key];
+                formData.append(key.toString(), element);
+              }
+
+              this.commonService.PostAPI(`goal/create`, formData).then((response: any) => {
+                if (response.status) {
+                  this.toastr.success(response.message, "Success");
+                  this.getPlanDetails();
+                  this.getPlanGoals(this.goalplanid);
+                  this.childPlanFormSub.reset()
                   this.reset();
                 } else {
                   this.toastr.error(response.message, "Error");
