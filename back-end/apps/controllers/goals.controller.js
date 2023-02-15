@@ -450,6 +450,7 @@ exports.priority_change_by_id = async function (request, response) {
                 });
             } else {
                 if (result) {
+                    await Goals.find({plan_id: body.plan_id, prioritize: body.new_priority}).update({prioritize: body.new_priority + 1}).clone()
                     await Goals.updateOne({ _id: body.goal_id }, { prioritize: body.new_priority }, async function (error, is_update_current_goal) {
                         if (error) {
                             return response.send({
