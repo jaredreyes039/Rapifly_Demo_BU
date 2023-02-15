@@ -1325,6 +1325,7 @@ export class ItemPlanDetailsComponent implements OnInit {
     if (new_priority <= 1) {
       new_priority = 1;
     }
+    console.log(current_priority, new_priority)
 
     var data = {
       goal_id: goal_id,
