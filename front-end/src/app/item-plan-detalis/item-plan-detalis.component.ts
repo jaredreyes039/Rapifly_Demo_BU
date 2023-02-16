@@ -757,25 +757,49 @@ export class ItemPlanDetailsComponent implements OnInit {
     }
   }
 
+  // Project Tree Builder Present in Function
+
   getPlanDetails() {
+    // Used for building tree
     this.finalarray = [];
+
+    // I HATE THIS, PUN NOT INTENDED, WHO USES THIS SYNTAX?!
     var a = this;
+
+    // Unknown array currently
     if (this.currentchildUser == null) {
       this.currentchildUser = []
     }
     if (this.currentparentUser == null) {
       this.currentparentUser = []
     }
+
+    // Summon children of the corn? WTH does this do?
+    // Currently an empty array when init page?
     var children = this.currentchildUser.concat(this.currentparentUser);
+
+
     this.commonService.PostAPI('goal/plangoal/tree', { id: this.currentuser.user._id, childids: children }).then((response: any) => {
       if (response.status) {
+
+        // Misspelling present, but this is where the tree details seem to build?
         this.planteeDetails = response.data;
+
+        // Map through resp
         this.planteeDetails.forEach(element => {
+          // That array from above
           this.finalarray.push({ "id": element._id, "parent": "#", "text": element.short_name, 'state': { 'opened': true }, "icon": "assets/images/avatars/p.png" })
+          // This must be sub-children
           element.goals.forEach(element2 => {
             if (element2.module_type == 'goal') {
-              var moduleTypeIcon: any = "assets/images/avatars/g.png";
-              this.finalarray.push({ "id": element2._id, "parent": element._id, "text": element2.short_name, "icon": moduleTypeIcon })
+              if (element2.parent_goal_id !== ''){
+                var moduleTypeIcon: any = "assets/images/avatars/g.png";
+                this.finalarray.push({ "id": element2._id, "parent": element2.parent_goal_id, "text": element2.short_name, "icon": moduleTypeIcon })
+              }
+              else {
+                var moduleTypeIcon: any = "assets/images/avatars/g.png";
+                this.finalarray.push({ "id": element2._id, "parent": element._id, "text": element2.short_name, "icon": moduleTypeIcon })
+            }
             }
           })
         });
@@ -788,7 +812,16 @@ export class ItemPlanDetailsComponent implements OnInit {
               a.getGoalReportByPlan(data.selected[0]);
               plan_id = data.selected[0];
               a.parentIsActiveSelection = true;
-            } else {
+            } else if (data.node.parent !== '#' && data.node.parents.length > 3) {
+              a.getgoaldetail(data.selected[0], data.node.parent);
+              a.getGoalReportByPlan(data.node.parent);
+              a.parentIsActiveSelection = false;
+              plan_id = data.node.parent;
+              a.getGoalAttachments(data.selected[0]);
+              a.getGoalSharedUsers(data.selected[0]);
+              a.checkPlanForGoalSharePermission(plan_id);
+            }
+            else {
               a.getgoaldetail(data.selected[0], data.node.parent);
               a.getGoalReportByPlan(data.node.parent);
               a.parentIsActiveSelection = false;
@@ -902,10 +935,14 @@ export class ItemPlanDetailsComponent implements OnInit {
           this.checkforgoaledit = false;
         }
         this.moduleType = this.childgoalDetails.module_type;
-
-        this.goalid = this.childgoalDetails._id
-        this.goalplanid = parent;
-        this.getplandetail2(parent);
+        if (this.childgoalDetails.parent_goal_id !== ''){
+          this.goalid = this.childgoalDetails.parent_goal_id
+        }
+        else {
+          this.goalid = this.childgoalDetails._id
+        }
+        // this.goalplanid = parent;
+        // this.getplandetail2(parent);
 
         var datePipe = new DatePipe("en-US");
         $('#date-input5').datepicker('setDate', datePipe.transform(this.childgoalDetails.start_date, 'MM/dd/yyyy'));
@@ -992,7 +1029,6 @@ export class ItemPlanDetailsComponent implements OnInit {
             if (new Date(this.planstartdate) <= new Date($('#date-input5').val()) && new Date(this.planenddate) >= new Date($('#date-input5').val()) && new Date(this.planstartdate) <= new Date($('#date-input6').val()) && new Date(this.planenddate) >= new Date($('#date-input6').val())) {
               var data = this.childPlanForm.value;
               data.editid = this.goalid;
-              console.log(data)
               data.user_id = this.currentuser.user._id;
               data.plan_id = this.goalplanid;
               data.status = 0;
@@ -1427,7 +1463,6 @@ export class ItemPlanDetailsComponent implements OnInit {
     if (new_priority <= 1) {
       new_priority = 1;
     }
-    console.log(current_priority, new_priority)
 
     var data = {
       goal_id: goal_id,
@@ -1844,7 +1879,6 @@ export class ItemPlanDetailsComponent implements OnInit {
   }
 
   convertStringToInt(str){
-    console.log(str)
     return Number(str);
 }
 
