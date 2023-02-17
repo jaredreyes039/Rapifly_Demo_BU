@@ -31,7 +31,7 @@ export class ItemPlanDetailsComponent implements OnInit {
   discussionAttachments: any = [];
 
   cdInterval: any;
-
+  moduleItemActive: Boolean = false;
   currentchildUser
   currentuser;
   planId;
@@ -948,6 +948,7 @@ export class ItemPlanDetailsComponent implements OnInit {
         $('#date-input5').datepicker('setDate', datePipe.transform(this.childgoalDetails.start_date, 'MM/dd/yyyy'));
         $('#date-input6').datepicker('setDate', datePipe.transform(this.childgoalDetails.end_date, 'MM/dd/yyyy'));
 
+        if(this.selectedModules === ''){
         this.childPlanForm.patchValue({
           short_name: this.childgoalDetails.short_name,
           long_name: this.childgoalDetails.long_name,
@@ -967,6 +968,29 @@ export class ItemPlanDetailsComponent implements OnInit {
           expense_high_variance_alert: this.childgoalDetails.expense_high_variance_alert,
           expense_weight: this.childgoalDetails.expense_weight,
         });
+      }
+      else {
+        this.moduleItemActive = true;
+        this.ModuleForm.patchValue({
+          short_name: this.childgoalDetails.short_name,
+          long_name: this.childgoalDetails.long_name,
+          description: this.childgoalDetails.description,
+          start_date: datePipe.transform(this.childgoalDetails.start_date, 'MM/dd/yyyy'),
+          end_date: datePipe.transform(this.childgoalDetails.end_date, 'MM/dd/yyyy'),
+          expected_target: this.childgoalDetails.expected_target,
+          revenue_target: this.childgoalDetails.revenue_target,
+          shared_users: this.selected,
+          production_target: this.childgoalDetails.production_target,
+          production_type: this.childgoalDetails.production_type,
+          production_low_variance_alert: this.childgoalDetails.production_low_variance_alert,
+          production_high_variance_alert: this.childgoalDetails.production_high_variance_alert,
+          production_weight: this.childgoalDetails.production_weight,
+          expense_target: this.childgoalDetails.expense_target,
+          expense_low_variance_alert: this.childgoalDetails.expense_low_variance_alert,
+          expense_high_variance_alert: this.childgoalDetails.expense_high_variance_alert,
+          expense_weight: this.childgoalDetails.expense_weight,
+        })
+      }
       } else {
         this.toastr.error(response.message, "Error");
       }
@@ -2156,7 +2180,7 @@ export class ItemPlanDetailsComponent implements OnInit {
 
   getModuleTreeDetails(type) {
     var data: any = {};
-
+    var a = this;
     data.plan_id = this.planId;
     data.user_id = this.currentuser.user._id
     data.module_type = type;
@@ -2175,6 +2199,14 @@ export class ItemPlanDetailsComponent implements OnInit {
       $('#jstree-module-tree').jstree("destroy");
       $("#jstree-module-tree").on("select_node.jstree",
         function (evt, data) {
+          console.log(data.selected)
+          a.getgoaldetail(data.selected[0], data.node.parent);
+          a.getGoalReportByPlan(data.node.parent);
+          a.parentIsActiveSelection = false;
+          
+          a.getGoalAttachments(data.selected[0]);
+          a.getGoalSharedUsers(data.selected[0]);
+          a.checkPlanForGoalSharePermission(data.plan_id);
          }
       );
       $('#jstree-module-tree').jstree({ core: { data: treeArray } });
