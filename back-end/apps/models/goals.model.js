@@ -49,11 +49,11 @@ let GoalsSchema = new Schema({
     },
     start_date: {
         type: Date,
-        required: true,
+        required: false,
     },
     end_date: {
         type: Date,
-        required: true,
+        required: false,
     },
     status: {
         type: Number,

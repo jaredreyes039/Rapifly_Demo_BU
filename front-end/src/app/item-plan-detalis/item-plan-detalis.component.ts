@@ -42,6 +42,7 @@ export class ItemPlanDetailsComponent implements OnInit {
   finalarray = [];
   alertdata;
 
+  currentModuleDetails: any;
   // FEEDBACK
   feedbackModalOpen: boolean = false;
   keepGetStartedOpenOnVist: boolean;
@@ -205,6 +206,7 @@ export class ItemPlanDetailsComponent implements OnInit {
   isSelectedChallange: boolean = false;
 
   ModuleForm: FormGroup;
+  ModuleFormSub: FormGroup;
   isModuleFormSubmitted: boolean = false;
 
   opportunityDetails: any = [];
@@ -394,6 +396,29 @@ export class ItemPlanDetailsComponent implements OnInit {
     })
     // Module
     this.ModuleForm = this.formBuilder.group({
+      short_name: ['', Validators.required],
+      long_name: ['', Validators.required],
+      // supervisor: ['', Validators.required],
+      // department: ['', Validators.required],
+      description: [''],
+      production_target: [0],
+      production_high_variance_alert: [0],
+      production_low_variance_alert: [0],
+      production_weight: [0],
+      expense_target: [0],
+      expense_high_variance_alert: [0],
+      expense_low_variance_alert: [0],
+      expense_weight: [0],
+      security: ['public'],
+      question: [''],
+      answer: [''],
+      source: [''],
+      link: [''],
+      intelligence_value: [''],
+      intelligence_response: [''],
+      attachments: ['']
+    });
+    this.ModuleFormSub = this.formBuilder.group({
       short_name: ['', Validators.required],
       long_name: ['', Validators.required],
       // supervisor: ['', Validators.required],
@@ -1050,7 +1075,7 @@ export class ItemPlanDetailsComponent implements OnInit {
           if (new Date($('#date-input5').val()) > new Date($('#date-input6').val())) {
             this.toastr.error("Your start date is greater than End Date", "Error");
           } else {
-            if (new Date(this.planstartdate) <= new Date($('#date-input5').val()) && new Date(this.planenddate) >= new Date($('#date-input5').val()) && new Date(this.planstartdate) <= new Date($('#date-input6').val()) && new Date(this.planenddate) >= new Date($('#date-input6').val())) {
+            if (new Date(this.planstartdate) < new Date($('#date-input5').val()) && new Date(this.planenddate) > new Date($('#date-input5').val()) && new Date(this.planstartdate) < new Date($('#date-input6').val()) && new Date(this.planenddate) > new Date($('#date-input6').val())) {
               var data = this.childPlanForm.value;
               data.editid = this.goalid;
               data.user_id = this.currentuser.user._id;
@@ -1119,7 +1144,7 @@ export class ItemPlanDetailsComponent implements OnInit {
           if (new Date($('#date-input5').val()) > new Date($('#date-input6').val())) {
             this.toastr.error("Your start date is greater than End Date", "Error");
           } else {
-            if (new Date(this.planstartdate) <= new Date($('#date-input5').val()) && new Date(this.planenddate) >= new Date($('#date-input5').val()) && new Date(this.planstartdate) <= new Date($('#date-input6').val()) && new Date(this.planenddate) >= new Date($('#date-input6').val())) {
+            if (new Date(this.planstartdate) < new Date($('#date-input5').val()) && new Date(this.planenddate) > new Date($('#date-input5').val()) && new Date(this.planstartdate) < new Date($('#date-input6').val()) && new Date(this.planenddate) > new Date($('#date-input6').val())) {
               var data = this.childPlanFormSub.value;
               data.editid = "";
               data.parent_goal_id = this.childgoalDetails._id;
@@ -2129,7 +2154,7 @@ export class ItemPlanDetailsComponent implements OnInit {
         if (new Date(startDate) > new Date(endDate)) {
           this.toastr.error("Start date must be smaller than end date.", "Error");
         } else {
-          if (new Date(this.planstartdate) <= new Date(startDate) && new Date(this.planenddate) >= new Date(startDate) && new Date(this.planstartdate) <= new Date(endDate) && new Date(this.planenddate) >= new Date(endDate)) {
+          if (new Date(this.planstartdate) < new Date(startDate) && new Date(this.planenddate) > new Date(startDate) && new Date(this.planstartdate) < new Date(endDate) && new Date(this.planenddate) > new Date(endDate)) {
             var data = this.ModuleForm.value;
             data.plan_id = this.planId;
             data.user_id = this.currentuser.user._id
@@ -2178,32 +2203,92 @@ export class ItemPlanDetailsComponent implements OnInit {
     }
   }
 
+  getSelectedModule(id){
+    this.commonService.PostAPI('module/find-selected', {_id: id}).then((res: any)=>{
+      if (res.status) {
+        this.currentModuleDetails = res.data[0]
+        return ;
+      }
+      else {
+        return this.toastr.error(res.message, "Error: Failed to retrieve created module, please try again later. If this problem persists, please file a bug report as soon as possible with the bug reporting tool.")
+      }
+    })
+  }
+
+  saveModuleSub(){
+    this.isModuleFormSubmitted = true;
+    if (this.ModuleFormSub.invalid) {
+      return;
+    } 
+    else {
+            var data = this.ModuleFormSub.value;
+            data.parent_goal_id = this.currentModuleDetails._id
+            data.plan_id = this.planId;
+            data.user_id = this.currentuser.user._id
+            data.status = 0;
+            data.numbers = 0;
+            data.module_type = this.selectedModules;
+
+            const formData: any = new FormData();
+            const files: Array<File> = this.moduleAttachments;
+
+            for (let i = 0; i < files.length; i++) {
+              formData.append("attachments", files[i], files[i]['name']);
+            }
+
+            for (const key in data) {
+              const element = data[key];
+              formData.append(key.toString(), element);
+            }
+
+            this.commonService.PostAPI(`goal/create`, formData).then((response: any) => {
+              if (response.status) {
+                this.toastr.success(response.message, "Success");
+                this.getPlanDetails();
+
+                this.showSelectedTree(this.selectedModules);
+
+                this.isModuleFormSubmitted = false;
+              } else {
+                this.toastr.error(response.message, "Error");
+              }
+            })
+            this.ModuleFormSub.reset()
+            
+        }
+    }
+
+
   getModuleTreeDetails(type) {
     var data: any = {};
     var a = this;
     data.plan_id = this.planId;
     data.user_id = this.currentuser.user._id
     data.module_type = type;
-
+    console.log(this.currentuser)
     this.commonService.PostAPI(`module/get-by-user-and-plan`, data).then((response: any) => {
       var treeArray: any = [];
 
       if (response.status && response.data && response.data.length > 0) {
         this.opportunityDetails = response.data;
-
+        console.log(response.data)
         response.data.forEach(element => {
-          treeArray.push({ "id": element._id, "parent": "#", "text": element.short_name, 'state': { 'opened': false }, "icon": "assets/images/avatars/M.png" });
+            if (element.parent_goal_id !== ''){
+              treeArray.push({ "id": element._id, "parent": element.parent_goal_id, "text": element.short_name, 'state': { 'opened': false }, "icon": "assets/images/avatars/M.png" });
+            }
+            else {
+            treeArray.push({ "id": element._id, "parent": "#", "text": element.short_name, 'state': { 'opened': false }, "icon": "assets/images/avatars/M.png" });
+            }
         });
       }
 
       $('#jstree-module-tree').jstree("destroy");
       $("#jstree-module-tree").on("select_node.jstree",
         function (evt, data) {
-          console.log(data.selected)
           a.getgoaldetail(data.selected[0], data.node.parent);
+          a.getSelectedModule(data.selected[0])
           a.getGoalReportByPlan(data.node.parent);
           a.parentIsActiveSelection = false;
-          
           a.getGoalAttachments(data.selected[0]);
           a.getGoalSharedUsers(data.selected[0]);
           a.checkPlanForGoalSharePermission(data.plan_id);
