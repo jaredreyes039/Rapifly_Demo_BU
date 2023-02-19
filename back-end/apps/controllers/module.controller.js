@@ -7,6 +7,7 @@ const Users = require('../models/user.model');
 const Plan = require('../models/plan.model');
 const Discussion = require('../models/discussion.model');
 const emailHelper = require('../helpers/email.helper');
+const { response } = require("express");
 
 exports.create = async function (request, response) {
     var body = request.body;
@@ -75,6 +76,40 @@ exports.create = async function (request, response) {
             message: "Something went wrong."
         });
     }
+}
+
+exports.findSelectedModule = async function (request, response) {
+    let body = request.body;
+    let errors = []
+
+    if (!body._id){
+        errors.push(["Module ID is required."])
+    }
+
+    if (errors && errors.length > 0) {
+        var message = errors.join(" , ");
+        return response.send({
+            status: false,
+            message: message
+        });
+    }
+
+    try {
+        Goals.find({_id: body._id}).then((doc)=>{
+            return response.send({
+                status: true,
+                mesaage: "Successfully found module",
+                data: doc
+            })
+        })
+    }
+    catch (err) {
+        return response.send({
+            status: false,
+            message: "Something went wrong."
+        })
+    }
+
 }
 
 exports.getModulesByUserAndType = async function (request, response) {
