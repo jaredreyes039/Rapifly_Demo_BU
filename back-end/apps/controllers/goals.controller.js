@@ -220,7 +220,6 @@ exports.get_plan_goal_tree = async function (request, response) {
                                             Plan.find({ status: 0, _id: ele.plan_id }, {short_name: 1}, (err, plan) => {
                                                 if (err) throw err;
                                                 if (plan && plan.length > 0) {
-                                                    console.log(plan);
                                                     ele.set("short_name", plan[0].short_name, { strict: false });
                                                     cd4();
                                                 } else {
@@ -414,7 +413,6 @@ exports.priority_change_by_id = async function (request, response) {
     var body = request.body;
     var errors = [];
 
-    console.log(body)
 
     if (!body.goal_id) {
         errors.push(["Goal id is required"]);
@@ -442,7 +440,6 @@ exports.priority_change_by_id = async function (request, response) {
 
     try {
         Goals.findOne({goal_id: body.goal_id }, async function (error, result) {
-            console.log(body.new_priority, body.plan_id)
             if (error) {
                 return response.send({
                     status: false,
@@ -770,7 +767,6 @@ exports.get_goals_by_countdown = async function (request, response) {
 };
 exports.voteupdown_by_id = async function (request, response) {
     var body = request.body;
-    console.log(body);
 
     if (!body.id) {
         return response.send({

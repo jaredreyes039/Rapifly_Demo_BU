@@ -2084,7 +2084,10 @@ export class ItemPlanDetailsComponent implements OnInit {
 
   // Start Modules Functionality
   selectModule(type: any) {
+    this.moduleItemActive = false;
     this.isSelectedChallange = false;
+    this.ModuleForm.reset()
+    this.ModuleFormSub.reset()
     if (this.planId && this.planId !== '') {
       this.selectedModules = type;
       this.moduleType = type;
@@ -2094,16 +2097,21 @@ export class ItemPlanDetailsComponent implements OnInit {
       this.ref.detectChanges();
 
       $('#module-start-date').datepicker({
+        dateFormat: "mm-dd-yy",
         setDate: new Date(),
         todayHighlight: true,
-        startDate: '-0m',
-        minDate: 0,
+        startDate: new Date(this.parentplanDetails[0].start_date),
+        endDate: new Date(this.parentplanDetails[0].end_date),
+        minDate: new Date(this.parentplanDetails[0].start_date),
+        maxDate: new Date(this.parentplanDetails[0].end_date)
       });
       $('#module-end-date').datepicker({
         setDate: new Date(),
         todayHighlight: true,
-        startDate: '-0m',
-        minDate: 0,
+        startDate: new Date(this.parentplanDetails[0].start_date),
+        endDate: new Date(this.parentplanDetails[0].end_date),
+        minDate: new Date(this.parentplanDetails[0].start_date),
+        maxDate: new Date(this.parentplanDetails[0].end_date)
       });
 
       $('#module-start-date').datepicker().on('changeDate', function (e) {
@@ -2265,13 +2273,11 @@ export class ItemPlanDetailsComponent implements OnInit {
     data.plan_id = this.planId;
     data.user_id = this.currentuser.user._id
     data.module_type = type;
-    console.log(this.currentuser)
     this.commonService.PostAPI(`module/get-by-user-and-plan`, data).then((response: any) => {
       var treeArray: any = [];
 
       if (response.status && response.data && response.data.length > 0) {
         this.opportunityDetails = response.data;
-        console.log(response.data)
         response.data.forEach(element => {
             if (element.parent_goal_id !== ''){
               treeArray.push({ "id": element._id, "parent": element.parent_goal_id, "text": element.short_name, 'state': { 'opened': false }, "icon": "assets/images/avatars/M.png" });
