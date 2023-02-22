@@ -1,29 +1,21 @@
-## Notes
-- **IMPORTANT**: Is the API key for SGmail still valid?
-- **IMPORTANT**: Do we have access to MongoDB Atlas Cluster? If not, we have the code here to hook in a new URI and get a cluster going under an admin through Doug or Adam
-- **CRITICAL UPDATE**: WE HAVE A SERVER GOING BABY! (TEMP)
-- **IMPORTANT**: Branch opened ref(Server_Dev) to host the updated, executable server code
-- **CRITICAL UPDATE**: BEGAN WORK ON FRONT END RECOVERY -> SO FAR, SO GOOD!!
-- **HOLY SHIT MOMENT**: JUST CONNECTED THE BACK END AND FRONT END BACK TOGETHER IN A DEV ENVIRONMENT- WITH SOME CONFIGURATION IM CERTAIN WE WILL BE ON TRACK TO MVP IN NO TIME!!! (See proof image below)
-- **IMPORTANT**: API routes tested w/ Postman- what is testable, is functional!
+# Welcome to Our GH Development Space
 
-<img src="https://www.dl.dropboxusercontent.com/s/2jg188n7qtg10mm/BEFETie.png?dl=0" alt="Confirmed back end to front end tie">
+## Current Status
+- Rapifly's success is in the near-horizon with UI changes and UX updates made consistently
+  - Current Goal Date: April 15, 2023
+  - Miletones:
+    - Fully functional HUD (w/ multi-user except)
+    - Multi-user functionality implementation
+    - Functional, populated Coaches Corner
+    - Organization registration and dyanmic structure per registered type (i.e. organization leaders have X view, random users have Y view)
+    - Running ads under Coaches Corner
 
-**WARNING**: DO **NOT** PULL ref(Server_Dev) INTO ref(MAIN) BRANCH!!!
+## Pull Req and Issues Policy
+- all pull reqs. must have some form of descriptor that makes it clear the main changes and additions performed
+- issues are monitored by a GH Actions bot, and stale issues will be closed after one month of not being touched
+- env files are currently present, DO NOT SHARE this repository with ANYONE (unless granted necessary permissions)
 
-**WARNING**: DO **NOT** PULL ref(Server_Dev) INTO ref(MAIN) BRANCH!!!
-
-<img src="https://dl.dropboxusercontent.com/s/orwed3h58i36mlk/ServerLogSuccess.png?dl=0" alt="Server successfully established">
-<img src="https://dl.dropboxusercontent.com/s/85ns08uzc3j5moc/IndexLogSuccess.png?dl=0" alt="Index successfully established">
-
-- **IMPORTANT**: Weird code snippet found in common.service.ts file (See ref. image)
-
-<img src="https://www.dl.dropboxusercontent.com/s/dv6hml34g4xybb3/2023-01-15_16-29.png?dl=0" alt="Weird code snippet">
-
-- **CRITICAL**: We have a functioning, interwoven frontend and backend -> This is what we've been working towards, now we can begin bug fixing, feature additions, and overall user experience improvments!
-- **CRITICAL**: The entire module section for the Brainstorm phase is in working order from my understanding of its functionality, and we are now free to move onto the next area of focus once any final corrections and issues are ironed out following further necessitated discussion.
-
-## Docs
+## Important Docs
 - **EXCALIDRAW**: [Back End Architecture Analysis](https://excalidraw.com/#json=0p3dGlWgO5SEZTntivmFW,uLbi-t_aRWrDYNE_vR9-0g)
   - REF: [Morgan](https://github.com/expressjs/morgan)
   - REF: [Moment](https://github.com/moment/moment)
@@ -32,7 +24,7 @@
 - **EXCALIDRAW**: [APIRouter&Controller Mappings](https://excalidraw.com/#json=nPVf6hlDmpPetIibQG8uI,Ct3JlVL_lQyziEA0cSY2kA)
 - **INTERNAL DOCUMENT (SEE REPO -> main BRANCH)**: Serverlog.txt
 
-## Links
+## Useful Resources
 - **Rapifly**: [RapiflyTestingEnv](https://testingrapfuncmain.vercel.app)
 - **Backend**: [RapiflyAPIBackendProdEnv](https://lionfish-app-czku6.ondigitalocean.app/)
 - **Dev Tracking in Notion**: [Notion Dev Hub](https://www.notion.so/Planning-Synergies-PBC-Inc-bf3eef8e31dc4497abf3200dfc23f0d5)
