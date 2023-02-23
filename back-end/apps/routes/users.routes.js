@@ -36,4 +36,5 @@ router.post('/get/all', usersController.getOrganizationUsers);
 router.post('/desigation/create', usersController.inviteAndCreateUserAndDesignation);
 router.post('/feedback', usersController.user_feedback)
 router.post('/update/insBoxView', usersController.user_instruction_box)
+router.post('/remove-field', usersController.remove_form_field)
 module.exports = router;

@@ -1787,10 +1787,10 @@
 
             <mat-expansion-panel class="expanse-panel" *ngIf="!parentIsActiveSelection" [hidden]="parentIsActiveSelection">
                 <mat-expansion-panel-header class="page-title">
-                    <h3  *ngIf="!parentIsActiveSelection">
+                    <h3  *ngIf="parentIsActiveSelection">
                         {{ (selectedPhase == 'I') ? 'Improve' : 'Project Profile' }}
                     </h3>
-                    <h3 *ngIf="parentIsActiveSelection">
+                    <h3 *ngIf="!parentIsActiveSelection">
                         {{ (selectedPhase == 'I') ? 'Improve' : 'Add Sub Item' }}
                     </h3>
                 </mat-expansion-panel-header>
@@ -2065,7 +2065,7 @@
                 
             </mat-expansion-panel>
 
-            <!-- <mat-expansion-panel class="expanse-panel" *ngIf="selectedPhase == 'B' && planGoals && planGoals.length > 0">
+            <mat-expansion-panel class="expanse-panel" *ngIf="selectedPhase == 'B' && planGoals && planGoals.length > 0">
                 <mat-expansion-panel-header class="page-title">
                     <h3>View {{ textDecoration(moduleType) }} List</h3>
                 </mat-expansion-panel-header>
@@ -2095,7 +2095,7 @@
                         </table>
                     </div>
                 </div>
-            </mat-expansion-panel> -->
+            </mat-expansion-panel>
             
             <div>
                 
@@ -2382,7 +2382,7 @@
 
         <!-- IF MODULE ITEM IS SELECTED/ACTIVE -->
         <div class="col-md-9" *ngIf="selectedModules !== ''"
-        [hidden]="!selectedModules && selectedModules == '' || parentIsActiveSelection">
+        [hidden]="!selectedModules && selectedModules == '' || parentIsActiveSelection || selectedPhase == 'C'">
 
             <!-- HEADER -->
             <div class="page-title" style="margin-bottom: 12px;">
@@ -5598,6 +5598,13 @@
                     <h4 class="modal-title" id="fromControlModalLabel">Manage Additional Fields</h4>
                 </div>
                 <div class="modal-body">
+                    <div>
+                        <p>
+                            Not enough fields to describe your plan? With Rapifly's user-oriented design, plans
+                            can be customized and extended to meet your team's needs. To get started, fill out a new field,
+                            and watch as your plans expand to become your own!
+                        </p>
+                    </div>
                     <div>
                         <button type="button" class="btn btn-default m-b-xxs" (click)="onAddData()">Add Field</button>
                     </div>
