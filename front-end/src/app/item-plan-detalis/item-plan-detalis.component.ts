@@ -1075,7 +1075,7 @@ export class ItemPlanDetailsComponent implements OnInit {
           if (new Date($('#date-input5').val()) > new Date($('#date-input6').val())) {
             this.toastr.error("Your start date is greater than End Date", "Error");
           } else {
-            if (new Date(this.planstartdate) < new Date($('#date-input5').val()) && new Date(this.planenddate) > new Date($('#date-input5').val()) && new Date(this.planstartdate) < new Date($('#date-input6').val()) && new Date(this.planenddate) > new Date($('#date-input6').val())) {
+            if (new Date(this.planstartdate) <= new Date($('#date-input5').val()) && new Date(this.planenddate) >= new Date($('#date-input5').val()) && new Date(this.planstartdate) <= new Date($('#date-input6').val()) && new Date(this.planenddate) >= new Date($('#date-input6').val())) {
               var data = this.childPlanForm.value;
               data.editid = this.goalid;
               data.user_id = this.currentuser.user._id;
@@ -1116,7 +1116,7 @@ export class ItemPlanDetailsComponent implements OnInit {
                 }
               });
             } else {
-              this.toastr.error("Your goal's start date and end date are extended from your plan", "Error");
+              this.toastr.error("Your goal's start date and end date are outside of their parent plan range.", "Error");
             }
           }
         } else {
@@ -1395,12 +1395,14 @@ export class ItemPlanDetailsComponent implements OnInit {
       }
 
       $('#date-input5').datepicker({
+        dateFormat: "mm-dd-yy",
         setDate: new Date(),
         todayHighlight: true,
         startDate: '-0m',
         minDate: 0,
       });
       $('#date-input6').datepicker({
+        dateFormat: "mm-dd-yy",
         setDate: new Date(),
         todayHighlight: true,
         startDate: '-0m',
@@ -2590,6 +2592,14 @@ export class ItemPlanDetailsComponent implements OnInit {
     * author: Hardik Gadhiya
     */
     this.formfield.splice(i, 1);
+    console.log(this.formfield)
+    console.log(this.currentuser)
+
+    var data = {
+      user_id: this.currentuser.user._id,
+      field_name: this.currentuser.user.palnformfield[i].name
+    }
+    this.commonService.PostAPI('users/remove-field', data)
   }
 
   getselectoption(option, i) {
@@ -2771,7 +2781,7 @@ export class ItemPlanDetailsComponent implements OnInit {
 export class itemplanitemdate implements PipeTransform {
   transform(value: string) {
     var datePipe = new DatePipe("en-US");
-    value = datePipe.transform(value, 'dd/MM/yyyy');
+    value = datePipe.transform(value, 'MM/dd/yyyy');
 
     return value;
   }

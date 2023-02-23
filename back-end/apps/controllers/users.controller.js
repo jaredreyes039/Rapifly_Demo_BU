@@ -632,6 +632,45 @@ exports.check_new_user = function (request, response) {
     }
 };
 
+exports.remove_form_field = async function (request, response) {
+    var body = request.body;
+
+    if (!body.user_id){
+        return response.send({
+            status: false,
+            message: "Failed to find form field id, does this field exist?"
+        })
+    }
+
+        await User.find({_id: body.user_id}).then((doc)=>{
+            console.log(doc)
+            const updatedFields = doc[0].palnformfield.filter((field)=>{
+                if(field.name !== body.field_name ){
+                    return field;
+                }
+            })
+            console.log(updatedFields)
+            User.findOneAndUpdate({_id: body.user_id}, {$set: {
+                palnformfield: updatedFields
+            }}).clone().then((data)=>{
+                if (data) {
+                    console.log(data)
+                    return response.send({
+                        status: true,
+                        message: "Field successfully deleted."
+                    })
+                }
+                else {
+                    return response.send({
+                        status: false,
+                        message: "Something went wrong."
+                    })
+                }
+            })
+        })
+    
+}
+
 exports.get_all_user_by_id = function (request, response) {
     var body = request.body;
 
