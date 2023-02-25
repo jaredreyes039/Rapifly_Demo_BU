@@ -951,9 +951,12 @@ export class ItemPlanDetailsComponent implements OnInit {
   }
 
   getgoaldetail(goal, parent) {
+    console.log(goal)
+
     this.commonService.PostAPI(`goal/get/by/id`, { goal_id: goal }).then((response: any) => {
       if (response.status) {
         this.childgoalDetails = response.data;
+        console.log(this.childgoalDetails)
         if (this.currentuser.user._id == this.childgoalDetails.user_id) {
           this.checkforgoaledit = true;
         } else {
@@ -2598,6 +2601,15 @@ export class ItemPlanDetailsComponent implements OnInit {
       field_name: this.currentuser.user.palnformfield[i].name
     }
     this.commonService.PostAPI('users/remove-field', data)
+  }
+
+  visitParentForm(plan_id){
+    this.getPlanDetails()
+    this.getplandetail(plan_id);
+    this.getGoalReportByPlan(plan_id);
+    plan_id = plan_id;
+    this.parentIsActiveSelection = true;
+    $('#jstree').jstree(true).redraw()
   }
 
   getselectoption(option, i) {
