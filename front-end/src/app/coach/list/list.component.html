@@ -18,31 +18,67 @@
             can spend time on what matters to you.
         </p>
 
-        <div class="panel panel-custom-blue">
-            <ul class="rap-guide-list">
-                <li>
-                    <mat-expansion-panel>
-                        <mat-expansion-panel-header>
-                            <h3>Meet the Hud</h3>
-                        </mat-expansion-panel-header>
-                        <ul class="guide-nav">
-                            <li class="rap-guide-list-item" *ngFor="let i of hudSelectionsStages">
-                                <button value={{i}} class="btn btn-default" (click)="selectStage($event)">
-                                    {{i}}
-                                </button>
-                            </li>
-                        </ul>
+        <ul class="rap-guide-list">
+            <li>
+                <mat-expansion-panel style="margin-bottom: 24px;">
+                    <mat-expansion-panel-header>
+                        <h3>The Hud</h3>
+                    </mat-expansion-panel-header>
+                    <ul class="guide-nav">
+                        <li class="rap-guide-list-item" *ngFor="let i of hudSelectionsStages">
+                            <button value={{i}} class="btn btn-default" (click)="selectStage($event)">
+                                {{i}}
+                            </button>
+                        </li>
+                    </ul>
+                    <p *ngIf="activeStage === ''" [hidden]="activeStage !== ''">Select a section to learn more...</p>
 
-                    <!-- Active Stage: Create -->
-                    <div *ngIf="activeStage !== ''" [hidden]="activeStage == ''">
-                        <h3>{{activeStage}}</h3>
-                        <p>Under contstruction, please come back at a later date, thank you!</p>
-                    </div>
+                <!-- Active Stage: Create -->
+                <div *ngIf="activeStage !== ''" [hidden]="activeStage == ''">
+                    <h3>{{activeStage}}</h3>
+                    <p>Under contstruction, please come back at a later date, thank you!</p>
+                </div>
 
-                    </mat-expansion-panel>
-                </li>
-            </ul>
-        </div>
+                </mat-expansion-panel>
+
+                <mat-expansion-panel style="margin-bottom: 24px;">
+                    <mat-expansion-panel-header>
+                        <h3>Admin Panel</h3>
+                    </mat-expansion-panel-header>
+                    <ul class="guide-nav">
+                        <li class="rap-guide-list-item" *ngFor="let i of adminSelectionsMain">
+                            <button value={{i}} class="btn btn-default" (click)="selectStageAdmin($event)">
+                                {{i}}
+                            </button>
+                        </li>
+                    </ul>
+                    <p *ngIf="activeStageAdmin === ''" [hidden]="activeStageAdmin !== ''">Select a section to learn more...</p>
+
+
+                <!-- Active Stage: Create -->
+                <div *ngIf="activeStageAdmin !== ''" [hidden]="activeStageAdmin == ''">
+                    <h3>{{activeStageAdmin}}</h3>
+                    <p>Under contstruction, please come back at a later date, thank you!</p>
+                </div>
+
+                </mat-expansion-panel>
+
+                <mat-expansion-panel>
+                    <mat-expansion-panel-header>
+                        <h3>FAQ's</h3>
+                    </mat-expansion-panel-header>
+                        <div *ngFor="let i of faqData" style="width: 100%;">
+                            <div style="display: flex; width: fit-content; align-items: center; flex-direction: row; justify-content: center;">
+                                <h3>{{i.topic}}</h3>
+                            </div>
+                            <p>{{i.answer}}</p>
+                        </div>
+                        
+
+                </mat-expansion-panel>
+                
+            </li>
+        </ul>
 
         <!-- Find a Coach Contact List -->
         <div>
