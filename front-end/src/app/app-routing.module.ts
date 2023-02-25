@@ -229,9 +229,7 @@ const routes: Routes = [
     path: 'coach/register', component: RegisterComponent, canActivate: [GuestAuthGuard]
   },
   {
-    path: 'coaches', component: ListComponent, canActivate: [AuthGuard], data: {
-      roles: [Role.Admin]
-    }
+    path: 'coaches-corner', component: ListComponent
   },
 ];
 

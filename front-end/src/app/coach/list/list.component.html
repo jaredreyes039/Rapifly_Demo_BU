@@ -4,48 +4,101 @@
 <div class="page-content">
     <app-top-header></app-top-header>
 
+    <!-- Why does the below class 'no-page-title' allow the page-title to exist? The irony is striking in this bug... -->
+    
+    
     <div class="page-inner no-page-title">
-        <div class="page-title">
-            <h3 class="breadcrumb-header">Coaches</h3>
+
+        <div>
+            <h3>Where Do I Start?</h3>
         </div>
-        <div class="panel panel-cutom-blue">
-            <div class="panel-body">
-                <div class="form-group pull-right mb-5">
-                    <a class="btn btn-primary" (click)="resetSearch()">
-                        <i class="fa fa-refresh"></i></a>&nbsp;
-                    <a class="btn btn-success" (click)="openSearchModal()">
-                        <i class="fa fa-search"></i></a>&nbsp;
-                </div>
-                <div class="row col-md-12">
-                    <div class="table-responsive">
-                        <table id="example" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="display table table-data-width">
-                            <thead>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Email</th>
-                                    <th>Phone</th>
-                                    <th>Title</th>
-                                    <th>Industries</th>
-                                    <th>Company</th>
-                                    <th>Created at</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr *ngFor="let user of users; let i=index;">
-                                    <td>{{ user.first_name }} {{ user.last_name }}</td>
-                                    <td>{{ user.email }}</td>
-                                    <td>{{ user.phone }}</td>
-                                    <td>{{ user.title }}</td>
-                                    <td>{{ user.industries }}</td>
-                                    <td>{{ (user.company_name) ? user.company_name : '---' }}</td>
-                                    <td>{{ user.created_at | date: 'yyyy-MM-dd h:mm:ss a' }}</td>
-                                </tr>
-                            </tbody>
-                        </table>
+        <hr>
+        <p>
+            Lost? Overwhelmed? Let's ease the stress of learning a new piece software so your team
+            can spend time on what matters to you.
+        </p>
+
+        <div class="panel panel-custom-blue">
+            <ul class="rap-guide-list">
+                <li>
+                    <mat-expansion-panel>
+                        <mat-expansion-panel-header>
+                            <h3>Meet the Hud</h3>
+                        </mat-expansion-panel-header>
+                        <ul class="guide-nav">
+                            <li class="rap-guide-list-item" *ngFor="let i of hudSelectionsStages">
+                                <button value={{i}} class="btn btn-default" (click)="selectStage($event)">
+                                    {{i}}
+                                </button>
+                            </li>
+                        </ul>
+
+                    <!-- Active Stage: Create -->
+                    <div *ngIf="activeStage !== ''" [hidden]="activeStage == ''">
+                        <h3>{{activeStage}}</h3>
+                        <p>Under contstruction, please come back at a later date, thank you!</p>
+                    </div>
+
+                    </mat-expansion-panel>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Find a Coach Contact List -->
+        <div>
+            <div>
+                <h3>Find a Coach</h3>
+            </div>
+            <hr>
+            <p >
+                Looking for solutions and insights from experienced individuals? Here, you have access
+                to a plethora of knowlegable professionals from a diverse set of fields. Ranging from health
+                and government concerns, to problems in education or infrastructure, Rapifly boasts
+                a contact list to get you in direct contact with experts ready to bring solutions to your
+                community problems.
+            </p>
+
+            <!-- Contact List -->
+            <div class="panel panel-cutom-blue">
+                <div class="panel-body">
+                    <div class="form-group pull-right mb-5">
+                        <a class="btn btn-primary" (click)="resetSearch()">
+                            <i class="fa fa-refresh"></i></a>&nbsp;
+                        <a class="btn btn-success" (click)="openSearchModal()">
+                            <i class="fa fa-search"></i></a>&nbsp;
+                    </div>
+                    <div class="row col-md-12">
+                        <div class="table-responsive">
+                            <table id="example" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="display table table-data-width">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>Phone</th>
+                                        <th>Title</th>
+                                        <th>Industries</th>
+                                        <th>Company</th>
+                                        <th>Created at</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let user of users; let i=index;">
+                                        <td>{{ user.first_name }} {{ user.last_name }}</td>
+                                        <td>{{ user.email }}</td>
+                                        <td>{{ user.phone }}</td>
+                                        <td>{{ user.title }}</td>
+                                        <td>{{ user.industries }}</td>
+                                        <td>{{ (user.company_name) ? user.company_name : '---' }}</td>
+                                        <td>{{ user.created_at | date: 'yyyy-MM-dd h:mm:ss a' }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+        
     </div>
 
     <!-- Start Search Control Modal -->
