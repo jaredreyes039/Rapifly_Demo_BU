@@ -637,7 +637,7 @@ export class ItemPlanDetailsComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]]
     });
 
-    this.getInviteDesignations();
+    // this.getInviteDesignations();
 
 
   }
@@ -708,25 +708,25 @@ export class ItemPlanDetailsComponent implements OnInit {
   }
 
 
-  getInviteDesignations() {
-    if (this.currentuser.role == "Admin") {
-      this.commonService.PostAPI(`hierarchy/get/designation`, { parent_user_id: this.parent_user_id }).then((response: any) => {
-        if (response.status) {
-          this.designations = response.data;
-        } else {
-          this.toastr.error(response.message, 'Error');
-        }
-      });
-    } else {
-      this.commonService.PostAPI(`hierarchy/get/child/designation`, { user_id: this.currentUserId }).then((response: any) => {
-        if (response.status) {
-          this.designations = response.data;
-        } else {
-          this.toastr.error(response.message, 'Error');
-        }
-      });
-    }
-  }
+  // getInviteDesignations() {
+  //   if (this.currentuser.role == "Admin") {
+  //     this.commonService.PostAPI(`hierarchy/get/designation`, { parent_user_id: this.parent_user_id }).then((response: any) => {
+  //       if (response.status) {
+  //         this.designations = response.data;
+  //       } else {
+  //         this.toastr.error(response.message, 'Error');
+  //       }
+  //     });
+  //   } else {
+  //     this.commonService.PostAPI(`hierarchy/get/child/designation`, { user_id: this.currentUserId }).then((response: any) => {
+  //       if (response.status) {
+  //         this.designations = response.data;
+  //       } else {
+  //         this.toastr.error(response.message, 'Error');
+  //       }
+  //     });
+  //   }
+  // }
 
   onRecipient(e) {
     if (e.target.value && e.target.value === "invite") {
