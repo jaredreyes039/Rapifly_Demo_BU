@@ -958,9 +958,6 @@
 
             <mat-expansion-panel class="expanse-panel" *ngIf="parentIsActiveSelection">
             <mat-expansion-panel-header class="page-title">
-                <h3  *ngIf="!parentIsActiveSelection">
-                    {{ (selectedPhase == 'I') ? 'Improve' : 'Project Profile' }}
-                </h3>
                 <h3 *ngIf="parentIsActiveSelection">
                     {{ (selectedPhase == 'I') ? 'Improve' : 'Add Sub Item' }}
                 </h3>
@@ -1372,13 +1369,16 @@
 
 
             <div class="expanse-panel" *ngIf="!parentIsActiveSelection">
-            <div>
-                <h1 class="page-title"  *ngIf="!parentIsActiveSelection">
+            <div style="display: flex; flex-direction: row; justify-content: space-between; align-items: center;">
+                <h3 class="page-title"  *ngIf="!parentIsActiveSelection">
                     {{ (selectedPhase == 'I') ? 'Improve' : 'Project Profile' }}
-                </h1>
-                <h1 class="page-title" *ngIf="parentIsActiveSelection">
+                </h3>
+                <button *ngIf="!parentIsActiveSelection" class="btn btn-primary" (click)="childgoalDetails.parent_goal_id == '' ? visitParentForm(childgoalDetails.plan_id) : getgoaldetail(childgoalDetails.parent_goal_id)">
+                    Go To Parent
+                </button>
+                <h3 class="page-title" *ngIf="parentIsActiveSelection">
                     {{ (selectedPhase == 'I') ? 'Improve' : 'Add Sub Item' }}
-                </h1>
+                </h3>
             </div>
             <form #kform="ngForm" class="p-3" [formGroup]="childPlanForm" *ngIf="editChildEnabled || parentIsActiveSelection">
                 <div class="panel panel-cutom-blue">
@@ -5053,6 +5053,7 @@
             <div *ngIf="moduleItemActive" class="panel panel-cutom-blue">
                 <div class="panel-body">
                     <div style="display: flex; flex-direction: row; gap: 24px; margin-bottom: 24px;">
+                        
                         <div style="display: flex; flex-direction: column; flex-basis: 45%;">
                             <div  style="display: flex;  margin-bottom: 12px;">
                                 <div class="parent-item-label">Short Name:</div>
@@ -5083,7 +5084,7 @@
                                     {{childgoalDetails.end_date !== undefined ?  (childgoalDetails.end_date | itemplanitemdate) : "N/A"}}</div>
                             </div>
                         </div>
-                        <div style="display: flex; flex-direction: column; flex-basis: 45%;">
+                        <div style="display: flex; flex-direction: column; flex-basis: 45%;" *ngIf="selectedModules == 'motive' && selectedModules == 'analysis' && selectedModules == 'intelligence'" [hidden]="selectedModules === 'motive' && selectedModules === 'analysis' && selectedModules === 'intelligence'">
                             <div style="display: flex; margin-bottom: 12px;">
                                 <div class=" parent-item-label parent-item-label-alert">Production Target:</div>
                                 <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
@@ -5097,14 +5098,14 @@
                         </div>
                 </div>
 
-                <div style="display: flex; margin-bottom: 24px;">
-                    <div class="text-white bg-dark parent-item-val-spec" style="padding: 6px;">
+                <div style="display: flex; margin-bottom: 24px;" *ngIf="selectedModules == 'motive' && selectedModules == 'analysis' && selectedModules == 'intelligence'" [hidden]="selectedModules === 'motive' && selectedModules === 'analysis' && selectedModules === 'intelligence'">
+                    <div class="text-white bg-dark parent-item-val-spec" style="padding: 6px;" >
                         <div class=" parent-item-label-spec">Description</div>
                         <p style="border-left: 2px solid #fff; padding-left: 24px;">{{childgoalDetails.description}}</p>
                     </div>
                 </div>
 
-                <div style="display: flex;">
+                <div style="display: flex;" *ngIf="selectedModules == 'motive' && selectedModules == 'analysis' && selectedModules == 'intelligence'" [hidden]="selectedModules === 'motive' && selectedModules === 'analysis' && selectedModules === 'intelligence'">
                     <div style="display: flex; flex-direction: column; flex-basis: 45%;">
                         <div style="display: flex; margin-bottom: 12px;">
                             <div class=" parent-item-label parent-item-label-alert">Production HVA:</div>
@@ -5362,8 +5363,8 @@
                                 <th class="prioritize-blue">Short Name</th>
                                 <th class="prioritize-blue">Start Date</th>
                                 <th class="prioritize-blue">End Date</th>
-                                <th class="prioritize-blue">Production Target</th>
-                                <th class="prioritize-blue">Expense Target</th>
+                                <th *ngIf="selectedModules == 'motive' && selectedModules == 'analysis' && selectedModules == 'intelligence'" [hidden]="selectedModules === 'motive' && selectedModules === 'analysis' && selectedModules === 'intelligence'" class="prioritize-blue">Production Target</th>
+                                <th *ngIf="selectedModules == 'motive' && selectedModules == 'analysis' && selectedModules == 'intelligence'" [hidden]="selectedModules === 'motive' && selectedModules === 'analysis' && selectedModules === 'intelligence'" class="prioritize-blue">Expense Target</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -5371,8 +5372,8 @@
                                 <td>{{ p.short_name }}</td>
                                 <td>{{ p.start_date | date:'dd/MM/yyyy' }}</td>
                                 <td>{{ p.end_date | date:'dd/MM/yyyy'}}</td>
-                                <td>{{ p.production_target }}</td>
-                                <td>{{ p.expense_target }}</td>
+                                <td *ngIf="selectedModules == 'motive' && selectedModules == 'analysis' && selectedModules == 'intelligence'" [hidden]="selectedModules === 'motive' && selectedModules === 'analysis' && selectedModules === 'intelligence'">{{ p.production_target }}</td>
+                                <td *ngIf="selectedModules == 'motive' && selectedModules == 'analysis' && selectedModules == 'intelligence'" [hidden]="selectedModules === 'motive' && selectedModules === 'analysis' && selectedModules === 'intelligence'">{{ p.expense_target }}</td>
                             </tr>
 
                         </tbody>
@@ -5383,8 +5384,8 @@
                                 <th class="prioritize-blue">Short Name</th>
                                 <th class="prioritize-blue">Start Date</th>
                                 <th class="prioritize-blue">End Date</th>
-                                <th class="prioritize-blue">Production Target</th>
-                                <th class="prioritize-blue">Expense Target</th>
+                                <th *ngIf="selectedModules == 'motive' && selectedModules == 'analysis' && selectedModules == 'intelligence'" [hidden]="selectedModules === 'motive' && selectedModules === 'analysis' && selectedModules === 'intelligence'" class="prioritize-blue">Production Target</th>
+                                <th *ngIf="selectedModules == 'motive' && selectedModules == 'analysis' && selectedModules == 'intelligence'" [hidden]="selectedModules === 'motive' && selectedModules === 'analysis' && selectedModules === 'intelligence'" class="prioritize-blue">Expense Target</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -5392,8 +5393,8 @@
                                <td colspan="5">Data not found</td>
                                <td style="display: none;">-</td>
                                <td style="display: none;">-</td>
-                               <td style="display: none;">-</td>
-                               <td style="display: none;">-</td>
+                               <td *ngIf="selectedModules == 'motive' && selectedModules == 'analysis' && selectedModules == 'intelligence'" [hidden]="selectedModules === 'motive' && selectedModules === 'analysis' && selectedModules === 'intelligence'" style="display: none;">-</td>
+                               <td *ngIf="selectedModules == 'motive' && selectedModules == 'analysis' && selectedModules == 'intelligence'" [hidden]="selectedModules === 'motive' && selectedModules === 'analysis' && selectedModules === 'intelligence'" style="display: none;">-</td>
                             </tr>
 
                         </tbody>

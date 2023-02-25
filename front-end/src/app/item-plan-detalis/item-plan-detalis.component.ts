@@ -637,7 +637,7 @@ export class ItemPlanDetailsComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]]
     });
 
-    this.getInviteDesignations();
+    // this.getInviteDesignations();
 
 
   }
@@ -708,25 +708,25 @@ export class ItemPlanDetailsComponent implements OnInit {
   }
 
 
-  getInviteDesignations() {
-    if (this.currentuser.role == "Admin") {
-      this.commonService.PostAPI(`hierarchy/get/designation`, { parent_user_id: this.parent_user_id }).then((response: any) => {
-        if (response.status) {
-          this.designations = response.data;
-        } else {
-          this.toastr.error(response.message, 'Error');
-        }
-      });
-    } else {
-      this.commonService.PostAPI(`hierarchy/get/child/designation`, { user_id: this.currentUserId }).then((response: any) => {
-        if (response.status) {
-          this.designations = response.data;
-        } else {
-          this.toastr.error(response.message, 'Error');
-        }
-      });
-    }
-  }
+  // getInviteDesignations() {
+  //   if (this.currentuser.role == "Admin") {
+  //     this.commonService.PostAPI(`hierarchy/get/designation`, { parent_user_id: this.parent_user_id }).then((response: any) => {
+  //       if (response.status) {
+  //         this.designations = response.data;
+  //       } else {
+  //         this.toastr.error(response.message, 'Error');
+  //       }
+  //     });
+  //   } else {
+  //     this.commonService.PostAPI(`hierarchy/get/child/designation`, { user_id: this.currentUserId }).then((response: any) => {
+  //       if (response.status) {
+  //         this.designations = response.data;
+  //       } else {
+  //         this.toastr.error(response.message, 'Error');
+  //       }
+  //     });
+  //   }
+  // }
 
   onRecipient(e) {
     if (e.target.value && e.target.value === "invite") {
@@ -951,9 +951,12 @@ export class ItemPlanDetailsComponent implements OnInit {
   }
 
   getgoaldetail(goal, parent) {
+    console.log(goal)
+
     this.commonService.PostAPI(`goal/get/by/id`, { goal_id: goal }).then((response: any) => {
       if (response.status) {
         this.childgoalDetails = response.data;
+        console.log(this.childgoalDetails)
         if (this.currentuser.user._id == this.childgoalDetails.user_id) {
           this.checkforgoaledit = true;
         } else {
@@ -2598,6 +2601,15 @@ export class ItemPlanDetailsComponent implements OnInit {
       field_name: this.currentuser.user.palnformfield[i].name
     }
     this.commonService.PostAPI('users/remove-field', data)
+  }
+
+  visitParentForm(plan_id){
+    this.getPlanDetails()
+    this.getplandetail(plan_id);
+    this.getGoalReportByPlan(plan_id);
+    plan_id = plan_id;
+    this.parentIsActiveSelection = true;
+    $('#jstree').jstree(true).redraw()
   }
 
   getselectoption(option, i) {
