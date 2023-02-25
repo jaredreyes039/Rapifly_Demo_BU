@@ -2357,7 +2357,7 @@ export class ItemPlanDetailsComponent implements OnInit {
     }, 500)
 
     if (type == 'coaches-corner') {
-      this.getCoachesCornerDetails();
+      return ;
     }
   }
 
@@ -2592,8 +2592,6 @@ export class ItemPlanDetailsComponent implements OnInit {
     * author: Hardik Gadhiya
     */
     this.formfield.splice(i, 1);
-    console.log(this.formfield)
-    console.log(this.currentuser)
 
     var data = {
       user_id: this.currentuser.user._id,

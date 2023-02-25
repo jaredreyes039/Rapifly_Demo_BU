@@ -50,6 +50,48 @@ export class ListComponent implements OnInit {
     }
   }
 
+  hudSelectionsPhases_Create: any = [
+    'Brainstorm',
+    'Prioritize',
+    'Deactivate',
+    'Propose',
+    'Vote',
+    'Select'
+  ]
+
+  hudSelectionsPhases_Execute: any = [
+    'Delegate',
+    'Countdown',
+    'Launch'
+  ]
+
+  hudSelectionPhases_Evaluate: any = [
+    'Report',
+    'Measure',
+    'Improve'
+  ]
+
+  hudSelectionsStages: any = [
+    'Create',
+    'Execute',
+    'Evaluate'
+  ]
+
+  hudSelectionsChallenges: any = [
+    'Opportunity',
+    'Problem'
+  ]
+
+  hudSelectionsModules: any = [
+    'Strategy',
+    'Process',
+    'Motive',
+    'Analysis',
+    'Intelligence'
+  ]
+
+  activeStage: String = "";
+
   ngOnInit() {
     this.searchCoachesForm = this.formBuilder.group({
       first_name: [''],
@@ -64,6 +106,11 @@ export class ListComponent implements OnInit {
     this.getUsers();
   }
 
+
+  selectStage(event){
+    this.activeStage = event.target.value
+  }
+  
   getUsers() {
     this.commonService.PostAPI(`coach/get/all`, {}).then((response: any) => {
       if (response.status) {
@@ -136,6 +183,8 @@ export class ListComponent implements OnInit {
       });
     }
   }
+
+
 
   resetSearch(){
     this.resetTable();
