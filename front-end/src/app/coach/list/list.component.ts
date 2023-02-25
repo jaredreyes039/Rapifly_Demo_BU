@@ -50,6 +50,13 @@ export class ListComponent implements OnInit {
     }
   }
 
+  faqData: any = [
+    {
+      topic: 'How do I transition from Create to Execute?',
+      answer: 'This section is under construction, please come back at a later date, thank you!'
+    },
+  ]
+
   hudSelectionsPhases_Create: any = [
     'Brainstorm',
     'Prioritize',
@@ -90,7 +97,15 @@ export class ListComponent implements OnInit {
     'Intelligence'
   ]
 
+  adminSelectionsMain: any = [
+    'User',
+    'Project',
+    'Security',
+    'Team'
+  ]
+
   activeStage: String = "";
+  activeStageAdmin: String = "";
 
   ngOnInit() {
     this.searchCoachesForm = this.formBuilder.group({
@@ -110,7 +125,9 @@ export class ListComponent implements OnInit {
   selectStage(event){
     this.activeStage = event.target.value
   }
-  
+  selectStageAdmin(event){
+    this.activeStageAdmin = event.target.value
+  }
   getUsers() {
     this.commonService.PostAPI(`coach/get/all`, {}).then((response: any) => {
       if (response.status) {
