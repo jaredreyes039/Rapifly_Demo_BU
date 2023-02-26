@@ -4857,37 +4857,6 @@
                                             class="fa fa-calendar"></i></span>
                                 </div>
                             </div>
-                            <!-- <div class="col-md-6">
-                                <div class="form-group">
-                                    <label>Supervisor<span>*</span></label>
-                                    <input formControlName="supervisor" class="form-control" placeholder="Supervisor" [ngClass]="{ 'is-invalid': isModuleFormSubmitted && mf.supervisor.errors }" autocomplete="off">
-                                    <div *ngIf="isModuleFormSubmitted && mf.supervisor.errors" class="invalid-feedback">
-                                        <div *ngIf="mf.supervisor.errors.required">Supervisor is required</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label>Department<span>*</span></label>
-                                    <input formControlName="department" class="form-control" placeholder="Department" [ngClass]="{ 'is-invalid': isModuleFormSubmitted && mf.department.errors }" autocomplete="off">
-                                    <div *ngIf="isModuleFormSubmitted && mf.department.errors" class="invalid-feedback">
-                                        <div *ngIf="mf.department.errors.required">Department is required</div>
-                                    </div>
-                                </div>
-                            </div> -->
-                            <!-- <div class="col-md-6">
-                                <div class="form-group">
-                                    <label>Security<span>*</span></label>
-                                    <select formControlName="security" class="form-control">
-                                        <option value="">Select Security</option>
-                                        <option value="public">Public</option>
-                                        <option value="private">Private</option>
-                                    </select>
-                                    <div *ngIf="isModuleFormSubmitted && mf.security.errors" class="invalid-feedback">
-                                        <div *ngIf="mf.security.errors.required">Security is required</div>
-                                    </div>
-                                </div>
-                            </div> -->
                             <div class="col-md-12" [hidden]="selectedModules == 'motive' || selectedModules == 'analysis'">
                                 <div class="form-group">
                                     <label>Description<span>*</span></label>
@@ -4977,6 +4946,7 @@
                                 </div>
                             </div>
     
+                            <!-- FORM FOR ADDING AN INITIAL ANALYSIS AND INTELLIGENCE -->
                             <div class="col-md-12 page-title mt-30" *ngIf="selectedModules == 'analysis'">
                                 <h3 class="breadcrumb-header">Analysis Framework</h3>
                             </div>
@@ -4993,6 +4963,7 @@
                                         autocomplete="off">
                                 </div>
                             </div>
+
                             <div class="col-md-12" *ngIf="selectedModules == 'analysis'">
                                 <div class="form-group">
                                     <label>Answer</label>
@@ -5078,10 +5049,15 @@
                                 <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
                                     {{childgoalDetails.start_date !== undefined ?  (childgoalDetails.start_date | itemplanitemdate) : "Not available for deeply nested items"}}</div>
                             </div>
-                            <div style="display: flex;">
+                            <div style="display: flex;  margin-bottom: 12px;">
                                 <div class=" parent-item-label">End Date:</div>
                                 <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
                                     {{childgoalDetails.end_date !== undefined ?  (childgoalDetails.end_date | itemplanitemdate) : "N/A"}}</div>
+                            </div>
+                            <div style="display: flex;" *ngIf="selectedModules == 'analysis'">
+                                <div class=" parent-item-label">Source:</div>
+                                <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
+                                    {{childgoalDetails.source}}</div>
                             </div>
                         </div>
                         <div style="display: flex; flex-direction: column; flex-basis: 45%;" *ngIf="selectedModules == 'motive' && selectedModules == 'analysis' && selectedModules == 'intelligence'" [hidden]="selectedModules === 'motive' && selectedModules === 'analysis' && selectedModules === 'intelligence'">
@@ -5096,6 +5072,17 @@
                                     {{childgoalDetails.expense_target }}</div>
                             </div>
                         </div>
+                </div>
+
+                <div style="display: flex; flex-direction: column;" *ngIf="childgoalDetails.module_type == 'analysis' && selectedModules == 'analysis' ">
+                    <div class="text-white bg-dark parent-item-val-spec" style="padding: 6px;">
+                        <div class=" parent-item-label-spec">Framework</div>
+                        <div style="display: flex; flex-direction: column; padding: 12px;">
+                            <!-- <div class=" parent-item-label-spec parent-item-label-alert">Question:</div> -->
+                            <h4><strong>{{childgoalDetails.question}}</strong></h4>
+                            <p style="border-left: 2px solid #fff; padding-left: 12px;"><strong>{{childgoalDetails.answer}}</strong></p>
+                        </div>
+                    </div>
                 </div>
 
                 <div style="display: flex; margin-bottom: 24px;" *ngIf="selectedModules == 'motive' && selectedModules == 'analysis' && selectedModules == 'intelligence'" [hidden]="selectedModules === 'motive' && selectedModules === 'analysis' && selectedModules === 'intelligence'">
