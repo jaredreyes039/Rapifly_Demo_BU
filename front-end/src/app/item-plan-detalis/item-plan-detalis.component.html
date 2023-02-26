@@ -2070,7 +2070,7 @@
                 
             </mat-expansion-panel>
 
-            <mat-expansion-panel class="expanse-panel" *ngIf="selectedPhase == 'B' && planGoals && planGoals.length > 0">
+            <mat-expansion-panel class="expanse-panel" *ngIf="selectedPhase == 'B' && planGoals && planGoals.length > 0" >
                 <mat-expansion-panel-header class="page-title">
                     <h3>View {{ textDecoration(moduleType) }} List</h3>
                 </mat-expansion-panel-header>
@@ -2387,10 +2387,10 @@
 
         <!-- IF MODULE ITEM IS SELECTED/ACTIVE -->
         <div class="col-md-9" *ngIf="selectedModules !== ''"
-        [hidden]="!selectedModules && selectedModules == '' || parentIsActiveSelection || selectedPhase == 'C'">
+        [hidden]="!selectedModules || selectedModules == '' || parentIsActiveSelection || selectedPhase == 'C'">
 
             <!-- HEADER -->
-            <div class="page-title" style="margin-bottom: 12px;">
+            <div *ngIf="moduleItemActive" class="page-title" style="margin-bottom: 12px;">
                 {{textDecoration(selectedModules)}}
             </div>
 
