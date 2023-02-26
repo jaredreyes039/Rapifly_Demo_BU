@@ -1331,13 +1331,20 @@ export class ItemPlanDetailsComponent implements OnInit {
 
   selecteStage(type: any) {
     this.selectedStage = type;
+    this.selectedModules = '';
+    this.moduleItemActive = false;
+    this.parentIsActiveSelection = true;
+    this.moduleType = 'goal'
+    console.log(this.parentplanDetails)
+    this.planGoals = []
+    this.getPlanGoals(this.parentplanDetails[0]._id)
   }
 
   selectPhase(type: any) {
     if (this.planId && this.planId !== '') {
       // this.selectedModules = '';
       this.selectedPhase = type;
-
+      this.moduleItemActive = false
       if (type == 'D') {
         this.getgoal(this.planId);
       }
@@ -2093,7 +2100,7 @@ export class ItemPlanDetailsComponent implements OnInit {
     this.isSelectedChallange = false;
     this.ModuleForm.reset()
     this.ModuleFormSub.reset()
-    if (this.planId && this.planId !== '') {
+    if (this.planId && this.planId !== '' && this.parentIsActiveSelection) {
       this.selectedModules = type;
       this.moduleType = type;
       this.showSelectedTree(type)
@@ -2130,7 +2137,7 @@ export class ItemPlanDetailsComponent implements OnInit {
       this.selectPhase(this.selectedPhase);
       this.getPlanGoals(this.planId);
     } else {
-      this.toastr.error("Please select any plan.", "Error")
+      this.toastr.error("Must be under root item to add modules.", "Error")
     }
   }
 
@@ -2296,6 +2303,7 @@ export class ItemPlanDetailsComponent implements OnInit {
       $('#jstree-module-tree').jstree("destroy");
       $("#jstree-module-tree").on("select_node.jstree",
         function (evt, data) {
+          
           a.getgoaldetail(data.selected[0], data.node.parent);
           a.getSelectedModule(data.selected[0])
           a.getGoalReportByPlan(data.node.parent);
