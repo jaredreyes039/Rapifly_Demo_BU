@@ -501,7 +501,9 @@ exports.priority_change_by_id = async function (request, response) {
 
 exports.deactivate_change_by_id = async function (request, response) {
     var body = request.body;
-
+    let errors = [];
+    let parentDeactivateSuccess = false;
+    let childrenDeactivateSuccess = false;
     if (!body.id) {
         return response.send({
             status: false,
@@ -512,24 +514,38 @@ exports.deactivate_change_by_id = async function (request, response) {
     try {
         Goals.updateOne({ _id: body.id }, body, function (error, level) {
             if (error) {
-                return response.send({
+                return errors.push({
                     status: false,
                     message: "Something went wrong."
                 });
             } else {
-                if (body.deactivate == 1) {
+                parentDeactivateSuccess = true;
+                return;
+            }
+        })
+        Goals.updateMany({parent_goal_id: body.id}, body, function (error, level) {
+            if (error) {
+                return response.send({
+                    status: false,
+                    message: "Failed to deactivate child items, weird problems may occur. File a bug report with the development team through the Rapifly bug reporting feature present on all root items."
+                })
+            }
+            else {
+                childrenDeactivateSuccess = true
+                if (body.deactivate == 1 && parentDeactivateSuccess && childrenDeactivateSuccess) {
                     return response.status(201).send({
                         status: true,
                         message: "Goal Deactivated Successfully."
                     });
-                } else if (body.deactivate == 0) {
+                } else if (body.deactivate == 0  && parentDeactivateSuccess && childrenDeactivateSuccess) {
                     return response.status(201).send({
                         status: true,
                         message: "Goal Activated Successfully."
                     });
                 }
             }
-        });
+        }).clone()
+        
     } catch (error) {
         return response.status(400).send({ status: false, message: error });
     }

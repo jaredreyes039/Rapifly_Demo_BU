@@ -4857,7 +4857,7 @@
                                             class="fa fa-calendar"></i></span>
                                 </div>
                             </div>
-                            <div class="col-md-12" [hidden]="selectedModules == 'motive' || selectedModules == 'analysis'">
+                            <div class="col-md-12" [hidden]="selectedModules == 'analysis'">
                                 <div class="form-group">
                                     <label>Description<span>*</span></label>
                                     <textarea formControlName="description" class="form-control" placeholder="Description"
@@ -5004,8 +5004,9 @@
                                         autocomplete="off">
                                 </div>
                             </div>
+                            
                             <div class="col-md-6 form-group"
-                                *ngIf="selectedModules == 'motive' || selectedModules == 'analysis' || selectedModules == 'intelligence'">
+                                *ngIf="selectedModules == 'analysis' || selectedModules == 'intelligence'">
                                 <label>Attachment</label>
                                 <input type="file" (change)="uploadAttachment($event.target.files)">
                             </div>
@@ -5163,7 +5164,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <!-- <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Security<span>*</span></label>
                                     <select formControlName="security" class="form-control">
@@ -5175,8 +5176,8 @@
                                         <div *ngIf="mf.security.errors.required">Security is required</div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-md-12" [hidden]="selectedModules == 'motive' || selectedModules == 'analysis'">
+                            </div> -->
+                            <div class="col-md-12" [hidden]="selectedModules == 'analysis'">
                                 <div class="form-group">
                                     <label>Description<span>*</span></label>
                                     <textarea formControlName="description" class="form-control" placeholder="Description"
@@ -5322,7 +5323,7 @@
                                 </div>
                             </div>
                             <div class="col-md-6 form-group"
-                                *ngIf="selectedModules == 'motive' || selectedModules == 'analysis' || selectedModules == 'intelligence'">
+                                *ngIf="selectedModules == 'analysis' || selectedModules == 'intelligence'">
                                 <label>Attachment</label>
                                 <input type="file" (change)="uploadAttachment($event.target.files)">
                             </div>
