@@ -4808,7 +4808,7 @@
         <div class="col-md-9"
             *ngIf="(selectedPhase == 'B' || selectedPhase == 'I') && (selectedModules && selectedModules != '')">
 
-            <mat-expansion-panel class="expanse-panel" [expanded]="true" *ngIf="!moduleItemActive || parentIsActiveSelection">
+            <mat-expansion-panel class="expanse-panel" [expanded]="true" *ngIf="!moduleItemActive || parentIsActiveSelection && selectedPhase == 'B'">
                 <mat-expansion-panel-header class="page-title" >
                     <h3>Add {{ textDecoration(selectedModules) }}</h3>
                 </mat-expansion-panel-header>
@@ -5061,7 +5061,7 @@
                                     {{childgoalDetails.source}}</div>
                             </div>
                         </div>
-                        <div style="display: flex; flex-direction: column; flex-basis: 45%;" *ngIf="selectedModules == 'motive' && selectedModules == 'analysis' && selectedModules == 'intelligence'" [hidden]="selectedModules === 'motive' && selectedModules === 'analysis' && selectedModules === 'intelligence'">
+                        <div style="display: flex; flex-direction: column; flex-basis: 45%;" *ngIf="selectedModules !== 'motive' && selectedModules !== 'analysis' && selectedModules !== 'intelligence'" [hidden]="selectedModules === 'motive' && selectedModules === 'analysis' && selectedModules === 'intelligence'">
                             <div style="display: flex; margin-bottom: 12px;">
                                 <div class=" parent-item-label parent-item-label-alert">Production Target:</div>
                                 <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
@@ -5086,9 +5086,9 @@
                     </div>
                 </div>
 
-                <div style="display: flex; margin-bottom: 24px;" *ngIf="selectedModules == 'motive' && selectedModules == 'analysis' && selectedModules == 'intelligence'" [hidden]="selectedModules === 'motive' && selectedModules === 'analysis' && selectedModules === 'intelligence'">
+                <div style="display: flex; margin-bottom: 24px;" *ngIf="selectedModules !== 'analysis' && selectedModules !== 'intelligence'" [hidden]="selectedModules == 'analysis' || selectedModules == 'intelligence'">
                     <div class="text-white bg-dark parent-item-val-spec" style="padding: 6px;" >
-                        <div class=" parent-item-label-spec">Description</div>
+                        <div class=" parent-item-label-spec">{{selectedModules === 'motive' ? 'Motivation' : 'Description' }}</div>
                         <p style="border-left: 2px solid #fff; padding-left: 24px;">{{childgoalDetails.description}}</p>
                     </div>
                 </div>

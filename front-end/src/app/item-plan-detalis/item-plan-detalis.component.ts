@@ -1078,7 +1078,7 @@ export class ItemPlanDetailsComponent implements OnInit {
           if (new Date($('#date-input5').val()) > new Date($('#date-input6').val())) {
             this.toastr.error("Your start date is greater than End Date", "Error");
           } else {
-            if (new Date(this.planstartdate) <= new Date($('#date-input5').val()) && new Date(this.planenddate) >= new Date($('#date-input5').val()) && new Date(this.planstartdate) <= new Date($('#date-input6').val()) && new Date(this.planenddate) >= new Date($('#date-input6').val())) {
+            if (new Date(this.planstartdate) < new Date($('#date-input5').val()) && new Date(this.planenddate) > new Date($('#date-input5').val()) && new Date(this.planstartdate) < new Date($('#date-input6').val()) && new Date(this.planenddate) > new Date($('#date-input6').val())) {
               var data = this.childPlanForm.value;
               data.editid = this.goalid;
               data.user_id = this.currentuser.user._id;
@@ -1347,31 +1347,44 @@ export class ItemPlanDetailsComponent implements OnInit {
       this.moduleItemActive = false
       if (type == 'D') {
         this.getgoal(this.planId);
+        this.selectedModules = ''
       }
 
       if (type == 'P') {
         this.getPriorityGoals(this.planId);
+        this.selectedModules = ''
+
       }
 
       if (type == 'PR') {
         this.getProposeGoals(this.planId);
+        this.selectedModules = ''
+
       }
 
       if (type == 'V') {
         this.getVoteGoals(this.planId);
+        this.selectedModules = ''
+
       }
 
       if (type == 'S') {
         this.getSelectGoals(this.planId);
+        this.selectedModules = ''
+
       }
 
       if (type == 'DG') {
         this.getDelegateGoals(this.planId);
         this.getalldelegategoals();
+        this.selectedModules = ''
+
       }
 
       while (type == 'C') {
         this.getCountdownGoals(this.planId);
+        this.selectedModules = ''
+
         this.initGrabCD = true;
         this.cdInterval = setInterval(()=>{
           if (type === 'C'){
@@ -1393,14 +1406,20 @@ export class ItemPlanDetailsComponent implements OnInit {
       
 
       if (type == 'L') {
+        this.selectedModules = ''
+
         this.getLaunchGoals(this.planId);
       }
 
       if (type == 'R') {
+        this.selectedModules = ''
+
         this.getReportGoals(this.planId);
       }
 
       if (type == 'M') {
+        this.selectedModules = ''
+
         this.getPlanGoalDetails();
       }
 
@@ -2096,48 +2115,53 @@ export class ItemPlanDetailsComponent implements OnInit {
 
   // Start Modules Functionality
   selectModule(type: any) {
-    this.moduleItemActive = false;
-    this.isSelectedChallange = false;
-    this.ModuleForm.reset()
-    this.ModuleFormSub.reset()
-    if (this.planId && this.planId !== '' && this.parentIsActiveSelection) {
-      this.selectedModules = type;
-      this.moduleType = type;
-      this.showSelectedTree(type)
-
-      this.getModules();
-      this.ref.detectChanges();
-
-      $('#module-start-date').datepicker({
-        dateFormat: "mm-dd-yy",
-        setDate: new Date(),
-        todayHighlight: true,
-        startDate: new Date(this.parentplanDetails[0].start_date),
-        endDate: new Date(this.parentplanDetails[0].end_date),
-        minDate: new Date(this.parentplanDetails[0].start_date),
-        maxDate: new Date(this.parentplanDetails[0].end_date)
-      });
-      $('#module-end-date').datepicker({
-        setDate: new Date(),
-        todayHighlight: true,
-        startDate: new Date(this.parentplanDetails[0].start_date),
-        endDate: new Date(this.parentplanDetails[0].end_date),
-        minDate: new Date(this.parentplanDetails[0].start_date),
-        maxDate: new Date(this.parentplanDetails[0].end_date)
-      });
-
-      $('#module-start-date').datepicker().on('changeDate', function (e) {
-        $('#module-start-date').datepicker('hide');
-      });
-
-      $('#module-end-date').datepicker().on('changeDate', function (e) {
-        $('#module-end-date').datepicker('hide');
-      });
-
-      this.selectPhase(this.selectedPhase);
-      this.getPlanGoals(this.planId);
-    } else {
-      this.toastr.error("Must be under root item to add modules.", "Error")
+    if (this.selectedPhase !== 'B') {
+      return this.toastr.error("Must be under brainstorm phase to use modules.")
+    }
+    else {
+      this.moduleItemActive = false;
+      this.isSelectedChallange = false;
+      this.ModuleForm.reset()
+      this.ModuleFormSub.reset()
+      if (this.planId && this.planId !== '' && this.parentIsActiveSelection) {
+        this.selectedModules = type;
+        this.moduleType = type;
+        this.showSelectedTree(type)
+  
+        this.getModules();
+        this.ref.detectChanges();
+  
+        $('#module-start-date').datepicker({
+          dateFormat: "mm-dd-yy",
+          setDate: new Date(),
+          todayHighlight: true,
+          startDate: new Date(this.parentplanDetails[0].start_date),
+          endDate: new Date(this.parentplanDetails[0].end_date),
+          minDate: new Date(this.parentplanDetails[0].start_date),
+          maxDate: new Date(this.parentplanDetails[0].end_date)
+        });
+        $('#module-end-date').datepicker({
+          setDate: new Date(),
+          todayHighlight: true,
+          startDate: new Date(this.parentplanDetails[0].start_date),
+          endDate: new Date(this.parentplanDetails[0].end_date),
+          minDate: new Date(this.parentplanDetails[0].start_date),
+          maxDate: new Date(this.parentplanDetails[0].end_date)
+        });
+  
+        $('#module-start-date').datepicker().on('changeDate', function (e) {
+          $('#module-start-date').datepicker('hide');
+        });
+  
+        $('#module-end-date').datepicker().on('changeDate', function (e) {
+          $('#module-end-date').datepicker('hide');
+        });
+  
+        this.selectPhase(this.selectedPhase);
+        this.getPlanGoals(this.planId);
+      } else {
+        this.toastr.error("Must be under root item to add modules.", "Error")
+      }
     }
   }
 
