@@ -864,6 +864,7 @@ export class ItemPlanDetailsComponent implements OnInit {
 
             a.showSelectedTree(a.selectedModules);
             a.getPlanGoals(plan_id);
+            a.dataTableAfterViewInit()
           }
         );
         $('#jstree').jstree({ core: { data: this.finalarray } });
@@ -951,12 +952,10 @@ export class ItemPlanDetailsComponent implements OnInit {
   }
 
   getgoaldetail(goal, parent) {
-    console.log(goal)
 
     this.commonService.PostAPI(`goal/get/by/id`, { goal_id: goal }).then((response: any) => {
       if (response.status) {
         this.childgoalDetails = response.data;
-        console.log(this.childgoalDetails)
         if (this.currentuser.user._id == this.childgoalDetails.user_id) {
           this.checkforgoaledit = true;
         } else {
@@ -1335,7 +1334,6 @@ export class ItemPlanDetailsComponent implements OnInit {
     this.moduleItemActive = false;
     this.parentIsActiveSelection = true;
     this.moduleType = 'goal'
-    console.log(this.parentplanDetails)
     this.planGoals = []
     this.getPlanGoals(this.parentplanDetails[0]._id)
   }
@@ -2127,7 +2125,6 @@ export class ItemPlanDetailsComponent implements OnInit {
         this.selectedModules = type;
         this.moduleType = type;
         this.showSelectedTree(type)
-  
         this.getModules();
         this.ref.detectChanges();
   
@@ -2357,7 +2354,21 @@ export class ItemPlanDetailsComponent implements OnInit {
       }
 
       // this.dtTriggerModule.next();
-      this.tableId = 'table-module';
+      if(this.selectedModules === 'process'){
+        this.tableId = 'table-module-p'
+      }
+      if(this.selectedModules === 'motive'){
+        this.tableId = 'table-module-m'
+      }
+      if(this.selectedModules === 'analysis'){
+        this.tableId = 'table-module-a'
+      }
+      if(this.selectedModules === 'intelligence'){
+        this.tableId = 'table-module-i'
+      }
+      if(this.selectedModules === 'strategy'){
+        this.tableId = 'table-module';
+      }
       this.dataTableAfterViewInit();
     });
   }
