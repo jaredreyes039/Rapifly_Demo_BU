@@ -842,6 +842,8 @@ export class ItemPlanDetailsComponent implements OnInit {
               a.getGoalReportByPlan(data.node.parent);
               a.parentIsActiveSelection = false;
               plan_id = data.node.parent;
+              a.goalid = data.selected[0]
+              console.log(a.goalid)
               a.getGoalAttachments(data.selected[0]);
               a.getGoalSharedUsers(data.selected[0]);
               a.checkPlanForGoalSharePermission(plan_id);
@@ -851,6 +853,8 @@ export class ItemPlanDetailsComponent implements OnInit {
               a.getGoalReportByPlan(data.node.parent);
               a.parentIsActiveSelection = false;
               plan_id = data.node.parent;
+              a.goalid = data.selected[0]
+              console.log(a.goalid)
               a.getGoalAttachments(data.selected[0]);
               a.getGoalSharedUsers(data.selected[0]);
               a.checkPlanForGoalSharePermission(plan_id);
@@ -1022,14 +1026,15 @@ export class ItemPlanDetailsComponent implements OnInit {
         this.toastr.error(response.message, "Error");
       }
     });
+    this.getplandetail(parent)
   }
 
   getplandetail(Plan) {
     this.checkforgoaledit = true
     this.commonService.PostAPI(`plan/get/by/id2`, { plan_id: Plan }).then((response: any) => {
       if (response.status) {
+        console.log(response.data)
         this.parentplanDetails = response.data;
-        this.goalid = "";
         this.planstartdate = this.parentplanDetails[0].start_date;
         this.planenddate = this.parentplanDetails[0].end_date;
         this.goalplanid = this.parentplanDetails[0]._id;
@@ -2121,7 +2126,7 @@ export class ItemPlanDetailsComponent implements OnInit {
       this.isSelectedChallange = false;
       this.ModuleForm.reset()
       this.ModuleFormSub.reset()
-      if (this.planId && this.planId !== '' && this.parentIsActiveSelection) {
+      if (this.planId || this.goalid) {
         this.selectedModules = type;
         this.moduleType = type;
         this.showSelectedTree(type)
@@ -2157,19 +2162,10 @@ export class ItemPlanDetailsComponent implements OnInit {
         this.selectPhase(this.selectedPhase);
         this.getPlanGoals(this.planId);
       } else {
-        this.toastr.error("Must be under root item to add modules.", "Error")
+        this.toastr.error("Something went wrong...", "Error")
       }
     }
   }
-
-  // resetModuleDT(){
-  //   this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-  //     // Destroy the table first
-  //     dtInstance.destroy();
-  //     // Call the dtTrigger to rerender again
-  //     this.dtTriggerModule.next();
-  //   });
-  // }
 
   selectChallangeModule() {
     this.isSelectedChallange = true;
@@ -2184,6 +2180,7 @@ export class ItemPlanDetailsComponent implements OnInit {
   }
 
   saveModule() {
+    console.log(this.goalid)
     this.isModuleFormSubmitted = true;
     if (this.ModuleForm.invalid) {
       return;
@@ -2197,7 +2194,7 @@ export class ItemPlanDetailsComponent implements OnInit {
         } else {
           if (new Date(this.planstartdate) < new Date(startDate) && new Date(this.planenddate) > new Date(startDate) && new Date(this.planstartdate) < new Date(endDate) && new Date(this.planenddate) > new Date(endDate)) {
             var data = this.ModuleForm.value;
-            data.plan_id = this.planId;
+            data.plan_id = this.parentIsActiveSelection ? this.planId : this.goalid;
             data.user_id = this.currentuser.user._id
             data.status = 0;
             data.numbers = 0;
@@ -2303,15 +2300,22 @@ export class ItemPlanDetailsComponent implements OnInit {
   getModuleTreeDetails(type) {
     var data: any = {};
     var a = this;
-    data.plan_id = this.planId;
+    data.plan_id = this.parentIsActiveSelection ? this.planId : this.goalid;
     data.user_id = this.currentuser.user._id
     data.module_type = type;
     this.commonService.PostAPI(`module/get-by-user-and-plan`, data).then((response: any) => {
       var treeArray: any = [];
-
       if (response.status && response.data && response.data.length > 0) {
         this.opportunityDetails = response.data;
-        response.data.forEach(element => {
+        response.data.filter((element)=>{
+          if(this.parentIsActiveSelection){
+            return element.plan_id === this.planId
+          }
+          else {
+            return element.plan_id === this.goalid.toString();
+          }
+        }).forEach(element => {
+            console.log(element)
             if (element.parent_goal_id !== ''){
               treeArray.push({ "id": element._id, "parent": element.parent_goal_id, "text": element.short_name, 'state': { 'opened': false }, "icon": "assets/images/avatars/M.png" });
             }
@@ -2320,11 +2324,9 @@ export class ItemPlanDetailsComponent implements OnInit {
             }
         });
       }
-
       $('#jstree-module-tree').jstree("destroy");
       $("#jstree-module-tree").on("select_node.jstree",
         function (evt, data) {
-          
           a.getgoaldetail(data.selected[0], data.node.parent);
           a.getSelectedModule(data.selected[0])
           a.getGoalReportByPlan(data.node.parent);

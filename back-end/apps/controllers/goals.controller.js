@@ -479,21 +479,6 @@ exports.priority_change_by_id = async function (request, response) {
                 }
             }
         });
-
-        //Old code before 20 -02-2020
-        // Goals.updateOne({ _id: body.id }, body, function (error, level) {
-        //     if (error) {
-        //         return response.send({
-        //             status: false,
-        //             message: "Something went wrong."
-        //         });
-        //     } else {
-        //         return response.send({
-        //             status: true,
-        //             message: "Goal priority has been updated."
-        //         });
-        //     }
-        // });
     } catch (error) {
         return response.status(400).send({ status: false, message: error });
     }
@@ -545,7 +530,7 @@ exports.deactivate_change_by_id = async function (request, response) {
                 }
             }
         }).clone()
-        
+         
     } catch (error) {
         return response.status(400).send({ status: false, message: error });
     }
