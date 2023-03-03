@@ -2070,12 +2070,12 @@
                 
             </mat-expansion-panel>
 
-            <mat-expansion-panel class="expanse-panel" *ngIf="selectedPhase == 'B' && planGoals && planGoals.length > 0" >
+            <mat-expansion-panel class="expanse-panel" *ngIf="selectedPhase == 'B' && planGoals" >
                 <mat-expansion-panel-header class="page-title">
                     <h3>View {{ textDecoration(moduleType) }} List</h3>
                 </mat-expansion-panel-header>
     
-                <div class="panel panel-cutom-blue" *ngIf="selectedPhase == 'B' && planGoals && planGoals.length > 0">
+                <div class="panel panel-cutom-blue" *ngIf="selectedPhase == 'B' && planGoals">
                     <div class="row">
                         <table id="table-goals" datatable [dtOptions]="dtOptionsPlanGoals"
                             class="display table table-data-width">
@@ -4730,6 +4730,8 @@
             </div>
             <div class="panel panel-cutom-blue">
                 <div class="row">
+
+                    <!-- MEASURE SEARCH BY DATE? WHY? -->
                     <div class="col-md-12 mb-10">
                         <div class="form-group col-md-5">&nbsp;</div>
                         <div class="form-group col-md-3">
@@ -4746,12 +4748,14 @@
                             </button>
                         </div>
                     </div>
+
+                    <!-- TABULAR DATA -->
                     <div *ngIf="isDetailsFound" class="mb-10">
-                        <div class="col-md-6" *ngFor="let plan of planDetails;">
+                        <div class="col-md-12" *ngFor="let plan of parentplanDetails;">
                             <div class="custom-panel">
                                 <div class="custom-panel-heading custom-panel-blue">
                                     <h4 class="custom-panel-title">
-                                        {{plan.plan.short_name}}
+                                        {{plan.short_name}}
                                     </h4>
                                 </div>
                                 <div class="custom-panel-body">
@@ -4759,15 +4763,15 @@
                                         <tbody>
                                             <tr>
                                                 <td>Matric Type</td>
-                                                <td>% Percentage (Completion)</td>
+                                                <td>{{parentplanDetails[0].production_type}}</td>
                                             </tr>
                                             <tr>
                                                 <td>Actual Expected</td>
-                                                <td>: {{ plan.goal.plan_expected }}%</td>
+                                                <td><span>{{parentplanDetails[0].production_type == 'dollars' ? '$' : ''}}</span>{{ parentplanDetails[0].production_target }}<span>{{parentplanDetails[0].production_type == 'percentage' ? '%' : ''}}</span></td>
                                             </tr>
                                             <tr>
                                                 <td>Actual Revenue</td>
-                                                <td>: {{ plan.goal.plan_revenue }}%</td>
+                                                <td><span>{{parentplanDetails[0].production_type == 'dollars' ? '$' : ''}}</span>{{ parentplanDetails[0].expense_target }}<span>{{parentplanDetails[0].production_type == 'percentage' ? '%' : ''}}</span></td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -4775,26 +4779,23 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- ERROR: NO DATA -->
                     <div *ngIf="!isDetailsFound" class="mb-10">
                         <div class="col-md-12 text-center">
                             <h4>Plan details has not been found.</h4>
                         </div>
                     </div>
 
-                    <div class="page-title mt-30">
-                        <h3 class="breadcrumb-header">Goal Summary Chart</h3>
-                    </div>
-
+                    <!-- GRAPHICAL DATA -->
                     <div class="col-md-12 row mt-30">
-                        <div class="col-md-6">
+                        <!-- <div class="col-md-6">
                             <rg-gauge-chart [canvasWidth]="canvasWidth" [needleValue]="needleValue"
                                 [centralLabel]="centralLabel" [options]="options" [name]="name"
                                 [bottomLabel]="bottomLabel"></rg-gauge-chart>
-                        </div>
+                        </div> -->
                         <div class="col-md-6">
-                            <rg-gauge-chart [canvasWidth]="canvasWidth" [needleValue]="review_needleValue"
-                                [centralLabel]="centralLabel" [options]="review_options" [name]="review_name"
-                                [bottomLabel]="review_bottomLabel"></rg-gauge-chart>
+
                         </div>
                     </div>
                 </div>
