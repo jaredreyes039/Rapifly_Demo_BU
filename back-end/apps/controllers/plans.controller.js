@@ -279,7 +279,7 @@ exports.get_plan_by_id2 = async function(request, response) {
             path: 'user_id'
         };
 
-        await Plan.find({ '_id': body.plan_id }, {
+        await Plan.find({ _id: body.plan_id }, {
             status: 0,
             plan_id: 0,
             created_at: 0,

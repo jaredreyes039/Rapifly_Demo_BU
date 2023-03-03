@@ -30,6 +30,9 @@ export class ItemPlanDetailsComponent implements OnInit {
   isSubmittedDiscussionForm: boolean = false;
   discussionAttachments: any = [];
 
+  productionSum: Number
+  expenseSum: Number
+
   cdInterval: any;
   moduleItemActive: Boolean = false;
   currentchildUser
@@ -867,7 +870,7 @@ export class ItemPlanDetailsComponent implements OnInit {
             a.moduleType = 'goal';
 
             a.showSelectedTree(a.selectedModules);
-            a.getPlanGoals(plan_id);
+            a.getPlanGoals(data.selected[0]);
             a.dataTableAfterViewInit()
           }
         );
@@ -1030,11 +1033,14 @@ export class ItemPlanDetailsComponent implements OnInit {
   }
 
   getplandetail(Plan) {
+    console.log(Plan)
     this.checkforgoaledit = true
     this.commonService.PostAPI(`plan/get/by/id2`, { plan_id: Plan }).then((response: any) => {
       if (response.status) {
-        console.log(response.data)
+
         this.parentplanDetails = response.data;
+        console.log(this.parentplanDetails)
+
         this.planstartdate = this.parentplanDetails[0].start_date;
         this.planenddate = this.parentplanDetails[0].end_date;
         this.goalplanid = this.parentplanDetails[0]._id;
@@ -1422,8 +1428,9 @@ export class ItemPlanDetailsComponent implements OnInit {
 
       if (type == 'M') {
         this.selectedModules = ''
-
         this.getPlanGoalDetails();
+        this.getReportSum(this.parentplanDetails[0]._id);
+        console.log(this.productionSum)
       }
 
       $('#date-input5').datepicker({
@@ -1456,6 +1463,23 @@ export class ItemPlanDetailsComponent implements OnInit {
     }
   }
 
+  async getReportSum(planid){
+    await this.commonService.PostAPI('report/get/all', {
+      plan_id: planid,
+      user_id: this.currentuser.user._id
+    }).then((response: any)=>{
+      if (response.status){
+        var reports = response.data
+        this.productionSum = reports.reduce((next, current)=>{
+          return next + current.actual_production
+        }, 0)
+        console.log(this.productionSum)
+        this.expenseSum = reports.reduce((next, current)=>{
+          return next + current.actual_expense
+        }, 0)
+      }
+    })
+  }
 
   // Deactivate
   getgoal(planid) {
@@ -2192,7 +2216,7 @@ export class ItemPlanDetailsComponent implements OnInit {
         if (new Date(startDate) > new Date(endDate)) {
           this.toastr.error("Start date must be smaller than end date.", "Error");
         } else {
-          if (new Date(this.planstartdate) < new Date(startDate) && new Date(this.planenddate) > new Date(startDate) && new Date(this.planstartdate) < new Date(endDate) && new Date(this.planenddate) > new Date(endDate)) {
+          if (new Date(this.planstartdate) <= new Date(startDate) && new Date(this.planenddate) > new Date(startDate) && new Date(this.planstartdate) < new Date(endDate) && new Date(this.planenddate) >= new Date(endDate)) {
             var data = this.ModuleForm.value;
             data.plan_id = this.parentIsActiveSelection ? this.planId : this.goalid;
             data.user_id = this.currentuser.user._id
