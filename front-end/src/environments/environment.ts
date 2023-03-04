@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'https://lionfish-app-czku6.ondigitalocean.app/',
+  apiUrl: 'http://localhost:3000/',
   socketUrl: 'http://localhost:4000',
 };
 
