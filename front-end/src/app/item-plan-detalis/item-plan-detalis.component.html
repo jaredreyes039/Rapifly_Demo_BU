@@ -956,7 +956,7 @@
         <div class="col-md-9" *ngIf="selectedPhase === 'B' || selectedPhase === 'I'"
             [hidden]="selectedModules && selectedModules != ''">
 
-            <mat-expansion-panel class="expanse-panel" *ngIf="parentIsActiveSelection">
+            <mat-expansion-panel class="expanse-panel" *ngIf="parentIsActiveSelection" [expanded]="true">
             <mat-expansion-panel-header class="page-title">
                 <h3 *ngIf="parentIsActiveSelection">
                     {{ (selectedPhase == 'I') ? 'Improve' : 'Add Sub Item' }}
@@ -1236,7 +1236,7 @@
                         </div>
                     </div>
 
-                    <mat-expansion-panel  [expanded]="false">
+                    <mat-expansion-panel  [expanded]="true">
                         <mat-expansion-panel-header class="page-title" style="margin-bottom: 24px;" >
                             <h3>Dashboard</h3>
                         </mat-expansion-panel-header>
@@ -1785,7 +1785,7 @@
             </div>
             </div>
 
-            <mat-expansion-panel class="expanse-panel" *ngIf="!parentIsActiveSelection" [hidden]="parentIsActiveSelection">
+            <mat-expansion-panel [expanded]="true" class="expanse-panel" *ngIf="!parentIsActiveSelection" [hidden]="parentIsActiveSelection">
                 <mat-expansion-panel-header class="page-title">
                     <h3  *ngIf="parentIsActiveSelection">
                         {{ (selectedPhase == 'I') ? 'Improve' : 'Project Profile' }}
@@ -5129,7 +5129,7 @@
                 </div>
                 </div>
             </div>
-            <mat-expansion-panel class="expanse-panel" [expanded]="false" *ngIf="moduleItemActive">
+            <mat-expansion-panel class="expanse-panel" [expanded]="true" *ngIf="moduleItemActive">
                 <mat-expansion-panel-header class="page-title" >
                     <h3>Add Sub-{{ textDecoration(selectedModules) }}</h3>
                 </mat-expansion-panel-header>
