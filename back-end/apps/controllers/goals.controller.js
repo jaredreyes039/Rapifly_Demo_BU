@@ -82,10 +82,11 @@ exports.create = async function (request, response) {
                         message: "Please Enter All required Fields"
                     });
                 }
-
+                console.log(body)
                 try {
                     Goals.updateOne({ _id: body.editid }, body, async function (error, level) {
                         if (error) {
+                            console.log(error)
                             return response.send({
                                 status: false,
                                 message: "Something went wrong."
