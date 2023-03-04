@@ -1391,29 +1391,10 @@ export class ItemPlanDetailsComponent implements OnInit {
 
       }
 
-      while (type == 'C') {
+      if (type == 'C') {
         this.getCountdownGoals(this.planId);
         this.selectedModules = ''
-
-        this.initGrabCD = true;
-        this.cdInterval = setInterval(()=>{
-          if (type === 'C'){
-            this.getCountdownGoals(this.planId)
-          }
-          else return ;
-        }, 60000)
-        break;
       }
-
-      if (type !== 'C'){
-        try {
-          clearInterval(this.cdInterval);
-        }
-        catch (err) {
-          return ;
-        }
-      }
-      
 
       if (type == 'L') {
         this.selectedModules = ''
