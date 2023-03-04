@@ -845,7 +845,7 @@ export class ItemPlanDetailsComponent implements OnInit {
               a.getGoalReportByPlan(data.node.parent);
               a.parentIsActiveSelection = false;
               plan_id = data.node.parent;
-              console.log(a.goalid)
+              a.goalid = ""
               a.getGoalAttachments(data.selected[0]);
               a.getGoalSharedUsers(data.selected[0]);
               a.checkPlanForGoalSharePermission(plan_id);
@@ -1039,7 +1039,9 @@ export class ItemPlanDetailsComponent implements OnInit {
 
         this.parentplanDetails = response.data;
         console.log(this.parentplanDetails)
-        this.goalid = ""
+        if(this.parentIsActiveSelection){
+          this.goalid = ""
+        }
         this.planstartdate = this.parentplanDetails[0].start_date;
         this.planenddate = this.parentplanDetails[0].end_date;
         this.goalplanid = this.parentplanDetails[0]._id;
