@@ -121,6 +121,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     RegisterComponent,
     ListComponent,
     EditPlanComponent,
+    
   ],
   imports: [
     MatIconModule,
@@ -146,7 +147,6 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     MatCardModule,
     GaugeChartModule,
     GaugeModule,
-    ChartsModule,
     NgSelectModule,
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
