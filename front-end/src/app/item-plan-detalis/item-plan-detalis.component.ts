@@ -12,6 +12,7 @@ import { DatePipe, PlatformLocation } from '@angular/common'
 import * as moment from 'moment';
 import { NgbDate, NgbCalendar, NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap';
 import { element } from 'protractor';
+import { ChartConfiguration, ChartOptions } from 'chart.js';
 
 declare var $: any;
 
@@ -174,7 +175,32 @@ export class ItemPlanDetailsComponent implements OnInit {
   endDate: any = '';
 
   tableId: any;
+  chartTitle = 'ng2-charts-demo';
 
+  public lineChartData: ChartConfiguration['data'] = {
+    labels: [
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July'
+    ],
+    datasets: [
+      {
+        data: [ 65, 59, 80, 81, 56, 55, 40 ],
+        label: 'Series A',
+        fill: true,
+        borderColor: 'black',
+        backgroundColor: 'rgba(255,0,0,0.3)'
+      }
+    ]
+  };
+  public lineChartOptions: ChartOptions = {
+    responsive: false
+  };
+  public lineChartLegend = true;
   public centralLabel: any = '';
   public canvasWidth = 400
   public needleValue = 0;
