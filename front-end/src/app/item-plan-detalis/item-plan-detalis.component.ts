@@ -7,7 +7,6 @@ import { CommonService } from "src/app/services/common.service";
 import { DataTableDirective } from "angular-datatables";
 import { first } from "rxjs/operators";
 import { Subject } from "rxjs";
-
 import { Pipe, PipeTransform } from '@angular/core';
 import { DatePipe, PlatformLocation } from '@angular/common'
 import * as moment from 'moment';
