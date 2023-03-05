@@ -3381,7 +3381,14 @@
                     <!-- GRAPHICAL DATA -->
                     <div class="col-md-12 row mt-30">
                         <div class="col-md-6">
-                            
+                            <div style="display: block;">
+                                <canvas baseChart width="400" height="400"
+                                  [type]="'line'"
+                                  [data]="lineChartData"
+                                  [options]="lineChartOptions"
+                                  [legend]="lineChartLegend">
+                                </canvas>
+                              </div>
                         </div>
                     </div>
                 </div>
