@@ -1158,7 +1158,6 @@ export class ItemPlanDetailsComponent implements OnInit {
           if (new Date($('#date-input5').val()) > new Date($('#date-input6').val())) {
             this.toastr.error("Your start date is greater than End Date", "Error");
           } else {
-            if (new Date(this.planstartdate) < new Date($('#date-input5').val()) && new Date(this.planenddate) > new Date($('#date-input5').val()) && new Date(this.planstartdate) < new Date($('#date-input6').val()) && new Date(this.planenddate) > new Date($('#date-input6').val())) {
               var data = this.childPlanFormSub.value;
               data.editid = "";
               data.parent_goal_id = this.childgoalDetails._id;
@@ -1200,9 +1199,6 @@ export class ItemPlanDetailsComponent implements OnInit {
                   // this.is_disabled = false;
                 }
               });
-            } else {
-              this.toastr.error("Your goal's start date and end date are extended from your plan", "Error");
-            }
           }
         } else {
           if ($('#date-input5').val() == '') {
