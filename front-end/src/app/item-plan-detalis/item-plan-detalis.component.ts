@@ -834,6 +834,7 @@ export class ItemPlanDetailsComponent implements OnInit {
         $("#jstree").on("select_node.jstree",
           function (evt, data) {
             var plan_id;
+            a.editChildEnabled = false;
             if (data.node.parent == "#") {
               a.getplandetail(data.selected[0]);
               a.getGoalReportByPlan(data.selected[0]);
@@ -2332,6 +2333,7 @@ export class ItemPlanDetailsComponent implements OnInit {
       $('#jstree-module-tree').jstree("destroy");
       $("#jstree-module-tree").on("select_node.jstree",
         function (evt, data) {
+          a.editChildEnabled = false
           a.getgoaldetail(data.selected[0], data.node.parent);
           a.getSelectedModule(data.selected[0])
           a.getGoalReportByPlan(data.node.parent);
