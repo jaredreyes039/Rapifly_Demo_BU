@@ -3782,12 +3782,12 @@
                             <div style="display: flex; margin-bottom: 12px;">
                                 <div class=" parent-item-label">Start Date:</div>
                                 <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
-                                    {{childgoalDetails.start_date !== undefined ?  (childgoalDetails.start_date | itemplanitemdate) : "Not available for deeply nested items"}}</div>
+                                    {{childgoalDetails.start_date !== undefined ?  (childgoalDetails.start_date | itemplanitemdate) : "Currently not available for deeply nested items"}}</div>
                             </div>
                             <div style="display: flex;  margin-bottom: 12px;">
                                 <div class=" parent-item-label">End Date:</div>
                                 <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
-                                    {{childgoalDetails.end_date !== undefined ?  (childgoalDetails.end_date | itemplanitemdate) : "N/A"}}</div>
+                                    {{childgoalDetails.end_date !== undefined ?  (childgoalDetails.end_date | itemplanitemdate) : "Currently not available for deeply nested items"}}</div>
                             </div>
                             <div style="display: flex;" *ngIf="selectedModules == 'analysis'">
                                 <div class=" parent-item-label">Source:</div>
