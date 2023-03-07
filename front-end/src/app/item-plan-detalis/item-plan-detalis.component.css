@@ -175,6 +175,16 @@ ul,
     white-space: nowrap;
     padding-left: 12px !important;
 }
+.parent-item-val-mod {
+    border-radius: 0px 4px 4px 0px;
+    min-width: 240px;
+    max-width: 480px;
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding-left: 12px !important;
+}
 label {
     margin-bottom: 0px !important;
 }

@@ -3600,7 +3600,7 @@
                                     </div>
                                 </div>
 
-                                <div style="display: flex; flex-direction: column; flex-basis: 45%;">
+                                <div style="display: flex; flex-direction: column; flex-basis: 45%;"  *ngIf="selectedModules !== 'motive' && selectedModules !== 'analysis' && selectedModules !== 'intelligence'" [hidden]="selectedModules === 'motive' && selectedModules === 'analysis' && selectedModules === 'intelligence'">
                                     <div style="display: flex;  margin-bottom: 12px;">
                                         <label class="parent-item-label parent-item-label-alert">Production Target</label>
                                         <input type="number" formControlName="production_target" class="form-control bg-dark text-white form-control-spec parent-item-val"
@@ -3619,10 +3619,10 @@
                             </div>
 
                             <!-- DESCRIPTION COLUMN BREAK -->
-                            <div style="display: flex;  margin-bottom: 12px;">
+                            <div style="display: flex;  margin-bottom: 12px;" *ngIf="selectedModules !== 'analysis' && selectedModules !== 'intelligence'" [hidden]="selectedModules === 'analysis' && selectedModules === 'intelligence'">
 
                                 <div class="text-white bg-dark parent-item-val-spec" style="padding: 6px;">
-                                    <div class=" parent-item-label-spec">Description</div>
+                                    <div class=" parent-item-label-spec">{{selectedModules === 'motive' ? 'Motivation' : 'Description'}}</div>
                                     <textarea type="text" formControlName="description" class="form-control bg-dark"
                                     placeholder="Click to edit description" style="border-radius: 0px; border: none; border-left: 2px solid #fff; padding-left: 12px;"  [ngClass]="{ 'is-invalid': isModuleFormSubmitted && mf.description.errors }"
                                     autocomplete="off"></textarea>                     
@@ -3630,10 +3630,9 @@
                             </div>
 
                             <!-- HVAs/LVAs and Weights -->
-                            <div style="display: flex;">
+                            <div style="display: flex;"  *ngIf="selectedModules !== 'motive' && selectedModules !== 'analysis' && selectedModules !== 'intelligence'" [hidden]="selectedModules === 'motive' && selectedModules === 'analysis' && selectedModules === 'intelligence'">
                                 <div style="display: flex; flex-direction: column; flex-basis: 45%;">
-                                    <div
-                                        [hidden]="selectedModules == 'motive' || selectedModules == 'analysis' || selectedModules == 'intelligence'">
+                                    <div>
                                         <div class="form-group" style="display: flex;  margin-bottom: 12px;">
                                             <label class="parent-item-label" style="margin-bottom: 12px !important;">Production HVA</label>
                                             <input type="number" formControlName="production_high_variance_alert"
@@ -3642,8 +3641,7 @@
                                                 autocomplete="off">
                                         </div>
                                     </div>
-                                    <div
-                                        [hidden]="selectedModules == 'motive' || selectedModules == 'analysis' || selectedModules == 'intelligence'">
+                                    <div>
                                         <div class="form-group" style="display: flex;  margin-bottom: 12px;">
                                             <label class="parent-item-label" style="margin-bottom: 12px !important;">Expense HVA</label>
                                             <input type="number" formControlName="expense_high_variance_alert" class="form-control bg-dark text-white parent-item-val form-control-spec"
@@ -3702,69 +3700,101 @@
                             </div>
     
                             <!-- FORM FOR ADDING AN INITIAL ANALYSIS AND INTELLIGENCE -->
-                            <div class="col-md-12 page-title mt-30" *ngIf="selectedModules == 'analysis'">
+                            <div class="col-md-12 page-title" *ngIf="selectedModules == 'analysis'">
                                 <h3 class="breadcrumb-header">Analysis Framework</h3>
                             </div>
-                            <div class="col-md-12 page-title mt-30" *ngIf="selectedModules == 'intelligence'">
-                                <h3 class="breadcrumb-header">Intelligence Details</h3>
-                            </div>
+
     
                             <div class="col-md-12" *ngIf="selectedModules == 'analysis'">
                                 <div class="form-group">
-                                    <label>Question</label>
-                                    <input type="text" formControlName="question" class="form-control"
-                                        placeholder="Question"
+                                    <label class="parent-item-label-spec" style="margin-bottom: 12px !important;">Question</label>
+                                    <textarea type="text" formControlName="question" class="form-control form-control-spec bg-dark text-white parent-item-val-spec"
+                                        placeholder="Enter guiding question here..."
                                         [ngClass]="{ 'is-invalid': isModuleFormSubmitted && mf.question.errors }"
-                                        autocomplete="off">
+                                        autocomplete="off"></textarea>
                                 </div>
                             </div>
 
                             <div class="col-md-12" *ngIf="selectedModules == 'analysis'">
                                 <div class="form-group">
-                                    <label>Answer</label>
-                                    <input type="text" formControlName="answer" class="form-control" placeholder="Answer"
+                                    <label class="parent-item-label-spec" style="margin-bottom: 12px !important;">Answer</label>
+                                    <textarea type="text" formControlName="answer" class="form-control form-control-spec bg-dark text-white parent-item-val-spec" placeholder="Enter best answer here..."
                                         [ngClass]="{ 'is-invalid': isModuleFormSubmitted && mf.answer.errors }"
-                                        autocomplete="off">
+                                        autocomplete="off"></textarea>
                                 </div>
                             </div>
-                            <div class="col-md-6" *ngIf="selectedModules == 'intelligence'">
-                                <div class="form-group">
-                                    <label>Value</label>
-                                    <input type="text" formControlName="intelligence_value" class="form-control"
-                                        placeholder="Value" autocomplete="off">
+
+                            <div style="display: flex; " *ngIf="selectedModules == 'intelligence'">
+                            <div style="display: flex; flex-direction: column; width: 100%;">
+                                <div class="col-md-12 page-title" *ngIf="selectedModules == 'intelligence'">
+                                    <h3 class="breadcrumb-header">Intelligence Details</h3>
+                                </div>
+                                    <div style="display: flex; column-gap: 24px;">
+                                    <div style="display: flex; flex-direction: column; flex-basis: 45%;">
+                                        <div *ngIf="selectedModules == 'intelligence'">
+                                            <div class="form-group" style="display: flex; flex-direction: row; margin-bottom: 12px;">
+                                                <label class="parent-item-label" style="margin-bottom: 12px !important;">Value</label>
+                                                <input type="text" formControlName="intelligence_value" class="form-control form-control-spec bg-dark text-white parent-item-val-mod"
+                                                    placeholder="Value" autocomplete="off">
+                                            </div>
+                                        </div>
+                                        <div *ngIf="selectedModules == 'intelligence'">
+                                            <div class="form-group" style="display: flex; flex-direction: row; margin-bottom: 12px;">
+                                                <label class="parent-item-label">Response</label>
+                                                <input type="text" formControlName="intelligence_response" class="form-control form-control-spec bg-dark text-white parent-item-val-mod"
+                                                    placeholder="Response" autocomplete="off">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div style="display: flex; flex-direction: column; flex-basis: 45%;">
+                                        <div
+                                        *ngIf="selectedModules == 'analysis' || selectedModules == 'intelligence'">
+                                            <div class="form-group" style="display: flex; flex-direction: row; margin-bottom: 12px;">
+                                                <label class="parent-item-label" style="margin-bottom: 12px !important;">Source</label>
+                                                <input type="text" formControlName="source" class="form-control form-control-spec bg-dark text-white parent-item-val-mod" placeholder="Source"
+                                                    [ngClass]="{ 'is-invalid': isModuleFormSubmitted && mf.source.errors }"
+                                                    autocomplete="off">
+                                            </div>
+                                        </div>
+                                        <div 
+                                            *ngIf="selectedModules == 'analysis' || selectedModules == 'intelligence'">
+                                            <div class="form-group" style="display: flex; flex-direction: row; margin-bottom: 12px;">
+                                                <label class="parent-item-label" style="margin-bottom: 12px !important;">Link</label>
+                                                <input type="text" formControlName="link" class="form-control form-control-spec bg-dark text-white parent-item-val-mod" placeholder="Link"
+                                                    [ngClass]="{ 'is-invalid': isModuleFormSubmitted && mf.link.errors }"
+                                                    autocomplete="off">
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-md-6" *ngIf="selectedModules == 'intelligence'">
-                                <div class="form-group">
-                                    <label>Response</label>
-                                    <input type="text" formControlName="intelligence_response" class="form-control"
-                                        placeholder="Response" autocomplete="off">
-                                </div>
-                            </div>
+                            </div>  
+
+
                             <div class="col-md-6"
-                                *ngIf="selectedModules == 'analysis' || selectedModules == 'intelligence'">
-                                <div class="form-group">
-                                    <label>Source</label>
-                                    <input type="text" formControlName="source" class="form-control" placeholder="Source"
+                                *ngIf="selectedModules == 'analysis'">
+                                <div class="form-group" style="display: flex; flex-direction: row; margin-bottom: 12px;">
+                                    <label class="parent-item-label" style="margin-bottom: 12px !important;">Source</label>
+                                    <input type="text" formControlName="source" class="form-control form-control-spec bg-dark text-white parent-item-val-mod" placeholder="Source"
                                         [ngClass]="{ 'is-invalid': isModuleFormSubmitted && mf.source.errors }"
                                         autocomplete="off">
                                 </div>
                             </div>
                             <div class="col-md-6"
-                                *ngIf="selectedModules == 'analysis' || selectedModules == 'intelligence'">
-                                <div class="form-group">
-                                    <label>Link</label>
-                                    <input type="text" formControlName="link" class="form-control" placeholder="Link"
+                                *ngIf="selectedModules == 'analysis'">
+                                <div class="form-group" style="display: flex; flex-direction: row; margin-bottom: 12px;">
+                                    <label class="parent-item-label" style="margin-bottom: 12px !important;">Link</label>
+                                    <input type="text" formControlName="link" class="form-control form-control-spec bg-dark text-white parent-item-val-mod" placeholder="Link"
                                         [ngClass]="{ 'is-invalid': isModuleFormSubmitted && mf.link.errors }"
                                         autocomplete="off">
                                 </div>
                             </div>
                             
-                            <div class="col-md-6 form-group"
+                            <!-- <div class="col-md-6 form-group"
                                 *ngIf="selectedModules == 'analysis' || selectedModules == 'intelligence'">
                                 <label>Attachment</label>
                                 <input type="file" (change)="uploadAttachment($event.target.files)">
-                            </div>
+                            </div> -->
                         </div>
                         <div class="form-group text-right">
                             <button type="submit" (click)="saveModule()" class="btn btn-primary btn-space">Save</button>
