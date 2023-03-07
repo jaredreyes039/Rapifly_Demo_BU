@@ -1028,7 +1028,6 @@ export class ItemPlanDetailsComponent implements OnInit {
         this.toastr.error(response.message, "Error");
       }
     });
-    this.getplandetail(parent)
   }
 
   getplandetail(Plan) {
@@ -2285,7 +2284,6 @@ export class ItemPlanDetailsComponent implements OnInit {
               if (response.status) {
                 this.toastr.success(response.message, "Success");
                 this.getPlanDetails();
-
                 this.showSelectedTree(this.selectedModules);
 
                 this.isModuleFormSubmitted = false;
@@ -2337,6 +2335,7 @@ export class ItemPlanDetailsComponent implements OnInit {
           a.getGoalAttachments(data.selected[0]);
           a.getGoalSharedUsers(data.selected[0]);
           a.checkPlanForGoalSharePermission(data.plan_id);
+          console.log(a.parentplanDetails, a.childgoalDetails)
          }
       );
       $('#jstree-module-tree').jstree({ core: { data: treeArray } });
