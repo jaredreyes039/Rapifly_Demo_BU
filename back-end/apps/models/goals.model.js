@@ -8,8 +8,8 @@ let GoalsSchema = new Schema({
         required: true,
     },
     parent_goal_id: {
-        type: String,
-        default: ""
+        type: [String],
+        default: ['#']
     },
     isReportReady: {
         type: Boolean,

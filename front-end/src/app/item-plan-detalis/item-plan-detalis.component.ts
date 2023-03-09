@@ -814,33 +814,47 @@ export class ItemPlanDetailsComponent implements OnInit {
 
         // Map through resp
         this.planteeDetails.forEach(element => {
+
           // That array from above
+          // For root items
           this.finalarray.push({ "id": element._id, "parent": "#", "text": element.short_name, 'state': { 'opened': true }, "icon": "assets/images/avatars/p.png" })
+          
           // This must be sub-children
           element.goals.forEach(element2 => {
+            let parsedArr = element2.parent_goal_id
+            console.log(parsedArr)
             if (element2.module_type == 'goal') {
-              if (element2.parent_goal_id !== ''){
+              if (parsedArr[parsedArr.length - 1] !== '#'){
+                console.log(parsedArr[parsedArr.length -1])
                 var moduleTypeIcon: any = "assets/images/avatars/g.png";
-                this.finalarray.push({ "id": element2._id, "parent": element2.parent_goal_id, "text": element2.short_name, "icon": moduleTypeIcon })
+                this.finalarray.push({ "id": element2._id, "parent": parsedArr[parsedArr.length - 1], "text": element2.short_name, "icon": moduleTypeIcon })
               }
               else {
                 var moduleTypeIcon: any = "assets/images/avatars/g.png";
                 this.finalarray.push({ "id": element2._id, "parent": element._id, "text": element2.short_name, "icon": moduleTypeIcon })
-            }
-            }
-          })
+              }
+            }})
         });
+
+        // ONCLICK FUNCTIONALITY FOR PROJECT TREE
         $('#jstree').jstree("destroy");
         $("#jstree").on("select_node.jstree",
           function (evt, data) {
             var plan_id;
+
+            // PREVENTS EDIT UI
             a.editChildEnabled = false;
+
+            // ROOT ITEM
             if (data.node.parent == "#") {
               a.getplandetail(data.selected[0]);
               a.getGoalReportByPlan(data.selected[0]);
               plan_id = data.selected[0];
               a.parentIsActiveSelection = true;
-            } else if (data.node.parent !== '#' && data.node.parents.length > 3) {
+            }
+            
+            // SUB ITEM LEVEL 1
+            else if (data.node.parent !== '#' && data.node.parents.length > 3) {
               a.getgoaldetail(data.selected[0], data.node.parent);
               a.getGoalReportByPlan(data.node.parent);
               a.parentIsActiveSelection = false;
@@ -850,29 +864,32 @@ export class ItemPlanDetailsComponent implements OnInit {
               a.getGoalSharedUsers(data.selected[0]);
               a.checkPlanForGoalSharePermission(plan_id);
             }
+
+            // SUB ITEM LEVEL n+1
             else {
               a.getgoaldetail(data.selected[0], data.node.parent);
               a.getGoalReportByPlan(data.node.parent);
               a.parentIsActiveSelection = false;
               plan_id = data.node.parent;
               a.goalid = data.selected[0]
-              console.log(a.goalid)
               a.getGoalAttachments(data.selected[0]);
               a.getGoalSharedUsers(data.selected[0]);
               a.checkPlanForGoalSharePermission(plan_id);
             }
+
+            // CLEAN UP
             a.planId = plan_id;
             a.getHeadUpToDisplayDetails(plan_id);
-
             a.selectedPhase = 'B';
             a.selectedModules = '';
             a.moduleType = 'goal';
-
             a.showSelectedTree(a.selectedModules);
             a.getPlanGoals(data.selected[0]);
             a.dataTableAfterViewInit()
           }
         );
+
+        // SETS PROJECT TREE W/ finalarray VAR
         $('#jstree').jstree({ core: { data: this.finalarray } });
       } else {
         this.toastr.error(response.message, "Error");
@@ -1147,7 +1164,14 @@ export class ItemPlanDetailsComponent implements OnInit {
     }
   }
 
+  // I have ITEM_A Selected
+  /* If (ITEM_A HAS A PARENT ID ARRAY PRESENT){
+      ITEM_A_ARR = [PARENT GOAL ID LIST (hierarchical)]
+      ITEM_B.parent_goal_id = ITEM_A_ARR.push(ITEM_A._id)
+  } */
+
   onSubmitSub(){
+    console.log(this.childgoalDetails.parent_goal_id)
     this.submitted = true;
     if (this.childPlanFormSub.invalid) {
       return;
@@ -1156,10 +1180,14 @@ export class ItemPlanDetailsComponent implements OnInit {
         if ($('#date-input5').val() != '' && $('#date-input6').val() != '') {
           if (new Date($('#date-input5').val()) > new Date($('#date-input6').val())) {
             this.toastr.error("Your start date is greater than End Date", "Error");
-          } else {
+          } 
+          else {
               var data = this.childPlanFormSub.value;
+              const parsedArr = this.childgoalDetails.parent_goal_id[0].split(',')
+              parsedArr.push(this.childgoalDetails._id)
+              console.log(parsedArr)
               data.editid = "";
-              data.parent_goal_id = this.childgoalDetails._id;
+              data.parent_goal_id = parsedArr;
               data.user_id = this.currentuser.user._id;
               data.plan_id = this.goalplanid;
               data.status = 0;
@@ -1183,9 +1211,16 @@ export class ItemPlanDetailsComponent implements OnInit {
 
               for (const key in data) {
                 const element = data[key];
-                formData.append(key.toString(), element);
+                console.log(key, element)
+                if(key === "parent_goal_id"){
+                  formData.append(key, element);
+                }
+                else {
+                  formData.append(key.toString(), element);
+                }
               }
-
+              formData.entries(entry => console.log(entry))
+              console.log(data)
               this.commonService.PostAPI(`goal/create`, formData).then((response: any) => {
                 if (response.status) {
                   this.toastr.success(response.message, "Success");
@@ -1482,6 +1517,7 @@ export class ItemPlanDetailsComponent implements OnInit {
   }
 
   changedeactivate(id, change) {
+    console.log(this.parentplanDetails)
     this.commonService.PostAPI(`goal/deactivate/changebyid`, { id: id, deactivate: change }).then((response: any) => {
       if (response.status) {
         this.toastr.success(response.message, "Success");
