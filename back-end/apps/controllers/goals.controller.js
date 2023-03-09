@@ -20,6 +20,7 @@ var _ = require('lodash');
 
 exports.create = async function (request, response) {
     var body = request.body;
+    body.parent_goal_id = body.parent_goal_id ? body.parent_goal_id.split(',') : ['#']
     var files = request.files;
 
     body.shared_users = (body.shared_users && body.shared_users != undefined) ? body.shared_users.split(',') : [];
@@ -45,6 +46,7 @@ exports.create = async function (request, response) {
 
     Goals.find({ plan_id: body.plan_id }, async (err, res) => {
         if (err) throw err;
+        console.log(body)
         if (res) {
             if (res.length == 0) {
                 request.body.prioritize = 1;
@@ -81,7 +83,6 @@ exports.create = async function (request, response) {
                         message: "Please Enter All required Fields"
                     });
                 }
-                console.log(body)
                 try {
                     Goals.updateOne({ _id: body.editid }, body, async function (error, level) {
                         if (error) {
@@ -486,6 +487,7 @@ exports.priority_change_by_id = async function (request, response) {
 
 exports.deactivate_change_by_id = async function (request, response) {
     var body = request.body;
+    console.log(body)
     let errors = [];
     let parentDeactivateSuccess = false;
     let childrenDeactivateSuccess = false;
@@ -496,6 +498,14 @@ exports.deactivate_change_by_id = async function (request, response) {
         });
     }
 
+    // RECIEVE POST REQ FOR UPDATE
+    // FIND MAIN ITEM FIRST W/ body._id
+    /* IF (MAIN ITEM HAS PARENT ID ARRAY FINAL VAL !== ''){
+        Filter all plans for any parent id array with a value matching the MAIN ITEM id
+        Update as necessary
+
+        Goals.updateMany({parent_goal_id: })
+    } */
     try {
         Goals.updateOne({ _id: body.id }, body, function (error, level) {
             if (error) {
@@ -508,8 +518,10 @@ exports.deactivate_change_by_id = async function (request, response) {
                 return;
             }
         })
-        Goals.updateMany({parent_goal_id: body.id}, body, function (error, level) {
+        Goals.updateMany({parent_goal_id:{$all:[body.id]}}, body, function (error, level) {
+            console.log(body.id, error, level)
             if (error) {
+                console.log(error)
                 return response.send({
                     status: false,
                     message: "Failed to deactivate child items, weird problems may occur. File a bug report with the development team through the Rapifly bug reporting feature present on all root items."
@@ -518,6 +530,7 @@ exports.deactivate_change_by_id = async function (request, response) {
             else {
                 childrenDeactivateSuccess = true
                 if (body.deactivate == 1 && parentDeactivateSuccess && childrenDeactivateSuccess) {
+                    console.log(level)
                     return response.status(201).send({
                         status: true,
                         message: "Goal Deactivated Successfully."
