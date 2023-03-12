@@ -53,7 +53,7 @@ exports.create = async function (request, response) {
             } else {
                 request.body.prioritize = res[0].prioritize + 1;
             }
-            if (body.editid == undefined || body.editid == "") {
+            if (body.editid === undefined || body.editid === "") {
                 try {
                     const goal = new Goals(request.body);
                     await goal.save();
