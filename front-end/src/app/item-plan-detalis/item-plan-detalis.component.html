@@ -417,17 +417,6 @@
                                             {{parentplanDetails[0].expense_target }}</div>
                                     </div>
                                 </div>
-                                <!-- <div style="display: flex;"
-                                    *ngIf="parentplan.key !='start_date' && parentplan.key !='end_date' && parentplan.key !='user_id' && parentplan.key !='security' ">
-                                    <div class="parent-item-label">{{textDecoration(parentplan.key)}}:</div>
-                                    <div class="text-white bg-dark parent-item-val" style="padding: 6px;" *ngIf="parentplan.key !='userid' ">
-                                        {{parentplan.value}}</div>
-                                </div> -->
-                                <!-- <div *ngIf="parentplan.key=='security' ">
-                                    <div class="parent-item-label ">{{textDecoration(parentplan.key)}}:</div>
-                                    <div class="col-md-6 text-white " *ngIf="parentplan.value==0 "> Private</div>
-                                    <div class="col-md-6 text-white " *ngIf="parentplan.value==1 "> Shared </div>
-                                </div> -->
                         </div>
                         <div style="display: flex; margin-bottom: 24px;">
                             <div class="text-white bg-dark parent-item-val-spec" style="padding: 6px;">
@@ -670,8 +659,6 @@
                                     </mat-expansion-panel>
                             </div>
                             </div>
-                            
-
                             <div style="padding: 40px;">
                                 <div class="form-group">
                                     <button type="submit" (click)="resetPlanForm()"
@@ -680,20 +667,6 @@
                                         class="btn btn-primary btn-space pull-right">Submit</button>
                                 </div>
                             </div>
-
-                            <!-- <div class="col-md-12 form-group">
-                                <label>Security<span>*</span></label>
-                                <select class="form-control" style="padding: 0px 0px!important"
-                                    formControlName="security"
-                                    [ngClass]="{ 'is-invalid': IsLoginFormValid && jval.security.errors }">
-                                    <option value="0">Private</option>
-                                    <option value="1">Public</option>
-                                </select>
-                                <div *ngIf="IsLoginFormValid && jval.security.errors" class="invalid-feedback">
-                                    <label *ngIf="jval.security.errors.required" class="error">Security is
-                                        required</label>
-                                </div>
-                            </div> -->
                         </div>
                     </div>
                 </div>
@@ -937,15 +910,76 @@
             <!-- ACTIVE: When parent is active (parentIsActiveSelection:true) -->
             <!-- ACTIVE FORM GROUP: CHILDPLANFORM -->
             <!-- DATE IDS: 5/6 CONFLICT PRESENT W/ PARENT -->
-            <form #kform="ngForm" class="p-3" [formGroup]="childPlanForm" *ngIf="editChildEnabled && !parentIsActiveSelection">
+
+            <div *ngIf="editChildEnabled && !parentIsActiveSelection">
+                <div>
+                    <div class="page-title">
+                        Edit Sub-Item
+                    </div>
+                    <h4>Welcome to the editing portal. Here, you can efficiently edit any details under your sub-item dashboards; however,
+                        names, dates, and descriptions can not be changed to maintain consistency and security across networks.
+                    </h4>
                 <div class="panel panel-cutom-blue">
                     <div class="panel-body">
                         <div style="padding: 10px;">
+                            <div style="display: flex; flex-direction: row; gap: 24px; margin-bottom: 24px;">
+                                    <div style="display: flex; flex-direction: column; flex-basis: 45%;">
+                                        <div  style="display: flex;  margin-bottom: 12px;">
+                                            <div class="parent-item-label">Short Name:</div>
+                                            <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
+                                                {{childgoalDetails.short_name}}</div>
+                                        </div>
+                                        <div  style="display: flex;">
+                                            <div class="parent-item-label">Long Name:</div>
+                                            <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
+                                                {{childgoalDetails.long_name}}</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div style="display: flex; flex-direction: column; flex-basis: 45%;">
+                                        <div style="display: flex; margin-bottom: 12px;">
+                                            <div class=" parent-item-label">Start Date:</div>
+                                            <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
+                                                {{childgoalDetails.start_date | itemplanitemdate }}</div>
+                                        </div>
+                                        <div style="display: flex;">
+                                            <div class=" parent-item-label">End Date:</div>
+                                            <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
+                                                {{childgoalDetails.end_date | itemplanitemdate }}</div>
+                                        </div>
+                                    </div>
+                                    <div style="display: flex; flex-direction: column; flex-basis: 45%;">
+                                        <div style="display: flex; margin-bottom: 12px;">
+                                            <div class=" parent-item-label parent-item-label-alert">Production Target:</div>
+                                            <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
+                                                {{childgoalDetails.production_target }}</div>
+                                        </div>
+                                        <div style="display: flex;">
+                                            <div class=" parent-item-label parent-item-label-alert">Expense Target:</div>
+                                            <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
+                                                {{childgoalDetails.expense_target === "" ? 'Unspecified' : childgoalDetails.expense_target}}</div>
+                                        </div>
+                                    </div>
+                            </div>
+                            <div style="display: flex; margin-bottom: 12px;">
+                                <div class="text-white bg-dark parent-item-val-spec" style="padding: 6px;">
+                                    <div class=" parent-item-label-spec">Description</div>
+                                    <p>{{childgoalDetails.description}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+            <form #kform="ngForm" class="p-3" [formGroup]="childPlanForm" *ngIf="editChildEnabled && !parentIsActiveSelection">
+                        <div>
                                 <mat-expansion-panel  [expanded]="true">
-                                <mat-expansion-panel-header class="page-title" style="margin-bottom: 24px;" >
+                                <mat-expansion-panel-header class="page-title">
                                     <h3>Dashboard</h3>
                                 </mat-expansion-panel-header>
-                                <div style="display: flex; flex-direction: row; margin-bottom: 12px;">
+                                <div class="panel panel-cutom-blue">
+                                <div style="display: flex; flex-direction: row; margin-bottom: 12px;" class="panel-body">
 
                                 <div style="display: flex; flex-direction: row;">
                                     <div style="display: flex; flex-direction: column;">
@@ -1019,7 +1053,8 @@
                                     </div>
                                 </div>
                                 </div>
-                            </div>
+                                </div>
+                                </div>
                                 </mat-expansion-panel>
 
                                 <div class="col-md-12 form-group text-right">
@@ -1029,79 +1064,7 @@
                                     <button type="reset" (click)="reset()" [disabled]="!checkforgoaledit "
                                         class="btn btn-default">Clear</button>
                                 </div>
-
-
-                                <mat-expansion-panel *ngIf="!parentIsActiveSelection" [hidden]="parentIsActiveSelection" class="expanse-panel expanse-panel-discussion">
-                                    <mat-expansion-panel-header class="page-title">
-                                        <h3>Communication</h3>
-                                    </mat-expansion-panel-header>
-                                    <div class="panel panel-cutom-blue" style="border: none; box-shadow: none;">
-                                        <div class="panel-body">
-                                            <form [formGroup]="DiscussionForm">
-                                                <div class="row">
-                                                    <div class="col-md-6 form-group">
-                                                        <label>Security</label>
-                                                        <select class="form-control" formControlName="security">
-                                                            <option value="">Select Security</option>
-                                                            <option value="public">Public</option>
-                                                            <option value="private">Private</option>
-                                                        </select>
-                                                        <div *ngIf="isSubmittedDiscussionForm && dscf.security.errors" class="invalid-feedback">
-                                                            <label *ngIf="dscf.security.errors.required" class="error">Security is
-                                                                required</label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6 form-group">
-                                                        <label>Recipients</label>
-                                                        <select class="form-control" formControlName="recipient_id" id="recipient_id" (change)="onRecipient($event)">
-                                                            <option value="">Select Recipient</option>
-                                                            <option *ngFor="let hu of users;" value="{{hu.user_id._id}}">
-                                                                {{ hu.user_id.first_name }} {{ hu.user_id.last_name }}
-                                                                ({{hu.hierarchy_id.designation}})</option>
-                                                            <option value="invite">Invite New Recipient</option>
-                                                        </select>
-                                                        <div *ngIf="isSubmittedDiscussionForm && dscf.recipient_id.errors"
-                                                            class="invalid-feedback">
-                                                            <label *ngIf="dscf.recipient_id.errors.required" class="error">Recipient is
-                                                                required</label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-12 form-group">
-                                                        <label>Subject</label>
-                                                        <input type="text" class="form-control" placeholder="Subject" formControlName="subject"
-                                                            [ngClass]="{ 'is-invalid': isSubmittedDiscussionForm && dscf.subject.errors }">
-                                                        <div *ngIf="isSubmittedDiscussionForm && dscf.subject.errors" class="invalid-feedback">
-                                                            <label *ngIf="dscf.subject.errors.required" class="error">Subject is
-                                                                required</label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-12 form-group">
-                                                        <label>Message</label>
-                                                        <textarea class="form-control" placeholder="Message" formControlName="message"
-                                                            [ngClass]="{ 'is-invalid': isSubmittedDiscussionForm && dscf.message.errors }"></textarea>
-                                                        <div *ngIf="isSubmittedDiscussionForm && dscf.message.errors" class="invalid-feedback">
-                                                            <label *ngIf="dscf.message.errors.required" class="error">Message is
-                                                                required</label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6 form-group">
-                                                        <label>Attachment</label>
-                                                        <input type="file" (change)="uploadDiscussionAttachment($event.target.files)">
-                                                    </div>
-                                                    <div class="col-md-12 form-group text-right">
-                                                        <button type="submit" class="btn btn-primary btn-space"
-                                                            (click)="onSubmitDiscussion()">Save</button>
-                                                        <button type="reset" class="btn btn-default"
-                                                            (click)="resetDiscussionForm()">Cancel</button>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </mat-expansion-panel>
                         </div>
-                    </div>
-                </div>
             </form>
             <mat-expansion-panel class="expanse-panel" *ngIf="parentIsActiveSelection" [expanded]="true">
             <mat-expansion-panel-header class="page-title">

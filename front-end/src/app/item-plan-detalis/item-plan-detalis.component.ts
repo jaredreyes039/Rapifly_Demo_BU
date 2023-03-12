@@ -43,6 +43,7 @@ export class ItemPlanDetailsComponent implements OnInit {
   childgoalDetails: any = [];
   finalarray = [];
   alertdata;
+  childParentId: String = ""
 
   currentModuleDetails: any;
   // FEEDBACK
@@ -402,6 +403,8 @@ export class ItemPlanDetailsComponent implements OnInit {
       long_name: ['', Validators.required],
       // supervisor: ['', Validators.required],
       // department: ['', Validators.required],
+      start_date: [''],
+      end_date: [''],
       description: [''],
       production_target: [0],
       production_high_variance_alert: [0],
@@ -814,7 +817,7 @@ export class ItemPlanDetailsComponent implements OnInit {
 
         // Map through resp
         this.planteeDetails.forEach(element => {
-
+          console.log(element)
           // That array from above
           // For root items
           this.finalarray.push({ "id": element._id, "parent": "#", "text": element.short_name, 'state': { 'opened': true }, "icon": "assets/images/avatars/p.png" })
@@ -822,10 +825,8 @@ export class ItemPlanDetailsComponent implements OnInit {
           // This must be sub-children
           element.goals.forEach(element2 => {
             let parsedArr = element2.parent_goal_id
-            console.log(parsedArr)
             if (element2.module_type == 'goal') {
               if (parsedArr[parsedArr.length - 1] !== '#'){
-                console.log(parsedArr[parsedArr.length -1])
                 var moduleTypeIcon: any = "assets/images/avatars/g.png";
                 this.finalarray.push({ "id": element2._id, "parent": parsedArr[parsedArr.length - 1], "text": element2.short_name, "icon": moduleTypeIcon })
               }
@@ -860,6 +861,7 @@ export class ItemPlanDetailsComponent implements OnInit {
               a.parentIsActiveSelection = false;
               plan_id = data.node.parent;
               a.goalid = ""
+              a.childParentId = data.node.parent
               a.getGoalAttachments(data.selected[0]);
               a.getGoalSharedUsers(data.selected[0]);
               a.checkPlanForGoalSharePermission(plan_id);
@@ -871,6 +873,7 @@ export class ItemPlanDetailsComponent implements OnInit {
               a.getGoalReportByPlan(data.node.parent);
               a.parentIsActiveSelection = false;
               plan_id = data.node.parent;
+              a.childParentId = data.node.parent
               a.goalid = data.selected[0]
               a.getGoalAttachments(data.selected[0]);
               a.getGoalSharedUsers(data.selected[0]);
@@ -985,7 +988,7 @@ export class ItemPlanDetailsComponent implements OnInit {
           this.checkforgoaledit = false;
         }
         this.moduleType = this.childgoalDetails.module_type;
-        if (this.childgoalDetails.parent_goal_id !== ''){
+        if (this.childgoalDetails.parent_goal_id !== '#'){
           this.goalid = this.childgoalDetails.parent_goal_id
         }
         else {
@@ -1048,13 +1051,11 @@ export class ItemPlanDetailsComponent implements OnInit {
   }
 
   getplandetail(Plan) {
-    console.log(Plan)
     this.checkforgoaledit = true
     this.commonService.PostAPI(`plan/get/by/id2`, { plan_id: Plan }).then((response: any) => {
       if (response.status) {
 
         this.parentplanDetails = response.data;
-        console.log(this.parentplanDetails)
         if(this.parentIsActiveSelection){
           this.goalid = ""
         }
@@ -1107,7 +1108,7 @@ export class ItemPlanDetailsComponent implements OnInit {
           } else {
             if (new Date(this.planstartdate) < new Date($('#date-input5').val()) && new Date(this.planenddate) > new Date($('#date-input5').val()) && new Date(this.planstartdate) < new Date($('#date-input6').val()) && new Date(this.planenddate) > new Date($('#date-input6').val())) {
               var data = this.childPlanForm.value;
-              data.editid = this.goalid;
+              data.editid = this.childgoalDetails._id || "";
               data.user_id = this.currentuser.user._id;
               data.plan_id = this.goalplanid;
               data.status = 0;
@@ -1132,6 +1133,7 @@ export class ItemPlanDetailsComponent implements OnInit {
               for (const key in data) {
                 const element = data[key];
                 formData.append(key.toString(), element);
+                console.log(key, element)
               }
 
               this.commonService.PostAPI(`goal/create`, formData).then((response: any) => {
@@ -1164,14 +1166,7 @@ export class ItemPlanDetailsComponent implements OnInit {
     }
   }
 
-  // I have ITEM_A Selected
-  /* If (ITEM_A HAS A PARENT ID ARRAY PRESENT){
-      ITEM_A_ARR = [PARENT GOAL ID LIST (hierarchical)]
-      ITEM_B.parent_goal_id = ITEM_A_ARR.push(ITEM_A._id)
-  } */
-
   onSubmitSub(){
-    console.log(this.childgoalDetails.parent_goal_id)
     this.submitted = true;
     if (this.childPlanFormSub.invalid) {
       return;
@@ -1183,9 +1178,10 @@ export class ItemPlanDetailsComponent implements OnInit {
           } 
           else {
               var data = this.childPlanFormSub.value;
-              const parsedArr = this.childgoalDetails.parent_goal_id[0].split(',')
-              parsedArr.push(this.childgoalDetails._id)
+              console.log(this.childgoalDetails)
+              const parsedArr = this.childgoalDetails.parent_goal_id
               console.log(parsedArr)
+              parsedArr.push(this.childgoalDetails._id)
               data.editid = "";
               data.parent_goal_id = parsedArr;
               data.user_id = this.currentuser.user._id;
@@ -1211,7 +1207,6 @@ export class ItemPlanDetailsComponent implements OnInit {
 
               for (const key in data) {
                 const element = data[key];
-                console.log(key, element)
                 if(key === "parent_goal_id"){
                   formData.append(key, element);
                 }
@@ -1219,8 +1214,6 @@ export class ItemPlanDetailsComponent implements OnInit {
                   formData.append(key.toString(), element);
                 }
               }
-              formData.entries(entry => console.log(entry))
-              console.log(data)
               this.commonService.PostAPI(`goal/create`, formData).then((response: any) => {
                 if (response.status) {
                   this.toastr.success(response.message, "Success");
@@ -1442,7 +1435,6 @@ export class ItemPlanDetailsComponent implements OnInit {
         this.selectedModules = ''
         this.getPlanGoalDetails();
         this.getReportSum(this.parentplanDetails[0]._id);
-        console.log(this.productionSum)
       }
 
       $('#date-input5').datepicker({
@@ -1485,7 +1477,6 @@ export class ItemPlanDetailsComponent implements OnInit {
         this.productionSum = reports.reduce((next, current)=>{
           return next + current.actual_production
         }, 0)
-        console.log(this.productionSum)
         this.expenseSum = reports.reduce((next, current)=>{
           return next + current.actual_expense
         }, 0)
@@ -1517,7 +1508,6 @@ export class ItemPlanDetailsComponent implements OnInit {
   }
 
   changedeactivate(id, change) {
-    console.log(this.parentplanDetails)
     this.commonService.PostAPI(`goal/deactivate/changebyid`, { id: id, deactivate: change }).then((response: any) => {
       if (response.status) {
         this.toastr.success(response.message, "Success");
@@ -2217,7 +2207,6 @@ export class ItemPlanDetailsComponent implements OnInit {
   }
 
   saveModule() {
-    console.log(this.goalid)
     this.isModuleFormSubmitted = true;
     if (this.ModuleForm.invalid) {
       return;
@@ -2351,7 +2340,6 @@ export class ItemPlanDetailsComponent implements OnInit {
             return element.plan_id === this.goalid.toString();
           }
         }).forEach(element => {
-            console.log(element)
             if (element.parent_goal_id !== ''){
               treeArray.push({ "id": element._id, "parent": element.parent_goal_id, "text": element.short_name, 'state': { 'opened': false }, "icon": "assets/images/avatars/M.png" });
             }
@@ -2371,7 +2359,6 @@ export class ItemPlanDetailsComponent implements OnInit {
           a.getGoalAttachments(data.selected[0]);
           a.getGoalSharedUsers(data.selected[0]);
           a.checkPlanForGoalSharePermission(data.plan_id);
-          console.log(a.parentplanDetails, a.childgoalDetails)
          }
       );
       $('#jstree-module-tree').jstree({ core: { data: treeArray } });
