@@ -3379,8 +3379,8 @@
                             <th class="prioritize-blue">(G) Short Name</th>
                             <th class="prioritize-blue">Production Target</th>
                             <th class="prioritize-blue">Actual Production</th>
-                            <!-- <th class="prioritize-blue">Expense Target</th>
-                            <th class="prioritize-blue">Actual Expense</th> -->
+                            <th class="prioritize-blue">Expense Target</th>
+                            <th class="prioritize-blue">Actual Expense</th>
                             <th class="prioritize-blue">Start Date</th>
                             <th class="prioritize-blue">End Date</th>
                             <th class="prioritize-blue">Creator</th>
@@ -3393,6 +3393,10 @@
                             <td class="text-center"> {{ p.element.production_target === 'null' ? '-' : p.element.production_target }}</td>
                             <td [ngClass]="p.element.production_target === 'null' ? '' : p.actual_production >= p.element.production_target ? 'up' : 'down'">
                                 {{ p.actual_production }}
+                            </td>
+                            <td class="text-center"> {{ p.element.expense_target === 'null' ? '-' : p.element.expense_target }}</td>
+                            <td [ngClass]="p.element.expense_target === 'null' ? '' : p.actual_expense >= p.element.expense_target ? 'up' : 'down'">
+                                {{ p.actual_expense }}
                             </td>
                             <!-- <td class="text-center">{{ p.element.expense_target }}</td>
                             <td *ngIf="p.actual_expense >= p.element.expense_target" class="up">{{ p.actual_expense }}
@@ -3423,62 +3427,48 @@
             </div>
             <div class="panel panel-cutom-blue">
                 <div class="row">
-
-                    <!-- MEASURE SEARCH BY DATE? WHY? -->
-                    <div class="col-md-12 mb-10">
-                        <div class="form-group col-md-5">&nbsp;</div>
-                        <div class="form-group col-md-3">
-                            <input class="form-control" placeholder="From Date" (click)="[fd.toggle()]" name="dpf"
-                                [(ngModel)]="fromDate" ngbDatepicker #fd="ngbDatepicker" autocomplete="off">
-                        </div>
-                        <div class="form-group col-md-3">
-                            <input class="form-control" placeholder="To Date" (click)="[td.toggle()]" name="dpt"
-                                [(ngModel)]="toDate" ngbDatepicker #td="ngbDatepicker" autocomplete="off">
-                        </div>
-                        <div class="form-group col-md-1">
-                            <button type="button" (click)="onChangeDate()" class="btn btn-warning">
-                                <i class="fa fa-search"></i>
-                            </button>
-                        </div>
-                    </div>
-
                     <!-- TABULAR DATA -->
                     <div *ngIf="isDetailsFound" class="mb-10">
-                        <div class="col-md-12" *ngFor="let plan of parentplanDetails;">
+                        <div class="col-md-6" *ngFor="let plan of parentplanDetails;">
                             <div class="custom-panel">
                                 <div class="custom-panel-heading custom-panel-blue">
                                     <h4 class="custom-panel-title">
-                                        {{plan.short_name}}
+                                        Parent Plan: {{plan.short_name}}
                                     </h4>
                                 </div>
                                 <div class="custom-panel-body">
                                     <table class="custom-panel-table custom-panel-blue-table">
                                         <tbody>
                                             <tr>
-                                                <td>Matric Type</td>
-                                                <td>{{parentplanDetails[0].production_type}}</td>
+                                                <td>Expected Production Target</td>
+                                                <td><span>{{parentplanDetails[0].production_type == 'dollars' ? '$' : ''}}</span>{{ parentplanDetails[0].production_target }}<span>{{parentplanDetails[0].production_type == 'percentage' ? '%' : parentplanDetails[0].production_type == 'units' ? ' Units' : ""}}</span></td>
                                             </tr>
                                             <tr>
-                                                <td>Actual Expected</td>
-                                                <td><span>{{parentplanDetails[0].production_type == 'dollars' ? '$' : ''}}</span>{{ parentplanDetails[0].production_target }}<span>{{parentplanDetails[0].production_type == 'percentage' ? '%' : ''}}</span></td>
-                                            </tr>
-                                            <tr>
-                                                <td>Actual Revenue</td>
-                                                <td><span>{{parentplanDetails[0].production_type == 'dollars' ? '$' : ''}}</span>{{ parentplanDetails[0].expense_target }}<span>{{parentplanDetails[0].production_type == 'percentage' ? '%' : ''}}</span></td>
+                                                <td>Actual Production</td>
+                                                <td><span>{{parentplanDetails[0].production_type == 'dollars' ? '$' : ''}}</span>{{ parentplanDetails[0].expense_target }}<span>{{parentplanDetails[0].production_type == 'percentage' ? '%' : parentplanDetails[0].production_type == 'units' ? ' Units' : ""}}</span></td>
                                             </tr>
                                         </tbody>
                                     </table>
                                 </div>
                             </div>
                         </div>
+                        <div class="col-md-6">
+                            <canvas baseChart *ngIf="chartIsLoaded"
+                                    [datasets]="lineChartMainConfigData"
+                                    [chartType]="'line'"
+                                    [labels]="lineChartMainLabels"
+                                    [colors]="lineChartMainOptions"
+                                    >
+                            </canvas>
+                        </div>
                     </div>
 
                     <!-- ERROR: NO DATA -->
-                    <div *ngIf="!isDetailsFound" class="mb-10">
+                    <!-- <div *ngIf="isDetailsFound" class="mb-10">
                         <div class="col-md-12 text-center">
                             <h4>Plan details has not been found.</h4>
                         </div>
-                    </div>
+                    </div> -->
 
                     <!-- GRAPHICAL DATA -->
                     <div class="col-md-12 row mt-30">
