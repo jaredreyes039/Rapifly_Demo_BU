@@ -9,7 +9,6 @@ import { GoogleChartsModule } from 'angular-google-charts';
 import { LOCALE_ID } from '@angular/core';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { AppRoutingModule } from './app-routing.module';
-import { GaugeChartModule } from 'angular-gauge-chart';
 
 import { HttpClientModule } from '@angular/common/http';
 import { LoginComponent } from './login/login.component';
@@ -50,8 +49,6 @@ import { LaunchComponent } from './launch/launch.component';
 import { ReportComponent } from './report/report.component';
 import { MeasureComponent } from './measure/measure.component';
 import { ImproveComponent } from './improve/improve.component';
-import { GaugeModule } from 'angular-gauge';
-import { ChartsModule } from 'ng2-charts';
 import { ProfileComponent } from './profile/profile.component';
 import { ManageHieararchyComponent } from './manage-hieararchy/manage-hieararchy.component';
 import { ChangeHieararchyComponent } from './change-hieararchy/change-hieararchy.component';
@@ -69,6 +66,7 @@ import { RegisterComponent } from './coach/register/register.component';
 import { ListComponent } from './coach/list/list.component';
 import { EditPlanComponent } from './edit-plan/edit-plan.component';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { ChartsModule, ThemeService } from 'ng2-charts';
 
 
 @NgModule({
@@ -145,16 +143,15 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     MatFormFieldModule,
     MatInputModule,
     MatCardModule,
-    GaugeChartModule,
-    GaugeModule,
     NgSelectModule,
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
     MatSlideToggleModule,
     MatExpansionModule,
+    ChartsModule
   ],
 
-  providers: [{ provide: LOCALE_ID, useValue: 'en-IN' }, ChatService],
+  providers: [{ provide: LOCALE_ID, useValue: 'en-IN' }, ChatService, ThemeService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

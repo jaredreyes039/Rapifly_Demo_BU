@@ -12,6 +12,8 @@ import { DatePipe, PlatformLocation } from '@angular/common'
 import * as moment from 'moment';
 import { NgbDate, NgbCalendar, NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap';
 import { element } from 'protractor';
+import { ChartConfiguration, ChartData, ChartDataSets, ChartOptions } from 'chart.js';
+import { BaseChartDirective, Color, Colors, Label } from 'ng2-charts';
 
 declare var $: any;
 
@@ -176,6 +178,25 @@ export class ItemPlanDetailsComponent implements OnInit {
 
   tableId: any;
 
+  datasetProd: any = []
+  datasetExp: any = []
+  datasetTotal: any = []
+  public lineChartMainLabels: Label[] = []
+  public lineChartMainConfigData: ChartDataSets[] = this.datasetTotal
+  public lineChartMainOptions: Colors[] = [
+    { // red (NEC FOR BLANK SLOT BUG FIX)
+      backgroundColor: ['#5cb85c50'],
+      borderColor: 'white',
+    },
+    
+    { // red (NEC FOR BLANK SLOT BUG FIX)
+      backgroundColor: ['#bb212450'],
+      borderColor: 'red',
+    },
+
+  ]
+
+
   public centralLabel: any = '';
   public canvasWidth = 400
   public needleValue = 0;
@@ -190,6 +211,9 @@ export class ItemPlanDetailsComponent implements OnInit {
     rangeLabel: ['0', '0'],
     needleStartValue: 50,
   }
+  
+
+  chartIsLoaded: Boolean = false;
 
   public review_needleValue = 0;
   public review_name = 'Revenue Target'
@@ -296,6 +320,11 @@ export class ItemPlanDetailsComponent implements OnInit {
   currentUserId;
   parent_user_id: any;
   instructionBoxOpen: Boolean = false;
+
+
+  @ViewChild(BaseChartDirective, { static: true }) chart: BaseChartDirective;
+
+
   constructor(
     private toastr: ToastrService,
     public authenticationService: AuthenticationService,
@@ -336,7 +365,6 @@ export class ItemPlanDetailsComponent implements OnInit {
   ngOnInit() {
     var a = this;
    
-
     this.route.queryParams.subscribe(params => {
       if (params && params.stage && params.stage != '') {
         this.selectPanel(params.stage);
@@ -1425,6 +1453,7 @@ export class ItemPlanDetailsComponent implements OnInit {
         this.selectedModules = ''
         this.getPlanGoalDetails();
         this.getReportSum(this.parentplanDetails[0]._id);
+        this.initMeasureCharts()
       }
 
       $('#date-input5').datepicker({
@@ -1474,6 +1503,35 @@ export class ItemPlanDetailsComponent implements OnInit {
     })
   }
 
+  initMeasureCharts(){
+    this.commonService.PostAPI(`report/get/all`, { plan_id: this.planId, user_id: this.currentuser.user._id }).then((response: any) => {
+      
+      if (response.status && response.data && response.data.length > 0) {
+        this.reportGoals = response.data.filter(report => {return report.element.isReportReady});
+
+        // Line Chart
+        this.reportGoals.sort((reportA: any, reportB: any)=> {
+          return new Date(reportA.element.end_date).getDate() - new Date(reportB.element.end_date).getDate()
+        })
+        for(let i: any = 0; i < this.reportGoals.length; i++){
+          this.datasetProd.push(this.reportGoals[i].actual_production)
+          this.datasetExp.push(this.reportGoals[i].actual_expense)
+          this.lineChartMainLabels.push( new Date(this.reportGoals[i].element.end_date).toDateString())
+        }
+        this.datasetTotal.push({
+          label: "Production",
+          data: this.datasetProd
+        }, {
+          label: "Expenses",
+          data: this.datasetExp
+        })
+        
+      } else {
+        this.reportGoals = [];
+      }
+    }).then(()=>this.chartIsLoaded = true)
+
+  }
   // Deactivate
   getgoal(planid) {
     if (planid == '') {
