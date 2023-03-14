@@ -413,7 +413,7 @@ exports.priority_change_by_id = async function (request, response) {
     //Modified code
     var body = request.body;
     var errors = [];
-
+    console.log(body)
 
     if (!body.goal_id) {
         errors.push(["Goal id is required"]);
@@ -448,15 +448,14 @@ exports.priority_change_by_id = async function (request, response) {
                 });
             } else {
                 if (result) {
-                    await Goals.find({plan_id: body.plan_id, prioritize: body.new_priority}).update({prioritize: body.new_priority + 1}).clone()
-                    await Goals.updateOne({ _id: body.goal_id }, { prioritize: body.new_priority }, async function (error, is_update_current_goal) {
+                    await Goals.updateOne({prioritize: body.new_priority }, { prioritize: body.current_priority }, async function (error, is_update_current_goal) {
                         if (error) {
                             return response.send({
                                 status: false,
                                 message: "Can not update priority in selected goal."
                             });
                         } else {
-                            await Goals.updateOne({ _id: result._id }, { prioritize: body.current_priority }, function (error, is_update_new_goal) {
+                            await Goals.updateOne({ _id: body.goal_id }, { prioritize: body.new_priority }, function (error, is_update_new_goal) {
                                 if (error) {
                                     return response.send({
                                         status: false,
@@ -468,7 +467,7 @@ exports.priority_change_by_id = async function (request, response) {
                                         message: "Goal priority has been updated successfully"
                                     });
                                 }
-                            }).clone();
+                            }).clone()
                         }
                     }).clone();
                 } 

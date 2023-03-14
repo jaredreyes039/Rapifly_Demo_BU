@@ -595,18 +595,7 @@ export class ItemPlanDetailsComponent implements OnInit {
     this.getUserRole();
     this.getChildUsers();
 
-    $('#date-input5').datepicker({
-      setDate: new Date(),
-      todayHighlight: true,
-      startDate: '-0m',
-      minDate: 0,
-    });
-    $('#date-input6').datepicker({
-      setDate: new Date(),
-      todayHighlight: true,
-      startDate: '-0m',
-      minDate: 0,
-    });
+
 
     this.data[0]["numbers"] = [''];
     this.data[0]["short_name"] = ['', Validators.required];
@@ -1102,11 +1091,12 @@ export class ItemPlanDetailsComponent implements OnInit {
       return;
     } else {
       if (this.goalplanid != undefined) {
+        console.log($('#date-input5').val(), new Date(this.planstartdate).toDateString(), this.planenddate)
         if ($('#date-input5').val() != '' && $('#date-input6').val() != '') {
           if (new Date($('#date-input5').val()) > new Date($('#date-input6').val())) {
             this.toastr.error("Your start date is greater than End Date", "Error");
           } else {
-            if (new Date(this.planstartdate) < new Date($('#date-input5').val()) && new Date(this.planenddate) > new Date($('#date-input5').val()) && new Date(this.planstartdate) < new Date($('#date-input6').val()) && new Date(this.planenddate) > new Date($('#date-input6').val())) {
+            if (new Date(this.planstartdate).toDateString() <= new Date($('#date-input5').val()).toDateString() && new Date(this.planenddate).toDateString() >= new Date($('#date-input6').val()).toDateString()) {
               var data = this.childPlanForm.value;
               data.editid = this.childgoalDetails._id || "";
               data.user_id = this.currentuser.user._id;
@@ -1570,6 +1560,7 @@ export class ItemPlanDetailsComponent implements OnInit {
   }
 
   changepriority(goal_id, current_priority, new_priority) {
+
     if (new_priority <= 1) {
       new_priority = 1;
     }
@@ -2011,8 +2002,6 @@ export class ItemPlanDetailsComponent implements OnInit {
     alert('Under construction, please check back later for updates!')
   }
 
-  
-
   showreportform(goalid, reportid, data) {
     this.reportGoalId = goalid
     this.reportId = reportid
@@ -2046,13 +2035,16 @@ export class ItemPlanDetailsComponent implements OnInit {
 
           this.isReportFormSubmitted = false;
           this.ReportForm.reset();
-
+          
           $("#reportModal").modal("hide");
-          this.resetReportSearch();
         } else {
           this.toastr.error(response.message, "Error");
         }
       });
+
+      this.tableId = 'report-table'
+      $(`#${this.tableId}`).DataTable().clear()
+      this.getReportGoals(this.planId)
     }
   }
 
