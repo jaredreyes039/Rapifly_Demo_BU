@@ -14,10 +14,17 @@ const asyncl = require('async');
 const commonHelper = require('../helpers/common.helper');
 const feedbackformModel = require('../models/feedbackform.model');
 
-//Simple version, without validation or sanitation
-exports.test = function (request, response) {
-    return response.send(request.body)
-};
+// FOR DB TESTS
+// exports.get_all_users = function(request, response){
+//     User.find({}).then((docs)=>{
+//         console.log(docs)
+//         return response.send({
+//             status: true,
+//             data: docs
+//         })
+//     }).catch((err)=>console.log(err))
+// }
+
 
 /**
  * Register new user with role
