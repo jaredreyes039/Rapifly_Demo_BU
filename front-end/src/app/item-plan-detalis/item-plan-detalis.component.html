@@ -3428,7 +3428,7 @@
             <div class="panel panel-cutom-blue">
                 <div class="row">
                     <!-- TABULAR DATA -->
-                    <div *ngIf="isDetailsFound">
+                    <div>
                         <div class="col-md-6" *ngFor="let plan of parentplanDetails;">
                             <mat-expansion-panel class="expanse-panel" [expanded]="true">
                                 <mat-expansion-panel-header class="page-title">
@@ -3446,14 +3446,6 @@
                                             <tr>
                                                 <td>Expected Expense Target</td>
                                                 <td><span>{{parentplanDetails[0].production_type == 'dollars' ? '$' : ''}}</span>{{ parentplanDetails[0].expense_target }}<span>{{parentplanDetails[0].production_type == 'percentage' ? '%' : parentplanDetails[0].production_type == 'units' ? ' Units' : ""}}</span></td>
-                                            </tr>
-                                            <tr>
-                                                <td>Expected P/E Ratio</td>
-                                                <td>FILLER DATA</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Actual P/E Ratio</td>
-                                                <td>FILLER DATA</td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -3474,19 +3466,15 @@
                                                     </tr>
                                                     <tr>
                                                         <td>Actual Production</td>
-                                                        <td><span>{{parentplanDetails[0].production_type == 'dollars' ? '$' : ''}}</span>{{ parentplanDetails[0].production_target }}<span>{{parentplanDetails[0].production_type == 'percentage' ? '%' : parentplanDetails[0].production_type == 'units' ? ' Units' : ""}}</span></td>
+                                                        <td><span>{{parentplanDetails[0].production_type == 'dollars' ? '$' : ''}}</span>{{ actualProductionSum }}<span>{{parentplanDetails[0].production_type == 'percentage' ? '%' : parentplanDetails[0].production_type == 'units' ? ' Units' : ""}}</span></td>
                                                     </tr>
-                                                    <tr>
+                                                    <tr *ngIf="prodHierarchy.length !== 0">
                                                         <td>Most Productive Plan</td>
-                                                        <td>FILLER DATA</td>
+                                                        <td>{{prodHierarchy[0].element.short_name}}</td>
                                                     </tr>
-                                                    <tr>
+                                                    <tr *ngIf="prodHierarchy.length !== 0">
                                                         <td>Least Productive Plan</td>
-                                                        <td>FILLER DATA</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Mean Production</td>
-                                                        <td>FILLER DATA</td>
+                                                        <td>{{prodHierarchy[prodHierarchy.length - 1].element.short_name}}</td>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -3507,17 +3495,13 @@
                                                         <td>Actual Expense</td>
                                                         <td><span>{{parentplanDetails[0].production_type == 'dollars' ? '$' : ''}}</span>{{ parentplanDetails[0].expense_target }}<span>{{parentplanDetails[0].production_type == 'percentage' ? '%' : parentplanDetails[0].production_type == 'units' ? ' Units' : ""}}</span></td>
                                                     </tr>
-                                                    <tr>
+                                                    <tr *ngIf="expHierarchy.length !== 0">
                                                         <td>Most Expensive Plan</td>
-                                                        <td>FILLER DATA</td>
+                                                        <td>{{expHierarchy[0].element.short_name}}</td>
                                                     </tr>
-                                                    <tr>
+                                                    <tr *ngIf="expHierarchy.length !== 0">
                                                         <td>Least Expensive Plan</td>
-                                                        <td>FILLER DATA</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Mean Expense</td>
-                                                        <td>FILLER DATA</td>
+                                                        <td>{{expHierarchy[expHierarchy.length - 1].element.short_name}}</td>
                                                     </tr>
                                                 </tbody>
                                             </table>

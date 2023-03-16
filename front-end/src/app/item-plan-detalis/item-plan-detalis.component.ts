@@ -169,6 +169,10 @@ export class ItemPlanDetailsComponent implements OnInit {
   hoveredDate: NgbDate;
   fromDate;
   toDate;
+  actualExpenseSum: Number;
+  actualProductionSum: Number;
+  prodHierarchy: any = [];
+  expHierarchy: any = [];
 
   planDetails: any = [];
   isDetailsFound: boolean = false;
@@ -1508,8 +1512,18 @@ export class ItemPlanDetailsComponent implements OnInit {
       
       if (response.status && response.data && response.data.length > 0) {
         this.reportGoals = response.data.filter(report => {return report.element.isReportReady});
-
+        this.actualExpenseSum = response.data.reduce((reportA, reportB)=> {
+          return reportA + reportB.actual_expense
+        }, 0)
+        this.actualProductionSum = response.data.reduce((reportA, reportB)=> {
+          console.log(reportA, reportB)
+          return reportA + reportB.actual_production
+        }, 0)
         // Line Chart
+        this.prodHierarchy = response.data.sort((reportA, reportB) => {return reportA.actual_production > reportB.actual_production})
+        this.expHierarchy = response.data.sort((reportA, reportB) => {return reportA.actual_expense > reportB.actual_expense})
+        console.log(this.prodHierarchy, this.expHierarchy)
+        // Sort by dates to organize the x-axis
         this.reportGoals.sort((reportA: any, reportB: any)=> {
           return new Date(reportA.element.end_date).getDate() - new Date(reportB.element.end_date).getDate()
         })
