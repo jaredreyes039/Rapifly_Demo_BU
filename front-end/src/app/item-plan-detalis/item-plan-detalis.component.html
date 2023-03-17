@@ -3447,6 +3447,10 @@
                                                 <td>Expected Expense Target</td>
                                                 <td><span>{{parentplanDetails[0].production_type == 'dollars' ? '$' : ''}}</span>{{ parentplanDetails[0].expense_target }}<span>{{parentplanDetails[0].production_type == 'percentage' ? '%' : parentplanDetails[0].production_type == 'units' ? ' Units' : ""}}</span></td>
                                             </tr>
+                                            <tr>
+                                                <td>Submitted Reports</td>
+                                                <td>{{reportGoals.length}}</td>
+                                            </tr>
                                         </tbody>
                                     </table>
                                 </div>
