@@ -173,6 +173,7 @@ export class ItemPlanDetailsComponent implements OnInit {
   actualProductionSum: Number;
   prodHierarchy: any = [];
   expHierarchy: any = [];
+  chartRendered: Boolean = false;
 
   planDetails: any = [];
   isDetailsFound: boolean = false;
@@ -866,7 +867,7 @@ export class ItemPlanDetailsComponent implements OnInit {
 
             // PREVENTS EDIT UI
             a.editChildEnabled = false;
-
+            a.chartRendered = false;
             // ROOT ITEM
             if (data.node.parent == "#") {
               a.getplandetail(data.selected[0]);
@@ -1508,6 +1509,7 @@ export class ItemPlanDetailsComponent implements OnInit {
   }
 
   initMeasureCharts(){
+
     this.commonService.PostAPI(`report/get/all`, { plan_id: this.planId, user_id: this.currentuser.user._id }).then((response: any) => {
       
       if (response.status && response.data && response.data.length > 0) {
@@ -1520,26 +1522,28 @@ export class ItemPlanDetailsComponent implements OnInit {
           return reportA + reportB.actual_production
         }, 0)
         // Line Chart
-        this.prodHierarchy = response.data.sort((reportA, reportB) => {return reportA.actual_production > reportB.actual_production})
-        this.expHierarchy = response.data.sort((reportA, reportB) => {return reportA.actual_expense > reportB.actual_expense})
-        console.log(this.prodHierarchy, this.expHierarchy)
-        // Sort by dates to organize the x-axis
-        this.reportGoals.sort((reportA: any, reportB: any)=> {
-          return new Date(reportA.element.end_date).getDate() - new Date(reportB.element.end_date).getDate()
-        })
-        for(let i: any = 0; i < this.reportGoals.length; i++){
-          this.datasetProd.push(this.reportGoals[i].actual_production)
-          this.datasetExp.push(this.reportGoals[i].actual_expense)
-          this.lineChartMainLabels.push( new Date(this.reportGoals[i].element.end_date).toDateString())
+
+        if(this.chartRendered === false){
+          this.prodHierarchy = response.data.sort((reportA, reportB) => {return reportA.actual_production > reportB.actual_production})
+          this.expHierarchy = response.data.sort((reportA, reportB) => {return reportA.actual_expense > reportB.actual_expense})
+          // Sort by dates to organize the x-axis
+          this.reportGoals.sort((reportA: any, reportB: any)=> {
+            return new Date(reportA.element.end_date).getDate() - new Date(reportB.element.end_date).getDate()
+          })
+          for(let i: any = 0; i < this.reportGoals.length; i++){
+            this.datasetProd.push(this.reportGoals[i].actual_production)
+            this.datasetExp.push(this.reportGoals[i].actual_expense)
+            this.lineChartMainLabels.push( new Date(this.reportGoals[i].element.end_date).toDateString())
+          }
+          this.datasetTotal.push({
+            label: "Production",
+            data: this.datasetProd
+          }, {
+            label: "Expenses",
+            data: this.datasetExp
+          })
+          this.chartRendered = true;
         }
-        this.datasetTotal.push({
-          label: "Production",
-          data: this.datasetProd
-        }, {
-          label: "Expenses",
-          data: this.datasetExp
-        })
-        
       } else {
         this.reportGoals = [];
       }
