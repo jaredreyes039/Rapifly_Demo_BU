@@ -330,7 +330,7 @@ exports.get_all_goals_by_plan = async function (request, response) {
         return response.status(400).send({ status: false, message: error });
     }
 };
-
+// Test
 exports.get_goals_by_planid = async function (request, response) {
     var body = request.body;
 
