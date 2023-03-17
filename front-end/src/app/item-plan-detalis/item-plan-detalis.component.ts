@@ -1271,10 +1271,10 @@ export class ItemPlanDetailsComponent implements OnInit {
         this.alertdata = response.data
       } else {
         this.toastr.error(response.message, "Error");
-        // this.is_disabled = false;
       }
     });
   }
+  
 
   getGoalReportByPlan(plan_id) {
     this.commonService.PostAPI(`plan/get/goal/report`, { plan_id: plan_id }).then((response: any) => {

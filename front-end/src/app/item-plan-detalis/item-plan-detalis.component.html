@@ -3395,7 +3395,7 @@
                                 {{ p.actual_production }}
                             </td>
                             <td class="text-center"> {{ p.element.expense_target === 'null' ? '-' : p.element.expense_target }}</td>
-                            <td [ngClass]="p.element.expense_target === 'null' ? '' : p.actual_expense >= p.element.expense_target ? 'up' : 'down'">
+                            <td [ngClass]="p.element.expense_target === 'null' ? '' : p.actual_expense >= p.element.expense_target ? 'down' : 'up'">
                                 {{ p.actual_expense }}
                             </td>
                             <!-- <td class="text-center">{{ p.element.expense_target }}</td>
