@@ -202,36 +202,9 @@ export class ItemPlanDetailsComponent implements OnInit {
   ]
 
 
-  public centralLabel: any = '';
   public canvasWidth = 400
-  public needleValue = 0;
-  public name = 'Expected Target'
-  public bottomLabel = '0'
-  public options = {
-    hasNeedle: true,
-    needleColor: '#F0F4F2',
-    needleUpdateSpeed: 1000,
-    arcColors: ['#FF4A4E', '#7BFF75'],
-    arcDelimiters: [30],
-    rangeLabel: ['0', '0'],
-    needleStartValue: 50,
-  }
-  
-
   chartIsLoaded: Boolean = false;
 
-  public review_needleValue = 0;
-  public review_name = 'Revenue Target'
-  public review_bottomLabel = '0'
-  public review_options = {
-    hasNeedle: true,
-    needleColor: '#F0F4F2',
-    needleUpdateSpeed: 1000,
-    arcColors: ['#FF4A4E', '#7BFF75'],
-    arcDelimiters: [30],
-    rangeLabel: ['0', '0'],
-    needleStartValue: 50,
-  }
 
   // Modules
   selectedModules: any = '';
@@ -867,7 +840,6 @@ export class ItemPlanDetailsComponent implements OnInit {
 
             // PREVENTS EDIT UI
             a.editChildEnabled = false;
-            a.chartRendered = false;
             // ROOT ITEM
             if (data.node.parent == "#") {
               a.getplandetail(data.selected[0]);
@@ -1126,9 +1098,7 @@ export class ItemPlanDetailsComponent implements OnInit {
       if (this.goalplanid != undefined) {
         console.log($('#date-input5').val(), new Date(this.planstartdate).toDateString(), this.planenddate)
         if ($('#date-input5').val() != '' && $('#date-input6').val() != '') {
-          if (new Date($('#date-input5').val()) > new Date($('#date-input6').val())) {
-            this.toastr.error("Your start date is greater than End Date", "Error");
-          } else {
+
             if (new Date(this.planstartdate).toDateString() <= new Date($('#date-input5').val()).toDateString() && new Date(this.planenddate).toDateString() >= new Date($('#date-input6').val()).toDateString()) {
               var data = this.childPlanForm.value;
               data.editid = this.childgoalDetails._id || "";
@@ -1173,7 +1143,7 @@ export class ItemPlanDetailsComponent implements OnInit {
             } else {
               this.toastr.error("Your goal's start date and end date are outside of their parent plan range.", "Error");
             }
-          }
+          
         } else {
           if ($('#date-input5').val() == '') {
             this.toastr.error("Please Enter Start Date", "Error");
@@ -1196,10 +1166,7 @@ export class ItemPlanDetailsComponent implements OnInit {
     } else {
       if (this.goalplanid != undefined) {
         if ($('#date-input5').val() != '' && $('#date-input6').val() != '') {
-          if (new Date($('#date-input5').val()) > new Date($('#date-input6').val())) {
-            this.toastr.error("Your start date is greater than End Date", "Error");
-          } 
-          else {
+
               var data = this.childPlanFormSub.value;
               console.log(this.childgoalDetails)
               const parsedArr = this.childgoalDetails.parent_goal_id
@@ -1249,7 +1216,6 @@ export class ItemPlanDetailsComponent implements OnInit {
                   // this.is_disabled = false;
                 }
               });
-          }
         } else {
           if ($('#date-input5').val() == '') {
             this.toastr.error("Please Enter Start Date", "Error");
@@ -1271,10 +1237,10 @@ export class ItemPlanDetailsComponent implements OnInit {
         this.alertdata = response.data
       } else {
         this.toastr.error(response.message, "Error");
+        // this.is_disabled = false;
       }
     });
   }
-  
 
   getGoalReportByPlan(plan_id) {
     this.commonService.PostAPI(`plan/get/goal/report`, { plan_id: plan_id }).then((response: any) => {
@@ -1458,7 +1424,7 @@ export class ItemPlanDetailsComponent implements OnInit {
         this.selectedModules = ''
         this.getPlanGoalDetails();
         this.getReportSum(this.parentplanDetails[0]._id);
-        this.initMeasureCharts()
+        this.initMeasureCharts(true)
       }
 
       $('#date-input5').datepicker({
@@ -1508,48 +1474,68 @@ export class ItemPlanDetailsComponent implements OnInit {
     })
   }
 
-  initMeasureCharts(){
 
-    this.commonService.PostAPI(`report/get/all`, { plan_id: this.planId, user_id: this.currentuser.user._id }).then((response: any) => {
-      
-      if (response.status && response.data && response.data.length > 0) {
-        this.reportGoals = response.data.filter(report => {return report.element.isReportReady});
-        this.actualExpenseSum = response.data.reduce((reportA, reportB)=> {
-          return reportA + reportB.actual_expense
-        }, 0)
-        this.actualProductionSum = response.data.reduce((reportA, reportB)=> {
-          console.log(reportA, reportB)
-          return reportA + reportB.actual_production
-        }, 0)
-        // Line Chart
-
-        if(this.chartRendered === false){
-          this.prodHierarchy = response.data.sort((reportA, reportB) => {return reportA.actual_production > reportB.actual_production})
-          this.expHierarchy = response.data.sort((reportA, reportB) => {return reportA.actual_expense > reportB.actual_expense})
-          // Sort by dates to organize the x-axis
-          this.reportGoals.sort((reportA: any, reportB: any)=> {
-            return new Date(reportA.element.end_date).getDate() - new Date(reportB.element.end_date).getDate()
-          })
-          for(let i: any = 0; i < this.reportGoals.length; i++){
-            this.datasetProd.push(this.reportGoals[i].actual_production)
-            this.datasetExp.push(this.reportGoals[i].actual_expense)
-            this.lineChartMainLabels.push( new Date(this.reportGoals[i].element.end_date).toDateString())
+/* 
+  RENDERING CHARTS: A GUIDE
+  ----
+  1. MUST use validator to control the UI appearing
+    - if true, API call execs and vars are populated
+    - if false, API call does NOT exec and vars are reinitialized
+  2. The format of the datasets must be preserved to be inline w/
+  the dependency
+  3. To check for proper implementation:
+    - Eval switching between phases, stages, chal, and mods
+    - Eval switching between root/parent items
+*/
+  initMeasureCharts(validator: Boolean){
+    if(validator){
+      this.commonService.PostAPI(`report/get/all`, { plan_id: this.planId, user_id: this.currentuser.user._id }).then((response: any) => {
+        if (response.status && response.data && response.data.length > 0) {
+          this.reportGoals = response.data.filter(report => {return report.element.isReportReady});
+          this.actualExpenseSum = response.data.reduce((reportA, reportB)=> {
+            return reportA + reportB.actual_expense
+          }, 0)
+          this.actualProductionSum = response.data.reduce((reportA, reportB)=> {
+            console.log(reportA, reportB)
+            return reportA + reportB.actual_production
+          }, 0)
+          // Line Chart
+  
+          if(this.chartRendered === false){
+            this.prodHierarchy = response.data.sort((reportA, reportB) => {return reportA.actual_production > reportB.actual_production})
+            this.expHierarchy = response.data.sort((reportA, reportB) => {return reportA.actual_expense > reportB.actual_expense})
+            // Sort by dates to organize the x-axis
+            // When we move to scatter plots, this will be the thing to change
+            this.reportGoals.sort((reportA: any, reportB: any)=> {
+              return new Date(reportA.element.end_date).getDate() - new Date(reportB.element.end_date).getDate()
+            })
+  
+  
+            for(let i: any = 0; i < this.reportGoals.length; i++){
+              this.datasetProd.push(this.reportGoals[i].actual_production)
+              this.datasetExp.push(this.reportGoals[i].actual_expense)
+              this.lineChartMainLabels.push( new Date(this.reportGoals[i].element.end_date).toDateString())
+            }
+            // Crucial that this remains in the correct format for the dep.
+            this.datasetTotal.push({
+              label: "Production",
+              data: this.datasetProd
+            }, {
+              label: "Expenses",
+              data: this.datasetExp
+            })
+            this.chartRendered = true;
           }
-          this.datasetTotal.push({
-            label: "Production",
-            data: this.datasetProd
-          }, {
-            label: "Expenses",
-            data: this.datasetExp
-          })
-          this.chartRendered = true;
+        } else {
+          this.reportGoals = [];
         }
-      } else {
-        this.reportGoals = [];
-      }
-    }).then(()=>this.chartIsLoaded = true)
-
+      }).then(()=>this.chartIsLoaded = true)
+    }
+    else {
+      this.datasetTotal = []
+    }
   }
+
   // Deactivate
   getgoal(planid) {
     if (planid == '') {
@@ -2151,52 +2137,6 @@ export class ItemPlanDetailsComponent implements OnInit {
           if (response.data && response.data.length > 0) {
             this.isDetailsFound = true;
             this.planDetails = response.data;
-
-            var total_expected_target = this.planDetails.map(data => data.goal.total_expected_target);
-            var expected_target = total_expected_target.reduce((a, b) => a + b, 0);
-            expected_target = (expected_target) ? expected_target : 0;
-
-            var actual_expected_target = this.planDetails.map(data => data.goal.actual_expected_target);
-            var actual_expected = actual_expected_target.reduce((a, b) => a + b, 0);
-            actual_expected = (actual_expected) ? actual_expected : 0;
-
-            var needExpectedPercentage = (actual_expected * 100) / expected_target;
-
-            this.bottomLabel = actual_expected;
-            this.needleValue = needExpectedPercentage;
-
-            this.options = {
-              hasNeedle: true,
-              needleColor: '#F0F4F2',
-              needleUpdateSpeed: 1000,
-              arcColors: ['#FF4A4E', '#7BFF75'],
-              arcDelimiters: [30],
-              rangeLabel: ['0', `${expected_target}`],
-              needleStartValue: actual_expected,
-            }
-
-            var total_revenue_target = this.planDetails.map(data => data.goal.total_revenue_target);
-            var revenue_target = total_revenue_target.reduce((a, b) => a + b, 0);
-            revenue_target = (revenue_target) ? revenue_target : 0;
-
-            var actual_revenue_target = this.planDetails.map(data => data.goal.actual_revenue_target);
-            var actual_revenue = actual_revenue_target.reduce((a, b) => a + b, 0);
-            actual_revenue = (actual_revenue) ? actual_revenue.toFixed(0) : 0;
-
-            var needRevenuePercentage = (actual_revenue * 100) / revenue_target;
-
-            this.review_bottomLabel = actual_revenue;
-            this.review_needleValue = needRevenuePercentage;
-
-            this.review_options = {
-              hasNeedle: true,
-              needleColor: '#F0F4F2',
-              needleUpdateSpeed: 1000,
-              arcColors: ['#FF4A4E', '#7BFF75'],
-              arcDelimiters: [30],
-              rangeLabel: ['0', `${actual_revenue}`],
-              needleStartValue: actual_revenue,
-            }
           } else {
             this.isDetailsFound = false;
           }
