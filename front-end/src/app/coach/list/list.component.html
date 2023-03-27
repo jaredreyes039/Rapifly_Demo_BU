@@ -10,12 +10,14 @@
     <div class="page-inner no-page-title">
 
         <div>
-            <h3>Where Do I Start?</h3>
+            <h3>Quick Start Guide</h3>
         </div>
         <hr>
         <p>
             Lost? Overwhelmed? Let's ease the stress of learning a new piece software so your team
-            can spend time on what matters to you.
+            can spend time on what matters to you. Below are guides for each vital function of Rapifly's unique
+            methodology; simply select any item that you need assistance with, and if the guide is not clear enough, feel free
+            to explore the FAQ's, reach out to an expert (coming soon...), or file a bug report. 
         </p>
 
         <ul class="rap-guide-list">
@@ -34,9 +36,177 @@
                     <p *ngIf="activeStage === ''" [hidden]="activeStage !== ''">Select a section to learn more...</p>
 
                 <!-- Active Stage: Create -->
-                <div *ngIf="activeStage !== ''" [hidden]="activeStage == ''">
+                <div *ngIf="activeStage !== '' && activeStage == 'Create'" [hidden]="activeStage == ''">
                     <h3>{{activeStage}}</h3>
-                    <p>Under contstruction, please come back at a later date, thank you!</p>
+                    <p>
+                        The first step in the CEE methodology, <strong>CREATE</strong> is the stage for all things planning and preparing.
+                        Getting started is a simple process:
+                    </p>
+                    <ol>
+                        <li>
+                            Under CREATE, create your first root item if you haven't already; this will
+                            set your target goals, plan dates, and more for all sub-plans and modules. For more on sub-plans and modules, check out their respective
+                            guides below. 
+                        </li>
+                        <li>
+                            Once you've created the parent plan, your next
+                            step is to enter the Brainstorm phase and delve deep
+                            into the simple, yet powerful tools Rapifly has to offer!
+                        </li>
+                    </ol>
+                    <ul class="guide-nav">
+                        <li class="rap-guide-list-item" *ngFor="let i of hudSelectionsPhases_Create">
+                            <button value={{i}} class="btn btn-default" (click)="selectPhase($event)">
+                                {{i}}
+                            </button>
+                        </li>
+                    </ul>
+
+                    <!-- Various Phases -->
+                    <!-- Brainstorm -->
+                    <div *ngIf="activePhase !== '' && activePhase == 'Brainstorm'">
+                        <h3>{{activePhase}}</h3>
+                        <p>
+                            The <strong>BRAINSTORM</strong> phase is the most crucial part of the <strong>CREATE</strong> stage,
+                            allowing you to attach sub-plans and modules to any root plan, and
+                            nest those plan items as necessary. To get the most out of the BRAINSTORM phase,
+                            we suggest creating at least 1-3 sub-plans, and exploring the various modules and challenges available
+                            for attachment. Ultimately, the HUD is your source for planning <strong>your</strong> goals, so
+                            the route that works with your goals is the best route.
+                        </p>
+                    </div>
+                    <div *ngIf="activePhase !== '' && activePhase == 'Prioritize'">
+                        <h3>{{activePhase}}</h3>
+                        <p>
+                            The <strong>PRIORITIZE</strong> tool allows you to quickly organize
+                            the prioritization of the various items that form your root plan, and
+                            giving you the power to focus on what matters most.
+                        </p>
+                        <p>
+                            Using the <strong>PRIORITIZE</strong> phase is incredibly simple: all
+                            plans are assigned a base priority number, and with the higest priority
+                            closest to 0. This means your top priority will always be top of the list,
+                            and vice versa, allowing for seemless transition between plans based
+                            on when you need to focus on them.
+                        </p>
+                    </div>
+                    <div *ngIf="activePhase !== '' && activePhase == 'Deactivate'">
+                        <h3>{{activePhase}}</h3>
+                        <p>
+                            The <strong>DEACTIVATE</strong> phase is a tool for determining
+                            what plan items should be actively pursued, and which can be set aside.
+                            Ultimately, any item that is deactivated is only such until you choose to
+                            reactivate the item, if at all. You are a busy individual, and you deserve
+                            the most efficient tools for quickly filing through your plans- <strong>DEACTIVATE</strong>
+                            is here to help.
+                        </p>
+                        <p>
+                            Using the <strong>DEACTIVATE</strong> phase is as easy as clicking the
+                            deactivate button for any particular sub-item under your root plan. Any deactivated sub-items
+                            with child items of their own will deactivate ALL child items as well. 
+                        </p>
+                        <p>
+                            <strong>NOTE:</strong> Deactivated items will not be usuable
+                            in any following phases until they are reactivated, and ultimately have
+                            no impact on any measurements and summaries made.
+                        </p>
+                    </div>
+                    <div *ngIf="activePhase !== '' && activePhase == 'Propose'">
+                        <h3>{{activePhase}}</h3>
+                        <p>
+                            Looking to bring attention to a particular plan item? Working on a large
+                            team where ideas tend to get lost. Introducing the <strong>PROPOSE</strong> phase,
+                            a tool dedicated to giving each user in your team a voice. With the ability to propose any plan item,
+                            your entire team has the chance to bring their plans and ideas to the forefront, allowing
+                            for voting in the next phase.
+                        </p>
+                        <p>
+                            Individual user? No problem, the <strong>PROPOSE</strong> phase gives you the opportunity
+                            to finalize the plans you want to proceed further with, bringing them to a vote for 
+                            comparison with each other.
+                        </p>
+                    </div>
+                    <div *ngIf="activePhase !== '' && activePhase == 'Vote'">
+                        <h3>{{activePhase}}</h3>
+                        <p>
+                            Introducting one of the most revolutionary tools behind
+                            Rapifly's CEE methodology- the <strong>VOTE</strong> phase- a tool
+                            that brings a democratic approach to the team planning process. Now,
+                            all members on your team have a chance to vote on the plans that matter most,
+                            allowing for a better projection of where you want to take your goals next,
+                            and how those goals will be pursued.
+                        </p>
+                        <p>
+                            Here at Rapifly, we understand how important it is for all members on a team
+                            to have a say in key planning decisions. As teams grow, more and more ideas are proposed,
+                            and the <strong>VOTE</strong> phase will be the final disseminating factor for
+                            making the best planning decisions possible.
+                        </p>
+                        <p>
+                            Not working with a team? You're in luck, while voting may not necessarily democratize
+                            your solo projects, it provides you a chance to reflect and determine for yourself
+                            which plans you think are the most effective. Never before has the decision making involved
+                            in planning been so simple, so efficient, and so user-friendly- welcome to the power
+                            of Rapifly!
+                        </p>
+                    </div>
+                    <div *ngIf="activePhase !== '' && activePhase == 'Select'">
+                        <h3>{{activePhase}}</h3>
+                        <P>
+                            This is it- the final moment before execution- welcome
+                            to the <strong>SELECT</strong> phase. Following a thorough vote across your various plan items,
+                            all plan items will appear with their respective vote counts, and all that is left to do is
+                            toggle which plans you want to execute.
+                        </P>
+                        <p>
+                            <strong>SELECT</strong> is the final phase of the <strong>CREATE</strong> stage,
+                            and notably the most important- how do you determine which plans are most worth pursuing?
+                        </p>
+                        <ol>
+                            <li>Which plans have the highest and lowest vote counts? Typically, we recommend pursuing plans with the most
+                                positive overall vote.
+                            </li>
+                            <li>
+                                If plans have tied vote counts, which had the higher priority? Perhaps this is a quick reference
+                                that can guide your final decision.
+                            </li>
+                            <li>
+                                If there are few to no plans with positive votes, weigh your options carefully, and consider circling back
+                                with yourself or your team to determine a better course of action.
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+
+                <div *ngIf="activeStage !== '' && activeStage == 'Execute'" [hidden]="activeStage == ''">
+                    <h3>{{activeStage}}</h3>
+                    <p>
+                        Welcome to the <strong>EXECUTE</strong> stage, the second
+                        stage in Rapifly's unique CEE methodology. Under <strong>EXECUTE</strong>,
+                        you will find tools for delegating active plans, tracking the countdown until
+                        your plan is set to launch, and launch your plans for evaluation and improvement!
+                    </p>
+                    <p>
+                        <strong>NOTE:</strong> The <strong>DELEGATE</strong> tool is currently under contstruction
+                        as we expand to more users. Check back in often for updates! 
+                    </p>
+                    <ul class="guide-nav">
+                        <li class="rap-guide-list-item" *ngFor="let i of hudSelectionsPhases_Execute">
+                            <button value={{i}} class="btn btn-default" (click)="selectPhase($event)">
+                                {{i}}
+                            </button>
+                        </li>
+                    </ul>
+
+                    <div *ngIf="activePhase !== '' && activePhase == 'Delegate'">
+                        <h3>{{activePhase}}</h3>
+                    </div>
+                    <div *ngIf="activePhase !== '' && activePhase == 'Countdown'">
+                        <h3>{{activePhase}}</h3>
+                    </div>
+                    <div *ngIf="activePhase !== '' && activePhase == 'Launch'">
+                        <h3>{{activePhase}}</h3>
+                    </div>
                 </div>
 
                 </mat-expansion-panel>
@@ -63,7 +233,7 @@
 
                 </mat-expansion-panel>
 
-                <mat-expansion-panel>
+                <mat-expansion-panel style="margin-bottom: 48px;">
                     <mat-expansion-panel-header>
                         <h3>FAQ's</h3>
                     </mat-expansion-panel-header>

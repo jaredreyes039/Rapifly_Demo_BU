@@ -52,9 +52,29 @@ export class ListComponent implements OnInit {
 
   faqData: any = [
     {
-      topic: 'How do I transition from Create to Execute?',
-      answer: 'This section is under construction, please come back at a later date, thank you!'
+      topic: "Where do I begin?",
+      answer: "Getting started is simple, just make sure you are under the CREATE stage, and make a root plan item"
     },
+    {
+      topic: "What are production and expense thresholds?",
+      answer: `While not applicable to ALL users, many users find themselves wanting 
+      to be alerted when their plans may be below or above production and
+       expense targets respectively.`
+    },
+    {
+      topic: "I went to create a sub-item and forgot to include production and expense values, what do I do?",
+      answer: `Relax, Rapifly has a built-in edit feature that allows you to quickly
+      update and maintain any sub-items; however, we do NOT allow the modification
+      of any root items. While this feature is being considered for the future, we are
+      focused on maintaining solid security standards that protect the end-user from
+      malicious acts.`
+    },
+    {
+      topic: "How can I report a bug?",
+      answer: `No problem, if you return to the CREATE stage under the HUD, you'll notice
+      a purple bug icon. Clicking this button will bring up a form that will allow you to report bugs as well
+      as suggest new features and express constructive criticism.`
+    }
   ]
 
   hudSelectionsPhases_Create: any = [
@@ -106,6 +126,7 @@ export class ListComponent implements OnInit {
 
   activeStage: String = "";
   activeStageAdmin: String = "";
+  activePhase: String = "";
 
   ngOnInit() {
     this.searchCoachesForm = this.formBuilder.group({
@@ -121,7 +142,9 @@ export class ListComponent implements OnInit {
     this.getUsers();
   }
 
-
+  selectPhase(event){
+    this.activePhase = event.target.value
+  }
   selectStage(event){
     this.activeStage = event.target.value
   }

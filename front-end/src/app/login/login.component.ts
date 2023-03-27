@@ -45,16 +45,12 @@ export class LoginComponent implements OnInit {
         .subscribe((response: any) => {
           console.log(response)
           if (response.status) {
-            console.log(typeof response.data.user.passwordChanged);
-            if (response.data.user.passwordChanged) {
               if (response.data && response.data.role == 'User') {
                 this.router.navigate(['/item-plans-details']);
               } else {
                 this.router.navigate(['/dashboard']);
               }
-            } else {
-              this.router.navigate(['/profile'])
-            }
+
           } else {
             console.log(response)
             this.toastr.error(response.message, "Error");

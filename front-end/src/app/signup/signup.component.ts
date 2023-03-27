@@ -49,7 +49,7 @@ export class SignupComponent implements OnInit {
       } else {
         role_name = "Admin";
       }
-      this.getRole(role_name);
+      this.getRole("User");
     });
   }
 
