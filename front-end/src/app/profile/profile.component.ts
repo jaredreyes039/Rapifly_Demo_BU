@@ -145,7 +145,7 @@ export class ProfileComponent implements OnInit {
 
     var data = this.changePasswordForm.value;
     data.user_id = this.currentUserId;
-
+    console.log(this.currentUserId)
     this.commonService.PostAPI(`users/password/update`, data).then((response: any) => {
       if (response.status) {
         this.toastr.success(response.message, "Success");

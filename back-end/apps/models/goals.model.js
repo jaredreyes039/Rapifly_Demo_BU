@@ -107,11 +107,19 @@ let GoalsSchema = new Schema({
         type: String,
         required: false
     },
-    production_high_variance_alert: {
+    personal_expense_variance: {
         type: String,
         required: false
     },
-    production_low_variance_alert: {
+    personal_production_variance: {
+        type: String,
+        required: false
+    },
+    manager_expense_variance: {
+        type: String,
+        required: false
+    },
+    manager_production_variance: {
         type: String,
         required: false
     },
@@ -120,14 +128,6 @@ let GoalsSchema = new Schema({
         required: false
     },
     expense_target: {
-        type: String,
-        required: false
-    },
-    expense_high_variance_alert: {
-        type: String,
-        required: false
-    },
-    expense_low_variance_alert: {
         type: String,
         required: false
     },

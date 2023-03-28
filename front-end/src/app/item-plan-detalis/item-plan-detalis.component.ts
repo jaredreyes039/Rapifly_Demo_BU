@@ -327,9 +327,7 @@ export class ItemPlanDetailsComponent implements OnInit {
 
     this.currentchildUser = JSON.parse(window.localStorage.getItem("currentchildUser"));
     this.currentparentUser = JSON.parse(window.localStorage.getItem("currentparentUser"));
-    if (!this.currentuser.user.passwordChanged) {
-      this.router.navigate(['/profile'])
-    }
+
     this.userid = this.currentuser.user._id;
     this.toDate = calendar.getToday();
     this.fromDate = calendar.getPrev(calendar.getToday(), 'm', 1);
@@ -377,13 +375,13 @@ export class ItemPlanDetailsComponent implements OnInit {
       shared_users: [''],
       production_target: [''],
       production_type: [''],
-      production_low_variance_alert: [''],
-      production_high_variance_alert: [''],
       production_weight: [''],
       expense_target: [''],
-      expense_low_variance_alert: [''],
-      expense_high_variance_alert: [''],
       expense_weight: [''],
+      personal_expense_variance: [0],
+      personal_production_variance: [0],
+      manager_expense_variance: [0],
+      manager_production_variance: [0]
     });
 
     this.childPlanFormSub = this.formBuilder.group({
@@ -395,30 +393,24 @@ export class ItemPlanDetailsComponent implements OnInit {
       shared_users: [''],
       production_target: [''],
       production_type: [''],
-      production_low_variance_alert: [''],
-      production_high_variance_alert: [''],
       production_weight: [''],
       expense_target: [''],
-      expense_low_variance_alert: [''],
-      expense_high_variance_alert: [''],
       expense_weight: [''],
+      personal_expense_variance: [0],
+      personal_production_variance: [0],
+      manager_expense_variance: [0],
+      manager_production_variance: [0]
     })
     // Module
     this.ModuleForm = this.formBuilder.group({
       short_name: ['', Validators.required],
       long_name: ['', Validators.required],
-      // supervisor: ['', Validators.required],
-      // department: ['', Validators.required],
       start_date: [''],
       end_date: [''],
       description: [''],
       production_target: [0],
-      production_high_variance_alert: [0],
-      production_low_variance_alert: [0],
       production_weight: [0],
       expense_target: [0],
-      expense_high_variance_alert: [0],
-      expense_low_variance_alert: [0],
       expense_weight: [0],
       security: ['public'],
       question: [''],
@@ -427,21 +419,19 @@ export class ItemPlanDetailsComponent implements OnInit {
       link: [''],
       intelligence_value: [''],
       intelligence_response: [''],
-      attachments: ['']
+      attachments: [''],
+      personal_expense_variance: [0],
+      personal_production_variance: [0],
+      manager_expense_variance: [0],
+      manager_production_variance: [0]
     });
     this.ModuleFormSub = this.formBuilder.group({
       short_name: ['', Validators.required],
       long_name: ['', Validators.required],
-      // supervisor: ['', Validators.required],
-      // department: ['', Validators.required],
       description: [''],
       production_target: [0],
-      production_high_variance_alert: [0],
-      production_low_variance_alert: [0],
       production_weight: [0],
       expense_target: [0],
-      expense_high_variance_alert: [0],
-      expense_low_variance_alert: [0],
       expense_weight: [0],
       security: ['public'],
       question: [''],
@@ -450,7 +440,11 @@ export class ItemPlanDetailsComponent implements OnInit {
       link: [''],
       intelligence_value: [''],
       intelligence_response: [''],
-      attachments: ['']
+      attachments: [''],
+      personal_expense_variance: [0],
+      personal_production_variance: [0],
+      manager_expense_variance: [0],
+      manager_production_variance: [0]
     });
 
     this.FeedbackForm = this.formBuilder.group({
@@ -613,12 +607,11 @@ export class ItemPlanDetailsComponent implements OnInit {
     this.data[0]["share_users"] = [''];
     this.data[0]["production_target"] = [''];
     this.data[0]["production_type"] = [''];
-    this.data[0]["production_low_variance_alert"] = [''];
-    this.data[0]["production_high_variance_alert"] = [''];
-    this.data[0]["production_weight"] = [''];
+    this.data[0]["personal_expense_variance"] = [''];
+    this.data[0]["personal_production_variance"] = [''];
     this.data[0]["expense_target"] = [''];
-    this.data[0]["expense_low_variance_alert"] = [''];
-    this.data[0]["expense_high_variance_alert"] = [''];
+    this.data[0]["manager_expense_variance"] = [''];
+    this.data[0]["manager_production_variance"] = [''];
     this.data[0]["expense_weight"] = [''];
 
     this.parentplangroup = this.formBuilder.group(this.data[0]);
@@ -1007,12 +1000,10 @@ export class ItemPlanDetailsComponent implements OnInit {
           shared_users: this.selected,
           production_target: this.childgoalDetails.production_target,
           production_type: this.childgoalDetails.production_type,
-          production_low_variance_alert: this.childgoalDetails.production_low_variance_alert,
-          production_high_variance_alert: this.childgoalDetails.production_high_variance_alert,
+          personal_production_variance: this.childgoalDetails.personal_production_variance,
+          personal_expense_variance: this.childgoalDetails.personal_expense_variance,
           production_weight: this.childgoalDetails.production_weight,
           expense_target: this.childgoalDetails.expense_target,
-          expense_low_variance_alert: this.childgoalDetails.expense_low_variance_alert,
-          expense_high_variance_alert: this.childgoalDetails.expense_high_variance_alert,
           expense_weight: this.childgoalDetails.expense_weight,
         });
       }
@@ -1029,12 +1020,10 @@ export class ItemPlanDetailsComponent implements OnInit {
           shared_users: this.selected,
           production_target: this.childgoalDetails.production_target,
           production_type: this.childgoalDetails.production_type,
-          production_low_variance_alert: this.childgoalDetails.production_low_variance_alert,
-          production_high_variance_alert: this.childgoalDetails.production_high_variance_alert,
+          personal_production_variance: this.childgoalDetails.personal_production_variance,
+          personal_expense_variance: this.childgoalDetails.personal_expense_variance,
           production_weight: this.childgoalDetails.production_weight,
           expense_target: this.childgoalDetails.expense_target,
-          expense_low_variance_alert: this.childgoalDetails.expense_low_variance_alert,
-          expense_high_variance_alert: this.childgoalDetails.expense_high_variance_alert,
           expense_weight: this.childgoalDetails.expense_weight,
         })
       }
@@ -1099,7 +1088,6 @@ export class ItemPlanDetailsComponent implements OnInit {
         console.log($('#date-input5').val(), new Date(this.planstartdate).toDateString(), this.planenddate)
         if ($('#date-input5').val() != '' && $('#date-input6').val() != '') {
 
-            if (new Date(this.planstartdate).toDateString() <= new Date($('#date-input5').val()).toDateString() && new Date(this.planenddate).toDateString() >= new Date($('#date-input6').val()).toDateString()) {
               var data = this.childPlanForm.value;
               data.editid = this.childgoalDetails._id || "";
               data.user_id = this.currentuser.user._id;
@@ -1109,7 +1097,7 @@ export class ItemPlanDetailsComponent implements OnInit {
               data.start_date = $('#date-input5').val();
               data.end_date = $('#date-input6').val();
               data.shared_users = this.selected.map((data) => data.id);
-              
+              console.log(data)
               if (this.moduleType == '') {
                 this.moduleType = 'goal';
               }
@@ -1140,9 +1128,6 @@ export class ItemPlanDetailsComponent implements OnInit {
                   // this.is_disabled = false;
                 }
               });
-            } else {
-              this.toastr.error("Your goal's start date and end date are outside of their parent plan range.", "Error");
-            }
           
         } else {
           if ($('#date-input5').val() == '') {
@@ -1181,7 +1166,7 @@ export class ItemPlanDetailsComponent implements OnInit {
               data.start_date = $('#date-input5').val();
               data.end_date = $('#date-input6').val();
               data.shared_users = this.selected.map((data) => data.id);
-              
+              console.log(data)
               if (this.moduleType == '') {
                 this.moduleType = 'goal';
               }

@@ -65,6 +65,11 @@ let UsersSchema = new Schema({
         type: Boolean,
         require: false,
         default: true
+    },
+    varianceType: {
+        type: String,
+        require: true,
+        default: "personal"
     }
 });
 

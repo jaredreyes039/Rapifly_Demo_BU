@@ -1039,15 +1039,15 @@
                                 </div>
                                 <div style="display: flex; flex-direction: column;">
                                     <div style="display: flex;  margin-bottom: 12px;">
-                                    <label class="parent-item-label">LVA</label>
-                                    <input type="number" class="text-white bg-dark parent-item-val form-control form-control-spec" placeholder="Low Variance Alert" formControlName="production_low_variance_alert" [ngClass]="{ 'is-invalid': submitted && f.production_low_variance_alert.errors }">
+                                    <label class="parent-item-label">Production Threshold</label>
+                                    <input type="number" class="text-white bg-dark parent-item-val form-control form-control-spec" placeholder="Personal Production Threshold" formControlName="personal_production_variance" [ngClass]="{ 'is-invalid': submitted && f.production_low_variance_alert.errors }">
                                     <div *ngIf="submitted && f.production_low_variance_alert.errors" class="invalid-feedback">
                                         <label *ngIf="f.production_low_variance_alert.errors.required" class="error">LVA is required</label>
                                     </div>
                                     </div>
                                     <div style="display: flex;  margin-bottom: 12px;">
-                                    <label class="parent-item-label">HVA</label>
-                                    <input type="number" class="text-white bg-dark parent-item-val form-control form-control-spec" placeholder="Hight Variance Alert" formControlName="production_high_variance_alert" [ngClass]="{ 'is-invalid': submitted && f.production_high_variance_alert.errors }">
+                                    <label class="parent-item-label">Expense Threshold</label>
+                                    <input type="number" class="text-white bg-dark parent-item-val form-control form-control-spec" placeholder="Personal Expense Threshold" formControlName="personal_expense_variance" [ngClass]="{ 'is-invalid': submitted && f.production_high_variance_alert.errors }">
                                     <div *ngIf="submitted && f.production_high_variance_alert.errors" class="invalid-feedback">
                                         <label *ngIf="f.production_high_variance_alert.errors.required" class="error">Hight Variance Alert is required</label>
                                     </div>
@@ -1209,17 +1209,17 @@
                                 </div>
                                 <div style="display: flex; flex-direction: column;">
                                     <div style="display: flex;  margin-bottom: 12px;">
-                                    <label class="parent-item-label">LVA</label>
-                                    <input type="number" class="text-white bg-dark parent-item-val form-control form-control-spec" placeholder="Low Variance Alert" formControlName="production_low_variance_alert" [ngClass]="{ 'is-invalid': submitted && f.production_low_variance_alert.errors }">
+                                    <label class="parent-item-label">Production Threshold</label>
+                                    <input type="number" class="text-white bg-dark parent-item-val form-control form-control-spec" placeholder="Personal Production Threshold" formControlName="personal_production_variance" [ngClass]="{ 'is-invalid': submitted && f.production_low_variance_alert.errors }">
                                     <div *ngIf="submitted && f.production_low_variance_alert.errors" class="invalid-feedback">
-                                        <label *ngIf="f.production_low_variance_alert.errors.required" class="error">LVA is required</label>
+                                        <label *ngIf="f.production_low_variance_alert.errors.required" class="error">Production threshold is required</label>
                                     </div>
                                     </div>
                                     <div style="display: flex;  margin-bottom: 12px;">
-                                    <label class="parent-item-label">HVA</label>
-                                    <input type="number" class="text-white bg-dark parent-item-val form-control form-control-spec" placeholder="Hight Variance Alert" formControlName="production_high_variance_alert" [ngClass]="{ 'is-invalid': submitted && f.production_high_variance_alert.errors }">
+                                    <label class="parent-item-label">Expense Threshold</label>
+                                    <input type="number" class="text-white bg-dark parent-item-val form-control form-control-spec" placeholder="Personal Expense Threshold" formControlName="personal_expense_variance" [ngClass]="{ 'is-invalid': submitted && f.production_high_variance_alert.errors }">
                                     <div *ngIf="submitted && f.production_high_variance_alert.errors" class="invalid-feedback">
-                                        <label *ngIf="f.production_high_variance_alert.errors.required" class="error">Hight Variance Alert is required</label>
+                                        <label *ngIf="f.production_high_variance_alert.errors.required" class="error">Expense threshold is required</label>
                                     </div>
                                 </div>
                                 </div>
@@ -1375,26 +1375,14 @@
                                         {{childgoalDetails.expense_target === 'null' ? "Edit plan to add target" : childgoalDetails.expense_target}}</div>
                                 </div>
                                 <div  style="display: flex; margin-bottom: 12px;">
-                                    <div class="parent-item-label">Production LVA:</div>
+                                    <div class="parent-item-label">Production Threshold:</div>
                                     <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
-                                        {{childgoalDetails.production_low_variance_alert === 'null' ? "Edit plan to add LVA" : childgoalDetails.production_low_variance_alert}}</div>
+                                        {{childgoalDetails.personal_production_variance === 'null' ? "Edit plan to add production threshold" : childgoalDetails.personal_production_variance}}</div>
                                 </div>
                                 <div  style="display: flex;">
-                                    <div class="parent-item-label">Production HVA:</div>
+                                    <div class="parent-item-label">Expense Threshold</div>
                                     <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
-                                        {{childgoalDetails.production_high_variance_alert === 'null' ? "Edit plan to add HVA" : childgoalDetails.production_high_variance_alert}}</div>
-                                </div>
-                            </div>
-                            <div style="display: flex; flex-direction: column; flex-basis: 45%;">
-                                <div  style="display: flex; margin-bottom: 12px;">
-                                    <div class="parent-item-label">Expense LVA:</div>
-                                    <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
-                                        {{childgoalDetails.expense_low_variance_alert === 'null' ? "Edit plan to add LVA" : childgoalDetails.expense_low_variance_alert}}</div>
-                                </div>
-                                <div  style="display: flex;">
-                                    <div class="parent-item-label">Expense HVA:</div>
-                                    <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
-                                        {{childgoalDetails.expense_high_variance_alert === 'null' ? "Edit plan to add HVA" : childgoalDetails.expense_high_variance_alert}}</div>
+                                        {{childgoalDetails.personal_expense_variance === 'null' ? "Edit plan to add expense threshold" : childgoalDetails.personal_expense_variance}}</div>
                                 </div>
                             </div>
                         </div>
@@ -1574,26 +1562,14 @@
                                         {{childgoalDetails.expense_target === 'null' ? "Edit plan to add target" : childgoalDetails.expense_target}}</div>
                                 </div>
                                 <div  style="display: flex; margin-bottom: 12px;">
-                                    <div class="parent-item-label">Production LVA:</div>
+                                    <div class="parent-item-label">Production Threshold:</div>
                                     <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
-                                        {{childgoalDetails.production_low_variance_alert === 'null' ? "Edit plan to add LVA" : childgoalDetails.production_low_variance_alert}}</div>
+                                        {{childgoalDetails.personal_production_variance === 'null' ? "Edit plan to add production threshold" : childgoalDetails.personal_production_variance}}</div>
                                 </div>
                                 <div  style="display: flex;">
-                                    <div class="parent-item-label">Production HVA:</div>
+                                    <div class="parent-item-label">Expense Threshold:</div>
                                     <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
-                                        {{childgoalDetails.production_high_variance_alert === 'null' ? "Edit plan to add HVA" : childgoalDetails.production_high_variance_alert}}</div>
-                                </div>
-                            </div>
-                            <div style="display: flex; flex-direction: column; flex-basis: 45%;">
-                                <div  style="display: flex; margin-bottom: 12px;">
-                                    <div class="parent-item-label">Expense LVA:</div>
-                                    <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
-                                        {{childgoalDetails.expense_low_variance_alert === 'null' ? "Edit plan to add LVA" : childgoalDetails.expense_low_variance_alert}}</div>
-                                </div>
-                                <div  style="display: flex;">
-                                    <div class="parent-item-label">Expense HVA:</div>
-                                    <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
-                                        {{childgoalDetails.expense_high_variance_alert === 'null' ? "Edit plan to add HVA" : childgoalDetails.expense_high_variance_alert}}</div>
+                                        {{childgoalDetails.personal_expense_variance === 'null' ? "Edit plan to add expense threshold" : childgoalDetails.personal_expense_variance}}</div>
                                 </div>
                             </div>
                         </div>
@@ -1765,17 +1741,17 @@
                                     </div>
                                     <div style="display: flex; flex-direction: column;">
                                         <div style="display: flex;  margin-bottom: 12px;">
-                                        <label class="parent-item-label">LVA</label>
-                                        <input type="number" class="text-white bg-dark parent-item-val form-control form-control-spec" placeholder="Low Variance Alert" formControlName="production_low_variance_alert" [ngClass]="{ 'is-invalid': submitted && f.production_low_variance_alert.errors }">
+                                        <label class="parent-item-label">Production Threshold</label>
+                                        <input type="number" class="text-white bg-dark parent-item-val form-control form-control-spec" placeholder="Low Variance Alert" formControlName="personal_production_variance" [ngClass]="{ 'is-invalid': submitted && f.production_low_variance_alert.errors }">
                                         <div *ngIf="submitted && f.production_low_variance_alert.errors" class="invalid-feedback">
-                                            <label *ngIf="f.production_low_variance_alert.errors.required" class="error">LVA is required</label>
+                                            <label *ngIf="f.production_low_variance_alert.errors.required" class="error">Production threshold required</label>
                                         </div>
                                         </div>
                                         <div style="display: flex;  margin-bottom: 12px;">
-                                        <label class="parent-item-label">HVA</label>
-                                        <input type="number" class="text-white bg-dark parent-item-val form-control form-control-spec" placeholder="Hight Variance Alert" formControlName="production_high_variance_alert" [ngClass]="{ 'is-invalid': submitted && f.production_high_variance_alert.errors }">
+                                        <label class="parent-item-label">Expense Threshold</label>
+                                        <input type="number" class="text-white bg-dark parent-item-val form-control form-control-spec" placeholder="Hight Variance Alert" formControlName="personal_expense_variance" [ngClass]="{ 'is-invalid': submitted && f.production_high_variance_alert.errors }">
                                         <div *ngIf="submitted && f.production_high_variance_alert.errors" class="invalid-feedback">
-                                            <label *ngIf="f.production_high_variance_alert.errors.required" class="error">Hight Variance Alert is required</label>
+                                            <label *ngIf="f.production_high_variance_alert.errors.required" class="error">Expense threshold required</label>
                                         </div>
                                     </div>
                                     </div>
@@ -1998,17 +1974,17 @@
 
                                     <div style="display: flex; flex-direction: column; flex-basis: 45%;">
                                         <div style="display: flex;  margin-bottom: 12px;">
-                                        <label class="parent-item-label">LVA</label>
-                                        <input type="number" class="text-white bg-dark parent-item-val form-control form-control-spec" placeholder="Low Variance Alert" formControlName="production_low_variance_alert" [ngClass]="{ 'is-invalid': submitted && f.production_low_variance_alert.errors }">
+                                        <label class="parent-item-label">Production Threshold</label>
+                                        <input type="number" class="text-white bg-dark parent-item-val form-control form-control-spec" placeholder="Personal production threshold" formControlName="personal_production_variance" [ngClass]="{ 'is-invalid': submitted && f.production_low_variance_alert.errors }">
                                         <div *ngIf="submitted && f.production_low_variance_alert.errors" class="invalid-feedback">
-                                            <label *ngIf="f.production_low_variance_alert.errors.required" class="error">LVA is required</label>
+                                            <label *ngIf="f.production_low_variance_alert.errors.required" class="error">Production threshold is required</label>
                                         </div>
                                         </div>
                                         <div style="display: flex;  margin-bottom: 12px;">
-                                        <label class="parent-item-label">HVA</label>
-                                        <input type="number" class="text-white bg-dark parent-item-val form-control form-control-spec" placeholder="Hight Variance Alert" formControlName="production_high_variance_alert" [ngClass]="{ 'is-invalid': submitted && f.production_high_variance_alert.errors }">
+                                        <label class="parent-item-label">Expense Threshold</label>
+                                        <input type="number" class="text-white bg-dark parent-item-val form-control form-control-spec" placeholder="Personal Expense Threshold" formControlName="personal_expense_variance" [ngClass]="{ 'is-invalid': submitted && f.production_high_variance_alert.errors }">
                                         <div *ngIf="submitted && f.production_high_variance_alert.errors" class="invalid-feedback">
-                                            <label *ngIf="f.production_high_variance_alert.errors.required" class="error">Hight Variance Alert is required</label>
+                                            <label *ngIf="f.production_high_variance_alert.errors.required" class="error">Expense threshold is required</label>
                                         </div>
                                     </div>
                                     </div>
@@ -2225,8 +2201,8 @@
                                 <div class="col-md-6"
                                     [hidden]="selectedModules == 'motive' || selectedModules == 'analysis' || selectedModules == 'intelligence'">
                                     <div class="form-group">
-                                        <label>HVA</label>
-                                        <input type="number" formControlName="production_high_variance_alert"
+                                        <label>Production Threshold</label>
+                                        <input type="number" formControlName="personal_production_variance"
                                             class="form-control" placeholder="High Variance"
                                             [ngClass]="{ 'is-invalid': isModuleFormSubmitted && mf.production_high_variance_alert.errors }"
                                             autocomplete="off">
@@ -2235,30 +2211,10 @@
                                 <div class="col-md-6"
                                     [hidden]="selectedModules == 'motive' || selectedModules == 'analysis' || selectedModules == 'intelligence'">
                                     <div class="form-group">
-                                        <label>HVA</label>
-                                        <input type="number" formControlName="expense_high_variance_alert" class="form-control"
+                                        <label>Expense Threshold</label>
+                                        <input type="number" formControlName="personal_expense_variance" class="form-control"
                                             placeholder="High Variance"
                                             [ngClass]="{ 'is-invalid': isModuleFormSubmitted && mf.expense_high_variance_alert.errors }"
-                                            autocomplete="off">
-                                    </div>
-                                </div>
-                                <div class="col-md-6"
-                                    [hidden]="selectedModules == 'motive' || selectedModules == 'analysis' || selectedModules == 'intelligence'">
-                                    <div class="form-group">
-                                        <label>Low Variance</label>
-                                        <input type="number" formControlName="production_low_variance_alert"
-                                            class="form-control" placeholder="Low Variance"
-                                            [ngClass]="{ 'is-invalid': isModuleFormSubmitted && mf.production_low_variance_alert.errors }"
-                                            autocomplete="off">
-                                    </div>
-                                </div>
-                                <div class="col-md-6"
-                                    [hidden]="selectedModules == 'motive' || selectedModules == 'analysis' || selectedModules == 'intelligence'">
-                                    <div class="form-group">
-                                        <label>Low Variance</label>
-                                        <input type="number" formControlName="expense_low_variance_alert" class="form-control"
-                                            placeholder="Low Variance"
-                                            [ngClass]="{ 'is-invalid': isModuleFormSubmitted && mf.expense_low_variance_alert.errors }"
                                             autocomplete="off">
                                     </div>
                                 </div>
@@ -2500,17 +2456,17 @@
     
                                     <div style="display: flex; flex-direction: column; flex-basis: 45%;">
                                         <div style="display: flex;  margin-bottom: 12px;">
-                                        <label class="parent-item-label">LVA</label>
-                                        <input type="number" class="text-white bg-dark parent-item-val form-control form-control-spec" placeholder="Low Variance Alert" formControlName="production_low_variance_alert" [ngClass]="{ 'is-invalid': submitted && f.production_low_variance_alert.errors }">
+                                        <label class="parent-item-label">Production Threshold</label>
+                                        <input type="number" class="text-white bg-dark parent-item-val form-control form-control-spec" placeholder="Personal Production Threshold" formControlName="personal_production_variance" [ngClass]="{ 'is-invalid': submitted && f.production_low_variance_alert.errors }">
                                         <div *ngIf="submitted && f.production_low_variance_alert.errors" class="invalid-feedback">
-                                            <label *ngIf="f.production_low_variance_alert.errors.required" class="error">LVA is required</label>
+                                            <label *ngIf="f.production_low_variance_alert.errors.required" class="error">Production threshold is required</label>
                                         </div>
                                         </div>
                                         <div style="display: flex;  margin-bottom: 12px;">
-                                        <label class="parent-item-label">HVA</label>
-                                        <input type="number" class="text-white bg-dark parent-item-val form-control form-control-spec" placeholder="Hight Variance Alert" formControlName="production_high_variance_alert" [ngClass]="{ 'is-invalid': submitted && f.production_high_variance_alert.errors }">
+                                        <label class="parent-item-label">Expense Threshold</label>
+                                        <input type="number" class="text-white bg-dark parent-item-val form-control form-control-spec" placeholder="Personal Expense Threshold" formControlName="personal_expense_variance" [ngClass]="{ 'is-invalid': submitted && f.production_high_variance_alert.errors }">
                                         <div *ngIf="submitted && f.production_high_variance_alert.errors" class="invalid-feedback">
-                                            <label *ngIf="f.production_high_variance_alert.errors.required" class="error">Hight Variance Alert is required</label>
+                                            <label *ngIf="f.production_high_variance_alert.errors.required" class="error">Expense threshold is required</label>
                                         </div>
                                     </div>
                                     </div>
@@ -3651,7 +3607,7 @@
                                 <div style="display: flex; flex-direction: column; flex-basis: 45%;">
                                     <div>
                                         <div class="form-group" style="display: flex;  margin-bottom: 12px;">
-                                            <label class="parent-item-label" style="margin-bottom: 12px !important;">Production HVA</label>
+                                            <label class="parent-item-label" style="margin-bottom: 12px !important;">Production Threshold</label>
                                             <input type="number" formControlName="production_high_variance_alert"
                                                 class="form-control bg-dark text-white parent-item-val form-control-spec" placeholder="Production High Variance Alert"
                                                 [ngClass]="{ 'is-invalid': isModuleFormSubmitted && mf.production_high_variance_alert.errors }"
@@ -3660,36 +3616,13 @@
                                     </div>
                                     <div>
                                         <div class="form-group" style="display: flex;  margin-bottom: 12px;">
-                                            <label class="parent-item-label" style="margin-bottom: 12px !important;">Expense HVA</label>
+                                            <label class="parent-item-label" style="margin-bottom: 12px !important;">Expense Threshold</label>
                                             <input type="number" formControlName="expense_high_variance_alert" class="form-control bg-dark text-white parent-item-val form-control-spec"
                                                 placeholder="Expense High Variance Alert"
                                                 [ngClass]="{ 'is-invalid': isModuleFormSubmitted && mf.expense_high_variance_alert.errors }"
                                                 autocomplete="off">
                                         </div>
                                     </div>                            
-                                </div>
-
-                                <div style="display: flex; flex-direction: column; flex-basis: 45%;">
-                                    <div
-                                    [hidden]="selectedModules == 'motive' || selectedModules == 'analysis' || selectedModules == 'intelligence'">
-                                    <div class="form-group" style="display: flex;  margin-bottom: 12px;">
-                                        <label class="parent-item-label" style="margin-bottom: 12px !important;">Production LVA</label>
-                                        <input type="number" formControlName="production_low_variance_alert"
-                                        class="form-control bg-dark text-white parent-item-val form-control-spec" placeholder="Production Low Variance Alert"
-                                            [ngClass]="{ 'is-invalid': isModuleFormSubmitted && mf.production_low_variance_alert.errors }"
-                                            autocomplete="off">
-                                    </div>
-                                </div>
-                                    <div
-                                        [hidden]="selectedModules == 'motive' || selectedModules == 'analysis' || selectedModules == 'intelligence'">
-                                        <div class="form-group" style="display: flex;  margin-bottom: 12px;">
-                                            <label class="parent-item-label" style="margin-bottom: 12px !important;">Expense LVA</label>
-                                            <input type="number" formControlName="expense_low_variance_alert" class="form-control bg-dark text-white parent-item-val form-control-spec"
-                                                placeholder="Expense Low Variance Alert"
-                                                [ngClass]="{ 'is-invalid': isModuleFormSubmitted && mf.expense_low_variance_alert.errors }"
-                                                autocomplete="off">
-                                        </div>
-                                    </div>
                                 </div>
 
                                 <div style="display: flex; flex-direction: column; flex-basis: 45%;">
@@ -4003,9 +3936,9 @@
                             <div class="col-md-6"
                                 [hidden]="selectedModules == 'motive' || selectedModules == 'analysis' || selectedModules == 'intelligence'">
                                 <div class="form-group">
-                                    <label>HVA</label>
-                                    <input type="number" formControlName="production_high_variance_alert"
-                                        class="form-control" placeholder="High Variance"
+                                    <label>Production Threshold</label>
+                                    <input type="number" formControlName="personal_production_variance"
+                                        class="form-control" placeholder="Personal production threshold"
                                         [ngClass]="{ 'is-invalid': isModuleFormSubmitted && mf.production_high_variance_alert.errors }"
                                         autocomplete="off">
                                 </div>
@@ -4013,30 +3946,10 @@
                             <div class="col-md-6"
                                 [hidden]="selectedModules == 'motive' || selectedModules == 'analysis' || selectedModules == 'intelligence'">
                                 <div class="form-group">
-                                    <label>HVA</label>
-                                    <input type="number" formControlName="expense_high_variance_alert" class="form-control"
-                                        placeholder="High Variance"
+                                    <label>Expense Threshold</label>
+                                    <input type="number" formControlName="personal_expense_variance" class="form-control"
+                                        placeholder="Personal expense threshold"
                                         [ngClass]="{ 'is-invalid': isModuleFormSubmitted && mf.expense_high_variance_alert.errors }"
-                                        autocomplete="off">
-                                </div>
-                            </div>
-                            <div class="col-md-6"
-                                [hidden]="selectedModules == 'motive' || selectedModules == 'analysis' || selectedModules == 'intelligence'">
-                                <div class="form-group">
-                                    <label>Low Variance</label>
-                                    <input type="number" formControlName="production_low_variance_alert"
-                                        class="form-control" placeholder="Low Variance"
-                                        [ngClass]="{ 'is-invalid': isModuleFormSubmitted && mf.production_low_variance_alert.errors }"
-                                        autocomplete="off">
-                                </div>
-                            </div>
-                            <div class="col-md-6"
-                                [hidden]="selectedModules == 'motive' || selectedModules == 'analysis' || selectedModules == 'intelligence'">
-                                <div class="form-group">
-                                    <label>Low Variance</label>
-                                    <input type="number" formControlName="expense_low_variance_alert" class="form-control"
-                                        placeholder="Low Variance"
-                                        [ngClass]="{ 'is-invalid': isModuleFormSubmitted && mf.expense_low_variance_alert.errors }"
                                         autocomplete="off">
                                 </div>
                             </div>
