@@ -1473,7 +1473,7 @@
                 <h3 class="page-title"  *ngIf="!parentIsActiveSelection">
                     {{ (selectedPhase == 'I') ? 'Improve' : 'Project Profile' }}
                 </h3>
-                <button *ngIf="!parentIsActiveSelection" class="btn btn-primary" (click)="childgoalDetails.parent_goal_id == '' ? visitParentForm(childgoalDetails.plan_id) : getgoaldetail(childgoalDetails.parent_goal_id, '')">
+                <button *ngIf="!parentIsActiveSelection" class="btn btn-primary" (click)="childgoalDetails.parent_goal_id == '#' ? visitParentForm(childgoalDetails.plan_id) : getgoaldetail(childgoalDetails.parent_goal_id, '')">
                     Go To Parent
                 </button>
             </div>
