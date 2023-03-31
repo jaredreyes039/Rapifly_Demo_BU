@@ -487,6 +487,7 @@
         </div>
 
         <!-- ACTIVE FORM GROUP: PARENTPLANGROUP -->
+        <!-- IF PROJECT IS SELECTED -->
         <!-- DATE IDS: 5/6 -->
         <div class="col-md-9" *ngIf="selectedPhase == 'project'">
             <form #kform="ngForm" [formGroup]="parentplangroup">
@@ -1124,16 +1125,7 @@
                                 </div>
                             </div>
                                 <div style="display: flex; flex-direction: column; flex-basis: 45%;">
-                                    <!-- <div style="display: flex;  margin-bottom: 12px;">
-
-                                    <label class="parent-item-label">Select Users</label>
-                                    <ng-select [items]="items" bindLabel="name" placeholder="Select Users"
-                                        formControlName="shared_users" appendTo="body" multiple="true"
-                                        [(ngModel)]="selected" (change)="onChange($event)">
-                                    </ng-select>
-                                    </div> -->
                                     <div style="display: flex;  margin-bottom: 12px;">
-
                                         <div class="text-white bg-dark parent-item-val-spec" style="padding: 6px;">
                                         <div class=" parent-item-label-spec">Description</div>
                                         <textarea type="text" formControlName="description" class="form-control bg-dark"
@@ -1193,34 +1185,22 @@
                                 <div style="display: flex; flex-direction: column; margin-right: 12px;">
                                     <div style="display: flex;  margin-bottom: 12px;">
                                     <label class="parent-item-label">Production Weight</label>
-                                    <input type="number"class="text-white bg-dark parent-item-val form-control form-control-spec" placeholder="Production weight" formControlName="production_weight" [ngClass]="{ 'is-invalid': submitted && f.production_weight.errors }">
-                                    <div *ngIf="submitted && f.production_weight.errors" class="invalid-feedback">
-                                        <label *ngIf="f.production_weight.errors.required" class="error">Expense weight is required</label>
-                                    </div>
+                                    <input type="number"class="text-white bg-dark parent-item-val form-control form-control-spec" placeholder="Production weight" formControlName="production_weight">
                                     </div>
                                     <div style="display: flex;  margin-bottom: 12px;">
                                     <label class="parent-item-label">Expense Weight</label>
-                                    <input type="number" class="text-white bg-dark parent-item-val form-control form-control-spec" placeholder="Expense weight" formControlName="expense_weight" [ngClass]="{ 'is-invalid': submitted && f.expense_weight.errors }">
-                                    <div *ngIf="submitted && f.expense_weight.errors" class="invalid-feedback">
-                                        <label *ngIf="f.expense_weight.errors.required" class="error">Expense weight is required</label>
-                                    </div>
+                                    <input type="number" class="text-white bg-dark parent-item-val form-control form-control-spec" placeholder="Expense weight" formControlName="expense_weight">
                                     </div>
 
                                 </div>
                                 <div style="display: flex; flex-direction: column;">
                                     <div style="display: flex;  margin-bottom: 12px;">
                                     <label class="parent-item-label">Production Threshold</label>
-                                    <input type="number" class="text-white bg-dark parent-item-val form-control form-control-spec" placeholder="Personal Production Threshold" formControlName="personal_production_variance" [ngClass]="{ 'is-invalid': submitted && f.production_low_variance_alert.errors }">
-                                    <div *ngIf="submitted && f.production_low_variance_alert.errors" class="invalid-feedback">
-                                        <label *ngIf="f.production_low_variance_alert.errors.required" class="error">Production threshold is required</label>
-                                    </div>
+                                    <input type="number" class="text-white bg-dark parent-item-val form-control form-control-spec" placeholder="Personal Production Threshold" formControlName="personal_production_variance">
                                     </div>
                                     <div style="display: flex;  margin-bottom: 12px;">
                                     <label class="parent-item-label">Expense Threshold</label>
-                                    <input type="number" class="text-white bg-dark parent-item-val form-control form-control-spec" placeholder="Personal Expense Threshold" formControlName="personal_expense_variance" [ngClass]="{ 'is-invalid': submitted && f.production_high_variance_alert.errors }">
-                                    <div *ngIf="submitted && f.production_high_variance_alert.errors" class="invalid-feedback">
-                                        <label *ngIf="f.production_high_variance_alert.errors.required" class="error">Expense threshold is required</label>
-                                    </div>
+                                    <input type="number" class="text-white bg-dark parent-item-val form-control form-control-spec" placeholder="Personal Expense Threshold" formControlName="personal_expense_variance">
                                 </div>
                                 </div>
                             </div>
@@ -1795,7 +1775,9 @@
                                     <th class="prioritize-blue">Start Date</th>
                                     <th class="prioritize-blue">End Date</th>
                                     <th class="prioritize-blue">Production Target</th>
+                                    <th class="prioritize-blue">Production Threshold</th>
                                     <th class="prioritize-blue">Expense Target</th>
+                                    <th class="prioritize-blue">Expense Threshold</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -1804,7 +1786,9 @@
                                     <td>{{ p.start_date | prioritizegoaldate }}</td>
                                     <td>{{ p.end_date | prioritizegoaldate}}</td>
                                     <td>{{ (p.production_target) ? p.production_target : 0 }}</td>
+                                    <td>{{ (p.personal_production_variance) ? p.personal_production_variance : 0 }}</td>
                                     <td>{{ (p.expense_target) ? p.expense_target : 0 }}</td>
+                                    <td>{{ (p.personal_expense_variance) ? p.personal_expense_variance : 0 }}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -1965,27 +1949,20 @@
                                                 <option value="units">Units</option>
                                                 <option value="percentage">Percentage</option>
                                             </select>
-                                            <div *ngIf="IsLoginFormValid && jval.production_type.errors" class="invalid-feedback">
-                                                <label *ngIf="jval.production_type.errors.required" class="error">Production type is
-                                                    required</label>
-                                            </div>
+
                                         </div>   
                                     </div>
 
                                     <div style="display: flex; flex-direction: column; flex-basis: 45%;">
                                         <div style="display: flex;  margin-bottom: 12px;">
                                         <label class="parent-item-label">Production Threshold</label>
-                                        <input type="number" class="text-white bg-dark parent-item-val form-control form-control-spec" placeholder="Personal production threshold" formControlName="personal_production_variance" [ngClass]="{ 'is-invalid': submitted && f.production_low_variance_alert.errors }">
-                                        <div *ngIf="submitted && f.production_low_variance_alert.errors" class="invalid-feedback">
-                                            <label *ngIf="f.production_low_variance_alert.errors.required" class="error">Production threshold is required</label>
-                                        </div>
+                                        <input type="number" class="text-white bg-dark parent-item-val form-control form-control-spec" placeholder="Personal production threshold" formControlName="personal_production_variance">
+
                                         </div>
                                         <div style="display: flex;  margin-bottom: 12px;">
                                         <label class="parent-item-label">Expense Threshold</label>
-                                        <input type="number" class="text-white bg-dark parent-item-val form-control form-control-spec" placeholder="Personal Expense Threshold" formControlName="personal_expense_variance" [ngClass]="{ 'is-invalid': submitted && f.production_high_variance_alert.errors }">
-                                        <div *ngIf="submitted && f.production_high_variance_alert.errors" class="invalid-feedback">
-                                            <label *ngIf="f.production_high_variance_alert.errors.required" class="error">Expense threshold is required</label>
-                                        </div>
+                                        <input type="number" class="text-white bg-dark parent-item-val form-control form-control-spec" placeholder="Personal Expense Threshold" formControlName="personal_expense_variance">
+
                                     </div>
                                     </div>
                                     <div style="display: flex; flex-direction: column; flex-basis: 45%;">
@@ -2184,7 +2161,6 @@
                                         <label>Production Target</label>
                                         <input type="number" formControlName="production_target" class="form-control"
                                             placeholder="Production Target"
-                                            [ngClass]="{ 'is-invalid': isModuleFormSubmitted && mf.production_target.errors }"
                                             autocomplete="off">
                                     </div>
                                 </div>
@@ -2194,7 +2170,6 @@
                                         <label>Expense Target</label>
                                         <input type="number" formControlName="expense_target" class="form-control"
                                             placeholder="Expense Target"
-                                            [ngClass]="{ 'is-invalid': isModuleFormSubmitted && mf.expense_target.errors }"
                                             autocomplete="off">
                                     </div>
                                 </div>
@@ -2204,7 +2179,6 @@
                                         <label>Production Threshold</label>
                                         <input type="number" formControlName="personal_production_variance"
                                             class="form-control" placeholder="High Variance"
-                                            [ngClass]="{ 'is-invalid': isModuleFormSubmitted && mf.production_high_variance_alert.errors }"
                                             autocomplete="off">
                                     </div>
                                 </div>
@@ -2214,7 +2188,6 @@
                                         <label>Expense Threshold</label>
                                         <input type="number" formControlName="personal_expense_variance" class="form-control"
                                             placeholder="High Variance"
-                                            [ngClass]="{ 'is-invalid': isModuleFormSubmitted && mf.expense_high_variance_alert.errors }"
                                             autocomplete="off">
                                     </div>
                                 </div>
@@ -2741,7 +2714,7 @@
                 </mat-expansion-panel-header>
                 <div class="panel panel-cutom-blue">
                     <div class="panel-body">
-                        <div class="table-responsive" *ngIf="isDevidedInParts == 1">
+                        <div class="table-responsive" >
                             <table class="table table-striped" style="text-align: center !important;">
                                 <thead>
                                     <tr style="text-align: center;">
@@ -2789,120 +2762,6 @@
                                     </tr>
                                 </tbody>
                             </table>
-                        </div>
-                        <div class="table-responsive" *ngIf="isDevidedInParts == 2">
-                            <div class="panel panel-cutom-blue">
-                                <div style="text-align: center;">
-                                    <h4>Prioritize : High</h4>
-                                </div>
-                                <table class="table table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th class="prioritize-blue">Up</th>
-                                            <th class="prioritize-blue">Down</th>
-                                            <th class="prioritize-blue">Priority</th>
-                                            <th class="prioritize-blue">(G) Short Name</th>
-                                            <th class="prioritize-blue">Start Date</th>
-                                            <th class="prioritize-blue">End Date</th>
-                                            <th class="prioritize-blue">Creator</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr *ngFor="let p of highPriorityGoals; let i=index">
-                                            <td style="text-align: center;">
-                                                <a style="cursor: pointer;"
-                                                    (click)="changepriority(p._id,p.prioritize,p.prioritize-1)"><img
-                                                        src="assets/images/avatars/arrow-up.png"></a>
-                                            </td>
-                                            <td style="text-align: center;">
-                                                <a style="cursor: pointer;"
-                                                    (click)="changepriority(p._id,p.prioritize,p.prioritize+1)"><img
-                                                        src="assets/images/avatars/arrow-down.png"></a>
-                                            </td>
-                                            <td>{{ p.prioritize }}</td>
-                                            <td>(G) {{ p.short_name }}</td>
-                                            <td>{{ p.start_date | prioritizegoaldate }}</td>
-                                            <td>{{ p.end_date | prioritizegoaldate}}</td>
-                                            <td>{{ p.user_id.first_name }} {{ p.user_id.last_name }}</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div class="panel panel-cutom-blue">
-                                <div style="text-align: center;">
-                                    <h4>Prioritize : Medium</h4>
-                                </div>
-                                <table class="table table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th class="prioritize-medium">Up</th>
-                                            <th class="prioritize-medium">Down</th>
-                                            <th class="prioritize-medium">Priority</th>
-                                            <th class="prioritize-medium">(G) Short Name</th>
-                                            <th class="prioritize-medium">Start Date</th>
-                                            <th class="prioritize-medium">End Date</th>
-                                            <th class="prioritize-medium">Creator</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr *ngFor="let p of mediumPriorityGoals; let i=index">
-                                            <td style="text-align: center;">
-                                                <a style="cursor: pointer;"
-                                                    (click)="changepriority(p._id,p.prioritize, p.prioritize-1)"><img
-                                                        src="assets/images/avatars/arrow-up.png"></a>
-                                            </td>
-                                            <td style="text-align: center;">
-                                                <a style="cursor: pointer;"
-                                                    (click)="changepriority(p._id,p.prioritize, p.prioritize+1)"><img
-                                                        src="assets/images/avatars/arrow-down.png"></a>
-                                            </td>
-                                            <td>{{ p.prioritize }}</td>
-                                            <td>(G) {{ p.short_name }}</td>
-                                            <td>{{ p.start_date | prioritizegoaldate }}</td>
-                                            <td>{{ p.end_date | prioritizegoaldate}}</td>
-                                            <td>{{ p.user_id.first_name }} {{ p.user_id.last_name }}</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div class="panel panel-cutom-blue">
-                                <div style="text-align: center;">
-                                    <h4>Prioritize : Low</h4>
-                                </div>
-                                <table class="table table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th class="prioritize-low">Up</th>
-                                            <th class="prioritize-low">Down</th>
-                                            <th class="prioritize-low">Priority</th>
-                                            <th class="prioritize-low">(G) Short Name</th>
-                                            <th class="prioritize-low">Start Date</th>
-                                            <th class="prioritize-low">End Date</th>
-                                            <th class="prioritize-low">Creator</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr *ngFor="let p of lowPriorityGoals; let i=index">
-                                            <td style="text-align: center;">
-                                                <a style="cursor: pointer;"
-                                                    (click)="changepriority(p._id,p.prioritize,p.prioritize-1)"><img
-                                                        src="assets/images/avatars/arrow-up.png"></a>
-                                            </td>
-                                            <td style="text-align: center;">
-                                                <a style="cursor: pointer;"
-                                                    (click)="changepriority(p._id,p.prioritize,p.prioritize+1)"><img
-                                                        src="assets/images/avatars/arrow-down.png"></a>
-                                            </td>
-                                            <!-- <td>{{ p.numbers }}</td> -->
-                                            <td>{{ p.prioritize }}</td>
-                                            <td>(G) {{ p.short_name }}</td>
-                                            <td>{{ p.start_date | prioritizegoaldate }}</td>
-                                            <td>{{ p.end_date | prioritizegoaldate}}</td>
-                                            <td>{{ p.user_id.first_name }} {{ p.user_id.last_name }}</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -3426,7 +3285,7 @@
                                                     </tr>
                                                     <tr>
                                                         <td>Actual Production</td>
-                                                        <td><span>{{parentplanDetails[0].production_type == 'dollars' ? '$' : ''}}</span>{{ actualProductionSum }}<span>{{parentplanDetails[0].production_type == 'percentage' ? '%' : parentplanDetails[0].production_type == 'units' ? ' Units' : ""}}</span></td>
+                                                        <td><span>{{parentplanDetails[0].production_type == 'dollars' ? '$' : ''}}</span>{{ actualProductionSum || "0" }}<span>{{parentplanDetails[0].production_type == 'percentage' ? '%' : parentplanDetails[0].production_type == 'units' ? ' Units' : ""}}</span></td>
                                                     </tr>
                                                     <tr *ngIf="prodHierarchy.length !== 0">
                                                         <td>Most Productive Plan</td>
@@ -3453,7 +3312,7 @@
                                                     </tr>
                                                     <tr>
                                                         <td>Actual Expense</td>
-                                                        <td><span>{{parentplanDetails[0].production_type == 'dollars' ? '$' : ''}}</span>{{ parentplanDetails[0].expense_target }}<span>{{parentplanDetails[0].production_type == 'percentage' ? '%' : parentplanDetails[0].production_type == 'units' ? ' Units' : ""}}</span></td>
+                                                        <td><span>{{parentplanDetails[0].production_type == 'dollars' ? '$' : ''}}</span>{{ actualExpenseSum || "0" }}<span>{{parentplanDetails[0].production_type == 'percentage' ? '%' : parentplanDetails[0].production_type == 'units' ? ' Units' : ""}}</span></td>
                                                     </tr>
                                                     <tr *ngIf="expHierarchy.length !== 0">
                                                         <td>Most Expensive Plan</td>
@@ -3470,7 +3329,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-6" *ngIf="reportGoals.length != 0">
                             <canvas baseChart *ngIf="chartIsLoaded"
                                     [datasets]="lineChartMainConfigData"
                                     [chartType]="'line'"
@@ -3478,6 +3337,9 @@
                                     [colors]="lineChartMainOptions"
                                     >
                             </canvas>
+                        </div>
+                        <div class="col-md-6" *ngIf="reportGoals.length == 0">
+                            <h4>To view report statistics at least 1 report must be filed.</h4>
                         </div>
                     </div>
 
@@ -3595,7 +3457,7 @@
                             <div style="display: flex;  margin-bottom: 12px;" *ngIf="selectedModules !== 'analysis' && selectedModules !== 'intelligence'" [hidden]="selectedModules === 'analysis' && selectedModules === 'intelligence'">
 
                                 <div class="text-white bg-dark parent-item-val-spec" style="padding: 6px;">
-                                    <div class=" parent-item-label-spec">{{selectedModules === 'motive' ? 'Motivation' : 'Description'}}</div>
+                                    <div class=" parent-item-label-spec">{{selectedModules === 'motive' ? 'Motivation' : 'Module Details'}}</div>
                                     <textarea type="text" formControlName="description" class="form-control bg-dark"
                                     placeholder="Click to edit description" style="border-radius: 0px; border: none; border-left: 2px solid #fff; padding-left: 12px;"  [ngClass]="{ 'is-invalid': isModuleFormSubmitted && mf.description.errors }"
                                     autocomplete="off"></textarea>                     
@@ -3603,13 +3465,15 @@
                             </div>
 
                             <!-- HVAs/LVAs and Weights -->
-                            <div style="display: flex;"  *ngIf="selectedModules !== 'motive' && selectedModules !== 'analysis' && selectedModules !== 'intelligence'" [hidden]="selectedModules === 'motive' && selectedModules === 'analysis' && selectedModules === 'intelligence'">
+                            <!-- Removed due to unjust. purpose given direction of this site -->
+
+                            <!-- <div style="display: flex;"  *ngIf="selectedModules !== 'motive' && selectedModules !== 'analysis' && selectedModules !== 'intelligence'" [hidden]="selectedModules === 'motive' && selectedModules === 'analysis' && selectedModules === 'intelligence'">
                                 <div style="display: flex; flex-direction: column; flex-basis: 45%;">
                                     <div>
                                         <div class="form-group" style="display: flex;  margin-bottom: 12px;">
                                             <label class="parent-item-label" style="margin-bottom: 12px !important;">Production Threshold</label>
-                                            <input type="number" formControlName="production_high_variance_alert"
-                                                class="form-control bg-dark text-white parent-item-val form-control-spec" placeholder="Production High Variance Alert"
+                                            <input type="number" formControlName="personal_production_variance"
+                                                class="form-control bg-dark text-white parent-item-val form-control-spec" placeholder="Production Threshold"
                                                 [ngClass]="{ 'is-invalid': isModuleFormSubmitted && mf.production_high_variance_alert.errors }"
                                                 autocomplete="off">
                                         </div>
@@ -3617,8 +3481,8 @@
                                     <div>
                                         <div class="form-group" style="display: flex;  margin-bottom: 12px;">
                                             <label class="parent-item-label" style="margin-bottom: 12px !important;">Expense Threshold</label>
-                                            <input type="number" formControlName="expense_high_variance_alert" class="form-control bg-dark text-white parent-item-val form-control-spec"
-                                                placeholder="Expense High Variance Alert"
+                                            <input type="number" formControlName="personal_expense_variance" class="form-control bg-dark text-white parent-item-val form-control-spec"
+                                                placeholder="Expense Threshold"
                                                 [ngClass]="{ 'is-invalid': isModuleFormSubmitted && mf.expense_high_variance_alert.errors }"
                                                 autocomplete="off">
                                         </div>
@@ -3647,7 +3511,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
     
                             <!-- FORM FOR ADDING AN INITIAL ANALYSIS AND INTELLIGENCE -->
                             <div class="col-md-12 page-title" *ngIf="selectedModules == 'analysis'">
@@ -3739,12 +3603,6 @@
                                         autocomplete="off">
                                 </div>
                             </div>
-                            
-                            <!-- <div class="col-md-6 form-group"
-                                *ngIf="selectedModules == 'analysis' || selectedModules == 'intelligence'">
-                                <label>Attachment</label>
-                                <input type="file" (change)="uploadAttachment($event.target.files)">
-                            </div> -->
                         </div>
                         <div class="form-group text-right">
                             <button type="submit" (click)="saveModule()" class="btn btn-primary btn-space">Save</button>
@@ -3907,7 +3765,7 @@
                             </div>
                             <div class="col-md-12" [hidden]="selectedModules == 'analysis'">
                                 <div class="form-group">
-                                    <label>Description<span>*</span></label>
+                                    <label>Module Details<span>*</span></label>
                                     <textarea formControlName="description" class="form-control" placeholder="Description"
                                         [ngClass]="{ 'is-invalid': isModuleFormSubmitted && mf.description.errors }"
                                         autocomplete="off"></textarea>
@@ -3930,46 +3788,6 @@
                                     <input type="number" formControlName="expense_target" class="form-control"
                                         placeholder="Expense Target"
                                         [ngClass]="{ 'is-invalid': isModuleFormSubmitted && mf.expense_target.errors }"
-                                        autocomplete="off">
-                                </div>
-                            </div>
-                            <div class="col-md-6"
-                                [hidden]="selectedModules == 'motive' || selectedModules == 'analysis' || selectedModules == 'intelligence'">
-                                <div class="form-group">
-                                    <label>Production Threshold</label>
-                                    <input type="number" formControlName="personal_production_variance"
-                                        class="form-control" placeholder="Personal production threshold"
-                                        [ngClass]="{ 'is-invalid': isModuleFormSubmitted && mf.production_high_variance_alert.errors }"
-                                        autocomplete="off">
-                                </div>
-                            </div>
-                            <div class="col-md-6"
-                                [hidden]="selectedModules == 'motive' || selectedModules == 'analysis' || selectedModules == 'intelligence'">
-                                <div class="form-group">
-                                    <label>Expense Threshold</label>
-                                    <input type="number" formControlName="personal_expense_variance" class="form-control"
-                                        placeholder="Personal expense threshold"
-                                        [ngClass]="{ 'is-invalid': isModuleFormSubmitted && mf.expense_high_variance_alert.errors }"
-                                        autocomplete="off">
-                                </div>
-                            </div>
-                            <div class="col-md-6"
-                                [hidden]="selectedModules == 'motive' || selectedModules == 'analysis' || selectedModules == 'intelligence'">
-                                <div class="form-group">
-                                    <label>Production Weight</label>
-                                    <input type="number" formControlName="production_weight" class="form-control"
-                                        placeholder="Production Weight"
-                                        [ngClass]="{ 'is-invalid': isModuleFormSubmitted && mf.production_weight.errors }"
-                                        autocomplete="off">
-                                </div>
-                            </div>
-                            <div class="col-md-6"
-                                [hidden]="selectedModules == 'motive' || selectedModules == 'analysis' || selectedModules == 'intelligence'">
-                                <div class="form-group">
-                                    <label>Expense Weight</label>
-                                    <input type="number" formControlName="expense_weight" class="form-control"
-                                        placeholder="Expense Weight"
-                                        [ngClass]="{ 'is-invalid': isModuleFormSubmitted && mf.expense_weight.errors }"
                                         autocomplete="off">
                                 </div>
                             </div>
@@ -4235,17 +4053,7 @@
                                                 {{parentplanDetails[0].expense_target }}</div>
                                         </div>
                                     </div>
-                                    <!-- <div style="display: flex;"
-                                        *ngIf="parentplan.key !='start_date' && parentplan.key !='end_date' && parentplan.key !='user_id' && parentplan.key !='security' ">
-                                        <div class="parent-item-label">{{textDecoration(parentplan.key)}}:</div>
-                                        <div class="text-white bg-dark parent-item-val" style="padding: 6px;" *ngIf="parentplan.key !='userid' ">
-                                            {{parentplan.value}}</div>
-                                    </div> -->
-                                    <!-- <div *ngIf="parentplan.key=='security' ">
-                                        <div class="parent-item-label ">{{textDecoration(parentplan.key)}}:</div>
-                                        <div class="col-md-6 text-white " *ngIf="parentplan.value==0 "> Private</div>
-                                        <div class="col-md-6 text-white " *ngIf="parentplan.value==1 "> Shared </div>
-                                    </div> -->
+
                             </div>
                             <div style="display: flex; margin-bottom: 12px;">
                                 <div class="text-white bg-dark parent-item-val-spec" style="padding: 6px;">
