@@ -1089,7 +1089,12 @@ export class ItemPlanDetailsComponent implements OnInit {
         if ($('#date-input5').val() != '' && $('#date-input6').val() != '') {
 
               var data = this.childPlanForm.value;
-              data.editid = this.childgoalDetails._id || "";
+              if(this.editChildEnabled){
+                data.editid = this.childgoalDetails._id;
+              }
+              else {
+                data.editid = ""
+              }
               data.user_id = this.currentuser.user._id;
               data.plan_id = this.goalplanid;
               data.status = 0;
@@ -1565,14 +1570,15 @@ export class ItemPlanDetailsComponent implements OnInit {
     } else {
       this.commonService.PostAPI(`goal/getgoals/bypid`, { id: planid, module_type: this.moduleType }).then((response: any) => {
         if (response.status) {
-          this.priorityGoals = response.data;
-          this.isDevidedInParts = 1
-          if (this.priorityGoals.length > 10) {
-            this.isDevidedInParts = 2;
-            var totallength = Math.floor(this.priorityGoals.length / 3);
-            this.highPriorityGoals = this.priorityGoals.slice(0, totallength);
-            this.mediumPriorityGoals = this.priorityGoals.slice(totallength, totallength * 2);
-            this.lowPriorityGoals = this.priorityGoals.slice(totallength * 2, this.priorityGoals.length);
+          if(this.parentIsActiveSelection){
+
+            // When a parent item is selected, this will filter out items nested deeper than 
+            this.priorityGoals = response.data.filter((goal)=>{return goal.parent_goal_id.length === 1});
+          }
+          else {
+
+            // When a child item is selected, this will filter out items unrelated
+            this.priorityGoals = response.data.filter((goal)=>{return goal.parent_goal_id.includes(this.childgoalDetails._id)})
           }
         } else {
           this.priorityGoals = [];
@@ -1642,17 +1648,10 @@ export class ItemPlanDetailsComponent implements OnInit {
             this.commonService.PostAPI(`propose/get/goal/by/plan`, { plan_id: planid, user_id: this.currentuser.user._id, module_type: this.moduleType }).then((response: any) => {
               if (response.status) {
                 this.proposeGoals = [];
-                this.proposeGoals = response.data;
-                this.isProposeDevidedInParts = 1;
-
-                if (this.proposeGoals.length > 10) {
-                  this.isProposeDevidedInParts = 2;
-
-                  var totallength = Math.floor(this.proposeGoals.length / 3);
-                  this.highProposeGoals = this.proposeGoals.slice(0, totallength)
-                  this.mediumProposeGoals = this.proposeGoals.slice(totallength, totallength * 2)
-                  this.lowProposeGoals = this.proposeGoals.slice(totallength * 2, this.proposeGoals.length)
+                if(this.parentIsActiveSelection){
+                  this.proposeGoals = response.data.filter((goal)=>{return goal.parent_goal_id.length === 1});
                 }
+                this.isProposeDevidedInParts = 1;
               } else {
                 this.toastr.error("No Details Found", "Error");
               }
