@@ -448,27 +448,8 @@ exports.priority_change_by_id = async function (request, response) {
                 });
             } else {
                 if (result) {
-                    await Goals.updateOne({prioritize: body.new_priority }, { prioritize: body.current_priority }, async function (error, is_update_current_goal) {
-                        if (error) {
-                            return response.send({
-                                status: false,
-                                message: "Can not update priority in selected goal."
-                            });
-                        } else {
-                            await Goals.updateOne({ _id: body.goal_id }, { prioritize: body.new_priority }, function (error, is_update_new_goal) {
-                                if (error) {
-                                    return response.send({
-                                        status: false,
-                                        message: "Can not update priority in next goal."
-                                    });
-                                } else {
-                                    return response.send({
-                                        status: true,
-                                        message: "Goal priority has been updated successfully"
-                                    });
-                                }
-                            }).clone()
-                        }
+                    await Goals.updateOne({plan_id: body.plan_id, prioritize: body.new_priority }, { $set: {prioritize: body.current_priority }}, async function (error, is_update_current_goal) {
+                        console.log(is_update_current_goal)
                     }).clone();
                 } 
                 else {
