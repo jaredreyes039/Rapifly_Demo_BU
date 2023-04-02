@@ -1089,12 +1089,7 @@ export class ItemPlanDetailsComponent implements OnInit {
         if ($('#date-input5').val() != '' && $('#date-input6').val() != '') {
 
               var data = this.childPlanForm.value;
-              if(this.editChildEnabled){
-                data.editid = this.childgoalDetails._id;
-              }
-              else {
-                data.editid = ""
-              }
+              data.editid = ""
               data.user_id = this.currentuser.user._id;
               data.plan_id = this.goalplanid;
               data.status = 0;
@@ -2300,16 +2295,14 @@ export class ItemPlanDetailsComponent implements OnInit {
             this.commonService.PostAPI(`goal/create`, formData).then((response: any) => {
               if (response.status) {
                 this.toastr.success(response.message, "Success");
-                this.getPlanDetails();
+                this.getPlanDetails()
                 this.showSelectedTree(this.selectedModules);
-
                 this.isModuleFormSubmitted = false;
               } else {
                 this.toastr.error(response.message, "Error");
               }
             })
             this.ModuleFormSub.reset()
-            
         }
     }
 
