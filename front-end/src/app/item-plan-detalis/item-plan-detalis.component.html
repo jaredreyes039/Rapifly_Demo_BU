@@ -1705,34 +1705,26 @@
                                     <div style="display: flex; flex-direction: column; margin-right: 12px;">
                                         <div style="display: flex;  margin-bottom: 12px;">
                                         <label class="parent-item-label">Production Weight</label>
-                                        <input type="number"class="text-white bg-dark parent-item-val form-control form-control-spec" placeholder="Production weight" formControlName="production_weight" [ngClass]="{ 'is-invalid': submitted && f.production_weight.errors }">
+                                        <input type="number"class="text-white bg-dark parent-item-val form-control form-control-spec" placeholder="Production weight" formControlName="production_weight">
                                         <div *ngIf="submitted && f.production_weight.errors" class="invalid-feedback">
                                             <label *ngIf="f.production_weight.errors.required" class="error">Expense weight is required</label>
                                         </div>
                                         </div>
                                         <div style="display: flex;  margin-bottom: 12px;">
                                         <label class="parent-item-label">Expense Weight</label>
-                                        <input type="number" class="text-white bg-dark parent-item-val form-control form-control-spec" placeholder="Expense weight" formControlName="expense_weight" [ngClass]="{ 'is-invalid': submitted && f.expense_weight.errors }">
-                                        <div *ngIf="submitted && f.expense_weight.errors" class="invalid-feedback">
-                                            <label *ngIf="f.expense_weight.errors.required" class="error">Expense weight is required</label>
-                                        </div>
+                                        <input type="number" class="text-white bg-dark parent-item-val form-control form-control-spec" placeholder="Expense weight" formControlName="expense_weight">
+
                                         </div>
     
                                     </div>
                                     <div style="display: flex; flex-direction: column;">
                                         <div style="display: flex;  margin-bottom: 12px;">
                                         <label class="parent-item-label">Production Threshold</label>
-                                        <input type="number" class="text-white bg-dark parent-item-val form-control form-control-spec" placeholder="Low Variance Alert" formControlName="personal_production_variance" [ngClass]="{ 'is-invalid': submitted && f.production_low_variance_alert.errors }">
-                                        <div *ngIf="submitted && f.production_low_variance_alert.errors" class="invalid-feedback">
-                                            <label *ngIf="f.production_low_variance_alert.errors.required" class="error">Production threshold required</label>
-                                        </div>
+                                        <input type="number" class="text-white bg-dark parent-item-val form-control form-control-spec" placeholder="Low Variance Alert" formControlName="personal_production_variance" >
                                         </div>
                                         <div style="display: flex;  margin-bottom: 12px;">
                                         <label class="parent-item-label">Expense Threshold</label>
-                                        <input type="number" class="text-white bg-dark parent-item-val form-control form-control-spec" placeholder="Hight Variance Alert" formControlName="personal_expense_variance" [ngClass]="{ 'is-invalid': submitted && f.production_high_variance_alert.errors }">
-                                        <div *ngIf="submitted && f.production_high_variance_alert.errors" class="invalid-feedback">
-                                            <label *ngIf="f.production_high_variance_alert.errors.required" class="error">Expense threshold required</label>
-                                        </div>
+                                        <input type="number" class="text-white bg-dark parent-item-val form-control form-control-spec" placeholder="Hight Variance Alert" formControlName="personal_expense_variance" >
                                     </div>
                                     </div>
                                 </div>
