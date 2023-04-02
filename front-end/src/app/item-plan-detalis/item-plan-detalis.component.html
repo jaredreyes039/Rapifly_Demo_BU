@@ -3887,6 +3887,48 @@
 
                         </tbody>
                     </table>
+                    <table class="display table table-data-width" id="table-module" datatable *ngIf="moduleGoals.length != 0 && selectedModules == 'opportunity'"> 
+                        <thead>
+                            <tr>
+                                <th class="prioritize-blue">Short Name</th>
+                                <th class="prioritize-blue">Start Date</th>
+                                <th class="prioritize-blue">End Date</th>
+                                <th class="prioritize-blue">Production Target</th>
+                                <th class="prioritize-blue">Expense Target</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let p of moduleGoals; let i=index;">
+                                <td>{{ p.short_name }}</td>
+                                <td>{{ p.start_date | date:'dd/MM/yyyy' }}</td>
+                                <td>{{ p.end_date | date:'dd/MM/yyyy'}}</td>
+                                <td>{{ p.production_target }}</td>
+                                <td>{{ p.expense_target }}</td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                    <table class="display table table-data-width" id="table-module" datatable *ngIf="moduleGoals.length != 0 && selectedModules == 'problem'"> 
+                        <thead>
+                            <tr>
+                                <th class="prioritize-blue">Short Name</th>
+                                <th class="prioritize-blue">Start Date</th>
+                                <th class="prioritize-blue">End Date</th>
+                                <th class="prioritize-blue">Production Target</th>
+                                <th class="prioritize-blue">Expense Target</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let p of moduleGoals; let i=index;">
+                                <td>{{ p.short_name }}</td>
+                                <td>{{ p.start_date | date:'dd/MM/yyyy' }}</td>
+                                <td>{{ p.end_date | date:'dd/MM/yyyy'}}</td>
+                                <td>{{ p.production_target }}</td>
+                                <td>{{ p.expense_target }}</td>
+                            </tr>
+
+                        </tbody>
+                    </table>
                     <table class="display table table-data-width" id="table-module-p" datatable *ngIf="moduleGoals.length != 0 && selectedModules == 'process'"> 
                         <thead>
                             <tr>
