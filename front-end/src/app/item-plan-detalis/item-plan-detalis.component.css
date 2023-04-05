@@ -175,6 +175,12 @@ ul,
     white-space: nowrap;
     padding-left: 12px !important;
 }
+.chartVis {
+    display: unset !important;
+}
+.chartHid {
+    display: none;
+}
 .parent-item-val-mod {
     border-radius: 0px 4px 4px 0px;
     min-width: 240px;

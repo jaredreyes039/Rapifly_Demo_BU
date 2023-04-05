@@ -42,7 +42,7 @@ import { VoteComponent } from './vote/vote.component';
 import { SelectedVoteComponent } from './selected-vote/selected-vote.component';
 
 import { HierarchyDiagramComponent } from './hierarchy-diagram/hierarchy-diagram.component';
-import { MatFormFieldModule, MatInputModule, MatCardModule, MatExpansionModule, MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle, MatExpansionPanelDescription, MatIconModule } from '@angular/material';
+import { MatFormFieldModule, MatInputModule, MatCardModule, MatExpansionModule, MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle, MatExpansionPanelDescription, MatIconModule, MatStepperModule, MatButtonToggleModule } from '@angular/material';
 import { DelegateComponent } from './delegate/delegate.component';
 import { CountdownComponent } from './countdown/countdown.component';
 import { LaunchComponent } from './launch/launch.component';
@@ -122,6 +122,8 @@ import { ChartsModule, ThemeService } from 'ng2-charts';
     
   ],
   imports: [
+    MatStepperModule,
+    MatButtonToggleModule,
     MatIconModule,
     BrowserModule,
     BrowserAnimationsModule,

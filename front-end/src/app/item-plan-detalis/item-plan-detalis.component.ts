@@ -186,6 +186,14 @@ export class ItemPlanDetailsComponent implements OnInit {
   datasetProd: any = []
   datasetExp: any = []
   datasetTotal: any = []
+  expectedRunway: any;
+  actualRunway: any;
+  netBurnRate: any;
+  grossBurnRate: any;
+  avgProdSum: any;
+  avgProd: any;
+  chartShown: String = '';
+
   public lineChartMainLabels: Label[] = []
   public lineChartMainConfigData: ChartDataSets[] = this.datasetTotal
   public lineChartMainOptions: Colors[] = [
@@ -1409,6 +1417,7 @@ export class ItemPlanDetailsComponent implements OnInit {
         this.selectedModules = ''
         this.getPlanGoalDetails();
         this.getReportSum(this.parentplanDetails[0]._id);
+        this.chartIsLoaded = false;
         this.initMeasureCharts(true)
       }
 
@@ -1472,21 +1481,82 @@ export class ItemPlanDetailsComponent implements OnInit {
     - Eval switching between phases, stages, chal, and mods
     - Eval switching between root/parent items
 */
+
+  getMeasureStats(prodSum, expSum){
+    // Burn Rates
+    this.grossBurnRate = expSum
+    this.netBurnRate = this.grossBurnRate - prodSum
+
+    // Average Production Rate
+    this.avgProdSum = this.datasetProd.reduce((next, curr)=>{
+      return next + curr;
+    }, 0)
+    this.avgProd = (this.avgProdSum/this.datasetProd.length).toFixed(2)
+
+  }
+
+  showChart(type: String){
+    console.log(type)
+    switch(type){
+      case 'line': {
+        this.chartShown = 'line'
+        break;
+      }
+      case 'bar': {
+        this.chartShown = 'bar'
+        break;
+      }
+    }
+  }
   initMeasureCharts(validator: Boolean){
     if(validator){
       this.commonService.PostAPI(`report/get/all`, { plan_id: this.planId, user_id: this.currentuser.user._id }).then((response: any) => {
         if (response.status && response.data && response.data.length > 0) {
           this.reportGoals = response.data.filter(report => {return report.element.isReportReady});
+          let reports = response.data.map(report => {return {end_date: report.element.end_date, actual_expense: report.actual_expense, actual_production: report.actual_production}})
           this.actualExpenseSum = response.data.reduce((reportA, reportB)=> {
             return reportA + reportB.actual_expense
           }, 0)
+
+          var dataExp = reports,
+          expResult = [];
+
+          // Combine same dates
+          for (let { end_date, actual_expense } of dataExp) {
+              end_date = end_date.slice(0, 10);
+              let temp;
+              if(expResult.length > 0){
+                temp = expResult.find(q => q.end_date.slice(0, 10) === end_date); // look for same data
+              }                                  // take yyyy-mm-dd only
+              if (temp) temp.actual_expense += actual_expense;                               // if found add to y
+              else expResult.push({ end_date: end_date + 'T00:00:00.000Z', actual_expense });    // if not create object and push
+          }
+          var dataProd = reports,
+          prodResult = [];
+
+          // Combine same dates
+          for (let { end_date, actual_production } of dataProd) {
+              end_date = end_date.slice(0, 10);
+              let temp;
+              if(prodResult.length > 0){
+                temp = prodResult.find(q => q.end_date.slice(0, 10) === end_date); // look for same data
+              }                                  // take yyyy-mm-dd only
+              if (temp) temp.actual_production += actual_production;                               // if found add to y
+              else prodResult.push({ end_date: end_date + 'T00:00:00.000Z', actual_production });    // if not create object and push
+          }
+
           this.actualProductionSum = response.data.reduce((reportA, reportB)=> {
             console.log(reportA, reportB)
             return reportA + reportB.actual_production
           }, 0)
           // Line Chart
-  
           if(this.chartRendered === false){
+            if(this.datasetTotal.length > 0){
+              this.datasetTotal = []
+              this.datasetExp = []
+              this.datasetProd = []
+              this.lineChartMainLabels = []
+            }
             this.prodHierarchy = response.data.sort((reportA, reportB) => {return reportA.actual_production > reportB.actual_production})
             this.expHierarchy = response.data.sort((reportA, reportB) => {return reportA.actual_expense > reportB.actual_expense})
             // Sort by dates to organize the x-axis
@@ -1500,16 +1570,19 @@ export class ItemPlanDetailsComponent implements OnInit {
               this.datasetProd.push(this.reportGoals[i].actual_production)
               this.datasetExp.push(this.reportGoals[i].actual_expense)
               this.lineChartMainLabels.push( new Date(this.reportGoals[i].element.end_date).toDateString())
+              this.lineChartMainLabels = [... new Set(this.lineChartMainLabels)]
             }
             // Crucial that this remains in the correct format for the dep.
             this.datasetTotal.push({
               label: "Production",
-              data: this.datasetProd
+              data: prodResult.map(report => {return report.actual_production})
             }, {
               label: "Expenses",
-              data: this.datasetExp
+              data: expResult.map(report => {return report.actual_expense})
             })
+            this.getMeasureStats(this.actualProductionSum, this.actualExpenseSum)
             this.chartRendered = true;
+            console.log(this.datasetTotal)
           }
         } else {
           this.reportGoals = [];
@@ -1521,6 +1594,7 @@ export class ItemPlanDetailsComponent implements OnInit {
     }
   }
 
+  
   // Deactivate
   getgoal(planid) {
     if (planid == '') {
@@ -2087,6 +2161,9 @@ export class ItemPlanDetailsComponent implements OnInit {
       $(`#${this.tableId}`).DataTable().clear()
       this.getReportGoals(this.planId)
     }
+    this.chartIsLoaded = false;
+    this.chartRendered = false;
+    this.initMeasureCharts(true)
   }
 
   resetReportSearch() {
@@ -2731,6 +2808,7 @@ export class ItemPlanDetailsComponent implements OnInit {
               this.toastr.error(response.message, "Error");
             }
           });
+          this.resetPlanForm()
         }
       } else {
         if ($('#date-input5').val() == '') {
