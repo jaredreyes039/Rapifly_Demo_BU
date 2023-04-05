@@ -3227,131 +3227,166 @@
 
     <!-- BEGIN BLOCK: MEASURE -->
         <div class="col-md-9" *ngIf="selectedPhase == 'M'">
-            <div class="">
-                <div class="page-title">
-                    <h3>Measure</h3>
-                </div>
-            </div>
-            <div class="panel panel-cutom-blue">
-                <div class="row">
-                    <!-- TABULAR DATA -->
-                    <div>
-                        <div class="col-md-6" *ngFor="let plan of parentplanDetails;">
-                            <mat-expansion-panel class="expanse-panel" [expanded]="true">
-                                <mat-expansion-panel-header class="page-title">
-                                    <h3>
-                                        {{plan.short_name}} Summary
-                                    </h3>
-                                </mat-expansion-panel-header>
-                                <div class="custom-panel-body">
-                                    <table class="custom-panel-table custom-panel-blue-table">
-                                        <tbody>
-                                            <tr>
-                                                <td>Expected Production Target</td>
-                                                <td><span>{{parentplanDetails[0].production_type == 'dollars' ? '$' : ''}}</span>{{ parentplanDetails[0].production_target }}<span>{{parentplanDetails[0].production_type == 'percentage' ? '%' : parentplanDetails[0].production_type == 'units' ? ' Units' : ""}}</span></td>
-                                            </tr>
-                                            <tr>
-                                                <td>Expected Expense Target</td>
-                                                <td><span>{{parentplanDetails[0].production_type == 'dollars' ? '$' : ''}}</span>{{ parentplanDetails[0].expense_target }}<span>{{parentplanDetails[0].production_type == 'percentage' ? '%' : parentplanDetails[0].production_type == 'units' ? ' Units' : ""}}</span></td>
-                                            </tr>
-                                            <tr>
-                                                <td>Submitted Reports</td>
-                                                <td>{{reportGoals.length}}</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </mat-expansion-panel>
-                            <div>
+            <mat-expansion-panel class="expanse-panel" [expanded]="true">
+                <mat-expansion-panel-header class="">
+                    <div class="page-title">
+                        <h3>Measure</h3>
+                    </div>
+                </mat-expansion-panel-header>
+                <div class="panel panel-cutom-blue">
+                    <div class="row">
+                        <!-- TABULAR DATA -->
+                        <div>
+                            <div class="col-md-6" *ngFor="let plan of parentplanDetails;">
+                                <mat-expansion-panel class="expanse-panel" [expanded]="true">
+                                    <mat-expansion-panel-header class="page-title">
+                                        <h3>
+                                            {{plan.short_name}} Summary
+                                        </h3>
+                                    </mat-expansion-panel-header>
+                                    <div class="custom-panel-body col-md-6">
+                                        <table class="custom-panel-table custom-panel-blue-table">
+                                            <tbody>
+                                                <tr>
+                                                    <td>Expected Production Target</td>
+                                                    <td><span>{{parentplanDetails[0].production_type == 'dollars' ? '$' : ''}}</span>{{ parentplanDetails[0].production_target }}<span>{{parentplanDetails[0].production_type == 'percentage' ? '%' : parentplanDetails[0].production_type == 'units' ? ' Units' : ""}}</span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Expected Expense Target</td>
+                                                    <td><span>{{parentplanDetails[0].production_type == 'dollars' ? '$' : ''}}</span>{{ parentplanDetails[0].expense_target }}<span>{{parentplanDetails[0].production_type == 'percentage' ? '%' : parentplanDetails[0].production_type == 'units' ? ' Units' : ""}}</span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Submitted Reports</td>
+                                                    <td>{{reportGoals.length}}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="custom-panel-body col-md-6">
+                                        <table class="custom-panel-table custom-panel-blue-table">
+                                            <tbody>
+                                                <tr>
+                                                    <td>Gross Burn Rate</td>
+                                                    <td><span>{{parentplanDetails[0].production_type == 'dollars' ? '$' : ''}}</span>{{ grossBurnRate }}<span>{{parentplanDetails[0].production_type == 'percentage' ? '%' : parentplanDetails[0].production_type == 'units' ? ' Units' : ""}}</span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Net Burn Rate</td>
+                                                    <td><span>{{parentplanDetails[0].production_type == 'dollars' ? '$' : ''}}</span>{{ netBurnRate }}<span>{{parentplanDetails[0].production_type == 'percentage' ? '%' : parentplanDetails[0].production_type == 'units' ? ' Units' : ""}}</span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Average Production</td>
+                                                    <td><span>{{parentplanDetails[0].production_type == 'dollars' ? '$' : ''}}</span>{{ avgProd }}<span>{{parentplanDetails[0].production_type == 'percentage' ? '%' : parentplanDetails[0].production_type == 'units' ? ' Units' : ""}}</span></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </mat-expansion-panel>
                                 <div>
-                                    <mat-expansion-panel class="expanse-panel">
-                                        <mat-expansion-panel-header class="page-title">
-                                            <h3>Production Measures</h3>
-                                        </mat-expansion-panel-header>
-                                        <div>
-                                            <table class="custom-panel-table custom-panel-blue-table">
-                                                <tbody>
-                                                    <tr>
-                                                        <td>Expected Production Target</td>
-                                                        <td><span>{{parentplanDetails[0].production_type == 'dollars' ? '$' : ''}}</span>{{ parentplanDetails[0].production_target }}<span>{{parentplanDetails[0].production_type == 'percentage' ? '%' : parentplanDetails[0].production_type == 'units' ? ' Units' : ""}}</span></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Actual Production</td>
-                                                        <td><span>{{parentplanDetails[0].production_type == 'dollars' ? '$' : ''}}</span>{{ actualProductionSum || "0" }}<span>{{parentplanDetails[0].production_type == 'percentage' ? '%' : parentplanDetails[0].production_type == 'units' ? ' Units' : ""}}</span></td>
-                                                    </tr>
-                                                    <tr *ngIf="prodHierarchy.length !== 0">
-                                                        <td>Most Productive Plan</td>
-                                                        <td>{{prodHierarchy[0].element.short_name}}</td>
-                                                    </tr>
-                                                    <tr *ngIf="prodHierarchy.length !== 0">
-                                                        <td>Least Productive Plan</td>
-                                                        <td>{{prodHierarchy[prodHierarchy.length - 1].element.short_name}}</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </mat-expansion-panel>
-                                    <mat-expansion-panel>
-                                        <mat-expansion-panel-header class="page-title">
-                                            <h3>Expense Measures</h3>
-                                        </mat-expansion-panel-header>
-                                        <div>
-                                            <table class="custom-panel-table custom-panel-blue-table">
-                                                <tbody>
-                                                    <tr>
-                                                        <td>Expected Expense Target</td>
-                                                        <td><span>{{parentplanDetails[0].production_type == 'dollars' ? '$' : ''}}</span>{{ parentplanDetails[0].expense_target }}<span>{{parentplanDetails[0].production_type == 'percentage' ? '%' : parentplanDetails[0].production_type == 'units' ? ' Units' : ""}}</span></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Actual Expense</td>
-                                                        <td><span>{{parentplanDetails[0].production_type == 'dollars' ? '$' : ''}}</span>{{ actualExpenseSum || "0" }}<span>{{parentplanDetails[0].production_type == 'percentage' ? '%' : parentplanDetails[0].production_type == 'units' ? ' Units' : ""}}</span></td>
-                                                    </tr>
-                                                    <tr *ngIf="expHierarchy.length !== 0">
-                                                        <td>Most Expensive Plan</td>
-                                                        <td>{{expHierarchy[0].element.short_name}}</td>
-                                                    </tr>
-                                                    <tr *ngIf="expHierarchy.length !== 0">
-                                                        <td>Least Expensive Plan</td>
-                                                        <td>{{expHierarchy[expHierarchy.length - 1].element.short_name}}</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </mat-expansion-panel>
+                                    <div>
+                                        <mat-expansion-panel class="expanse-panel">
+                                            <mat-expansion-panel-header class="page-title">
+                                                <h3>Production Measures</h3>
+                                            </mat-expansion-panel-header>
+                                            <div>
+                                                <table class="custom-panel-table custom-panel-blue-table">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>Actual Production</td>
+                                                            <td><span>{{parentplanDetails[0].production_type == 'dollars' ? '$' : ''}}</span>{{ actualProductionSum || "0" }}<span>{{parentplanDetails[0].production_type == 'percentage' ? '%' : parentplanDetails[0].production_type == 'units' ? ' Units' : ""}}</span></td>
+                                                        </tr>
+                                                        <tr *ngIf="prodHierarchy.length !== 0">
+                                                            <td>Most Productive Plan</td>
+                                                            <td>{{prodHierarchy[0].element.short_name}}</td>
+                                                        </tr>
+                                                        <tr *ngIf="prodHierarchy.length !== 0">
+                                                            <td>Least Productive Plan</td>
+                                                            <td>{{prodHierarchy[prodHierarchy.length - 1].element.short_name}}</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </mat-expansion-panel>
+                                        <mat-expansion-panel>
+                                            <mat-expansion-panel-header class="page-title">
+                                                <h3>Expense Measures</h3>
+                                            </mat-expansion-panel-header>
+                                            <div>
+                                                <table class="custom-panel-table custom-panel-blue-table">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>Actual Expense</td>
+                                                            <td><span>{{parentplanDetails[0].production_type == 'dollars' ? '$' : ''}}</span>{{ actualExpenseSum || "0" }}<span>{{parentplanDetails[0].production_type == 'percentage' ? '%' : parentplanDetails[0].production_type == 'units' ? ' Units' : ""}}</span></td>
+                                                        </tr>
+                                                        <tr *ngIf="expHierarchy.length !== 0">
+                                                            <td>Most Expensive Plan</td>
+                                                            <td>{{expHierarchy[0].element.short_name}}</td>
+                                                        </tr>
+                                                        <tr *ngIf="expHierarchy.length !== 0">
+                                                            <td>Least Expensive Plan</td>
+                                                            <td>{{expHierarchy[expHierarchy.length - 1].element.short_name}}</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </mat-expansion-panel>
+                                    </div>
                                 </div>
                             </div>
+                            <div class="col-md-6" *ngIf="reportGoals.length != 0">
+                                <h3>{{parentplanDetails[0].short_name}}</h3>
+                                <hr>
+
+                                <!-- Line Chart -->
+                                <div [hidden]="chartShown !== 'line' && chartShown !== ''">
+                                <canvas baseChart *ngIf="chartIsLoaded"
+                                        [datasets]="lineChartMainConfigData"
+                                        [chartType]="'line'"
+                                        [labels]="lineChartMainLabels"
+                                        [colors]="lineChartMainOptions"
+                                        >
+                                </canvas>
+                                </div>
+
+                                <!-- Bar Chart -->
+                                <div [hidden]="chartShown !== 'bar'">
+                                    <canvas baseChart *ngIf="chartIsLoaded"
+                                            [datasets]="lineChartMainConfigData"
+                                            [chartType]="'bar'"
+                                            [labels]="lineChartMainLabels"
+                                            [colors]="lineChartMainOptions"
+                                            >
+                                    </canvas>
+                                </div>
+
+                                <!-- Toggle Group -->
+                                <mat-button-toggle-group>
+                                    <mat-button-toggle (click)="showChart('line')">Line Chart</mat-button-toggle>
+                                    <mat-button-toggle (click)="showChart('bar')">Bar Chart</mat-button-toggle>
+                                </mat-button-toggle-group>
+                            </div>
+                            <div class="col-md-6" *ngIf="reportGoals.length == 0">
+                                <h4>To view report statistics at least 1 report must be filed.</h4>
+                            </div>
                         </div>
-                        <div class="col-md-6" *ngIf="reportGoals.length != 0">
-                            <canvas baseChart *ngIf="chartIsLoaded"
-                                    [datasets]="lineChartMainConfigData"
-                                    [chartType]="'line'"
-                                    [labels]="lineChartMainLabels"
-                                    [colors]="lineChartMainOptions"
-                                    >
-                            </canvas>
+
+
+                        <!-- ERROR: NO DATA -->
+                        <!-- <div *ngIf="isDetailsFound" class="mb-10">
+                            <div class="col-md-12 text-center">
+                                <h4>Plan details has not been found.</h4>
+                            </div>
+                        </div> -->
+
+                        <!-- GRAPHICAL DATA -->
+                        <div class="col-md-12 row mt-30">
+                            <div class="col-md-6">
+                                
+                            </div>
                         </div>
-                        <div class="col-md-6" *ngIf="reportGoals.length == 0">
-                            <h4>To view report statistics at least 1 report must be filed.</h4>
-                        </div>
+
                     </div>
-
-
-                    <!-- ERROR: NO DATA -->
-                    <!-- <div *ngIf="isDetailsFound" class="mb-10">
-                        <div class="col-md-12 text-center">
-                            <h4>Plan details has not been found.</h4>
-                        </div>
-                    </div> -->
-
-                    <!-- GRAPHICAL DATA -->
-                    <div class="col-md-12 row mt-30">
-                        <div class="col-md-6">
-                            
-                        </div>
-                    </div>
-
                 </div>
-            </div>
+            </mat-expansion-panel>
         </div>
     <!-- END BLOCK: MEASURE -->
 

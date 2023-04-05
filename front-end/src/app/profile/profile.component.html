@@ -8,7 +8,7 @@
                 <h3 class="breadcrumb-header">{{currentuser.role}} Account</h3>
             </div>
             <div class="page-title col-md-8">
-                <button class="btn btn-info font-weight-700 pull-right" routerLink="/item-plans-details"><i class="fa fa-arrow-left"></i>&nbsp;Brainstorm</button>
+                <button class="btn btn-info font-weight-700 pull-right" routerLink="/item-plans-details"><i class="fa fa-arrow-left"></i>&nbsp;Back to Create</button>
                 <h3 class="breadcrumb-header">Account Details</h3>
             </div>
             <div class="col-md-4">
@@ -41,8 +41,8 @@
                     <div class="panel-body basic-form-panel row">
                         <form [formGroup]="editProfileForm" (ngSubmit)="updateProfile();">
                             <div class="form-group col-md-12">
-                                <label>Title:</label>
-                                <input type="text" readonly disabled value="{{ (userDesignation) ? userDesignation : '' }}" class="form-control">
+                                <label>Status:</label>
+                                <input type="text" readonly disabled value="{{ (userDesignation) ? userDesignation : 'Base User' }}" class="form-control">
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="first_name">First Name</label>
