@@ -261,9 +261,9 @@
                                     [ngClass]="{'active-phase' : selectedModules == 'strategy'}">
                                     {{ (selectedModules == 'strategy') ? 'Strategy' : 'S' }}
                                 </p><p>&nbsp;|</p>
-                                <p title="Process" class="cursor-pointer" (click)="selectModule('process')"
-                                    [ngClass]="{'active-phase' : selectedModules == 'process'}">
-                                    {{ (selectedModules == 'process') ? 'Process' : 'P' }}
+                                <p title="Process" class="cursor-pointer" (click)="selectModule('task')"
+                                    [ngClass]="{'active-phase' : selectedModules == 'task'}">
+                                    {{ (selectedModules == 'task') ? 'Task' : 'T' }}
                                 </p><p>&nbsp;|</p>
                                 <p title="Motive" class="cursor-pointer" (click)="selectModule('motive')"
                                     [ngClass]="{'active-phase' : selectedModules == 'motive'}">
@@ -281,6 +281,8 @@
 
                         </div>
                     </div>
+
+
                     <div class="page-title">
                         <h3>Project</h3>
                     </div>
@@ -319,21 +321,16 @@
                         <div>
                             <div class="panel-heading panel-aler" role="tab" id="headingThree3">
                                 <h4 class="panel-title">
-                                    <a aria-controls="collapseTwo">Plan Items</a>
+                                    <a aria-controls="collapseTwo">Launch Alerts</a>
                                 </h4>
                             </div>
-                            <div class="hud" id="style-2">
-                                <div class="col-md-12 space-stage" *ngIf="alertdata && alertdata.length > 0">
-                                    <div *ngFor="let p of alertdata;">
-                                        <div class="alert alert-success" role="alert" *ngIf="p.type=='Launch'">
-                                            <a [routerLink]="" (click)="getgoaldetail(p.goal_id._id,p.plan_id)"
-                                                class="alert-link">{{p.goal_id.short_name}}</a> launch date is tomorrow.
-                                        </div>
-                                        <div class="alert alert-danger" role="alert" *ngIf="p.type=='Report'">
-                                            This is a secondary alert with <a [routerLink]=""
-                                                (click)="getgoaldetail(p.goal_id._id,p.plan_id)"
-                                                class="alert-link">{{p.goal_id.short_name}}</a>. Give it a click if you
-                                            like.
+                            <div class="hud" id="style-2" style="margin-top: 12px;">
+                                <div class="col-md-12" *ngIf="filteredAlerts && filteredAlerts.length > 0">
+                                    <div *ngFor="let p of filteredAlerts;">
+                                        <div class="alert alert-danger" role="alert"> 
+                                            <strong>{{p.short_name}}</strong> launch date in less than <strong>7 days</strong>.
+                                            <strong>Launch Date: </strong>{{p.end_date}}
+                                            <strong></strong>
                                         </div>
                                     </div>
                                 </div>
@@ -3491,55 +3488,6 @@
                                 </div>
                             </div>
 
-                            <!-- HVAs/LVAs and Weights -->
-                            <!-- Removed due to unjust. purpose given direction of this site -->
-
-                            <!-- <div style="display: flex;"  *ngIf="selectedModules !== 'motive' && selectedModules !== 'analysis' && selectedModules !== 'intelligence'" [hidden]="selectedModules === 'motive' && selectedModules === 'analysis' && selectedModules === 'intelligence'">
-                                <div style="display: flex; flex-direction: column; flex-basis: 45%;">
-                                    <div>
-                                        <div class="form-group" style="display: flex;  margin-bottom: 12px;">
-                                            <label class="parent-item-label" style="margin-bottom: 12px !important;">Production Threshold</label>
-                                            <input type="number" formControlName="personal_production_variance"
-                                                class="form-control bg-dark text-white parent-item-val form-control-spec" placeholder="Production Threshold"
-                                                [ngClass]="{ 'is-invalid': isModuleFormSubmitted && mf.production_high_variance_alert.errors }"
-                                                autocomplete="off">
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="form-group" style="display: flex;  margin-bottom: 12px;">
-                                            <label class="parent-item-label" style="margin-bottom: 12px !important;">Expense Threshold</label>
-                                            <input type="number" formControlName="personal_expense_variance" class="form-control bg-dark text-white parent-item-val form-control-spec"
-                                                placeholder="Expense Threshold"
-                                                [ngClass]="{ 'is-invalid': isModuleFormSubmitted && mf.expense_high_variance_alert.errors }"
-                                                autocomplete="off">
-                                        </div>
-                                    </div>                            
-                                </div>
-
-                                <div style="display: flex; flex-direction: column; flex-basis: 45%;">
-                                    <div
-                                    [hidden]="selectedModules == 'motive' || selectedModules == 'analysis' || selectedModules == 'intelligence'">
-                                        <div class="form-group" style="display: flex;  margin-bottom: 12px;">
-                                            <label class="parent-item-label" style="margin-bottom: 12px !important;">Production Weight</label>
-                                            <input type="number" formControlName="production_weight" class="form-control bg-dark text-white parent-item-val form-control-spec"
-                                                placeholder="Production Weight"
-                                                [ngClass]="{ 'is-invalid': isModuleFormSubmitted && mf.production_weight.errors }"
-                                                autocomplete="off">
-                                        </div>
-                                    </div>
-                                    <div
-                                        [hidden]="selectedModules == 'motive' || selectedModules == 'analysis' || selectedModules == 'intelligence'">
-                                        <div class="form-group" style="display: flex;  margin-bottom: 12px;">
-                                            <label class="parent-item-label" style="margin-bottom: 12px !important;">Expense Weight</label>
-                                            <input type="number" formControlName="expense_weight" class="form-control bg-dark text-white parent-item-val form-control-spec"
-                                                placeholder="Expense Weight"
-                                                [ngClass]="{ 'is-invalid': isModuleFormSubmitted && mf.expense_weight.errors }"
-                                                autocomplete="off">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> -->
-    
                             <!-- FORM FOR ADDING AN INITIAL ANALYSIS AND INTELLIGENCE -->
                             <div class="col-md-12 page-title" *ngIf="selectedModules == 'analysis'">
                                 <h3 class="breadcrumb-header">Analysis Framework</h3>
