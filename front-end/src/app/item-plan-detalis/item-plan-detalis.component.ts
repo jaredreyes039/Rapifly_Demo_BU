@@ -30,7 +30,7 @@ export class ItemPlanDetailsComponent implements OnInit {
   DiscussionForm: FormGroup;
   isSubmittedDiscussionForm: boolean = false;
   discussionAttachments: any = [];
-
+  filteredAlerts: any = [];
   productionSum: Number
   expenseSum: Number
 
@@ -365,7 +365,7 @@ export class ItemPlanDetailsComponent implements OnInit {
     this.getPlanDetails();
     this.launchgoalalert();
     this.getDesignations();
-    
+    console.log(this.alertdata)
     $(function () {
       $('button').on('click', function () {
         $('#jstree').jstree(true).select_node('child_node_1');
@@ -1228,9 +1228,21 @@ export class ItemPlanDetailsComponent implements OnInit {
     this.commonService.PostAPI(`delegation/get/launch/goal/alerts`, { user_id: this.currentuser.user._id }).then((response: any) => {
       if (response.status) {
         this.alertdata = response.data
+
+        // Due in 7 Days
+        this.filteredAlerts = this.alertdata = this.alertdata.filter((doc: any)=>{
+          return new Date(doc.end_date).getDate() <= (new Date(Date.now()).getDate() + 7)
+        }).map((doc: any)=>{
+          return doc = {
+            plan_id: doc.plan_id,
+            goal_id: doc._id,
+            short_name: doc.short_name,
+            end_date: new Date(doc.end_date).toDateString()
+          }
+        })
+        
       } else {
         this.toastr.error(response.message, "Error");
-        // this.is_disabled = false;
       }
     });
   }
@@ -1518,7 +1530,9 @@ export class ItemPlanDetailsComponent implements OnInit {
             return reportA + reportB.actual_expense
           }, 0)
 
-          var dataExp = reports,
+          var dataExp = reports.sort((reportA: any, reportB: any)=>{
+            return new Date(reportA.end_date).getDate() - new Date(reportB.end_date).getDate()
+          }),
           expResult = [];
 
           // Combine same dates
@@ -1531,7 +1545,9 @@ export class ItemPlanDetailsComponent implements OnInit {
               if (temp) temp.actual_expense += actual_expense;                               // if found add to y
               else expResult.push({ end_date: end_date + 'T00:00:00.000Z', actual_expense });    // if not create object and push
           }
-          var dataProd = reports,
+          var dataProd = reports.sort((reportA: any, reportB: any)=>{
+            return new Date(reportA.end_date).getDate() - new Date(reportB.end_date).getDate()
+          }),
           prodResult = [];
 
           // Combine same dates
@@ -1565,13 +1581,14 @@ export class ItemPlanDetailsComponent implements OnInit {
               return new Date(reportA.element.end_date).getDate() - new Date(reportB.element.end_date).getDate()
             })
   
-  
+            
             for(let i: any = 0; i < this.reportGoals.length; i++){
               this.datasetProd.push(this.reportGoals[i].actual_production)
               this.datasetExp.push(this.reportGoals[i].actual_expense)
               this.lineChartMainLabels.push( new Date(this.reportGoals[i].element.end_date).toDateString())
               this.lineChartMainLabels = [... new Set(this.lineChartMainLabels)]
             }
+
             // Crucial that this remains in the correct format for the dep.
             this.datasetTotal.push({
               label: "Production",
@@ -2213,6 +2230,9 @@ export class ItemPlanDetailsComponent implements OnInit {
       return this.toastr.error("Must be under brainstorm phase to use modules.")
     }
     else {
+      if(!this.parentIsActiveSelection && (type === 'problem' || type === 'opportunity')){
+        this.parentIsActiveSelection = true;
+      }
       this.moduleItemActive = false;
       this.isSelectedChallange = false;
       this.ModuleForm.reset()
@@ -2223,7 +2243,7 @@ export class ItemPlanDetailsComponent implements OnInit {
         this.showSelectedTree(type)
         this.getModules();
         this.ref.detectChanges();
-  
+        
         $('#module-start-date').datepicker({
           dateFormat: "mm-dd-yy",
           setDate: new Date(),
@@ -2284,7 +2304,7 @@ export class ItemPlanDetailsComponent implements OnInit {
         } else {
           if (new Date(this.planstartdate) <= new Date(startDate) && new Date(this.planenddate) > new Date(startDate) && new Date(this.planstartdate) < new Date(endDate) && new Date(this.planenddate) >= new Date(endDate)) {
             var data = this.ModuleForm.value;
-            data.plan_id = this.parentIsActiveSelection ? this.planId : this.goalid;
+            data.plan_id = this.planId
             data.user_id = this.currentuser.user._id
             data.status = 0;
             data.numbers = 0;
@@ -2307,10 +2327,7 @@ export class ItemPlanDetailsComponent implements OnInit {
             this.commonService.PostAPI(`goal/create`, formData).then((response: any) => {
               if (response.status) {
                 this.toastr.success(response.message, "Success");
-                this.getPlanDetails();
-
                 this.showSelectedTree(this.selectedModules);
-
                 this.isModuleFormSubmitted = false;
                 this.ModuleForm.reset();
               } else {
@@ -2387,7 +2404,7 @@ export class ItemPlanDetailsComponent implements OnInit {
   getModuleTreeDetails(type) {
     var data: any = {};
     var a = this;
-    data.plan_id = this.parentIsActiveSelection ? this.planId : this.goalid;
+    data.plan_id = this.planId
     data.user_id = this.currentuser.user._id
     data.module_type = type;
     this.commonService.PostAPI(`module/get-by-user-and-plan`, data).then((response: any) => {
@@ -2418,6 +2435,7 @@ export class ItemPlanDetailsComponent implements OnInit {
           a.getSelectedModule(data.selected[0])
           a.getGoalReportByPlan(data.node.parent);
           a.parentIsActiveSelection = false;
+          console.log(this.goal_id, this.plan_id)
           a.getGoalAttachments(data.selected[0]);
           a.getGoalSharedUsers(data.selected[0]);
           a.checkPlanForGoalSharePermission(data.plan_id);
@@ -2443,7 +2461,7 @@ export class ItemPlanDetailsComponent implements OnInit {
       }
 
       // this.dtTriggerModule.next();
-      if(this.selectedModules === 'process'){
+      if(this.selectedModules === 'task'){
         this.tableId = 'table-module-p'
       }
       if(this.selectedModules === 'motive'){

@@ -535,6 +535,11 @@ body.page-sidebar-collapsed .mat-expansion-panel {
     border-radius: .25rem;
 }
 
+.alert:hover {
+    background-color: #f1c20575;
+    cursor: default;
+}
+
 .alert-success {
     color: #155724;
     background-color: #d4edda;
@@ -542,14 +547,12 @@ body.page-sidebar-collapsed .mat-expansion-panel {
 }
 
 .alert-danger {
-    color: #721c24;
-    background-color: #f8d7da;
-    border-color: #f5c6cb;
+    background-color: #f1c205;
+    border-color: #f1c20550;
+    color: #010101;
 }
 
-.alert-danger .alert-link {
-    color: #491217;
-}
+
 
 .alert-link {
     font-weight: 700;
