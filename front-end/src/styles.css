@@ -536,8 +536,8 @@ body.page-sidebar-collapsed .mat-expansion-panel {
 }
 
 .alert:hover {
-    background-color: #f1c20575;
     cursor: default;
+    filter: brightness(1.25);
 }
 
 .alert-success {
@@ -546,8 +546,14 @@ body.page-sidebar-collapsed .mat-expansion-panel {
     border-color: #c3e6cb;
 }
 
-.alert-danger {
+.alert-caution {
     background-color: #f1c205;
+    border-color: #f1c20550;
+    color: #010101;
+}
+
+.alert-danger {
+    background-color: #ff5757;
     border-color: #f1c20550;
     color: #010101;
 }
