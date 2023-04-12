@@ -101,6 +101,8 @@ export class ItemPlanDetailsComponent implements OnInit {
   lowProposeGoals: any = []
   mediumProposeGoals: any = []
 
+  // Alerts
+  alertView: String;
 
   // Edit Mode
   editChildEnabled: boolean = false;
@@ -1224,23 +1226,62 @@ export class ItemPlanDetailsComponent implements OnInit {
     }
   }
 
+  toggleAlertView(){
+    switch(this.alertView){
+      case 'Launch':
+        this.alertView = 'Report'
+        this.reportgoalalert()
+        break;
+      case 'Report':
+        this.alertView = 'Launch'
+        this.launchgoalalert()
+        break;
+    }
+  }
+
   launchgoalalert() {
     this.commonService.PostAPI(`delegation/get/launch/goal/alerts`, { user_id: this.currentuser.user._id }).then((response: any) => {
       if (response.status) {
         this.alertdata = response.data
-
+        this.alertView = 'Launch'
         // Due in 7 Days
-        this.filteredAlerts = this.alertdata = this.alertdata.filter((doc: any)=>{
-          return new Date(doc.end_date).getDate() <= (new Date(Date.now()).getDate() + 7)
+        this.filteredAlerts = this.alertdata.filter((doc: any)=>{
+          return new Date(doc.end_date).getDate() <= (new Date(Date.now()).getDate() + 7) && (new Date(doc.end_date).getDate()) >= (new Date(Date.now()).getDate()+3) && new Date(doc.end_date).getMonth() == new Date(Date.now()).getMonth()
         }).map((doc: any)=>{
           return doc = {
             plan_id: doc.plan_id,
             goal_id: doc._id,
             short_name: doc.short_name,
-            end_date: new Date(doc.end_date).toDateString()
+            end_date: new Date(doc.end_date).toDateString(),
+            alert_type: "Moderate"
           }
         })
         
+
+        // Due in 3 Days
+        this.alertdata.filter((doc: any)=>{
+          return new Date(doc.end_date).getDate() <= (new Date(Date.now()).getDate() + 3) && new Date(doc.end_date).getDate() >= (new Date(Date.now()).getDate()) && new Date(doc.end_date).getMonth() == new Date(Date.now()).getMonth()
+        }).map((doc: any)=>{
+          this.filteredAlerts.push({
+            plan_id: doc.plan_id,
+            goal_id: doc._id,
+            short_name: doc.short_name,
+            end_date: new Date(doc.end_date).toDateString(),
+            alert_type: "Severe"
+          })
+        })
+
+
+      } else {
+        this.toastr.error(response.message, "Error");
+      }
+    });
+  }
+  reportgoalalert() {
+    this.commonService.PostAPI(`delegation/get/report/goal/alerts`, { user_id: this.currentuser.user._id }).then((response: any) => {
+      if (response.status) {
+        this.alertdata = response.data
+        console.log(this.alertdata)
       } else {
         this.toastr.error(response.message, "Error");
       }
@@ -2233,47 +2274,52 @@ export class ItemPlanDetailsComponent implements OnInit {
       if(!this.parentIsActiveSelection && (type === 'problem' || type === 'opportunity')){
         this.parentIsActiveSelection = true;
       }
-      this.moduleItemActive = false;
-      this.isSelectedChallange = false;
-      this.ModuleForm.reset()
-      this.ModuleFormSub.reset()
-      if (this.planId || this.goalid) {
-        this.selectedModules = type;
-        this.moduleType = type;
-        this.showSelectedTree(type)
-        this.getModules();
-        this.ref.detectChanges();
-        
-        $('#module-start-date').datepicker({
-          dateFormat: "mm-dd-yy",
-          setDate: new Date(),
-          todayHighlight: true,
-          startDate: new Date(this.parentplanDetails[0].start_date),
-          endDate: new Date(this.parentplanDetails[0].end_date),
-          minDate: new Date(this.parentplanDetails[0].start_date),
-          maxDate: new Date(this.parentplanDetails[0].end_date)
-        });
-        $('#module-end-date').datepicker({
-          setDate: new Date(),
-          todayHighlight: true,
-          startDate: new Date(this.parentplanDetails[0].start_date),
-          endDate: new Date(this.parentplanDetails[0].end_date),
-          minDate: new Date(this.parentplanDetails[0].start_date),
-          maxDate: new Date(this.parentplanDetails[0].end_date)
-        });
-  
-        $('#module-start-date').datepicker().on('changeDate', function (e) {
-          $('#module-start-date').datepicker('hide');
-        });
-  
-        $('#module-end-date').datepicker().on('changeDate', function (e) {
-          $('#module-end-date').datepicker('hide');
-        });
-  
-        this.selectPhase(this.selectedPhase);
-        this.getPlanGoals(this.planId);
-      } else {
-        this.toastr.error("Something went wrong...", "Error")
+      if(this.parentIsActiveSelection){
+        this.moduleItemActive = false;
+        this.isSelectedChallange = false;
+        this.ModuleForm.reset()
+        this.ModuleFormSub.reset()
+        if (this.planId || this.goalid) {
+          this.selectedModules = type;
+          this.moduleType = type;
+          this.showSelectedTree(type)
+          this.getModules();
+          this.ref.detectChanges();
+          
+          $('#module-start-date').datepicker({
+            dateFormat: "mm-dd-yy",
+            setDate: new Date(),
+            todayHighlight: true,
+            startDate: new Date(this.parentplanDetails[0].start_date),
+            endDate: new Date(this.parentplanDetails[0].end_date),
+            minDate: new Date(this.parentplanDetails[0].start_date),
+            maxDate: new Date(this.parentplanDetails[0].end_date)
+          });
+          $('#module-end-date').datepicker({
+            setDate: new Date(),
+            todayHighlight: true,
+            startDate: new Date(this.parentplanDetails[0].start_date),
+            endDate: new Date(this.parentplanDetails[0].end_date),
+            minDate: new Date(this.parentplanDetails[0].start_date),
+            maxDate: new Date(this.parentplanDetails[0].end_date)
+          });
+    
+          $('#module-start-date').datepicker().on('changeDate', function (e) {
+            $('#module-start-date').datepicker('hide');
+          });
+    
+          $('#module-end-date').datepicker().on('changeDate', function (e) {
+            $('#module-end-date').datepicker('hide');
+          });
+    
+          this.selectPhase(this.selectedPhase);
+          this.getPlanGoals(this.planId);
+        } else {
+          this.toastr.error("Something went wrong...", "Error")
+        }
+      }
+      else {
+        this.toastr.error("Please select root item before using modules.", "Error")
       }
     }
   }

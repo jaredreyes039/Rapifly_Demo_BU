@@ -261,7 +261,7 @@
                                     [ngClass]="{'active-phase' : selectedModules == 'strategy'}">
                                     {{ (selectedModules == 'strategy') ? 'Strategy' : 'S' }}
                                 </p><p>&nbsp;|</p>
-                                <p title="Process" class="cursor-pointer" (click)="selectModule('task')"
+                                <p title="task" class="cursor-pointer" (click)="selectModule('task')"
                                     [ngClass]="{'active-phase' : selectedModules == 'task'}">
                                     {{ (selectedModules == 'task') ? 'Task' : 'T' }}
                                 </p><p>&nbsp;|</p>
@@ -320,15 +320,25 @@
                     <div class="panel panel-cutom-blue ">
                         <div>
                             <div class="panel-heading panel-aler" role="tab" id="headingThree3">
-                                <h4 class="panel-title">
-                                    <a aria-controls="collapseTwo">Launch Alerts</a>
+                                <h4 class="panel-title" style="display: flex; justify-content: space-between; align-items: center;">
+                                    <a aria-controls="collapseTwo">{{alertView}} Alerts</a>
+                                    <button class="btn-primary" style="border: none;" (click)="toggleAlertView()">
+                                        <mat-icon>swap_horiz</mat-icon>
+                                    </button>
                                 </h4>
                             </div>
                             <div class="hud" id="style-2" style="margin-top: 12px;">
-                                <div class="col-md-12" *ngIf="filteredAlerts && filteredAlerts.length > 0">
+                                <div class="col-md-12" *ngIf="filteredAlerts && filteredAlerts.length > 0 && alertView == 'Launch'">
                                     <div *ngFor="let p of filteredAlerts;">
-                                        <div class="alert alert-danger" role="alert"> 
+                                        <div class="alert alert-caution" role="alert" *ngIf="p.alert_type == 'Moderate'"> 
                                             <strong>{{p.short_name}}</strong> launch date in less than <strong>7 days</strong>.
+                                            <br>
+                                            <strong>Launch Date: </strong>{{p.end_date}}
+                                            <strong></strong>
+                                        </div>
+                                        <div class="alert alert-danger" role="alert" *ngIf="p.alert_type == 'Severe'"> 
+                                            <strong>{{p.short_name}}</strong> launch date in less than <strong>3 days</strong>.
+                                            <br>
                                             <strong>Launch Date: </strong>{{p.end_date}}
                                             <strong></strong>
                                         </div>
@@ -1788,11 +1798,11 @@
 
         <!-- MODULE VIEW -->
         <div class="col-md-9" *ngIf="selectedPhase === 'B' || selectedPhase === 'I'
-        || selectedModules !== 'strategy' || selectedModules !== 'process'
+        || selectedModules !== 'strategy' || selectedModules !== 'task'
             || selectedModules !== 'motive' || selectedModules !== 'analysis'
             || selectedModules !== 'intelligence'"
         [hidden]="!selectedModules && selectedModules == '' || parentIsActiveSelection
-            || selectedModules === 'strategy' || selectedModules === 'process'
+            || selectedModules === 'strategy' || selectedModules === 'task'
             || selectedModules === 'motive' || selectedModules === 'analysis'
             || selectedModules === 'intelligence'
         ">
@@ -2329,14 +2339,7 @@
                                     </div>
                                 </div>
                                     <div style="display: flex; flex-direction: column; flex-basis: 45%;">
-                                        <!-- <div style="display: flex;  margin-bottom: 12px;">
-    
-                                        <label class="parent-item-label">Select Users</label>
-                                        <ng-select [items]="items" bindLabel="name" placeholder="Select Users"
-                                            formControlName="shared_users" appendTo="body" multiple="true"
-                                            [(ngModel)]="selected" (change)="onChange($event)">
-                                        </ng-select>
-                                        </div> -->
+
                                         <div style="display: flex;  margin-bottom: 12px;">
     
                                             <div class="text-white bg-dark parent-item-val-spec" style="padding: 6px;">
@@ -2355,30 +2358,7 @@
                                         <h3>Dashboard</h3>
                                     </mat-expansion-panel-header>
                                     <div style="display: flex; flex-direction: row; gap: 24px; margin-bottom: 24px;">
-                                    <!-- <div class="col-md-3 form-group">
-                                        <label>Production Target</label>
-                                        <input type="number" class="form-control" placeholder="Production Target" formControlName="production_target" [ngClass]="{ 'is-invalid': submitted && f.production_target.errors }">
-                                        <div *ngIf="submitted && f.production_target.errors" class="invalid-feedback">
-                                            <label *ngIf="f.production_target.errors.required" class="error">Production target is required</label>
-                                        </div>
-                                    </div> -->
-                                    <!-- <div class="col-md-3 form-group">
-                                        <label>Type</label>
-                                        <select class="form-control" formControlName="production_type">
-                                            <option value="">Select Type</option>
-                                            <option value="units">Units</option>
-                                        </select>
-                                        <div *ngIf="submitted && f.production_type.errors" class="invalid-feedback">
-                                            <label *ngIf="f.production_type.errors.required" class="error">Production type is required</label>
-                                        </div>
-                                    </div> -->
-                                    <!-- <div class="col-md-6 form-group">
-                                        <label>Expense Target</label>
-                                        <input type="number" class="form-control" placeholder="Expense Target" formControlName="expense_target" [ngClass]="{ 'is-invalid': submitted && f.expense_target.errors }">
-                                        <div *ngIf="submitted && f.expense_target.errors" class="invalid-feedback">
-                                            <label *ngIf="f.expense_target.errors.required" class="error">Expense target is required</label>
-                                        </div>
-                                    </div> -->
+
                                     <div style="display: flex; flex-direction: column; flex-basis: 45%;">
                                         <div style="display: flex;  margin-bottom: 12px;">
                                         <label class="parent-item-label parent-item-label-alert" for="exampleInputEmail1">Production Target</label>
@@ -2577,7 +2557,7 @@
                             </table>
                         </div>
 
-                        <div class="table-responsive" *ngIf="dividearrayintothreepart == 2">
+                        <!-- <div class="table-responsive" *ngIf="dividearrayintothreepart == 2">
                             <div>
                                 <h4>Deactivate : High</h4>
                             </div>
@@ -2585,7 +2565,6 @@
                                 <thead>
                                     <tr>
                                         <th class="prioritize-blue">Deactivate</th>
-                                        <!-- <th class="prioritize-blue">Number</th> -->
                                         <th class="prioritize-blue">Priority</th>
                                         <th class="prioritize-blue">(G) Short Name</th>
                                         <th class="prioritize-blue">Start Date</th>
@@ -2603,7 +2582,6 @@
                                                 *ngIf="p.deactivate==0" (click)="changedeactivate(p._id,1)"><img
                                                     src="assets/images/avatars/correct.png"></a>
                                         </td>
-                                        <!-- <td>{{ p.numbers }}</td> -->
                                         <td>{{ p.prioritize }}</td>
                                         <td>(G) {{ p.short_name }}</td>
                                         <td>{{ p.start_date | prioritizegoaldate }}</td>
@@ -2621,7 +2599,6 @@
                                 <thead>
                                     <tr>
                                         <th class="prioritize-medium">Deactivate</th>
-                                        <!-- <th class="prioritize-medium">Number</th> -->
                                         <th class="prioritize-medium">Priority</th>
                                         <th class="prioritize-medium">(G) Short Name</th>
                                         <th class="prioritize-medium">Start Date</th>
@@ -2639,7 +2616,6 @@
                                                 *ngIf="p.deactivate==0" (click)="changedeactivate(p._id,1)"><img
                                                     src="assets/images/avatars/correct.png"></a>
                                         </td>
-                                        <!-- <td>{{ p.numbers }}</td> -->
                                         <td>{{ p.prioritize }}</td>
                                         <td>(G) {{ p.short_name }}</td>
                                         <td>{{ p.start_date | prioritizegoaldate }}</td>
@@ -2657,7 +2633,6 @@
                                 <thead>
                                     <tr>
                                         <th class="prioritize-low">Deactivate</th>
-                                        <!-- <th class="prioritize-low">Number</th> -->
                                         <th class="prioritize-low">Priority</th>
                                         <th class="prioritize-low">(G) Short Name</th>
                                         <th class="prioritize-low">Start Date</th>
@@ -2675,7 +2650,6 @@
                                                 *ngIf="p.deactivate==0" (click)="changedeactivate(p._id,1)"><img
                                                     src="assets/images/avatars/correct.png"></a>
                                         </td>
-                                        <!-- <td>{{ p.numbers }}</td> -->
                                         <td>{{ p.prioritize }}</td>
                                         <td>(G) {{ p.short_name }}</td>
                                         <td>{{ p.start_date | prioritizegoaldate }}</td>
@@ -2684,7 +2658,7 @@
                                     </tr>
                                 </tbody>
                             </table>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </mat-expansion-panel>
@@ -3357,8 +3331,8 @@
 
                                 <!-- Toggle Group -->
                                 <mat-button-toggle-group>
-                                    <mat-button-toggle (click)="showChart('line')">Line Chart</mat-button-toggle>
-                                    <mat-button-toggle (click)="showChart('bar')">Bar Chart</mat-button-toggle>
+                                    <mat-button-toggle class="btn-primary" (click)="showChart('line')">Line Chart</mat-button-toggle>
+                                    <mat-button-toggle class="btn-primary" (click)="showChart('bar')">Bar Chart</mat-button-toggle>
                                 </mat-button-toggle-group>
                             </div>
                             <div class="col-md-6" *ngIf="reportGoals.length == 0">
@@ -3704,7 +3678,7 @@
             </div>
 
             <!-- ACTIVE: A module item was selected from the tree while fulfilling above requirements -->
-            <mat-expansion-panel class="expanse-panel" [expanded]="true" *ngIf="moduleItemActive">
+            <mat-expansion-panel class="expanse-panel" [expanded]="true" *ngIf="moduleItemActive && selectedModules !== 'task'" [hidden]="selectedModules === 'task'">
                 <mat-expansion-panel-header class="page-title" >
                     <h3>Add Sub-{{ textDecoration(selectedModules) }}</h3>
                 </mat-expansion-panel-header>
@@ -3912,7 +3886,7 @@
 
                         </tbody>
                     </table>
-                    <table class="display table table-data-width" id="table-module-p" datatable *ngIf="moduleGoals.length != 0 && selectedModules == 'process'"> 
+                    <table class="display table table-data-width" id="table-module-p" datatable *ngIf="moduleGoals.length != 0 && selectedModules == 'task'"> 
                         <thead>
                             <tr>
                                 <th class="prioritize-blue">Short Name</th>
@@ -4089,8 +4063,8 @@
 
 
     </div>
-    <app-footer></app-footer>
 </div>
+<app-footer></app-footer>
 <!-- END PAGE CONTENT -->
 
 
