@@ -24,76 +24,85 @@ declare var $: any;
 })
 export class ItemPlanDetailsComponent implements OnInit {
 
+  // VARS
   childPlanForm: FormGroup;
   submitted: boolean = false;
 
+  // DISCUSSION VARS
   DiscussionForm: FormGroup;
   isSubmittedDiscussionForm: boolean = false;
   discussionAttachments: any = [];
-  filteredAlerts: any = [];
-  productionSum: Number
-  expenseSum: Number
 
   cdInterval: any;
+
+  // MODULE VARS
   moduleItemActive: Boolean = false;
-  currentchildUser
-  currentuser;
-  planId;
-  currentparentUser
-  planteeDetails: any = [];
-  parentplanDetails: any = [];
-  childgoalDetails: any = [];
-  finalarray = [];
-  alertdata;
-  childParentId: String = ""
-
   currentModuleDetails: any;
-  // FEEDBACK
-  feedbackModalOpen: boolean = false;
-  keepGetStartedOpenOnVist: boolean;
-
   goalid;
   goalplanid;
   checkforgoaledit = false
   parentIsActiveSelection: boolean;
 
-  initGrabCD: boolean = false;
+  // USER VARS
+  currentchildUser
+  currentuser;
+  currentparentUser
+
+  // PLAN VARS
+  planId;
   pparentplanDetails;
   planstartdate;
   planenddate;
   golaplanname;
-
   goalReportDetails: any = '';
   planHudDetails: any;
+  planDetails: any = [];
+  isDetailsFound: boolean = false;
+  startDate: any = '';
+  endDate: any = '';
 
+  // planTreeDetails needs correction
+  planteeDetails: any = [];
+  parentplanDetails: any = [];
+  childgoalDetails: any = [];
+  childParentId: String = ""
+
+  // FEEDBACK
+  feedbackModalOpen: boolean = false;
+  keepGetStartedOpenOnVist: boolean;
+  initGrabCD: boolean = false;
+  FeedbackForm: FormGroup;
+
+  // ATTACH VARS
   files: any = [];
   attachments: File[] = [];
-
   goalAttachments: any = [];
+
+  // PERMISSION VARS
   sharedPlanPermission: any = [];
   isSharedPlanPermission: boolean = false;
 
+  // SELECTION VARS
   items = [];
   selected = [];
-
   selectedPhase: any = 'B';
   selectedStage: any = 'create';
 
-  // Deactivate
+  // DEACTIVATE VARS
   goals: any = [];
   high: any = [];
   low: any = [];
   medium: any = [];
   dividearrayintothreepart: any = 0;
 
-  //priority
+  // PRIORITY VARS
   isDevidedInParts: any = 0;
   priorityGoals: any = []
   highPriorityGoals: any = []
   lowPriorityGoals: any = []
   mediumPriorityGoals: any = []
 
-  // Propose
+  // PROPOSE VARS
   isProposeDevidedInParts: number = 0;
   checkboxshow: boolean = false;
   proposeGoals: any = []
@@ -101,35 +110,48 @@ export class ItemPlanDetailsComponent implements OnInit {
   lowProposeGoals: any = []
   mediumProposeGoals: any = []
 
-  // Alerts
+  // ALERT VARS
   alertView: String;
+  alertdata;
+  filteredAlerts: any = [];
 
-  // Edit Mode
+  // EDIT VARS
   editChildEnabled: boolean = false;
 
-  // DataTables
+  // DATATABLE VARS
   @ViewChild(DataTableDirective, { static: false })
   datatableElement: DataTableDirective;
-
-  // Vote
-  voteGoals: any = [];
-  dtOptionsVote: DataTables.Settings = {};
-  dtTriggerVote: Subject<any> = new Subject();
-
-  // Select
-  selectGoals: any = [];
-  plansecurity: any;
-  dtOptionsSelect: DataTables.Settings = {};
-  dtTriggerSelect: Subject<any> = new Subject();
-
-  // Delegate
-  delegateGoals: any = [];
   dtOptionsDelegate: DataTables.Settings = {};
   dtTriggerDelegate: Subject<any> = new Subject();
+  dtOptionsVote: DataTables.Settings = {};
+  dtTriggerVote: Subject<any> = new Subject();
+  dtOptionsSelect: DataTables.Settings = {};
+  dtTriggerSelect: Subject<any> = new Subject();
+  dtOptionsCountdown: DataTables.Settings = {};
+  dtTriggerCountdown: Subject<any> = new Subject();
+  dtOptionsLaunch: DataTables.Settings = {};
+  dtTriggerLaunch: Subject<any> = new Subject();
+  dtOptionsReport: DataTables.Settings = {};
+  dtTriggerReport: Subject<any> = new Subject();
+  dtOptionsPlanGoals: DataTables.Settings = {};
+  dtTriggerPlanGoals: Subject<any> = new Subject();
+  dtOptionsModule: DataTables.Settings = {};
+  dtTriggerModule: Subject<any> = new Subject();
+  dtOptionsCoaches: DataTables.Settings = {};
+  dtTriggerCoaches: Subject<any> = new Subject();
+  tableId: any;
 
+  // VOTE VARS
+  voteGoals: any = [];
+
+  // SELECT VARS
+  selectGoals: any = [];
+  plansecurity: any;
+
+  // DELEGATE VARS
+  delegateGoals: any = [];
   DelegateForm: FormGroup;
   isDelegateFormSubmitted: boolean = false;
-
   childuser: any = [];
   goalname: any;
   delegateGoalId: any;
@@ -141,33 +163,23 @@ export class ItemPlanDetailsComponent implements OnInit {
   showdelegatform: boolean = false;
   delegatedGoals: any = [];
 
-  //Countdown
+  // COUNTDOWN VARS
   countdownGoals: any = [];
-  dtOptionsCountdown: DataTables.Settings = {};
-  dtTriggerCountdown: Subject<any> = new Subject();
 
-  //Launch
+  // LAUNCH VARS
   launchGoals: any = [];
-  dtOptionsLaunch: DataTables.Settings = {};
-  dtTriggerLaunch: Subject<any> = new Subject();
 
-  //Report
+  // REPORT
   reportGoals: any = [];
-  dtOptionsReport: DataTables.Settings = {};
-  dtTriggerReport: Subject<any> = new Subject();
   reportGoalId: any;
   reportId: any;
   reportDetail: any;
-
-  //All Goals by Plan
-  planGoals: any = [];
-  dtOptionsPlanGoals: DataTables.Settings = {};
-  dtTriggerPlanGoals: Subject<any> = new Subject();
-
+    // ALL GOALS BY PLAN
+    planGoals: any = [];
   ReportForm: FormGroup;
   isReportFormSubmitted: boolean = false;
 
-  // Measure
+  // MEASURE VARS
   hoveredDate: NgbDate;
   fromDate;
   toDate;
@@ -176,15 +188,9 @@ export class ItemPlanDetailsComponent implements OnInit {
   prodHierarchy: any = [];
   expHierarchy: any = [];
   chartRendered: Boolean = false;
-
-  planDetails: any = [];
-  isDetailsFound: boolean = false;
-
-  startDate: any = '';
-  endDate: any = '';
-
-  tableId: any;
-
+  finalarray = [];
+  productionSum: Number
+  expenseSum: Number
   datasetProd: any = []
   datasetExp: any = []
   datasetTotal: any = []
@@ -194,50 +200,46 @@ export class ItemPlanDetailsComponent implements OnInit {
   grossBurnRate: any;
   avgProdSum: any;
   avgProd: any;
-  chartShown: String = '';
 
-  public lineChartMainLabels: Label[] = []
-  public lineChartMainConfigData: ChartDataSets[] = this.datasetTotal
-  public lineChartMainOptions: Colors[] = [
-    { // red (NEC FOR BLANK SLOT BUG FIX)
-      backgroundColor: ['#5cb85c50'],
-      borderColor: 'white',
-    },
-    
-    { // red (NEC FOR BLANK SLOT BUG FIX)
-      backgroundColor: ['#bb212450'],
-      borderColor: 'red',
-    },
+  // LINE CHART CONFIG
+    public lineChartMainLabels: Label[] = []
+    public lineChartMainConfigData: ChartDataSets[] = this.datasetTotal
+    public lineChartMainOptions: Colors[] = [
+      { // red (NEC FOR BLANK SLOT BUG FIX)
+        backgroundColor: ['#5cb85c50'],
+        borderColor: 'white',
+      },
+      
+      { // red (NEC FOR BLANK SLOT BUG FIX)
+        backgroundColor: ['#bb212450'],
+        borderColor: 'red',
+      },
 
-  ]
+    ]
+  // NEED BAR CHART CONFIG
 
-
+  // CANVAS CONFIG FOR CHART
   public canvasWidth = 400
   chartIsLoaded: Boolean = false;
+  chartShown: String = '';
 
-
-  // Modules
+  // MODULE VARS SELECTED
   selectedModules: any = '';
   isSelectedChallange: boolean = false;
-
   ModuleForm: FormGroup;
   ModuleFormSub: FormGroup;
   isModuleFormSubmitted: boolean = false;
-
   opportunityDetails: any = [];
   problemDetails: any = [];
-
   moduleGoals: any = [];
-  dtOptionsModule: DataTables.Settings = {};
-  dtTriggerModule: Subject<any> = new Subject();
-
   moduleAttachments: any = [];
-
   selectedPanel: any = "";
   plans: any = [];
+  moduleType: any = 'goal';
+  moduleDetails: any = [];
 
+  // ORG HIERARCHY TREE
   hierarchyDetails: any;
-
   title = '';
   type = 'OrgChart';
   userHierarchyData = [];
@@ -248,13 +250,10 @@ export class ItemPlanDetailsComponent implements OnInit {
   width = "500";
   height = "500";
 
-  FeedbackForm: FormGroup;
-  InviteUserForm: FormGroup;
-  isInviteUserFormValid = false;
 
+  // LOGIN
   selectedUser: any;
   currentUrl: any;
-
   parentplangroup: FormGroup;
   IsLoginFormValid = false;
   editid;
@@ -267,48 +266,36 @@ export class ItemPlanDetailsComponent implements OnInit {
   childPlanFormSub: FormGroup;
 
   // USER STATS
-
   totalParentProfiles: Number; 
   totalProfiles: Number;
   totalDelegatedTasks: Number;
   launchedProfiles: Number;
   reportedProfiles: Number;
   queuedForLaunch: Number;
-
   savedContacts: any = [];
 
-  //Multiselect Dropdown
-  // items = [];
-  // selected = [];
+  // MULTISELECT DROPDOWN
   selectedUsers = [];
   users: any = [];
   selectedModItem: boolean = false;
   final = [];
   datafinal = this.final;
-
   childUsers: any = [];
   childUsersList: any = [];
-
   selectedSharedPlanUser: any = [];
 
+  // COACH DETAIL VARS
   coachesDetails: any = [];
-  dtOptionsCoaches: DataTables.Settings = {};
-  dtTriggerCoaches: Subject<any> = new Subject();
-
-  moduleType: any = 'goal';
-  moduleDetails: any = [];
 
   // Invite User
   designations: any = [];
-
   inviteUserForm: FormGroup;
-
   selectedDomain: any = '';
-
   currentUserId;
   parent_user_id: any;
   instructionBoxOpen: Boolean = false;
-
+  InviteUserForm: FormGroup;
+  isInviteUserFormValid = false;
 
   @ViewChild(BaseChartDirective, { static: true }) chart: BaseChartDirective;
 
@@ -348,9 +335,8 @@ export class ItemPlanDetailsComponent implements OnInit {
   selectoption = [{ id: '' }]
   data = [{}]
 
+  // INITIATES ANY FORM GROUPS, DATATABLES, AND FUNCTIONS FOR FETCHING IMMEDIATE LOAD DATA
   ngOnInit() {
-    var a = this;
-   
     this.route.queryParams.subscribe(params => {
       if (params && params.stage && params.stage != '') {
         this.selectPanel(params.stage);
@@ -367,7 +353,8 @@ export class ItemPlanDetailsComponent implements OnInit {
     this.getPlanDetails();
     this.launchgoalalert();
     this.getDesignations();
-    console.log(this.alertdata)
+
+    // ALLOWS SELECTION OF A NODE FROM A TREE
     $(function () {
       $('button').on('click', function () {
         $('#jstree').jstree(true).select_node('child_node_1');
@@ -376,6 +363,7 @@ export class ItemPlanDetailsComponent implements OnInit {
       });
     });
 
+    // FORM MODALS
     this.childPlanForm = this.formBuilder.group({
       short_name: ['', Validators.required],
       long_name: ['', Validators.required],
@@ -393,7 +381,6 @@ export class ItemPlanDetailsComponent implements OnInit {
       manager_expense_variance: [0],
       manager_production_variance: [0]
     });
-
     this.childPlanFormSub = this.formBuilder.group({
       short_name: ['', Validators.required],
       long_name: ['', Validators.required],
@@ -411,7 +398,6 @@ export class ItemPlanDetailsComponent implements OnInit {
       manager_expense_variance: [0],
       manager_production_variance: [0]
     })
-    // Module
     this.ModuleForm = this.formBuilder.group({
       short_name: ['', Validators.required],
       long_name: ['', Validators.required],
@@ -456,7 +442,6 @@ export class ItemPlanDetailsComponent implements OnInit {
       manager_expense_variance: [0],
       manager_production_variance: [0]
     });
-
     this.FeedbackForm = this.formBuilder.group({
       'subject': [''],
       'section': [''],
@@ -464,7 +449,6 @@ export class ItemPlanDetailsComponent implements OnInit {
       'overall_rating': [''],
       'share_rating': ['']
     })
-
     this.InviteUserForm = this.formBuilder.group({
       'user_id': ['', Validators.required],
       'first_name': ['', Validators.required],
@@ -472,15 +456,12 @@ export class ItemPlanDetailsComponent implements OnInit {
       'designation': ['', Validators.required],
       'email': ['', [Validators.required, Validators.email]],
     });
-
     this.DiscussionForm = this.formBuilder.group({
       'recipient_id': ['', Validators.required],
       'security': ['', Validators.required],
       'subject': ['', Validators.required],
       'message': ['', Validators.required],
     });
-
-    var today, datepicker;
 
     $('#date-input5').datepicker({
       setDate: new Date(),
@@ -503,110 +484,99 @@ export class ItemPlanDetailsComponent implements OnInit {
 
     this.getUserSharePlanPermission();
 
-    // Vote
-    this.dtOptionsVote = {
-      columnDefs: [{ orderable: false, targets: [1] }],
-      pagingType: "full_numbers",
-      pageLength: 10,
-    };
-    this.dtTriggerVote.next();
-
-    // Select
-    this.dtOptionsSelect = {
-      columnDefs: [{ orderable: false, targets: [1] }],
-      pagingType: "full_numbers",
-      pageLength: 10
-    };
-    this.dtTriggerSelect.next();
-
-    // Delegate
-    this.getallchild();
-
-    this.dtOptionsDelegate = {
-      columnDefs: [
-        { orderable: false, targets: [1] }
-      ],
-      pagingType: 'full_numbers',
-      pageLength: 10,
-    };
-    this.dtTriggerDelegate.next();
-
-    this.DelegateForm = this.formBuilder.group({
-      child_user_id: ['', Validators.required],
-      percentage: ['', Validators.required],
-      description: ['', Validators.required],
-    });
-
-    // Countdown
-    this.dtOptionsCountdown = {
-      columnDefs: [
-        { orderable: false, targets: [1] }
-      ],
-      pagingType: 'full_numbers',
-      pageLength: 10,
-    };
-    this.dtTriggerCountdown.next();
-
-    // Launch
-    this.dtOptionsLaunch = {
-      columnDefs: [
-        { orderable: false, targets: [1] }
-      ],
-      pagingType: 'full_numbers',
-      pageLength: 10,
-    };
-    this.dtTriggerLaunch.next();
-
-    // Report
-    this.dtOptionsReport = {
-      columnDefs: [
-        { orderable: false, targets: [1] }
-      ],
-      pagingType: 'full_numbers',
-      pageLength: 10,
-    };
-    this.dtTriggerReport.next();
-
-    this.ReportForm = this.formBuilder.group({
-      actual_production: ['', Validators.required],
-      actual_expense: ['', Validators.required],
-    });
-
-    // Module
-    this.dtOptionsModule = {
-      columnDefs: [
-        { orderable: false, targets: [1] }
-      ],
-      pagingType: 'full_numbers',
-      pageLength: 10,
-    };
-    this.dtTriggerModule.next();
-
-    // Plan Goals
-    this.dtOptionsPlanGoals = {
-      columnDefs: [
-        { orderable: false, targets: [1] }
-      ],
-      pagingType: 'full_numbers',
-      pageLength: 10,
-    };
-    this.dtTriggerPlanGoals.next();
-
-    // Caoches Corner
-    this.dtOptionsCoaches = {
-      columnDefs: [
-        { orderable: false, targets: [1] }
-      ],
-      pagingType: 'full_numbers',
-      pageLength: 10,
-    };
-    this.dtTriggerCoaches.next();
+    // DATATABLE OPTIONS AND CONFIG
+      // Vote
+      this.dtOptionsVote = {
+        columnDefs: [{ orderable: false, targets: [1] }],
+        pagingType: "full_numbers",
+        pageLength: 10,
+      };
+      this.dtTriggerVote.next();
+      // Select
+      this.dtOptionsSelect = {
+        columnDefs: [{ orderable: false, targets: [1] }],
+        pagingType: "full_numbers",
+        pageLength: 10
+      };
+      this.dtTriggerSelect.next();
+      // Delegate
+      this.getallchild();
+      this.dtOptionsDelegate = {
+        columnDefs: [
+          { orderable: false, targets: [1] }
+        ],
+        pagingType: 'full_numbers',
+        pageLength: 10,
+      };
+      this.dtTriggerDelegate.next();
+      this.DelegateForm = this.formBuilder.group({
+        child_user_id: ['', Validators.required],
+        percentage: ['', Validators.required],
+        description: ['', Validators.required],
+      });
+      // Countdown
+      this.dtOptionsCountdown = {
+        columnDefs: [
+          { orderable: false, targets: [1] }
+        ],
+        pagingType: 'full_numbers',
+        pageLength: 10,
+      };
+      this.dtTriggerCountdown.next();
+      // Launch
+      this.dtOptionsLaunch = {
+        columnDefs: [
+          { orderable: false, targets: [1] }
+        ],
+        pagingType: 'full_numbers',
+        pageLength: 10,
+      };
+      this.dtTriggerLaunch.next();
+      // Report
+      this.dtOptionsReport = {
+        columnDefs: [
+          { orderable: false, targets: [1] }
+        ],
+        pagingType: 'full_numbers',
+        pageLength: 10,
+      };
+      this.dtTriggerReport.next();
+      this.ReportForm = this.formBuilder.group({
+        actual_production: ['', Validators.required],
+        actual_expense: ['', Validators.required],
+      });
+      // Module
+      this.dtOptionsModule = {
+        columnDefs: [
+          { orderable: false, targets: [1] }
+        ],
+        pagingType: 'full_numbers',
+        pageLength: 10,
+      };
+      this.dtTriggerModule.next();
+      // Plan Goals
+      this.dtOptionsPlanGoals = {
+        columnDefs: [
+          { orderable: false, targets: [1] }
+        ],
+        pagingType: 'full_numbers',
+        pageLength: 10,
+      };
+      this.dtTriggerPlanGoals.next();
+      // Caoches Corner
+      this.dtOptionsCoaches = {
+        columnDefs: [
+          { orderable: false, targets: [1] }
+        ],
+        pagingType: 'full_numbers',
+        pageLength: 10,
+      };
+      this.dtTriggerCoaches.next();
 
     this.getUserRole();
     this.getChildUsers();
 
-
-
+    // DATA OBJECT PARENT PLAN
     this.data[0]["numbers"] = [''];
     this.data[0]["short_name"] = ['', Validators.required];
     this.data[0]["long_name"] = ['', Validators.required];
@@ -623,9 +593,7 @@ export class ItemPlanDetailsComponent implements OnInit {
     this.data[0]["manager_expense_variance"] = [''];
     this.data[0]["manager_production_variance"] = [''];
     this.data[0]["expense_weight"] = [''];
-
     this.parentplangroup = this.formBuilder.group(this.data[0]);
-
     this.parentplangroup.get('security').setValue('0');
     $('#date-input5').on('changeDate', function (ev) {
       $(this).datepicker('hide');
@@ -639,13 +607,11 @@ export class ItemPlanDetailsComponent implements OnInit {
       hierarchy_id: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]]
     });
-
     // this.getInviteDesignations();
-
-
+    console.log(this.selectedStage)
   }
 
-  
+  // SHOULD ACTIVATE ONCE PER NEW VISIT EVER!!
   toggleInstructionBoxOpenOnVisit(){
     this.keepGetStartedOpenOnVist = false
     this.commonService.PostAPI(`users/update/insBoxView`, {
@@ -661,10 +627,12 @@ export class ItemPlanDetailsComponent implements OnInit {
     })
   }
 
+  // TOASTR CONFIG: ERROR
   throwToastrError(message: string){
     return this.toastr.error(message)
   }
 
+  // ALLOWS USER TO RE-OPEN BOX AND NEGATES EFFECTS OF OTHER TOGGLE FUNCTION
   toggleInstructionBox(){
     this.toggleInstructionBoxOpenOnVisit()
     this.instructionBoxOpen = !this.instructionBoxOpen
@@ -673,15 +641,13 @@ export class ItemPlanDetailsComponent implements OnInit {
     }
   }
 
-  // FEEDBACK FUNCTIONALITY
+  // FEEDBACK FUNCTIONALITY STORED IN THIS MODAL
   openFeedbackModal() {
     this.feedbackModalOpen = !this.feedbackModalOpen;
   }
-
   clearFeedback() {
     this.FeedbackForm.reset()
   }
-
   SubmitFeedback(){
     let data = this.FeedbackForm.value
     let subject = data.subject;
@@ -738,6 +704,7 @@ export class ItemPlanDetailsComponent implements OnInit {
     }
   }
   
+  // NEEDS TO BE ADJUSTED AND EXPANDED TO PROPER FUNCTIONALITY
   deletePlanById(plan) {
     this.commonService.PostAPI(`plan/delete`, {
       plan_id: plan,
@@ -754,25 +721,23 @@ export class ItemPlanDetailsComponent implements OnInit {
     })
   }
 
-  //For validation
+  //FORM VALIDATION
   get formVal() {
     return this.inviteUserForm.controls;
   }
   
+  // SUBMITS THE FORM TO INVITE A USER
+  // NEEDS TO BE RE-LABELED
   submit() {
     this.isInviteUserFormValid = true;
-    
     if (this.inviteUserForm.invalid) {
       return;
     } else {
       var data = this.inviteUserForm.value;
-
       data.current_url = this.currentUrl;
       data.invited_by_user_id = this.currentuser.user._id;
       data.parent_user_id = this.parent_user_id;
-
       $("#inviteModal").modal("hide");
-
       this.commonService.PostAPI(`users/invite`, data).then((response: any) => {
         if (response.status) {
           this.inviteUserForm.reset();
@@ -785,8 +750,7 @@ export class ItemPlanDetailsComponent implements OnInit {
     }
   }
 
-  // Project Tree Builder Present in Function
-
+  // BUILDS PROJECT TREE BASED ON CURRENT USER PLANS AND GOALS
   getPlanDetails() {
     // Used for building tree
     this.finalarray = [];
@@ -795,6 +759,7 @@ export class ItemPlanDetailsComponent implements OnInit {
     var a = this;
 
     // Unknown array currently
+    // Causes the admin UI to display?
     if (this.currentchildUser == null) {
       this.currentchildUser = []
     }
@@ -802,24 +767,19 @@ export class ItemPlanDetailsComponent implements OnInit {
       this.currentparentUser = []
     }
 
-    // Summon children of the corn? WTH does this do?
     // Currently an empty array when init page?
     var children = this.currentchildUser.concat(this.currentparentUser);
 
 
     this.commonService.PostAPI('goal/plangoal/tree', { id: this.currentuser.user._id, childids: children }).then((response: any) => {
       if (response.status) {
-
         // Misspelling present, but this is where the tree details seem to build?
         this.planteeDetails = response.data;
-
         // Map through resp
         this.planteeDetails.forEach(element => {
-          console.log(element)
           // That array from above
           // For root items
           this.finalarray.push({ "id": element._id, "parent": "#", "text": element.short_name, 'state': { 'opened': true }, "icon": "assets/images/avatars/p.png" })
-          
           // This must be sub-children
           element.goals.forEach(element2 => {
             let parsedArr = element2.parent_goal_id
@@ -840,7 +800,7 @@ export class ItemPlanDetailsComponent implements OnInit {
         $("#jstree").on("select_node.jstree",
           function (evt, data) {
             var plan_id;
-
+            this.childgoalDetails = []
             // PREVENTS EDIT UI
             a.editChildEnabled = false;
             // ROOT ITEM
@@ -897,6 +857,7 @@ export class ItemPlanDetailsComponent implements OnInit {
     });
   }
 
+  // INITIATES WHEN PLAN/GOAL IS LAUNCHED
   sendForReport(event){
     this.commonService.PostAPI(`goal/getgoals/launch`, {
       user_id: this.currentUserId,
@@ -913,6 +874,9 @@ export class ItemPlanDetailsComponent implements OnInit {
     this.getLaunchGoals(this.planId)
   }
 
+  // SHOULD USE THE CURRENT PLAN ID IF DISPLAYING W/ TREE
+  // SHOULD USE 'SELECTED' PLAN ID IF DISPLAYING SELECTED OUTSIDE OF TREE
+  // LOADS planGoals VAR
   getPlanGoals(planid) {
     this.commonService.PostAPI(`goal/getgoals/bypid`, { id: planid, module_type: this.moduleType }).then((response: any) => {
       if (response.status && response.data && response.data.length > 0) {
@@ -920,13 +884,13 @@ export class ItemPlanDetailsComponent implements OnInit {
       } else {
         this.planGoals = [];
       }
-
       $("#table-goals").dataTable().fnDestroy();
       // this.dtTriggerPlanGoals.next();
       // this.dataTableAfterViewInit();
     });
   }
 
+  // GETS ANY ATTACHMENTS WITH THEIR GOALS
   getGoalAttachments(goal_id) {
     this.commonService.PostAPI(`goal/get/attachments`, { goal_id: goal_id }).then((response: any) => {
       if (response.status) {
@@ -937,6 +901,7 @@ export class ItemPlanDetailsComponent implements OnInit {
     });
   }
 
+  // GETS ANY SHARED USER STATS BASED ON THE ENTERED GOAL ID
   getGoalSharedUsers(goal_id) {
     if (this.isSharedPlanPermission) {
       this.commonService.PostAPI(`goal/get/shared/users`, { goal_id: goal_id }).then((response: any) => {
@@ -960,6 +925,7 @@ export class ItemPlanDetailsComponent implements OnInit {
     }
   }
 
+  // LOADS THE HUD
   getHeadUpToDisplayDetails(plan_id) {
     this.commonService.PostAPI(`plan/get/hud/details`, { plan_id: plan_id }).then((response: any) => {
       if (response.status) {
@@ -970,12 +936,16 @@ export class ItemPlanDetailsComponent implements OnInit {
     });
   }
 
+  // BROKEN
+  // NECESSARY FOR DISTINGUISHING EDITS FORM NEW SUBMISSIONS
   toggleEditChild(){
     this.editChildEnabled = !this.editChildEnabled
   }
 
+  // PATCHES FORM VALS WITH SELECTED GOALS DETAILS
+  // FORMS: childPlanForm || ModuleForm
+  // DOUBLE CHECK RESPONSE MESSAGE FROM BACKEND WHEN POSSIBLE
   getgoaldetail(goal, parent) {
-
     this.commonService.PostAPI(`goal/get/by/id`, { goal_id: goal }).then((response: any) => {
       if (response.status) {
         this.childgoalDetails = response.data;
@@ -991,14 +961,16 @@ export class ItemPlanDetailsComponent implements OnInit {
         else {
           this.goalid = this.childgoalDetails._id
         }
-        // this.goalplanid = parent;
-        // this.getplandetail2(parent);
 
+        // DATE PIPE MIGHT CAUSE DATE PROBLEMS
         var datePipe = new DatePipe("en-US");
+
+        // REPEATED INPUTS? IS THIS ALLOWED?
         $('#date-input5').datepicker('setDate', datePipe.transform(this.childgoalDetails.start_date, 'MM/dd/yyyy'));
         $('#date-input6').datepicker('setDate', datePipe.transform(this.childgoalDetails.end_date, 'MM/dd/yyyy'));
 
-        if(this.selectedModules === ''){
+        // THIS SHOULD ONLY FIRE FOR A CHILD UNDER A ROOT ITEM
+        if(this.selectedModules === '' || this.selectedModules === undefined){
         this.childPlanForm.patchValue({
           short_name: this.childgoalDetails.short_name,
           long_name: this.childgoalDetails.long_name,
@@ -1017,6 +989,9 @@ export class ItemPlanDetailsComponent implements OnInit {
           expense_weight: this.childgoalDetails.expense_weight,
         });
       }
+
+      // EXECTUES IF A MODULE IS SELECTED >>> NOT A CHILD ITEM
+      // THIS IS STMAI
       else {
         this.moduleItemActive = true;
         this.ModuleForm.patchValue({
@@ -1043,11 +1018,16 @@ export class ItemPlanDetailsComponent implements OnInit {
     });
   }
 
+
+  // SETS parentplanDetails AND PARENT VARS
   getplandetail(Plan) {
+    // EDIT VALIDATOR NEEDS LOGICAL CORRECTION
     this.checkforgoaledit = true
+
+    // RETRIEVES AND SETS parentplanDetails
+    // SETS PLAN VARS BASED ON PARENTPLANDETAILS
     this.commonService.PostAPI(`plan/get/by/id2`, { plan_id: Plan }).then((response: any) => {
       if (response.status) {
-
         this.parentplanDetails = response.data;
         if(this.parentIsActiveSelection){
           this.goalid = ""
@@ -1057,21 +1037,27 @@ export class ItemPlanDetailsComponent implements OnInit {
         this.goalplanid = this.parentplanDetails[0]._id;
         this.golaplanname = this.parentplanDetails[0].short_name;
         this.plansecurity = this.parentplanDetails[0].security;
+
+        // VALS SET HERE WILL BE DEFAULT FOR THE FIRST CHILD ITEM FORM
         this.childPlanForm.reset();
-        this.childPlanForm.get('production_type').setValue('units')
+          // MAINTAINS CONSISTENCY AMONG UNITS IN A PARTICULAR PLAN SECTION
+          this.childPlanForm.get('production_type').setValue(this.parentplanDetails[0].production_type)
       } else {
         this.toastr.error(response.message, "Error");
       }
     });
   }
 
+  // CLEAN UP FOLLOWING SUBMISSION OF A PARTICULAR FORM
   reset() {
     this.submitted = false;
     this.childPlanForm.reset();
-    // this.parentplangroup.get('security').setValue(' ');
     this.attachments = [];
   }
 
+  // SETS parentplanDetails, goalplanid, and golaplanname
+  // PARENT VARS SET AS WELL
+  // ODD FUNCTION OUT OF THE BUNCH
   getplandetail2(Plan) {
     this.commonService.PostAPI(`plan/get/by/id2`, { plan_id: Plan }).then((response: any) => {
       if (response.status) {
@@ -1089,63 +1075,83 @@ export class ItemPlanDetailsComponent implements OnInit {
   // convenience getter for easy access to form fields
   get f() { return this.childPlanForm.controls; }
 
+  /*
+    WARNING
+    ---------
+    * This function submits the following form group and its data
+    at activation: childPlanForm
+
+    - If this function is touched in any way, any items that impact
+    the current values of the childplanForm must also be inspected for potential
+    bugs and errors
+    - Note that overlapping calls to current data may result in incorrect plan items
+    or child items
+  */
+  // These functions cover submission of main child and deeply nested child items
   onSubmit() {
+    // THIS IS WHERE RESET() IS NECESSARY
     this.submitted = true;
+    
+    // NEED TO REVIEW INVALIDITY AND HANDLING OF ERRORS
     if (this.childPlanForm.invalid) {
       return;
     } else {
+      // IF getplandetail2() FOUND A RESP
       if (this.goalplanid != undefined) {
-        console.log($('#date-input5').val(), new Date(this.planstartdate).toDateString(), this.planenddate)
+        // CHECK FOR BLAN VALS FOR NOW, BUT LOGIC MUST BE IMPROVED IN THE FUTURE
         if ($('#date-input5').val() != '' && $('#date-input6').val() != '') {
+          // data IS THE OBJECT TO BUILD THE SUBMITTED FORM AND SEND IT TO THE BACKEND FOR STORAGE
+          // THIS IS WHERE IT IS CRITICAL THAT THE CHILDPLANFORM BE ACCURATE AT SUBMIT
+          var data = this.childPlanForm.value;
+            // EDIT FUNCTIONALITY DEEPLY NEEDS REPAIR
+            // THE EDITID SHOULD DENOTE IF A GOAL IS BEING EDITED OR CREATED
+            data.editid = ""
+          data.user_id = this.currentuser.user._id;
+          data.plan_id = this.goalplanid;
+          data.status = 0;
+          data.numbers = 0;
+          // THESE INPUTS MUST MUST MUST BE ACCURATE AND NOT REPEAT THEMSELVES
+          // BE WARY BECAUSE THEY ARE USED ELSEWHERE AND CAN TAKE ON NEW VALS
+          data.start_date = $('#date-input5').val();
+          data.end_date = $('#date-input6').val();
+          data.shared_users = this.selected.map((data) => data.id);
+            // GUARANTEES A GOAL IF STMAI ARE NOT SELECTED ON CREATION
+            if (this.moduleType == '') {
+              this.moduleType = 'goal';
+            }
+          data.module_type = this.moduleType;
+          const formData: any = new FormData();
 
-              var data = this.childPlanForm.value;
-              data.editid = ""
-              data.user_id = this.currentuser.user._id;
-              data.plan_id = this.goalplanid;
-              data.status = 0;
-              data.numbers = 0;
-              data.start_date = $('#date-input5').val();
-              data.end_date = $('#date-input6').val();
-              data.shared_users = this.selected.map((data) => data.id);
-              console.log(data)
-              if (this.moduleType == '') {
-                this.moduleType = 'goal';
-              }
+          // ATTACHMENTS NEED TO BE EVALED BEFORE FURTHER PUBLISHING
+          const files: Array<File> = this.attachments;
+          for (let i = 0; i < files.length; i++) {
+            formData.append("attachments", files[i], files[i]['name']);
+          }
+          // COVERS ADDITIONAL FIELDS AND PREPS FORMDATA FOR SUBMISSION
+          for (const key in data) {
+            const element = data[key];
+            formData.append(key.toString(), element);
+          }
 
-              data.module_type = this.moduleType;
-
-              const formData: any = new FormData();
-              const files: Array<File> = this.attachments;
-
-              for (let i = 0; i < files.length; i++) {
-                formData.append("attachments", files[i], files[i]['name']);
-              }
-
-              for (const key in data) {
-                const element = data[key];
-                formData.append(key.toString(), element);
-                console.log(key, element)
-              }
-
-              this.commonService.PostAPI(`goal/create`, formData).then((response: any) => {
-                if (response.status) {
-                  this.toastr.success(response.message, "Success");
-                  this.getPlanDetails();
-                  this.getPlanGoals(this.goalplanid);
-                  this.reset();
-                } else {
-                  this.toastr.error(response.message, "Error");
-                  // this.is_disabled = false;
-                }
-              });
-          
+          // SEND FORMDATA FOR STORAGE
+          this.commonService.PostAPI(`goal/create`, formData).then((response: any) => {
+            if (response.status) {
+              this.toastr.success(response.message, "Success");
+              this.getPlanDetails();
+              // Investigate the need of this function here
+              this.getPlanGoals(this.goalplanid);
+              this.reset();
+            } else {
+              this.toastr.error(response.message, "Error");
+            }
+          });
         } else {
           if ($('#date-input5').val() == '') {
             this.toastr.error("Please Enter Start Date", "Error");
           } else if ($('#date-input6').val() == '') {
             this.toastr.error("Please Enter End Date", "Error");
           } else {
-
+            return;
           }
         }
       } else {
@@ -1153,7 +1159,6 @@ export class ItemPlanDetailsComponent implements OnInit {
       }
     }
   }
-
   onSubmitSub(){
     this.submitted = true;
     if (this.childPlanFormSub.invalid) {
@@ -1208,7 +1213,6 @@ export class ItemPlanDetailsComponent implements OnInit {
                   this.reset();
                 } else {
                   this.toastr.error(response.message, "Error");
-                  // this.is_disabled = false;
                 }
               });
         } else {
@@ -1226,6 +1230,7 @@ export class ItemPlanDetailsComponent implements OnInit {
     }
   }
 
+  // ALERT FUNCTIONALITY
   toggleAlertView(){
     switch(this.alertView){
       case 'Launch':
@@ -1238,7 +1243,6 @@ export class ItemPlanDetailsComponent implements OnInit {
         break;
     }
   }
-
   launchgoalalert() {
     this.commonService.PostAPI(`delegation/get/launch/goal/alerts`, { user_id: this.currentuser.user._id }).then((response: any) => {
       if (response.status) {
@@ -1257,7 +1261,6 @@ export class ItemPlanDetailsComponent implements OnInit {
           }
         })
         
-
         // Due in 3 Days
         this.alertdata.filter((doc: any)=>{
           return new Date(doc.end_date).getDate() <= (new Date(Date.now()).getDate() + 3) && new Date(doc.end_date).getDate() >= (new Date(Date.now()).getDate()) && new Date(doc.end_date).getMonth() == new Date(Date.now()).getMonth()
@@ -1278,15 +1281,75 @@ export class ItemPlanDetailsComponent implements OnInit {
     });
   }
   reportgoalalert() {
-    this.commonService.PostAPI(`delegation/get/report/goal/alerts`, { user_id: this.currentuser.user._id }).then((response: any) => {
-      if (response.status) {
-        this.alertdata = response.data
-        console.log(this.alertdata)
-      } else {
-        this.toastr.error(response.message, "Error");
-      }
-    });
+    this.filteredAlerts = []
+    // this.commonService.PostAPI(`delegation/get/report/goal/alerts`, { user_id: this.currentuser.user._id }).then((response: any) => {
+    //   if (response.status) {
+    //     this.alertdata = response.data
+    //     this.alertView = 'Report'
+    //     this.filteredAlerts = this.alertdata.map((report: any)=>{
+    //       return {
+    //         plan_id: report.plan_id,
+    //         goal_id: report.goal_id,
+    //         actual_expense: report.actual_expense,
+    //         actual_production: report.actual_production,
+    //         alert_type: 'Moderate'
+    //       }
+    //     })
+    //     console.log(this.filteredAlerts)
+    //   } else {
+    //     this.toastr.error(response.message, "Error");
+    //   }
+    // });
+    let parentPlanItems = this.finalarray.filter((planItem)=>{return planItem.parent === '#'})
+    parentPlanItems.forEach((planItem)=>{
+      this.commonService.PostAPI(`report/get/all`, { plan_id: planItem.id, user_id: this.currentuser.user._id }).then((response: any) => {
+        if (response.status && response.data && response.data.length > 0) {
+            this.reportGoals = response.data.filter(report => report.element.isReportReady);
+            
+            let alert_type: String;
+            let warningMsg: String;
+            this.reportGoals.map((report)=>{
+              alert_type = ""
+              warningMsg = ""
+              // SET ALERT COLOR BY TYPE
+              if(report.element.personal_production_variance > report.actual_production && report.element.personal_expense_variance < report.actual_expense){
+                alert_type = 'Severe'
+                warningMsg = 'Report is BELOW production threshold AND ABOVE expense threshold.'
+              }
+              else if (report.element.personal_production_variance > report.actual_production && report.element.personal_expense_variance >= report.actual_expense) {
+                alert_type = 'Moderate'
+                warningMsg = 'Report is BELOW production threshold.'
+              }
+              else if (report.element.personal_production_variance <= report.actual_production && report.element.personal_expense_variance < report.actual_expense) {
+                alert_type = 'Moderate'
+                warningMsg = 'Report is ABOVE expense threshold.'
+              }
+              else {
+                alert_type = 'Standard'
+                warningMsg = 'Report is within bounds, congratulations!'
+              }
+
+              this.filteredAlerts.push({
+                alert_type: alert_type,
+                warning: warningMsg,
+                goal: report.element.short_name,
+                prod_threshold: report.element.personal_production_variance,
+                exp_threshold: report.element.personal_expense_variance,
+                actual_prod: report.actual_production,
+                actual_exp: report.actual_expense
+              })
+              console.log(this.filteredAlerts)
+          })
+        } else {
+          this.reportGoals = [];
+        }
+        this.dtTriggerReport.next();
+        this.tableId = 'report-table';
+        this.dataTableAfterViewInit();
+      });
+    })
   }
+
 
   getGoalReportByPlan(plan_id) {
     this.commonService.PostAPI(`plan/get/goal/report`, { plan_id: plan_id }).then((response: any) => {
@@ -1298,15 +1361,16 @@ export class ItemPlanDetailsComponent implements OnInit {
     });
   }
 
+  // Converts string inputs to HTML in the UI (Used for various VARS)
   textDecoration(string) {
     var newString = string.replace(/_/g, " ");
     return newString.charAt(0).toUpperCase() + newString.slice(1);
   }
 
+  // Attachment related functions
   uploadFile(event) {
     this.attachments = event;
   }
-
   deleteAttachment(index) {
     var fileKey: any = parseInt(index);
     var files: File[] = [];
@@ -1326,11 +1390,9 @@ export class ItemPlanDetailsComponent implements OnInit {
 
     this.attachments = files;
   }
-
   getFileExtenstion(filename) {
     return filename.split('?')[0].split('.').pop();
   }
-
   isImage(filename) {
     var allowExtensions = ['jpg', 'jpeg', 'png', 'gif']
     var extenstion = filename.split('?')[0].split('.').pop();
@@ -1341,7 +1403,6 @@ export class ItemPlanDetailsComponent implements OnInit {
       return false;
     }
   }
-
   deleteGoalAttachment(goal_attachment_id, goal_id) {
     this.commonService.PostAPI(`goal/attachments/delete`, { goal_attachment_id: goal_attachment_id }).then((response: any) => {
       if (response.status) {
@@ -1353,6 +1414,7 @@ export class ItemPlanDetailsComponent implements OnInit {
     });
   }
 
+  // Shared user and permission functions
   getUserSharePlanPermission() {
     this.commonService.PostAPI(`plan/check/user/permission`, { user_id: this.currentuser.user._id }).then((response: any) => {
       if (response.status) {
@@ -1360,7 +1422,6 @@ export class ItemPlanDetailsComponent implements OnInit {
       }
     });
   }
-
   checkPlanForGoalSharePermission(plan_id) {
     if (this.sharedPlanPermission.includes(plan_id) == true) {
       this.isSharedPlanPermission = true;
@@ -1394,10 +1455,10 @@ export class ItemPlanDetailsComponent implements OnInit {
     });
   }
 
+  // Selection functions for traversing the HUD
   onChange(e) {
     this.selected = e;
   }
-
   selecteStage(type: any) {
     this.selectedStage = type;
     this.selectedModules = '';
@@ -1407,7 +1468,6 @@ export class ItemPlanDetailsComponent implements OnInit {
     this.planGoals = []
     this.getPlanGoals(this.parentplanDetails[0]._id)
   }
-
   selectPhase(type: any) {
     if (this.planId && this.planId !== '') {
       // this.selectedModules = '';
@@ -1504,6 +1564,7 @@ export class ItemPlanDetailsComponent implements OnInit {
     }
   }
 
+  // This is used with reports to get calculated summaries from vals
   async getReportSum(planid){
     await this.commonService.PostAPI('report/get/all', {
       plan_id: planid,
@@ -1521,7 +1582,6 @@ export class ItemPlanDetailsComponent implements OnInit {
     })
   }
 
-
 /* 
   RENDERING CHARTS: A GUIDE
   ----
@@ -1534,7 +1594,8 @@ export class ItemPlanDetailsComponent implements OnInit {
     - Eval switching between phases, stages, chal, and mods
     - Eval switching between root/parent items
 */
-
+  // These are all of the chart related functionalities
+  // Needs to be evaluated for why they dont destroy and rebuild w/ new datasets
   getMeasureStats(prodSum, expSum){
     // Burn Rates
     this.grossBurnRate = expSum
@@ -1547,7 +1608,6 @@ export class ItemPlanDetailsComponent implements OnInit {
     this.avgProd = (this.avgProdSum/this.datasetProd.length).toFixed(2)
 
   }
-
   showChart(type: String){
     console.log(type)
     switch(type){
@@ -1652,15 +1712,27 @@ export class ItemPlanDetailsComponent implements OnInit {
     }
   }
 
-  
   // Deactivate
   getgoal(planid) {
+    this.goals = []
     if (planid == '') {
       this.dividearrayintothreepart = 0
     } else {
       this.commonService.PostAPI(`goal/get/all/by/plan`, { id: planid, module_type: this.moduleType }).then((response: any) => {
         if (response.status && response.data && response.data.length > 0) {
           this.goals = response.data;
+          if(!this.parentIsActiveSelection && this.childgoalDetails.length !== 0){
+            this.goals = this.goals.filter((goal)=>{
+              return goal.parent_goal_id[goal.parent_goal_id.length - 1] === this.childgoalDetails._id
+            })
+          }
+          else {
+            this.goals = this.goals.filter((goal)=>{
+              if(goal.parent_goal_id.length === 1){
+                return goal.plan_id === this.parentplanDetails[0]._id
+              }
+            })
+          }
           this.dividearrayintothreepart = 1
           if (this.goals && this.goals.length > 10) {
             this.dividearrayintothreepart = 2;
@@ -1675,7 +1747,6 @@ export class ItemPlanDetailsComponent implements OnInit {
       });
     }
   }
-
   changedeactivate(id, change) {
     this.commonService.PostAPI(`goal/deactivate/changebyid`, { id: id, deactivate: change }).then((response: any) => {
       if (response.status) {
@@ -1713,12 +1784,10 @@ export class ItemPlanDetailsComponent implements OnInit {
       });
     }
   }
-
   updatepriority(index) {
     document.getElementById("label-priority-" + index).style.display = "none"
     document.getElementById("priority-text-" + index).style.display = "block"
   }
-
   updategoalpriority(goalid, index) {
     document.getElementById("label-priority-" + index).style.display = "block"
     document.getElementById("priority-text-" + index).style.display = "none"
@@ -1738,7 +1807,6 @@ export class ItemPlanDetailsComponent implements OnInit {
       this.toastr.error("Priority should be above 0.", "Error");
     }
   }
-
   changepriority(goal_id, current_priority, new_priority) {
 
     if (new_priority <= 1) {
@@ -1774,10 +1842,15 @@ export class ItemPlanDetailsComponent implements OnInit {
           if (response.data[0].user_id._id == this.currentuser.user._id) {
             this.commonService.PostAPI(`propose/get/goal/by/plan`, { plan_id: planid, user_id: this.currentuser.user._id, module_type: this.moduleType }).then((response: any) => {
               if (response.status) {
+                console.log(response.data)
                 this.proposeGoals = [];
-                if(this.parentIsActiveSelection){
+                if(!this.parentIsActiveSelection){
+                  this.proposeGoals = response.data.filter((goal)=>{return goal.parent_goal_id[goal.parent_goal_id.length - 1] === this.childgoalDetails._id})
+                }
+                else {
                   this.proposeGoals = response.data.filter((goal)=>{return goal.parent_goal_id.length === 1});
                 }
+                console.log(this.proposeGoals)
                 this.isProposeDevidedInParts = 1;
               } else {
                 this.toastr.error("No Details Found", "Error");
@@ -1810,7 +1883,6 @@ export class ItemPlanDetailsComponent implements OnInit {
       });
     }
   }
-
   changeproposal(id, change) {
     this.commonService.PostAPI(`propose/manage`, {
       goal_id: id,
@@ -1825,7 +1897,6 @@ export class ItemPlanDetailsComponent implements OnInit {
       this.getProposeGoals(this.planId);
     });
   }
-
   handleChange($event, id) {
     if ($event.target.checked === true) {
       var changepropose = 1;
@@ -1851,18 +1922,26 @@ export class ItemPlanDetailsComponent implements OnInit {
     this.commonService.PostAPI(`goal/getgoals/byvote`, { id: planid, module_type: this.moduleType }).then((response: any) => {
       if (response.status && response.data && response.data.length > 0) {
         this.voteGoals = response.data;
+        if(!this.parentIsActiveSelection && this.childgoalDetails.length !== 0){
+          this.voteGoals = this.voteGoals.filter((goal)=>{return goal.parent_goal_id[goal.parent_goal_id.length - 1] === this.childgoalDetails._id})
+        }
+        else {
+          this.voteGoals = this.voteGoals.filter((goal)=>{
+            if(goal.plan_id._id === this.planId){
+              return goal.parent_goal_id.length === 1
+            }
+          })
+        }
       } else {
         this.voteGoals = [];
       }
     });
   }
-
   reloadDatatable() {
     this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
       dtInstance.ajax.reload();
     });
   }
-
   checkvote(goal) {
     if (goal.voteup.includes(this.currentuser.user._id) == true || goal.votedown.includes(this.currentuser.user._id) == true) {
       return true;
@@ -1870,7 +1949,6 @@ export class ItemPlanDetailsComponent implements OnInit {
       return false;
     }
   }
-
   dataTableAfterViewInit() {
     var table = $('#' + this.tableId).DataTable({destroy: true});
     table.destroy();
@@ -1881,14 +1959,12 @@ export class ItemPlanDetailsComponent implements OnInit {
     //   });
     // });
   }
-
   resetSearch() {
     this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
       dtInstance.destroy();
     });
     this.getVoteGoals(this.planId);
   }
-
   changevote(id, change) {
     this.commonService
       .PostAPI(`goal/voteupdown/byid`, {
@@ -1911,6 +1987,16 @@ export class ItemPlanDetailsComponent implements OnInit {
     this.commonService.PostAPI(`goal/getgoals/byvote`, { id: planId, module_type: this.moduleType }).then((response: any) => {
       if (response.status && response.data && response.data.length > 0) {
         this.selectGoals = response.data;
+        if(!this.parentIsActiveSelection && this.childgoalDetails.length !== 0){
+          this.selectGoals = this.selectGoals.filter((goal)=>{return goal.parent_goal_id[goal.parent_goal_id.length - 1] === this.childgoalDetails._id})
+        }
+        else {
+          this.selectGoals = this.selectGoals.filter((goal)=>{
+            if(goal.plan_id._id === this.planId){
+              return goal.parent_goal_id.length === 1
+            }
+          })
+        }
       } else {
         this.selectGoals = [];
       }
@@ -1920,7 +2006,6 @@ export class ItemPlanDetailsComponent implements OnInit {
       // // this.dataTableAfterViewInit();
     });
   }
-
   updateplanselect(e, goal_id) {
     var status: number;
 
@@ -1955,9 +2040,7 @@ export class ItemPlanDetailsComponent implements OnInit {
       this.dataTableAfterViewInit();
     });
   }
-
   get df() { return this.DelegateForm.controls; }
-
   getallchild() {
     //Get All Child Users
     if (this.currentchildUser == null) {
@@ -1972,7 +2055,6 @@ export class ItemPlanDetailsComponent implements OnInit {
       }
     });
   }
-
   goaldelegate(id, name) {
     this.goalname = name
     this.delegateGoalId = id
@@ -2041,7 +2123,6 @@ export class ItemPlanDetailsComponent implements OnInit {
       }
     }
   }
-
   getalldelegategoals() {
     this.commonService.PostAPI(`delegation/get/user/goals`, { child_user_id: this.currentuser.user._id }).then((response: any) => {
       if (response.status) {
@@ -2051,7 +2132,6 @@ export class ItemPlanDetailsComponent implements OnInit {
       }
     });
   }
-
   changegoaldelegatestatus(id, status) {
     this.commonService.PostAPI(`delegation/accept/status`, { delegation_id: id, accept_status: status }).then((response: any) => {
       if (response.status) {
@@ -2151,13 +2231,13 @@ export class ItemPlanDetailsComponent implements OnInit {
       this.dataTableAfterViewInit();
     });
   }
-
   convertStringToInt(str){
     return Number(str);
 }
 
   // Report
   getReportGoals(planid) {
+    console.log(this.goals)
     this.commonService.PostAPI(`report/get/all`, { plan_id: planid, user_id: this.currentuser.user._id }).then((response: any) => {
       if (response.status && response.data && response.data.length > 0) {
         this.reportGoals = response.data.filter(report => report.element.isReportReady);
@@ -2165,16 +2245,13 @@ export class ItemPlanDetailsComponent implements OnInit {
         this.reportGoals = [];
       }
       this.dtTriggerReport.next();
-
       this.tableId = 'report-table';
       this.dataTableAfterViewInit();
     });
   }
-
   warnConstruction(){
     alert('Under construction, please check back later for updates!')
   }
-
   showreportform(goalid, reportid, data) {
     this.reportGoalId = goalid
     this.reportId = reportid
@@ -2188,9 +2265,7 @@ export class ItemPlanDetailsComponent implements OnInit {
       actual_expense: data.actual_expense,
     });
   }
-
   get rf() { return this.ReportForm.controls; }
-
   SaveReport() {
     this.isReportFormSubmitted = true;
     if (this.ReportForm.invalid) {
@@ -2223,7 +2298,6 @@ export class ItemPlanDetailsComponent implements OnInit {
     this.chartRendered = false;
     this.initMeasureCharts(true)
   }
-
   resetReportSearch() {
     this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
       dtInstance.destroy();
@@ -2260,7 +2334,6 @@ export class ItemPlanDetailsComponent implements OnInit {
       });
     }
   }
-
   onChangeDate() {
     this.getPlanGoalDetails();
   }
@@ -2323,19 +2396,16 @@ export class ItemPlanDetailsComponent implements OnInit {
       }
     }
   }
-
   selectChallangeModule() {
     this.isSelectedChallange = true;
   }
 
   // Modules
   get mf() { return this.ModuleForm.controls; }
-
   resetModule() {
     this.isModuleFormSubmitted = false;
     this.ModuleForm.reset();
   }
-
   saveModule() {
     this.isModuleFormSubmitted = true;
     if (this.ModuleForm.invalid) {
@@ -2393,7 +2463,6 @@ export class ItemPlanDetailsComponent implements OnInit {
       }
     }
   }
-
   getSelectedModule(id){
     this.commonService.PostAPI('module/find-selected', {_id: id}).then((res: any)=>{
       if (res.status) {
@@ -2405,7 +2474,6 @@ export class ItemPlanDetailsComponent implements OnInit {
       }
     })
   }
-
   saveModuleSub(){
     this.isModuleFormSubmitted = true;
     if (this.ModuleFormSub.invalid) {
@@ -2445,8 +2513,6 @@ export class ItemPlanDetailsComponent implements OnInit {
             this.ModuleFormSub.reset()
         }
     }
-
-
   getModuleTreeDetails(type) {
     var data: any = {};
     var a = this;
@@ -2490,7 +2556,6 @@ export class ItemPlanDetailsComponent implements OnInit {
       $('#jstree-module-tree').jstree({ core: { data: treeArray } });
     });
   }
-
   getModules() {
     var data: any = {};
 
@@ -2525,11 +2590,9 @@ export class ItemPlanDetailsComponent implements OnInit {
       this.dataTableAfterViewInit();
     });
   }
-
   uploadAttachment(event) {
     this.moduleAttachments = event;
   }
-
   selectPanel(type: any) {
     // this.selectedModules = '';
     this.selectedPhase = type;
@@ -2560,6 +2623,8 @@ export class ItemPlanDetailsComponent implements OnInit {
     }
   }
 
+
+  // Invites and Designations
   getUserRole() {
     this.commonService.PostAPI(`hierarchy/get/user/designation`, { user_id: this.currentuser.user._id }).then((response: any) => {
       if (response.status && response.data) {
@@ -2567,7 +2632,6 @@ export class ItemPlanDetailsComponent implements OnInit {
       }
     });
   }
-
   getChildDesignations(hiearachyId) {
     this.commonService.PostAPI(`hierarchy/get/user/all/childs`, { hierarchy_id: hiearachyId }).then((response: any) => {
       if (response.status && response.data && response.data.length > 0) {
@@ -2577,12 +2641,10 @@ export class ItemPlanDetailsComponent implements OnInit {
       }
     });
   }
-
   resetInviteForm() {
     this.isInviteUserFormValid = false;
     this.InviteUserForm.reset();
   }
-
   submitInviteForm() {
     this.isInviteUserFormValid = true;
     if (this.InviteUserForm.invalid) {
@@ -2603,11 +2665,9 @@ export class ItemPlanDetailsComponent implements OnInit {
       });
     }
   }
-
   get iFrm() {
     return this.InviteUserForm.controls;
   }
-
   getChildUsers() {
     this.commonService.PostAPI(`users/get/designations`, { user_ids: this.currentchildUser }).then((response: any) => {
       var usersArr = [];
@@ -2626,12 +2686,11 @@ export class ItemPlanDetailsComponent implements OnInit {
       this.childUsersList = usersArr;
     });
   }
-
   onChangeUser(e) {
     this.selectedUser = e;
   }
 
-
+  // Related to the plan form and additional fields
   getplanform() {
     /**
      * Plan form detail from admin
@@ -2682,7 +2741,6 @@ export class ItemPlanDetailsComponent implements OnInit {
       }
     });
   }
-
   addcontrol(i) {
 
     /**
@@ -2693,7 +2751,6 @@ export class ItemPlanDetailsComponent implements OnInit {
     this.parentplangroup = this.formBuilder.group(this.data[0]);
 
   }
-
   get jval() {
     return this.parentplangroup.controls;
   }
@@ -2719,7 +2776,6 @@ export class ItemPlanDetailsComponent implements OnInit {
   onAddoption() {
     this.selectoption.push({ id: '' })
   }
-
   onplanformcreate() {
     /**
     * form control plan form save into database
@@ -2782,7 +2838,6 @@ export class ItemPlanDetailsComponent implements OnInit {
       }
     }
   }
-
   // remove form control plan form 
   removeData(i) {
     /*
@@ -2799,6 +2854,7 @@ export class ItemPlanDetailsComponent implements OnInit {
     this.commonService.PostAPI('users/remove-field', data)
   }
 
+  // Allows visiting parent item from child
   visitParentForm(plan_id){
     this.getPlanDetails()
     this.getplandetail(plan_id);
@@ -2807,7 +2863,6 @@ export class ItemPlanDetailsComponent implements OnInit {
     this.parentIsActiveSelection = true;
     $('#jstree').jstree(true).redraw()
   }
-
   getselectoption(option, i) {
     if (option == "select") {
       this.showcustomtag = true;
@@ -2817,13 +2872,11 @@ export class ItemPlanDetailsComponent implements OnInit {
       delete this.formfield[i][key]
     }
   }
-
   addoption(i) {
     this.selectoption = this.formfield[i]['option'];
     $("#myModal2").modal("show");
     $("#controlid").val(i)
   }
-
   saveoption() {
     var index = $("#controlid").val();
     this.formfield[index]['option'] = this.selectoption;
@@ -2883,14 +2936,12 @@ export class ItemPlanDetailsComponent implements OnInit {
       }
     }
   }
-
   resetPlanForm() {
     this.IsLoginFormValid = false;
     this.parentplangroup.reset();
     this.parentplangroup.get('security').setValue('0');
     this.parentplangroup.get('production_type').setValue('');
   }
-
   onChangePlan(e) {
     this.selectedSharedPlanUser = e;
   }
@@ -2914,7 +2965,6 @@ export class ItemPlanDetailsComponent implements OnInit {
       // this.dataTableAfterViewInit();
     });
   }
-
   getDesignations() {
     this.commonService.PostAPI(`hierarchy/get/by/parent`, { parent_user_id: this.currentuser.user.parent_user_id }).then((response: any) => {
       if (response.status) {
@@ -2930,12 +2980,10 @@ export class ItemPlanDetailsComponent implements OnInit {
     return this.DiscussionForm.controls;
 
   }
-
   resetDiscussionForm() {
     this.isSubmittedDiscussionForm = false;
     this.DiscussionForm.reset();
   }
-
   onSubmitDiscussion() {
     this.isSubmittedDiscussionForm = true;
 
@@ -2972,7 +3020,6 @@ export class ItemPlanDetailsComponent implements OnInit {
       }
     }
   }
-
   uploadDiscussionAttachment(event) {
     this.discussionAttachments = event;
   }

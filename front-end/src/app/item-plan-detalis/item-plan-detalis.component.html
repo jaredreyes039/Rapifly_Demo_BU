@@ -188,37 +188,37 @@
                                     [ngClass]="{'active-phase' : selectedPhase == 'B'}">
                                     {{ (selectedPhase == 'B') ? 'Brainstorm' : 'B' }}
                                 </p><p>&nbsp;|</p>
-                                <p (click)="parentIsActiveSelection ? selectPhase('P') : throwToastrError('Must select a parent item first.')" title="Prioritize" class="cursor-pointer"
+                                <p (click)="selectPhase('P')" title="Prioritize" class="cursor-pointer"
                                     [ngClass]="{'active-phase' : selectedPhase == 'P'}">
                                     {{ (selectedPhase == 'P') ? 'Prioritize' : 'P' }}
                                 </p><p>&nbsp;|</p>
-                                <p (click)="parentIsActiveSelection ? selectPhase('D') : throwToastrError('Must select a parent item first.')" title="Deactivate" class="cursor-pointer"
+                                <p (click)="selectPhase('D') " title="Deactivate" class="cursor-pointer"
                                     [ngClass]="{'active-phase' : selectedPhase == 'D'}">
                                     {{ (selectedPhase == 'D') ? 'Deactivate' : 'D' }}
                                 </p><p>&nbsp;|</p>
-                                <p (click)="parentIsActiveSelection ? selectPhase('PR') : throwToastrError('Must select a parent item first.')" title="Propose" class="cursor-pointer"
+                                <p (click)="selectPhase('PR') " title="Propose" class="cursor-pointer"
                                     [ngClass]="{'active-phase' : selectedPhase == 'PR'}">
                                     {{ (selectedPhase == 'PR') ? 'Propose' : 'P' }}
                                 </p><p>&nbsp;|</p>
-                                <p (click)="parentIsActiveSelection ? selectPhase('V') : throwToastrError('Must select a parent item first.')" title="Vote" class="cursor-pointer"
+                                <p (click)="selectPhase('V') " title="Vote" class="cursor-pointer"
                                     [ngClass]="{'active-phase' : selectedPhase == 'V'}">
                                     {{ (selectedPhase == 'V') ? 'Vote' : 'V' }}
                                 </p><p>&nbsp;|</p>
-                                <p (click)="parentIsActiveSelection ? selectPhase('S') : throwToastrError('Must select a parent item first.')" title="Select" class="cursor-pointer"
+                                <p (click)="selectPhase('S') " title="Select" class="cursor-pointer"
                                     [ngClass]="{'active-phase' : selectedPhase == 'S'}">
                                     {{ (selectedPhase == 'S') ? 'Select' : 'S' }}
                                 </p>
                             </div>
                             <div class="col-md-9 space-stage" *ngIf="selectedStage == 'execute'">
-                                <p (click)="parentIsActiveSelection ? selectPhase('DG') : throwToastrError('Must select a parent item first.')" title="Delegate" class="cursor-pointer"
+                                <p (click)="selectPhase('DG') " title="Delegate" class="cursor-pointer"
                                     [ngClass]="{'active-phase' : selectedPhase == 'DG'}">
                                     {{ (selectedPhase == 'DG') ? 'Delegate' : 'D' }}
                                 </p><p>&nbsp;|</p>
-                                <p (click)="parentIsActiveSelection ? selectPhase('C') : throwToastrError('Must select a parent item first.')" title="Countdown" class="cursor-pointer"
+                                <p (click)="selectPhase('C') " title="Countdown" class="cursor-pointer"
                                     [ngClass]="{'active-phase' : selectedPhase == 'C'}">
                                     {{ (selectedPhase == 'C') ? 'Countdown' : 'C' }}
                                 </p><p>&nbsp;|</p>
-                                <p (click)="parentIsActiveSelection ? selectPhase('L') : throwToastrError('Must select a parent item first.')" title="Launch" class="cursor-pointer"
+                                <p (click)="selectPhase('L') " title="Launch" class="cursor-pointer"
                                     [ngClass]="{'active-phase' : selectedPhase == 'L'}">
                                     {{ (selectedPhase == 'L') ? 'Launch' : 'L' }}
                             </div>
@@ -321,7 +321,7 @@
                         <div>
                             <div class="panel-heading panel-aler" role="tab" id="headingThree3">
                                 <h4 class="panel-title" style="display: flex; justify-content: space-between; align-items: center;">
-                                    <a aria-controls="collapseTwo">{{alertView}} Alerts</a>
+                                    <a aria-controls="collapseTwo">{{alertView === 'Launch' ? 'Launch Overview' : alertView === 'Report' ? 'Threshold Overview' : 'N/A'}}</a>
                                     <button class="btn-primary" style="border: none;" (click)="toggleAlertView()">
                                         <mat-icon>swap_horiz</mat-icon>
                                     </button>
@@ -344,6 +344,40 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="col-md-12" *ngIf="filteredAlerts && filteredAlerts.length > 0 && alertView == 'Report'">
+                                    <div *ngFor="let p of filteredAlerts;">
+                                        <div class="alert alert-caution" role="alert" *ngIf="p.alert_type == 'Moderate'"> 
+                                            <strong>REPORT FILED: {{p.goal.toUpperCase()}}</strong>
+                                            <p>{{p.warning}}</p>
+                                            <ul style="list-style: circle;">
+                                                <li><strong>Production Threshold:</strong> {{p.prod_threshold}}</li>
+                                                <li><strong>Expense Threshold:</strong> {{p.exp_threshold}}</li>
+                                                <li><strong>Actual Production:</strong> {{p.actual_prod}}</li>
+                                                <li><strong>Actual Expense:</strong> {{p.actual_exp}}</li>
+                                            </ul>
+                                        </div>
+                                        <div class="alert alert-danger" role="alert" *ngIf="p.alert_type == 'Severe'"> 
+                                            <strong>REPORT FILED: {{p.goal.toUpperCase()}}</strong>
+                                            <p>{{p.warning}}</p>
+                                            <ul style="list-style: circle;">
+                                                <li><strong>Production Threshold:</strong> {{p.prod_threshold}}</li>
+                                                <li><strong>Expense Threshold:</strong> {{p.exp_threshold}}</li>
+                                                <li><strong>Actual Production:</strong> {{p.actual_prod}}</li>
+                                                <li><strong>Actual Expense:</strong> {{p.actual_exp}}</li>
+                                            </ul>
+                                        </div>
+                                        <div class="alert alert-success" role="alert" *ngIf="p.alert_type == 'Standard'"> 
+                                            <strong>REPORT FILED: {{p.goal.toUpperCase()}}</strong>
+                                            <p>{{p.warning}}</p>
+                                            <ul style="list-style: circle;">
+                                                <li><strong>Production Threshold:</strong> {{p.prod_threshold}}</li>
+                                                <li><strong>Expense Threshold:</strong> {{p.exp_threshold}}</li>
+                                                <li><strong>Actual Production:</strong> {{p.actual_prod}}</li>
+                                                <li><strong>Actual Expense:</strong> {{p.actual_exp}}</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="col-md-12 text-center" *ngIf="alertdata && alertdata.length == 0">
                                     <h5>Alert not found.</h5>
                                 </div>
@@ -355,7 +389,7 @@
         </div>
 
         <!-- PARENT ITEM PROJECT PROFILE DISPLAY -->
-
+        <!-- ONLY FOR PARENT ITEMS -->
         <div class="col-md-9" *ngIf="parentplanDetails[0] && parentplanDetails[0] != '' && selectedPhase !='project' && selectedPhase != 'user'
         && selectedPhase != 'team' && selectedPhase !== 'security' && selectedPhase != 'coaches-corner' "
         [hidden]="!parentIsActiveSelection">
@@ -912,7 +946,7 @@
     <!-- BEGIN BLOCK: BRAINSTORM AND IMPROVE -->
         <!-- ACTIVE: selectedPhase:B || selectedPhase:I -->
         <!-- HIDDEN: Any module is selected (selectedModules:true) or if it isn't blank (selectedModules:'') -->
-        <div class="col-md-9" *ngIf="selectedPhase === 'B' || selectedPhase === 'I'"
+        <div class="col-md-9" *ngIf="selectedPhase === 'B' || selectedPhase === 'I'" 
             [hidden]="selectedModules && selectedModules != ''">
 
             <!-- ACTIVE: When parent is active (parentIsActiveSelection:true) -->
@@ -1074,13 +1108,15 @@
                                 </div>
                         </div>
             </form>
+            
+            <!-- ONLY FOR PARENT ITEMS -->
             <mat-expansion-panel class="expanse-panel" *ngIf="parentIsActiveSelection" [expanded]="true">
             <mat-expansion-panel-header class="page-title">
                 <h3 *ngIf="parentIsActiveSelection">
                     {{ (selectedPhase == 'I') ? 'Improve' : 'Add Sub Item' }}
                 </h3>
             </mat-expansion-panel-header>
-        <form #kform="ngForm" class="p-3" [formGroup]="childPlanForm" *ngIf="!editChildEnabled || parentIsActiveSelection">
+            <form #kform="ngForm" class="p-3" [formGroup]="childPlanForm" *ngIf="!editChildEnabled || parentIsActiveSelection">
                 <div class="panel panel-cutom-blue">
                     <div class="panel-body">
                         <div style="padding: 10px;">
@@ -1295,7 +1331,7 @@
                 </div>
             </form>
 
-            <div *ngIf="!editChildEnabled && !parentIsActiveSelection" class="panel panel-cutom-blue">
+            <!-- <div *ngIf="!editChildEnabled && !parentIsActiveSelection" class="panel panel-cutom-blue">
                 <div class="panel-body">
                     <div style="padding: 10px;">
                         <div style="display: flex; flex-direction: row; gap: 24px; margin-bottom: 24px;">
@@ -1448,12 +1484,13 @@
                         </div>
                     </mat-expansion-panel>
                 </div>
-            </div>
+            </div> -->
 
             </mat-expansion-panel>
 
 
             <!-- WHEN A SUB ITEM IS SELECTED -->
+            <!-- CHILD ITEMS ONLY -->
             <!-- ACTUIVE: When a parent isn't selected -->
             <div class="expanse-panel" *ngIf="!parentIsActiveSelection && !editChildEnabled">
             <div style="display: flex; flex-direction: row; justify-content: space-between; align-items: center;">
@@ -1796,6 +1833,307 @@
             </mat-expansion-panel>
         </div>
 
+        <div class="col-md-9" *ngIf="!parentIsActiveSelection && !editChildEnabled && selectedPhase !== 'project'" [hidden]="selectedPhase === 'B'">
+                        <!-- WHEN A SUB ITEM IS SELECTED -->
+            <!-- CHILD ITEMS ONLY -->
+            <!-- ACTUIVE: When a parent isn't selected -->
+            <div class="expanse-panel" *ngIf="!parentIsActiveSelection && !editChildEnabled">
+                <div style="display: flex; flex-direction: row; justify-content: space-between; align-items: center;">
+                    <h3 class="page-title"  *ngIf="!parentIsActiveSelection">
+                        {{ (selectedPhase == 'I') ? 'Improve' : 'Project Profile' }}
+                    </h3>
+                    <button *ngIf="!parentIsActiveSelection" class="btn btn-primary" (click)="childgoalDetails.parent_goal_id == '#' ? visitParentForm(childgoalDetails.plan_id) : getgoaldetail(childgoalDetails.parent_goal_id, '')">
+                        Go To Parent
+                    </button>
+                </div>
+    
+                <!-- DISPLAYS SELECTED SUB ITEM -->
+                <div>
+                    <div class="panel panel-cutom-blue">
+                        <div class="panel-body">
+                            <div style="padding: 10px;">
+                                <div class="text-right" style="margin-bottom: 24px;">
+                                    <button routerLink="/item-plans/{{ goalplanid }}" class="btn btn-warning"><i
+                                            class="fa fa-comments"></i></button>
+                                </div>
+                                <div style="display: flex; flex-direction: row; gap: 24px; margin-bottom: 24px;">
+                                        <div style="display: flex; flex-direction: column; flex-basis: 45%;">
+                                            <div  style="display: flex;  margin-bottom: 12px;">
+                                                <div class="parent-item-label">Short Name:</div>
+                                                <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
+                                                    {{childgoalDetails.short_name}}</div>
+                                            </div>
+                                            <div  style="display: flex;">
+                                                <div class="parent-item-label">Long Name:</div>
+                                                <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
+                                                    {{childgoalDetails.long_name}}</div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div style="display: flex; flex-direction: column; flex-basis: 45%;">
+                                            <div style="display: flex; margin-bottom: 12px;">
+                                                <div class=" parent-item-label">Start Date:</div>
+                                                <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
+                                                    {{childgoalDetails.start_date | itemplanitemdate }}</div>
+                                            </div>
+                                            <div style="display: flex;">
+                                                <div class=" parent-item-label">End Date:</div>
+                                                <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
+                                                    {{childgoalDetails.end_date | itemplanitemdate }}</div>
+                                            </div>
+                                        </div>
+                                        <div style="display: flex; flex-direction: column; flex-basis: 45%;">
+                                            <div style="display: flex; margin-bottom: 12px;">
+                                                <div class=" parent-item-label parent-item-label-alert">Production Target:</div>
+                                                <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
+                                                    {{childgoalDetails.production_target }}</div>
+                                            </div>
+                                            <div style="display: flex;">
+                                                <div class=" parent-item-label parent-item-label-alert">Expense Target:</div>
+                                                <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
+                                                    {{childgoalDetails.expense_target === "" ? 'Unspecified' : childgoalDetails.expense_target}}</div>
+                                            </div>
+                                        </div>
+                                </div>
+                                <div style="display: flex; margin-bottom: 12px;">
+                                    <div class="text-white bg-dark parent-item-val-spec" style="padding: 6px;">
+                                        <div class=" parent-item-label-spec">Description</div>
+                                        <p>{{childgoalDetails.description}}</p>
+                                    </div>
+                                </div>
+                                <hr>
+                                                    <mat-expansion-panel  [expanded]="true">
+                            <mat-expansion-panel-header class="page-title" style="margin-bottom: 24px;" >
+                                <h3>Dashboard</h3>
+                            </mat-expansion-panel-header>
+                            <div style="display: flex; flex-direction: row;">
+                                <div style="display: flex; flex-direction: column; flex-basis: 45%;">
+                                    <div  style="display: flex;  margin-bottom: 12px;">
+                                        <div class="parent-item-label parent-item-label-alert">Production Target:</div>
+                                        <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
+                                            {{childgoalDetails.production_target === 'null' ? "Edit plan to add target" : childgoalDetails.production_target}}</div>
+                                    </div>
+                                    <div  style="display: flex; margin-bottom: 12px;">
+                                        <div class="parent-item-label">Production Weight:</div>
+                                        <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
+                                            {{childgoalDetails.production_weight === 'null' ? "Edit plan to add weight" : childgoalDetails.production_weight}}</div>
+                                    </div>
+                                    <div  style="display: flex;">
+                                        <div class="parent-item-label">Expense Weight:</div>
+                                        <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
+                                            {{childgoalDetails.expense_weight === 'null' ? "Edit plan to add weight" : childgoalDetails.expense_weight}}</div>
+                                    </div>
+                                </div>
+                                <div style="display: flex; flex-direction: column; flex-basis: 45%;">
+                                    <div  style="display: flex;  margin-bottom: 12px;">
+                                        <div class="parent-item-label parent-item-label-alert">Expense Target:</div>
+                                        <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
+                                            {{childgoalDetails.expense_target === 'null' ? "Edit plan to add target" : childgoalDetails.expense_target}}</div>
+                                    </div>
+                                    <div  style="display: flex; margin-bottom: 12px;">
+                                        <div class="parent-item-label">Production Threshold:</div>
+                                        <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
+                                            {{childgoalDetails.personal_production_variance === 'null' ? "Edit plan to add production threshold" : childgoalDetails.personal_production_variance}}</div>
+                                    </div>
+                                    <div  style="display: flex;">
+                                        <div class="parent-item-label">Expense Threshold:</div>
+                                        <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
+                                            {{childgoalDetails.personal_expense_variance === 'null' ? "Edit plan to add expense threshold" : childgoalDetails.personal_expense_variance}}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 form-group text-right">
+                                <button (click)="toggleEditChild()"
+                                    class="btn btn-primary btn-space">Edit</button>
+                            </div>
+                        </mat-expansion-panel>
+                            </div>
+                        </div>
+                        <mat-expansion-panel>
+                            <mat-expansion-panel-header class="page-title">
+                                <h3>Additional Fields</h3>
+                            </mat-expansion-panel-header>
+                        <div  *ngFor="let parentplan of parentplanDetails[0] | keyvalue " style="padding-top: 12px;">
+                            <div style="display: flex; flex-direction: column;"
+                                *ngIf="parentplan.key !='_id' && parentplan.key !='shared_permission_users' && parentplan.key !='share_users' && parentplan.key !='shared_plan_users' && parentplan.key !='user_group_id' && parentplan.key !='number' && parentplan.key !='motivation' && parentplan.value && parentplan.value !== ''" [hidden]="parentplan.value==''">
+                                <div style="display: flex; flex-direction: row; margin-bottom: 12px;"
+                                    *ngIf="parentplan.value != '' && parentplan.key !='start_date' && parentplan.key !='end_date' && parentplan.key !='user_id' && parentplan.key !='security' && parentplan.key != 'short_name' && parentplan.key != 'long_name' && parentplan.key != 'production_target' && parentplan.key != 'expense_target' && parentplan.key != 'production_type'
+                                    && parentplan.key != 'description' && parentplan.key != 'numbers'">
+                                    <div class="parent-item-label">{{textDecoration(parentplan.key)}}:</div>
+                                    <div class="text-white bg-dark parent-item-val" style="width: 100%; max-width: unset; display: flex; align-items: center;" *ngIf="parentplan.key !='userid' ">
+                                        {{parentplan.value}}</div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </mat-expansion-panel>
+                    </div>
+                </div>
+    
+            </div>
+    
+                <!-- ACTIVE FORM GROUP: CHILDPLANFROMSUB -->
+                <!-- DATE IDS: 5/6 CONFLICT PRESENT W/ CHILD 1 AND PARENT -->
+                <mat-expansion-panel [expanded]="true" class="expanse-panel" *ngIf="!parentIsActiveSelection && !editChildEnabled && selectedPhase === 'project' && selectedStage === 'create'" [hidden]="parentIsActiveSelection || editChildEnabled">
+                    <mat-expansion-panel-header class="page-title">
+                        <h3 *ngIf="!parentIsActiveSelection">
+                            {{ (selectedPhase == 'I') ? 'Improve' : 'Add Sub Item' }}
+                        </h3>
+                    </mat-expansion-panel-header>
+                    <form #kform="ngForm" class="p-3" [formGroup]="childPlanFormSub" *ngIf="!editChildEnabled || !parentIsActiveSelection">
+                        <div class="panel panel-cutom-blue">
+                            <div class="panel-body">
+                                <div style="padding: 10px;">
+                                    <div style="display: flex; flex-direction: row; gap: 24px; margin-bottom: 24px;">
+        
+                                        <div style="display: flex; flex-direction: column; flex-basis: 45%;">
+                                            <div style="display: flex;  margin-bottom: 12px;">
+                                            <label class="parent-item-label" for="exampleInputEmail1">Short Name<span>*</span></label>
+                                            <input type="text" formControlName="short_name" class="text-white bg-dark parent-item-val form-control form-control-spec"
+                                                placeholder="Short name"
+                                                [ngClass]="{ 'is-invalid': submitted && f.short_name.errors }" autocomplete="off">
+                                            <div *ngIf="submitted && f.short_name.errors" class="invalid-feedback">
+                                                <div *ngIf="f.short_name.errors.required">Short name is required</div>
+                                            </div>
+                                            </div>
+        
+                                            <div style="display: flex;  margin-bottom: 12px;">
+        
+                                            <label class="parent-item-label" for="exampleInputPassword1">Long Name<span>*</span></label>
+                                            <input type="text" id="long_name" formControlName="long_name" class="text-white bg-dark parent-item-val form-control form-control-spec"
+                                                placeholder="Long name"
+                                                [ngClass]="{ 'is-invalid': submitted && f.long_name.errors }" autocomplete="off">
+                                            <div *ngIf="submitted && f.long_name.errors" class="invalid-feedback">
+                                                <div *ngIf="f.long_name.errors.required">Long name is required</div>
+                                            </div>
+                                            </div>
+                                        </div>
+    
+                                    
+                                        <div style="display: flex; flex-direction: column; flex-basis: 45%;">
+                                            <div style="display: flex;  margin-bottom: 12px;">
+        
+                                            <label class="parent-item-label" for="exampleInputPassword1">Start Date<span>*</span></label>
+                                            <div class="input-group input-append bootstrap-datepicker">
+                                                <input type="text" id="date-input5" formControlName="start_date"
+                                                class="text-white bg-dark parent-item-val form-control form-control-spec bg-dark date-picker" placeholder="Start Date" autocomplete="off">
+                                                <span style="background-color: #8869c2;" class="input-group-addon add-on"><i
+                                                        class="fa fa-calendar"></i></span>
+                                            </div>
+                                            </div>
+                                            <div style="display: flex;  margin-bottom: 12px;">
+                                            <label class="parent-item-label" for="exampleInputPassword1">End Date<span>*</span></label>
+                                            <div class="bg-dark input-group input-append bootstrap-datepicker">
+                                                <input type="text" id="date-input6" formControlName="end_date"
+                                                class="text-white bg-dark parent-item-val form-control form-control-spec date-picker" placeholder="End Date" autocomplete="off">
+                                                <span style="background-color: #8869c2;" class="input-group-addon add-on"><i
+                                                        class="fa fa-calendar"></i></span>
+                                            </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                        <div style="display: flex; flex-direction: column; flex-basis: 45%;">
+                                            <div style="display: flex;  margin-bottom: 12px;">
+        
+                                                <div class="text-white bg-dark parent-item-val-spec" style="padding: 6px;">
+                                                <div class=" parent-item-label-spec">Description</div>
+                                                <textarea type="text" formControlName="description" class="form-control bg-dark"
+                                                placeholder="Click to edit description" style="border-radius: 0px; border: none; border-left: 2px solid #fff; padding-left: 12px;"></textarea>
+                                                <div *ngIf="submitted && f.description.errors" class="invalid-feedback">
+                                                    <div *ngIf="f.description.errors.required">Description is required</div>
+                                                </div>                                    
+                                            </div>
+                                            </div>
+                                        </div>
+        
+                                        <mat-expansion-panel  [expanded]="false">
+                                        <mat-expansion-panel-header class="page-title" style="margin-bottom: 24px;" >
+                                            <h3>Dashboard</h3>
+                                        </mat-expansion-panel-header>
+                                        <div style="display: flex; flex-direction: row; margin-bottom: 12px;">
+        
+                                        <div style="display: flex; flex-direction: row;">
+                                            <div style="display: flex; flex-direction: column;">
+                                            <div style="display: flex;">
+                                            <label class="parent-item-label parent-item-label-alert" for="exampleInputEmail1">Production Target</label>
+                                            <input type="text" formControlName="production_target" class="text-white bg-dark parent-item-val form-control form-control-spec"
+                                                placeholder="Production Target"
+                                                [ngClass]="{ 'is-invalid': submitted && f.production_target.errors }" autocomplete="off">
+                                            <div *ngIf="submitted && f.production_target.errors" class="invalid-feedback">
+                                                <div *ngIf="f.production_target.errors.required">Production target is required</div>
+                                            </div>
+                                            </div>
+                                            </div>
+                                            <div style="display: flex;  margin-left: 12px;">
+        
+                                            <label class="parent-item-label parent-item-label-alert" for="exampleInputPassword1">Expense Target</label>
+                                            <input type="text" id="long_name" formControlName="expense_target" class="text-white bg-dark parent-item-val form-control form-control-spec"
+                                                placeholder="Expense Target"
+                                                [ngClass]="{ 'is-invalid': submitted && f.expense_target.errors }" autocomplete="off">
+                                            <div *ngIf="submitted && f.expense_target.errors" class="invalid-feedback">
+                                                <div *ngIf="f.expense_target.errors.required">Expense target is required</div>
+                                            </div>
+                                            </div>
+                                            <div style="display: flex;  margin-left: 12px;">
+                                                <label class="parent-item-label parent-item-label-alert">Target Type</label>
+                                                <select class="text-white bg-dark parent-item-val form-control form-control-spec" formControlName="production_type">
+                                                    <option value="">Select Type</option>
+                                                    <option value="dollars">Dollars</option>
+                                                    <option value="units">Units</option>
+                                                    <option value="percentage">Percentage</option>
+                                                </select>
+                                                <div *ngIf="IsLoginFormValid && jval.production_type.errors" class="invalid-feedback">
+                                                    <label *ngIf="jval.production_type.errors.required" class="error">Production type is
+                                                        required</label>
+                                                </div>
+                                            </div>   
+                                        </div>
+                                        
+                                        </div>
+                                        <div style="display: flex;">
+                                        <div style="display: flex; flex-direction: column; margin-right: 12px;">
+                                            <div style="display: flex;  margin-bottom: 12px;">
+                                            <label class="parent-item-label">Production Weight</label>
+                                            <input type="number"class="text-white bg-dark parent-item-val form-control form-control-spec" placeholder="Production weight" formControlName="production_weight">
+                                            <div *ngIf="submitted && f.production_weight.errors" class="invalid-feedback">
+                                                <label *ngIf="f.production_weight.errors.required" class="error">Expense weight is required</label>
+                                            </div>
+                                            </div>
+                                            <div style="display: flex;  margin-bottom: 12px;">
+                                            <label class="parent-item-label">Expense Weight</label>
+                                            <input type="number" class="text-white bg-dark parent-item-val form-control form-control-spec" placeholder="Expense weight" formControlName="expense_weight">
+    
+                                            </div>
+        
+                                        </div>
+                                        <div style="display: flex; flex-direction: column;">
+                                            <div style="display: flex;  margin-bottom: 12px;">
+                                            <label class="parent-item-label">Production Threshold</label>
+                                            <input type="number" class="text-white bg-dark parent-item-val form-control form-control-spec" placeholder="Low Variance Alert" formControlName="personal_production_variance" >
+                                            </div>
+                                            <div style="display: flex;  margin-bottom: 12px;">
+                                            <label class="parent-item-label">Expense Threshold</label>
+                                            <input type="number" class="text-white bg-dark parent-item-val form-control form-control-spec" placeholder="Hight Variance Alert" formControlName="personal_expense_variance" >
+                                        </div>
+                                        </div>
+                                    </div>
+                                        </mat-expansion-panel>
+        
+                                        <div class="col-md-12 form-group text-right">
+                                            <button type="submit " (click)="onSubmitSub()"
+                                                [disabled]="!checkforgoaledit && !isSharedPlanPermission"
+                                                class="btn btn-primary btn-space">Save</button>
+                                            <button type="reset" (click)="reset()" [disabled]="!checkforgoaledit "
+                                                class="btn btn-default">Clear</button>
+                                        </div>
+    
+    
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </mat-expansion-panel>
+        </div>
         <!-- MODULE VIEW -->
         <div class="col-md-9" *ngIf="selectedPhase === 'B' || selectedPhase === 'I'
         || selectedModules !== 'strategy' || selectedModules !== 'task'
@@ -2286,7 +2624,7 @@
     <!-- ACTIVE FROM GROUP: CHILDPLANFORM CONFLIC PRESENT (?) -->
     <!-- DATE IDS: 5/6 CONFLICT PRESENT -->
         <div class="col-md-9" *ngIf="selectedPhase == 'D'">
-            <div class="expanse-panel" [hidden]="parentIsActiveSelection">
+            <!-- <div class="expanse-panel" [hidden]="parentIsActiveSelection">
                 <form #kform="ngForm" class="p-3" [formGroup]="childPlanForm">
                     <div class="panel panel-cutom-blue">
                         <div class="panel-body">
@@ -2511,7 +2849,7 @@
                         </div>
                     </div>
                 </form>
-            </div>
+            </div> -->
             <mat-expansion-panel class="expanse-panel" [expanded]="true">
                 <mat-expansion-panel-header class="">
                     <div class="page-title">
