@@ -809,10 +809,11 @@ export class ItemPlanDetailsComponent implements OnInit {
               a.getGoalReportByPlan(data.selected[0]);
               plan_id = data.selected[0];
               a.parentIsActiveSelection = true;
+              a.childgoalDetails = {}
             }
             
             // SUB ITEM LEVEL 1
-            else if (data.node.parent !== '#' && data.node.parents.length > 3) {
+            else if (data.node.parent !== '#' && data.node.parents.length < 3) {
               a.getgoaldetail(data.selected[0], data.node.parent);
               a.getGoalReportByPlan(data.node.parent);
               a.parentIsActiveSelection = false;
@@ -829,9 +830,9 @@ export class ItemPlanDetailsComponent implements OnInit {
               a.getgoaldetail(data.selected[0], data.node.parent);
               a.getGoalReportByPlan(data.node.parent);
               a.parentIsActiveSelection = false;
-              plan_id = data.node.parent;
               a.childParentId = data.node.parent
               a.goalid = data.selected[0]
+              plan_id = data.node.parents[data.node.parents.length - 2]
               a.getGoalAttachments(data.selected[0]);
               a.getGoalSharedUsers(data.selected[0]);
               a.checkPlanForGoalSharePermission(plan_id);
@@ -949,6 +950,7 @@ export class ItemPlanDetailsComponent implements OnInit {
     this.commonService.PostAPI(`goal/get/by/id`, { goal_id: goal }).then((response: any) => {
       if (response.status) {
         this.childgoalDetails = response.data;
+        console.log(this.childgoalDetails)
         if (this.currentuser.user._id == this.childgoalDetails.user_id) {
           this.checkforgoaledit = true;
         } else {
@@ -1282,24 +1284,6 @@ export class ItemPlanDetailsComponent implements OnInit {
   }
   reportgoalalert() {
     this.filteredAlerts = []
-    // this.commonService.PostAPI(`delegation/get/report/goal/alerts`, { user_id: this.currentuser.user._id }).then((response: any) => {
-    //   if (response.status) {
-    //     this.alertdata = response.data
-    //     this.alertView = 'Report'
-    //     this.filteredAlerts = this.alertdata.map((report: any)=>{
-    //       return {
-    //         plan_id: report.plan_id,
-    //         goal_id: report.goal_id,
-    //         actual_expense: report.actual_expense,
-    //         actual_production: report.actual_production,
-    //         alert_type: 'Moderate'
-    //       }
-    //     })
-    //     console.log(this.filteredAlerts)
-    //   } else {
-    //     this.toastr.error(response.message, "Error");
-    //   }
-    // });
     let parentPlanItems = this.finalarray.filter((planItem)=>{return planItem.parent === '#'})
     parentPlanItems.forEach((planItem)=>{
       this.commonService.PostAPI(`report/get/all`, { plan_id: planItem.id, user_id: this.currentuser.user._id }).then((response: any) => {
@@ -1463,10 +1447,14 @@ export class ItemPlanDetailsComponent implements OnInit {
     this.selectedStage = type;
     this.selectedModules = '';
     this.moduleItemActive = false;
-    this.parentIsActiveSelection = true;
     this.moduleType = 'goal'
     this.planGoals = []
-    this.getPlanGoals(this.parentplanDetails[0]._id)
+    if(this.parentplanDetails.length >= 1){
+      this.getPlanGoals(this.parentplanDetails[0]._id)
+    }
+    else {
+      return;
+    }
   }
   selectPhase(type: any) {
     if (this.planId && this.planId !== '') {
@@ -1766,17 +1754,19 @@ export class ItemPlanDetailsComponent implements OnInit {
     if (planid == '') {
       this.isDevidedInParts = 0
     } else {
+      console.log(planid)
       this.commonService.PostAPI(`goal/getgoals/bypid`, { id: planid, module_type: this.moduleType }).then((response: any) => {
         if (response.status) {
+          console.log(response.data)
           if(this.parentIsActiveSelection){
 
             // When a parent item is selected, this will filter out items nested deeper than 
             this.priorityGoals = response.data.filter((goal)=>{return goal.parent_goal_id.length === 1});
           }
           else {
-
             // When a child item is selected, this will filter out items unrelated
-            this.priorityGoals = response.data.filter((goal)=>{return goal.parent_goal_id.includes(this.childgoalDetails._id)})
+            console.log(response.data)
+            this.priorityGoals = response.data.filter((goal)=>{return goal.parent_goal_id[goal.parent_goal_id.length-1] === this.childgoalDetails._id})
           }
         } else {
           this.priorityGoals = [];
@@ -2032,6 +2022,17 @@ export class ItemPlanDetailsComponent implements OnInit {
     this.commonService.PostAPI(`goal/getgoals/bydelegate`, { id: planid, module_type: this.moduleType }).then((response: any) => {
       if (response.status && response.data && response.data.length > 0) {
         this.delegateGoals = response.data;
+        console.log(this.delegateGoals)
+        if(!this.parentIsActiveSelection && this.childgoalDetails.length !== 0){
+          this.delegateGoals = this.delegateGoals.filter((goal)=>{return goal.parent_goal_id[goal.parent_goal_id.length - 1] === this.childgoalDetails._id})
+        }
+        else {
+          this.delegateGoals = this.delegateGoals.filter((goal)=>{
+            if(goal.plan_id === this.planId){
+              return goal.parent_goal_id.length === 1
+            }
+          })
+        }
       } else {
         this.delegateGoals = [];
       }
@@ -2363,18 +2364,11 @@ export class ItemPlanDetailsComponent implements OnInit {
             dateFormat: "mm-dd-yy",
             setDate: new Date(),
             todayHighlight: true,
-            startDate: new Date(this.parentplanDetails[0].start_date),
-            endDate: new Date(this.parentplanDetails[0].end_date),
-            minDate: new Date(this.parentplanDetails[0].start_date),
-            maxDate: new Date(this.parentplanDetails[0].end_date)
           });
           $('#module-end-date').datepicker({
             setDate: new Date(),
             todayHighlight: true,
             startDate: new Date(this.parentplanDetails[0].start_date),
-            endDate: new Date(this.parentplanDetails[0].end_date),
-            minDate: new Date(this.parentplanDetails[0].start_date),
-            maxDate: new Date(this.parentplanDetails[0].end_date)
           });
     
           $('#module-start-date').datepicker().on('changeDate', function (e) {
@@ -2420,7 +2414,8 @@ export class ItemPlanDetailsComponent implements OnInit {
         } else {
           if (new Date(this.planstartdate) <= new Date(startDate) && new Date(this.planenddate) > new Date(startDate) && new Date(this.planstartdate) < new Date(endDate) && new Date(this.planenddate) >= new Date(endDate)) {
             var data = this.ModuleForm.value;
-            data.plan_id = this.planId
+            
+            data.plan_id = this.childgoalDetails ? this.childgoalDetails._id : this.planId
             data.user_id = this.currentuser.user._id
             data.status = 0;
             data.numbers = 0;
@@ -2516,19 +2511,20 @@ export class ItemPlanDetailsComponent implements OnInit {
   getModuleTreeDetails(type) {
     var data: any = {};
     var a = this;
-    data.plan_id = this.planId
+    data.plan_id = this.childgoalDetails._id ? this.childgoalDetails._id : this.planId
     data.user_id = this.currentuser.user._id
     data.module_type = type;
     this.commonService.PostAPI(`module/get-by-user-and-plan`, data).then((response: any) => {
       var treeArray: any = [];
       if (response.status && response.data && response.data.length > 0) {
         this.opportunityDetails = response.data;
+        console.log(response.data)
         response.data.filter((element)=>{
-          if(this.parentIsActiveSelection){
+          if(this.parentIsActiveSelection && !this.childgoalDetails){
             return element.plan_id === this.planId
           }
           else {
-            return element.plan_id === this.goalid.toString();
+            return element.plan_id === this.childgoalDetails._id
           }
         }).forEach(element => {
             if (element.parent_goal_id !== ''){
@@ -2559,7 +2555,7 @@ export class ItemPlanDetailsComponent implements OnInit {
   getModules() {
     var data: any = {};
 
-    data.plan_id = this.planId;
+    data.plan_id = this.childgoalDetails._id ? this.childgoalDetails._id : this.planId
     data.user_id = this.currentuser.user._id
     data.module_type = this.selectedModules;
 
@@ -2567,6 +2563,7 @@ export class ItemPlanDetailsComponent implements OnInit {
       if (response.status && response.data && response.data.length > 0) {
         this.opportunityDetails = response.data;
         this.moduleGoals = response.data;
+        console.log(this.moduleGoals)
       } else {
         this.moduleGoals = [];
       }
@@ -2597,7 +2594,6 @@ export class ItemPlanDetailsComponent implements OnInit {
     // this.selectedModules = '';
     this.selectedPhase = type;
     if (type == 'team') {
-      this.getChildDesignations(this.hierarchyDetails._id);
     }
 
     if (type == 'project') {
