@@ -242,11 +242,11 @@
                             <p>Challenges: </p>
                         </div>
                         <div class="col-md-9 space-stage">
-                            <p title="Opportunity" class="cursor-pointer" (click)="selectedPhase == 'B' ? selectModule('opportunity') : throwToastrError('Must be in brainstorm phase.')"
+                            <p title="Opportunity" class="cursor-pointer" (click)="selectModule('opportunity')"
                             [ngClass]="{'active-phase' : selectedModules == 'opportunity' && selectedPhase == 'B'}">
                                 Opportunity
                             </p><p>&nbsp;|</p>
-                            <p title="Problem" class="cursor-pointer" (click)="selectedPhase == 'B' ? selectModule('problem') : throwToastrError('Must be in brainstorm phase.')"
+                            <p title="Problem" class="cursor-pointer" (click)="selectModule('problem')"
                             [ngClass]="{'active-phase' : selectedModules == 'problem' && selectedPhase == 'B'}">
                                 Problem
                             </p>
@@ -2206,14 +2206,6 @@
                                     </div>
                                 </div>
                                     <div style="display: flex; flex-direction: column; flex-basis: 45%;">
-                                        <!-- <div style="display: flex;  margin-bottom: 12px;">
-
-                                        <label class="parent-item-label">Select Users</label>
-                                        <ng-select [items]="items" bindLabel="name" placeholder="Select Users"
-                                            formControlName="shared_users" appendTo="body" multiple="true"
-                                            [(ngModel)]="selected" (change)="onChange($event)">
-                                        </ng-select>
-                                        </div> -->
                                         <div style="display: flex;  margin-bottom: 12px;">
 
                                             <div class="text-white bg-dark parent-item-val-spec" style="padding: 6px;">
@@ -2232,30 +2224,6 @@
                                         <h3>Dashboard</h3>
                                     </mat-expansion-panel-header>
                                     <div style="display: flex; flex-direction: row; gap: 24px; margin-bottom: 24px;">
-                                    <!-- <div class="col-md-3 form-group">
-                                        <label>Production Target</label>
-                                        <input type="number" class="form-control" placeholder="Production Target" formControlName="production_target" [ngClass]="{ 'is-invalid': submitted && f.production_target.errors }">
-                                        <div *ngIf="submitted && f.production_target.errors" class="invalid-feedback">
-                                            <label *ngIf="f.production_target.errors.required" class="error">Production target is required</label>
-                                        </div>
-                                    </div> -->
-                                    <!-- <div class="col-md-3 form-group">
-                                        <label>Type</label>
-                                        <select class="form-control" formControlName="production_type">
-                                            <option value="">Select Type</option>
-                                            <option value="units">Units</option>
-                                        </select>
-                                        <div *ngIf="submitted && f.production_type.errors" class="invalid-feedback">
-                                            <label *ngIf="f.production_type.errors.required" class="error">Production type is required</label>
-                                        </div>
-                                    </div> -->
-                                    <!-- <div class="col-md-6 form-group">
-                                        <label>Expense Target</label>
-                                        <input type="number" class="form-control" placeholder="Expense Target" formControlName="expense_target" [ngClass]="{ 'is-invalid': submitted && f.expense_target.errors }">
-                                        <div *ngIf="submitted && f.expense_target.errors" class="invalid-feedback">
-                                            <label *ngIf="f.expense_target.errors.required" class="error">Expense target is required</label>
-                                        </div>
-                                    </div> -->
                                     <div style="display: flex; flex-direction: column; flex-basis: 45%;">
                                         <div style="display: flex;  margin-bottom: 12px;">
                                         <label class="parent-item-label parent-item-label-alert" for="exampleInputEmail1">Production Target</label>
@@ -3339,7 +3307,7 @@
             <!-- DATA TBL ID: table-delegate -->
             <div class="panel panel-cutom-blue">
                 <div class="table-responsive">
-                    <table id="table-delegate" datatable [dtOptions]="dtOptionsDelegate" [dtTrigger]="dtTriggerDelegate"
+                    <table id="table-delegate" 
                         class="display table table-data-width">
                         <thead>
                             <tr>
@@ -3419,7 +3387,7 @@
 
             <!-- DATA TBL ID: table-countdown -->
             <div class="panel panel-cutom-blue">
-                <table id="table-countdown" datatable [dtOptions]="dtOptionsCountdown" [dtTrigger]="dtTriggerCountdown"
+                <table id="table-countdown" 
                     class="display table table-data-width">
                     <thead>
                         <tr>
