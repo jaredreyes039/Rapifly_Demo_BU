@@ -2386,7 +2386,7 @@ export class ItemPlanDetailsComponent implements OnInit {
         }
       }
       else {
-        this.toastr.error("Please select root item before using modules.", "Error")
+        this.toastr.error("Please select plan item before using modules.", "Error")
       }
     }
   }
