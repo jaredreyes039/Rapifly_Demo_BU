@@ -2348,7 +2348,7 @@ export class ItemPlanDetailsComponent implements OnInit {
       if(!this.parentIsActiveSelection && (type === 'problem' || type === 'opportunity')){
         this.parentIsActiveSelection = true;
       }
-      if(this.parentIsActiveSelection){
+      if(this.parentIsActiveSelection || this.childgoalDetails && !this.parentIsActiveSelection){
         this.moduleItemActive = false;
         this.isSelectedChallange = false;
         this.ModuleForm.reset()
