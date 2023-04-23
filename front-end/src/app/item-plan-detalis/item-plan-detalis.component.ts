@@ -1246,95 +1246,60 @@ export class ItemPlanDetailsComponent implements OnInit {
     }
   }
   launchgoalalert() {
-    this.commonService.PostAPI(`delegation/get/launch/goal/alerts`, { user_id: this.currentuser.user._id }).then((response: any) => {
-      if (response.status) {
-        this.alertdata = response.data
+    this.commonService.PostAPI(`user_alerts/create/alert/launch`, {
+      user_id: this.currentuser.user._id
+    })
+    this.commonService.PostAPI('user_alerts/get/alerts/launch', {
+      user_id: this.currentuser.user._id
+    }).then((res: any)=>{
+      if(res.status){
         this.alertView = 'Launch'
-        // Due in 7 Days
-        this.filteredAlerts = this.alertdata.filter((doc: any)=>{
-          return new Date(doc.end_date).getDate() <= (new Date(Date.now()).getDate() + 7) && (new Date(doc.end_date).getDate()) >= (new Date(Date.now()).getDate()+3) && new Date(doc.end_date).getMonth() == new Date(Date.now()).getMonth()
-        }).map((doc: any)=>{
-          return doc = {
-            plan_id: doc.plan_id,
-            goal_id: doc._id,
-            short_name: doc.short_name,
-            end_date: new Date(doc.end_date).toDateString(),
-            alert_type: "Moderate"
-          }
-        })
-        
-        // Due in 3 Days
-        this.alertdata.filter((doc: any)=>{
-          return new Date(doc.end_date).getDate() <= (new Date(Date.now()).getDate() + 3) && new Date(doc.end_date).getDate() >= (new Date(Date.now()).getDate()) && new Date(doc.end_date).getMonth() == new Date(Date.now()).getMonth()
-        }).map((doc: any)=>{
-          this.filteredAlerts.push({
-            plan_id: doc.plan_id,
-            goal_id: doc._id,
-            short_name: doc.short_name,
-            end_date: new Date(doc.end_date).toDateString(),
-            alert_type: "Severe"
-          })
-        })
-
-
-      } else {
-        this.toastr.error(response.message, "Error");
+        this.filteredAlerts = res.data;
       }
-    });
+      else {
+        this.toastr.error(res.message, 'Error')
+      }
+    })
   }
   reportgoalalert() {
     this.filteredAlerts = []
     let parentPlanItems = this.finalarray.filter((planItem)=>{return planItem.parent === '#'})
     parentPlanItems.forEach((planItem)=>{
-      this.commonService.PostAPI(`report/get/all`, { plan_id: planItem.id, user_id: this.currentuser.user._id }).then((response: any) => {
-        if (response.status && response.data && response.data.length > 0) {
-            this.reportGoals = response.data.filter(report => report.element.isReportReady);
-            
-            let alert_type: String;
-            let warningMsg: String;
-            this.reportGoals.map((report)=>{
-              alert_type = ""
-              warningMsg = ""
-              // SET ALERT COLOR BY TYPE
-              if(report.element.personal_production_variance > report.actual_production && report.element.personal_expense_variance < report.actual_expense){
-                alert_type = 'Severe'
-                warningMsg = 'Report is BELOW production threshold AND ABOVE expense threshold.'
-              }
-              else if (report.element.personal_production_variance > report.actual_production && report.element.personal_expense_variance >= report.actual_expense) {
-                alert_type = 'Moderate'
-                warningMsg = 'Report is BELOW production threshold.'
-              }
-              else if (report.element.personal_production_variance <= report.actual_production && report.element.personal_expense_variance < report.actual_expense) {
-                alert_type = 'Moderate'
-                warningMsg = 'Report is ABOVE expense threshold.'
-              }
-              else {
-                alert_type = 'Standard'
-                warningMsg = 'Report is within bounds, congratulations!'
-              }
+      this.commonService.PostAPI(`user_alerts/get/alerts/report`, {
+        plan_id: planItem.id,
+        user_id: this.currentuser.user._id
+      }).then((docs: any)=>{
+        this.filteredAlerts = docs.data
+      })
 
-              this.filteredAlerts.push({
-                alert_type: alert_type,
-                warning: warningMsg,
-                goal: report.element.short_name,
-                prod_threshold: report.element.personal_production_variance,
-                exp_threshold: report.element.personal_expense_variance,
-                actual_prod: report.actual_production,
-                actual_exp: report.actual_expense
-              })
-              console.log(this.filteredAlerts)
-          })
-        } else {
-          this.reportGoals = [];
-        }
-        this.dtTriggerReport.next();
-        this.tableId = 'report-table';
-        this.dataTableAfterViewInit();
-      });
     })
   }
 
+  deleteAlert(alert_id){
+    this.commonService.PostAPI('user_alerts/set/alert/deletion', {
+      _id: alert_id,
+      user_id: this.currentuser.user._id
+    }).then((res: any)=>{
+      if(res.status){
+        this.toastr.success('Notification removed.', 'Success')
+      }
+      else {
+        this.toastr.error('Failed to delete notification, please try again later.', 'Error')
+      }
+    })
 
+    this.commonService.PostAPI('user_alerts/get/alerts/launch', {
+      user_id: this.currentuser.user._id
+    }).then((res: any)=>{
+      if(res.status){
+        this.alertView = 'Launch'
+        this.filteredAlerts = res.data;
+      }
+      else {
+        this.toastr.error(res.message, 'Error')
+      }
+    })
+  }
   getGoalReportByPlan(plan_id) {
     this.commonService.PostAPI(`plan/get/goal/report`, { plan_id: plan_id }).then((response: any) => {
       if (response.status) {
@@ -1615,15 +1580,17 @@ export class ItemPlanDetailsComponent implements OnInit {
         if (response.status && response.data && response.data.length > 0) {
           this.reportGoals = response.data.filter(report => {return report.element.isReportReady});
           let reports = response.data.map(report => {return {end_date: report.element.end_date, actual_expense: report.actual_expense, actual_production: report.actual_production}})
+         
+          // Sum of actual expenses
           this.actualExpenseSum = response.data.reduce((reportA, reportB)=> {
             return reportA + reportB.actual_expense
           }, 0)
 
+          // Expense data sorted by date
           var dataExp = reports.sort((reportA: any, reportB: any)=>{
             return new Date(reportA.end_date).getDate() - new Date(reportB.end_date).getDate()
           }),
           expResult = [];
-
           // Combine same dates
           for (let { end_date, actual_expense } of dataExp) {
               end_date = end_date.slice(0, 10);
@@ -1634,11 +1601,12 @@ export class ItemPlanDetailsComponent implements OnInit {
               if (temp) temp.actual_expense += actual_expense;                               // if found add to y
               else expResult.push({ end_date: end_date + 'T00:00:00.000Z', actual_expense });    // if not create object and push
           }
+
+
           var dataProd = reports.sort((reportA: any, reportB: any)=>{
             return new Date(reportA.end_date).getDate() - new Date(reportB.end_date).getDate()
           }),
           prodResult = [];
-
           // Combine same dates
           for (let { end_date, actual_production } of dataProd) {
               end_date = end_date.slice(0, 10);
@@ -1669,7 +1637,12 @@ export class ItemPlanDetailsComponent implements OnInit {
             this.reportGoals.sort((reportA: any, reportB: any)=> {
               return new Date(reportA.element.end_date).getDate() - new Date(reportB.element.end_date).getDate()
             })
-  
+            prodResult.sort((reportA: any, reportB: any)=>{
+                          return new Date(reportA.end_date).getDate() - new Date(reportB.end_date).getDate()
+            })
+            expResult.sort((reportA: any, reportB: any)=>{
+                          return new Date(reportA.end_date).getDate() - new Date(reportB.end_date).getDate()
+            })
             
             for(let i: any = 0; i < this.reportGoals.length; i++){
               this.datasetProd.push(this.reportGoals[i].actual_production)
@@ -2291,14 +2264,26 @@ export class ItemPlanDetailsComponent implements OnInit {
         }
       });
 
+
       this.tableId = 'report-table'
       $(`#${this.tableId}`).DataTable().clear()
       this.getReportGoals(this.planId)
+      this.createReportAlert(this.planId, this.reportGoalId, this.reportId, data)
     }
     this.chartIsLoaded = false;
     this.chartRendered = false;
     this.initMeasureCharts(true)
   }
+  createReportAlert(plan_id, goal_id, report_id, data){
+    this.getReportGoals(plan_id)
+    // GETS REPORT THAT WAS JUST FILED
+    let selectedReport = this.reportGoals.filter((report)=>{return report.report_id === report_id})
+    selectedReport[0].actual_production = data.actual_production
+    selectedReport[0].actual_expense = data.actual_expense
+    this.commonService.PostAPI(`user_alerts/create/alert/report`, selectedReport)
+    this.reportgoalalert()
+  }
+
   resetReportSearch() {
     this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
       dtInstance.destroy();
