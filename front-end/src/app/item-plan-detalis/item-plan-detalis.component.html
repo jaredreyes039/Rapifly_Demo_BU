@@ -331,23 +331,37 @@
                                 <div class="col-md-12" *ngIf="filteredAlerts && filteredAlerts.length > 0 && alertView == 'Launch'">
                                     <div *ngFor="let p of filteredAlerts;">
                                         <div class="alert alert-caution" role="alert" *ngIf="p.alert_type == 'Moderate'"> 
-                                            <strong>{{p.short_name}}</strong> launch date in less than <strong>7 days</strong>.
+                                            <div style="display: flex; width: 100%; justify-content: flex-end;">
+                                                <button (click)="deleteAlert(p._id)">
+                                                    <mat-icon>delete</mat-icon>
+                                                </button>
+                                            </div>
+                                            <strong>{{p.title}}</strong> launch date in less than <strong>7 days</strong>.
                                             <br>
-                                            <strong>Launch Date: </strong>{{p.end_date}}
+                                            <strong>{{p.warning}}</strong>
                                             <strong></strong>
                                         </div>
                                         <div class="alert alert-danger" role="alert" *ngIf="p.alert_type == 'Severe'"> 
-                                            <strong>{{p.short_name}}</strong> launch date in less than <strong>3 days</strong>.
+                                            <div style="display: flex; width: 100%; justify-content: flex-end;">
+                                                <button (click)="deleteAlert(p._id)">
+                                                    <mat-icon>delete</mat-icon>
+                                                </button>
+                                            </div>
+                                            <strong>{{p.title}}</strong> launch date in less than <strong>3 days</strong>.
                                             <br>
-                                            <strong>Launch Date: </strong>{{p.end_date}}
-                                            <strong></strong>
+                                            <strong>{{p.warning}}</strong>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-md-12" *ngIf="filteredAlerts && filteredAlerts.length > 0 && alertView == 'Report'">
                                     <div *ngFor="let p of filteredAlerts;">
-                                        <div class="alert alert-caution" role="alert" *ngIf="p.alert_type == 'Moderate'"> 
-                                            <strong>REPORT FILED: {{p.goal.toUpperCase()}}</strong>
+                                        <div class="alert alert-caution" role="alert" *ngIf="p.alert_type == 'Moderate'">
+                                            <div style="display: flex; width: 100%; justify-content: flex-end;">
+                                                <button (click)="deleteAlert(p._id)">
+                                                    <mat-icon>delete</mat-icon>
+                                                </button>
+                                            </div> 
+                                            <strong>REPORT FILED: {{p.title.toUpperCase()}}</strong>
                                             <p>{{p.warning}}</p>
                                             <ul style="list-style: circle;">
                                                 <li><strong>Production Threshold:</strong> {{p.prod_threshold}}</li>
@@ -357,7 +371,8 @@
                                             </ul>
                                         </div>
                                         <div class="alert alert-danger" role="alert" *ngIf="p.alert_type == 'Severe'"> 
-                                            <strong>REPORT FILED: {{p.goal.toUpperCase()}}</strong>
+                                            
+                                            <strong>REPORT FILED: {{p.title.toUpperCase()}}</strong>
                                             <p>{{p.warning}}</p>
                                             <ul style="list-style: circle;">
                                                 <li><strong>Production Threshold:</strong> {{p.prod_threshold}}</li>
@@ -367,7 +382,7 @@
                                             </ul>
                                         </div>
                                         <div class="alert alert-success" role="alert" *ngIf="p.alert_type == 'Standard'"> 
-                                            <strong>REPORT FILED: {{p.goal.toUpperCase()}}</strong>
+                                            <strong>REPORT FILED: {{p.title.toUpperCase()}}</strong>
                                             <p>{{p.warning}}</p>
                                             <ul style="list-style: circle;">
                                                 <li><strong>Production Threshold:</strong> {{p.prod_threshold}}</li>
@@ -403,7 +418,7 @@
                             <div style="display: flex; justify-content: space-evenly; width: 20%;">
                             <button routerLink="/item-plans/{{ goalplanid }}" class="btn btn-warning"><i
                                     class="fa fa-comments"></i></button>
-                            <button *ngIf="currentuser.user.email == 'jaredreyes039@gmail.com'" [hidden]="currentuser.user.email !== 'jaredreyes039@gmail.com'" (click)="deletePlanById(parentplanDetails[0]._id)" class="btn btn-danger" style="display: flex; align-items: center; justify-content: center;">
+                            <button (click)="deletePlanById(parentplanDetails[0]._id)" class="btn btn-danger" style="display: flex; align-items: center; justify-content: center;">
                                 <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
                                     <path d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"/>
                                 </svg>                            
