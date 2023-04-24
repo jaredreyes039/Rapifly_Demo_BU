@@ -120,6 +120,7 @@ export class ItemPlanDetailsComponent implements OnInit {
 
   // DATATABLE VARS
   @ViewChild(DataTableDirective, { static: false })
+  @ViewChild(BaseChartDirective, {static: false}) chart:BaseChartDirective;
   datatableElement: DataTableDirective;
   dtOptionsDelegate: DataTables.Settings = {};
   dtTriggerDelegate: Subject<any> = new Subject();
@@ -297,7 +298,6 @@ export class ItemPlanDetailsComponent implements OnInit {
   InviteUserForm: FormGroup;
   isInviteUserFormValid = false;
 
-  @ViewChild(BaseChartDirective, { static: true }) chart: BaseChartDirective;
 
 
   constructor(
@@ -866,6 +866,9 @@ export class ItemPlanDetailsComponent implements OnInit {
       goal_id: event.srcElement.id
     }).then((res: any)=>{
       if (res.status){
+        this.commonService.PostAPI(`user_alerts/create/alert/launch`, {
+          user_id: this.currentuser.user._id
+        })
         return this.toastr.success(res.message, "Success")
       }
       else {
@@ -1246,9 +1249,6 @@ export class ItemPlanDetailsComponent implements OnInit {
     }
   }
   launchgoalalert() {
-    this.commonService.PostAPI(`user_alerts/create/alert/launch`, {
-      user_id: this.currentuser.user._id
-    })
     this.commonService.PostAPI('user_alerts/get/alerts/launch', {
       user_id: this.currentuser.user._id
     }).then((res: any)=>{
@@ -1483,7 +1483,6 @@ export class ItemPlanDetailsComponent implements OnInit {
         this.selectedModules = ''
         this.getPlanGoalDetails();
         this.getReportSum(this.parentplanDetails[0]._id);
-        this.chartIsLoaded = false;
         this.initMeasureCharts(true)
       }
 
@@ -1581,12 +1580,19 @@ export class ItemPlanDetailsComponent implements OnInit {
           this.reportGoals = response.data.filter(report => {return report.element.isReportReady});
           let reports = response.data.map(report => {return {end_date: report.element.end_date, actual_expense: report.actual_expense, actual_production: report.actual_production}})
          
-          // Sum of actual expenses
+          // Sum of actual expenses AND production
+          // Sort does NOT matter here
           this.actualExpenseSum = response.data.reduce((reportA, reportB)=> {
             return reportA + reportB.actual_expense
           }, 0)
 
-          // Expense data sorted by date
+          this.actualProductionSum = response.data.reduce((reportA, reportB)=> {
+            console.log(reportA, reportB)
+            return reportA + reportB.actual_production
+          }, 0)
+
+          // Expense and Prod data sorted and summed by date
+          // Check sort here
           var dataExp = reports.sort((reportA: any, reportB: any)=>{
             return new Date(reportA.end_date).getDate() - new Date(reportB.end_date).getDate()
           }),
@@ -1601,7 +1607,6 @@ export class ItemPlanDetailsComponent implements OnInit {
               if (temp) temp.actual_expense += actual_expense;                               // if found add to y
               else expResult.push({ end_date: end_date + 'T00:00:00.000Z', actual_expense });    // if not create object and push
           }
-
 
           var dataProd = reports.sort((reportA: any, reportB: any)=>{
             return new Date(reportA.end_date).getDate() - new Date(reportB.end_date).getDate()
@@ -1618,55 +1623,64 @@ export class ItemPlanDetailsComponent implements OnInit {
               else prodResult.push({ end_date: end_date + 'T00:00:00.000Z', actual_production });    // if not create object and push
           }
 
-          this.actualProductionSum = response.data.reduce((reportA, reportB)=> {
-            console.log(reportA, reportB)
-            return reportA + reportB.actual_production
-          }, 0)
-          // Line Chart
-          if(this.chartRendered === false){
-            if(this.datasetTotal.length > 0){
-              this.datasetTotal = []
-              this.datasetExp = []
-              this.datasetProd = []
-              this.lineChartMainLabels = []
-            }
-            this.prodHierarchy = response.data.sort((reportA, reportB) => {return reportA.actual_production > reportB.actual_production})
-            this.expHierarchy = response.data.sort((reportA, reportB) => {return reportA.actual_expense > reportB.actual_expense})
-            // Sort by dates to organize the x-axis
-            // When we move to scatter plots, this will be the thing to change
-            this.reportGoals.sort((reportA: any, reportB: any)=> {
-              return new Date(reportA.element.end_date).getDate() - new Date(reportB.element.end_date).getDate()
-            })
-            prodResult.sort((reportA: any, reportB: any)=>{
-                          return new Date(reportA.end_date).getDate() - new Date(reportB.end_date).getDate()
-            })
-            expResult.sort((reportA: any, reportB: any)=>{
-                          return new Date(reportA.end_date).getDate() - new Date(reportB.end_date).getDate()
-            })
-            
-            for(let i: any = 0; i < this.reportGoals.length; i++){
-              this.datasetProd.push(this.reportGoals[i].actual_production)
-              this.datasetExp.push(this.reportGoals[i].actual_expense)
-              this.lineChartMainLabels.push( new Date(this.reportGoals[i].element.end_date).toDateString())
-              this.lineChartMainLabels = [... new Set(this.lineChartMainLabels)]
-            }
 
-            // Crucial that this remains in the correct format for the dep.
-            this.datasetTotal.push({
-              label: "Production",
-              data: prodResult.map(report => {return report.actual_production})
-            }, {
-              label: "Expenses",
-              data: expResult.map(report => {return report.actual_expense})
-            })
-            this.getMeasureStats(this.actualProductionSum, this.actualExpenseSum)
-            this.chartRendered = true;
-            console.log(this.datasetTotal)
+          // Line Chart
+          // Resets chart vars
+          if(this.datasetTotal.length > 0){
+            this.datasetTotal = []
+            this.datasetExp = []
+            this.datasetProd = []
+            this.lineChartMainLabels = []
           }
-        } else {
-          this.reportGoals = [];
-        }
-      }).then(()=>this.chartIsLoaded = true)
+
+          // For best and worst project reports
+          this.prodHierarchy = response.data.sort((reportA, reportB) => {return reportA.actual_production > reportB.actual_production})
+          this.expHierarchy = response.data.sort((reportA, reportB) => {return reportA.actual_expense > reportB.actual_expense})
+
+
+          // Sort by dates to organize the x-axis
+          // When we move to scatter plots, this will be the thing to change
+          this.reportGoals.sort((reportA: any, reportB: any)=> {
+            return new Date(reportA.element.end_date).getDate() - new Date(reportB.element.end_date).getDate()
+          })
+          prodResult.sort((reportA: any, reportB: any)=>{
+                        return new Date(reportA.end_date).getDate() - new Date(reportB.end_date).getDate()
+          })
+          expResult.sort((reportA: any, reportB: any)=>{
+                        return new Date(reportA.end_date).getDate() - new Date(reportB.end_date).getDate()
+          })
+          
+          for(let i: any = 0; i < this.reportGoals.length; i++){
+            this.datasetProd.push(this.reportGoals[i].actual_production)
+            this.datasetExp.push(this.reportGoals[i].actual_expense)
+            this.lineChartMainLabels.push( new Date(this.reportGoals[i].element.end_date).toDateString())
+            this.lineChartMainLabels = [... new Set(this.lineChartMainLabels)]
+          }
+          // Crucial that this remains in the correct format for the dep.
+          this.datasetTotal.push({
+            label: "Production",
+            data: this.datasetProd
+          }, {
+            label: "Expenses",
+            data: this.datasetExp
+          })
+
+          // Validator for UI to trigger
+          this.chartIsLoaded = true
+
+          // Re-Renders Chart
+          if(this.chart.chart !== undefined){
+            this.chart.chart.data.datasets = this.datasetTotal
+            this.chart.chart.data.labels = this.lineChartMainLabels
+            this.chart.chart.config.options.defaultColor = '#ff00ff'
+            this.chart.chart.update()
+          }
+
+          // For summary data ONLY
+          this.getMeasureStats(this.actualProductionSum, this.actualExpenseSum)
+
+          }
+      })
     }
     else {
       this.datasetTotal = []
@@ -2281,7 +2295,6 @@ export class ItemPlanDetailsComponent implements OnInit {
     selectedReport[0].actual_production = data.actual_production
     selectedReport[0].actual_expense = data.actual_expense
     this.commonService.PostAPI(`user_alerts/create/alert/report`, selectedReport)
-    this.reportgoalalert()
   }
 
   resetReportSearch() {
