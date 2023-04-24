@@ -282,10 +282,6 @@
                         </div>
                     </div>
 
-
-                    <div class="page-title">
-                        <h3>Project</h3>
-                    </div>
                     <div class="panel panel-cutom-blue ">
                         <div class="panel-heading panel-green">
                             <h4 class="panel-title">
@@ -314,14 +310,11 @@
                             </div>
                         </div>
                     </div>
-                    <div class="page-title">
-                        <h3>Alerts</h3>
-                    </div>
                     <div class="panel panel-cutom-blue ">
                         <div>
                             <div class="panel-heading panel-aler" role="tab" id="headingThree3">
                                 <h4 class="panel-title" style="display: flex; justify-content: space-between; align-items: center;">
-                                    <a aria-controls="collapseTwo">{{alertView === 'Launch' ? 'Launch Overview' : alertView === 'Report' ? 'Threshold Overview' : 'N/A'}}</a>
+                                    <a aria-controls="collapseTwo">{{alertView === 'Launch' ? 'Launch Alerts' : alertView === 'Report' ? 'Report Alerts' : 'N/A'}}</a>
                                     <button class="btn-primary" style="border: none;" (click)="toggleAlertView()">
                                         <mat-icon>swap_horiz</mat-icon>
                                     </button>
@@ -332,8 +325,8 @@
                                     <div *ngFor="let p of filteredAlerts;">
                                         <div class="alert alert-caution" role="alert" *ngIf="p.alert_type == 'Moderate'"> 
                                             <div style="display: flex; width: 100%; justify-content: flex-end;">
-                                                <button (click)="deleteAlert(p._id)">
-                                                    <mat-icon>delete</mat-icon>
+                                                <button class="clear-notif" style="border: none;" (click)="deleteAlert(p._id)">
+                                                    <mat-icon>clear</mat-icon>
                                                 </button>
                                             </div>
                                             <strong>{{p.title}}</strong> launch date in less than <strong>7 days</strong>.
@@ -343,8 +336,8 @@
                                         </div>
                                         <div class="alert alert-danger" role="alert" *ngIf="p.alert_type == 'Severe'"> 
                                             <div style="display: flex; width: 100%; justify-content: flex-end;">
-                                                <button (click)="deleteAlert(p._id)">
-                                                    <mat-icon>delete</mat-icon>
+                                                <button class="clear-notif" style="border: none;" (click)="deleteAlert(p._id)">
+                                                    <mat-icon>clear</mat-icon>
                                                 </button>
                                             </div>
                                             <strong>{{p.title}}</strong> launch date in less than <strong>3 days</strong>.
@@ -357,39 +350,54 @@
                                     <div *ngFor="let p of filteredAlerts;">
                                         <div class="alert alert-caution" role="alert" *ngIf="p.alert_type == 'Moderate'">
                                             <div style="display: flex; width: 100%; justify-content: flex-end;">
-                                                <button (click)="deleteAlert(p._id)">
-                                                    <mat-icon>delete</mat-icon>
+                                                <button class="clear-notif" style="border: none;" (click)="deleteAlert(p._id)">
+                                                    <mat-icon>clear</mat-icon>
                                                 </button>
                                             </div> 
-                                            <strong>REPORT FILED: {{p.title.toUpperCase()}}</strong>
-                                            <p>{{p.warning}}</p>
-                                            <ul style="list-style: circle;">
-                                                <li><strong>Production Threshold:</strong> {{p.prod_threshold}}</li>
-                                                <li><strong>Expense Threshold:</strong> {{p.exp_threshold}}</li>
-                                                <li><strong>Actual Production:</strong> {{p.actual_prod}}</li>
-                                                <li><strong>Actual Expense:</strong> {{p.actual_exp}}</li>
-                                            </ul>
+                                            <div>
+                                                <strong>REPORT FILED: {{p.title.toUpperCase()}}</strong>
+                                                <p>{{p.warning}}</p>
+                                                <ul style="list-style: circle;">
+                                                    <li><strong>Production Threshold:</strong> {{p.prod_threshold}}</li>
+                                                    <li><strong>Expense Threshold:</strong> {{p.exp_threshold}}</li>
+                                                    <li><strong>Actual Production:</strong> {{p.actual_prod}}</li>
+                                                    <li><strong>Actual Expense:</strong> {{p.actual_exp}}</li>
+                                                </ul>
+                                            </div>
                                         </div>
                                         <div class="alert alert-danger" role="alert" *ngIf="p.alert_type == 'Severe'"> 
-                                            
-                                            <strong>REPORT FILED: {{p.title.toUpperCase()}}</strong>
-                                            <p>{{p.warning}}</p>
-                                            <ul style="list-style: circle;">
-                                                <li><strong>Production Threshold:</strong> {{p.prod_threshold}}</li>
-                                                <li><strong>Expense Threshold:</strong> {{p.exp_threshold}}</li>
-                                                <li><strong>Actual Production:</strong> {{p.actual_prod}}</li>
-                                                <li><strong>Actual Expense:</strong> {{p.actual_exp}}</li>
-                                            </ul>
+                                            <div style="display: flex; width: 100%; justify-content: flex-end;">
+                                                <button class="clear-notif" style="border: none;" (click)="deleteAlert(p._id)">
+                                                    <mat-icon>clear</mat-icon>
+                                                </button>
+                                            </div> 
+                                            <div>
+                                                <strong>REPORT FILED: {{p.title.toUpperCase()}}</strong>
+                                                <p>{{p.warning}}</p>
+                                                <ul style="list-style: circle;">
+                                                    <li><strong>Production Threshold:</strong> {{p.prod_threshold}}</li>
+                                                    <li><strong>Expense Threshold:</strong> {{p.exp_threshold}}</li>
+                                                    <li><strong>Actual Production:</strong> {{p.actual_prod}}</li>
+                                                    <li><strong>Actual Expense:</strong> {{p.actual_exp}}</li>
+                                                </ul>
+                                            </div>
                                         </div>
                                         <div class="alert alert-success" role="alert" *ngIf="p.alert_type == 'Standard'"> 
-                                            <strong>REPORT FILED: {{p.title.toUpperCase()}}</strong>
-                                            <p>{{p.warning}}</p>
-                                            <ul style="list-style: circle;">
-                                                <li><strong>Production Threshold:</strong> {{p.prod_threshold}}</li>
-                                                <li><strong>Expense Threshold:</strong> {{p.exp_threshold}}</li>
-                                                <li><strong>Actual Production:</strong> {{p.actual_prod}}</li>
-                                                <li><strong>Actual Expense:</strong> {{p.actual_exp}}</li>
-                                            </ul>
+                                            <div style="display: flex; width: 100%; justify-content: flex-end;">
+                                                <button class="clear-notif" style="border: none;" (click)="deleteAlert(p._id)">
+                                                    <mat-icon>clear</mat-icon>
+                                                </button>
+                                            </div>
+                                            <div>
+                                                <strong>REPORT FILED: {{p.title.toUpperCase()}}</strong>
+                                                <p>{{p.warning}}</p>
+                                                <ul style="list-style: circle;">
+                                                    <li><strong>Production Threshold:</strong> {{p.prod_threshold}}</li>
+                                                    <li><strong>Expense Threshold:</strong> {{p.exp_threshold}}</li>
+                                                    <li><strong>Actual Production:</strong> {{p.actual_prod}}</li>
+                                                    <li><strong>Actual Expense:</strong> {{p.actual_exp}}</li>
+                                                </ul>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
