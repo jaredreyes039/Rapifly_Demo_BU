@@ -779,20 +779,21 @@ export class ItemPlanDetailsComponent implements OnInit {
         this.planteeDetails.forEach(element => {
           // That array from above
           // For root items
-          this.finalarray.push({ "id": element._id, "parent": "#", "text": element.short_name, 'state': { 'opened': true }, "icon": "assets/images/avatars/p.png" })
+          this.finalarray.push({ "id": element._id, "parent": "#", "text": element.short_name, 'state': { 'opened': true }, "icon": "assets/images/avatars/p.png"})
           // This must be sub-children
           element.goals.forEach(element2 => {
             let parsedArr = element2.parent_goal_id
             if (element2.module_type == 'goal') {
               if (parsedArr[parsedArr.length - 1] !== '#'){
                 var moduleTypeIcon: any = "assets/images/avatars/g.png";
-                this.finalarray.push({ "id": element2._id, "parent": parsedArr[parsedArr.length - 1], "text": element2.short_name, "icon": moduleTypeIcon })
+                this.finalarray.push({ "id": element2._id, "parent": parsedArr[parsedArr.length - 1], "text": element2.short_name, "icon": moduleTypeIcon, priority: element2.prioritize  })
               }
               else {
                 var moduleTypeIcon: any = "assets/images/avatars/g.png";
-                this.finalarray.push({ "id": element2._id, "parent": element._id, "text": element2.short_name, "icon": moduleTypeIcon })
+                this.finalarray.push({ "id": element2._id, "parent": element._id, "text": element2.short_name, "icon": moduleTypeIcon, priority: element2.prioritize  })
               }
             }})
+            this.finalarray = this.finalarray.sort((goalA: any, goalB: any)=> {return goalA.priority - goalB.priority})
         });
 
         // ONCLICK FUNCTIONALITY FOR PROJECT TREE
@@ -1842,6 +1843,7 @@ export class ItemPlanDetailsComponent implements OnInit {
       if (response.status) {
         this.toastr.success(response.message, "Success");
         this.getPriorityGoals(this.planId);
+        this.getPlanDetails()
       } else {
         this.toastr.error(response.message, "Error");
         // this.is_disabled = false;
