@@ -1452,9 +1452,11 @@ export class ItemPlanDetailsComponent implements OnInit {
     this.moduleItemActive = false;
     this.moduleType = 'goal'
     this.planGoals = []
-    this.parentIsActiveSelection = false;
-    this.childgoalDetails = {}
-    this.parentplanDetails = []
+    if(type === 'create'){
+      this.parentIsActiveSelection = false;
+      this.childgoalDetails = {}
+      this.parentplanDetails = []
+    }
     this.getPlanDetails()
     if(this.parentplanDetails.length >= 1){
       this.getPlanGoals(this.parentplanDetails[0]._id)
@@ -1576,20 +1578,7 @@ export class ItemPlanDetailsComponent implements OnInit {
     })
   }
 
-/*
-  RENDERING CHARTS: A GUIDE
-  ----
-  1. MUST use validator to control the UI appearing
-    - if true, API call execs and vars are populated
-    - if false, API call does NOT exec and vars are reinitialized
-  2. The format of the datasets must be preserved to be inline w/
-  the dependency
-  3. To check for proper implementation:
-    - Eval switching between phases, stages, chal, and mods
-    - Eval switching between root/parent items
-*/
-  // These are all of the chart related functionalities
-  // Needs to be evaluated for why they dont destroy and rebuild w/ new datasets
+
   getMeasureStats(prodSum, expSum){
     // Burn Rates
     this.grossBurnRate = expSum
