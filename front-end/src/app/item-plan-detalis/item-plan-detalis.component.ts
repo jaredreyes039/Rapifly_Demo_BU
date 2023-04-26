@@ -1451,6 +1451,10 @@ export class ItemPlanDetailsComponent implements OnInit {
     this.moduleItemActive = false;
     this.moduleType = 'goal'
     this.planGoals = []
+    this.parentIsActiveSelection = false;
+    this.childgoalDetails = {}
+    this.parentplanDetails = []
+    this.getPlanDetails()
     if(this.parentplanDetails.length >= 1){
       this.getPlanGoals(this.parentplanDetails[0]._id)
     }
@@ -2380,9 +2384,6 @@ export class ItemPlanDetailsComponent implements OnInit {
       return this.toastr.error("Must be under brainstorm phase to use modules.")
     }
     else {
-      if(!this.parentIsActiveSelection && (type === 'problem' || type === 'opportunity')){
-        this.parentIsActiveSelection = true;
-      }
       if(this.parentIsActiveSelection || this.childgoalDetails && !this.parentIsActiveSelection){
         this.moduleItemActive = false;
         this.isSelectedChallange = false;
@@ -2447,10 +2448,8 @@ export class ItemPlanDetailsComponent implements OnInit {
         if (new Date(startDate) > new Date(endDate)) {
           this.toastr.error("Start date must be smaller than end date.", "Error");
         } else {
-          if (new Date(this.planstartdate) <= new Date(startDate) && new Date(this.planenddate) > new Date(startDate) && new Date(this.planstartdate) < new Date(endDate) && new Date(this.planenddate) >= new Date(endDate)) {
             var data = this.ModuleForm.value;
-
-            data.plan_id = this.childgoalDetails ? this.childgoalDetails._id : this.planId
+            data.plan_id = this.childgoalDetails._id ? this.childgoalDetails._id : this.parentplanDetails[0]._id
             data.user_id = this.currentuser.user._id
             data.status = 0;
             data.numbers = 0;
@@ -2480,9 +2479,6 @@ export class ItemPlanDetailsComponent implements OnInit {
                 this.toastr.error(response.message, "Error");
               }
             });
-          } else {
-            this.toastr.error(this.textDecoration(this.selectedModules) + " start date and end date are extended from plan.", "Error");
-          }
         }
       } else {
         if (startDate == '') {
@@ -2555,7 +2551,7 @@ export class ItemPlanDetailsComponent implements OnInit {
         this.opportunityDetails = response.data;
         console.log(response.data)
         response.data.filter((element)=>{
-          if(this.parentIsActiveSelection && !this.childgoalDetails){
+          if(this.parentIsActiveSelection){
             return element.plan_id === this.planId
           }
           else {
