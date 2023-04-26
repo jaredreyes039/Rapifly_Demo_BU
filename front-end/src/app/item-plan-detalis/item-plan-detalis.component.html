@@ -323,7 +323,7 @@
                             <div class="hud" id="style-2" style="margin-top: 12px;">
                                 <div class="col-md-12" *ngIf="filteredAlerts && filteredAlerts.length > 0 && alertView == 'Launch'">
                                     <div *ngFor="let p of filteredAlerts;">
-                                        <div class="alert alert-caution" role="alert" *ngIf="p.alert_type == 'Moderate'"> 
+                                        <div class="alert alert-caution" role="alert" *ngIf="p.alert_type == 'Moderate'">
                                             <div style="display: flex; width: 100%; justify-content: flex-end;">
                                                 <button class="clear-notif" style="border: none;" (click)="deleteAlert(p._id)">
                                                     <mat-icon>clear</mat-icon>
@@ -334,7 +334,7 @@
                                             <strong>{{p.warning}}</strong>
                                             <strong></strong>
                                         </div>
-                                        <div class="alert alert-danger" role="alert" *ngIf="p.alert_type == 'Severe'"> 
+                                        <div class="alert alert-danger" role="alert" *ngIf="p.alert_type == 'Severe'">
                                             <div style="display: flex; width: 100%; justify-content: flex-end;">
                                                 <button class="clear-notif" style="border: none;" (click)="deleteAlert(p._id)">
                                                     <mat-icon>clear</mat-icon>
@@ -353,7 +353,7 @@
                                                 <button class="clear-notif" style="border: none;" (click)="deleteAlert(p._id)">
                                                     <mat-icon>clear</mat-icon>
                                                 </button>
-                                            </div> 
+                                            </div>
                                             <div>
                                                 <strong>REPORT FILED: {{p.title.toUpperCase()}}</strong>
                                                 <p>{{p.warning}}</p>
@@ -365,12 +365,12 @@
                                                 </ul>
                                             </div>
                                         </div>
-                                        <div class="alert alert-danger" role="alert" *ngIf="p.alert_type == 'Severe'"> 
+                                        <div class="alert alert-danger" role="alert" *ngIf="p.alert_type == 'Severe'">
                                             <div style="display: flex; width: 100%; justify-content: flex-end;">
                                                 <button class="clear-notif" style="border: none;" (click)="deleteAlert(p._id)">
                                                     <mat-icon>clear</mat-icon>
                                                 </button>
-                                            </div> 
+                                            </div>
                                             <div>
                                                 <strong>REPORT FILED: {{p.title.toUpperCase()}}</strong>
                                                 <p>{{p.warning}}</p>
@@ -382,7 +382,7 @@
                                                 </ul>
                                             </div>
                                         </div>
-                                        <div class="alert alert-success" role="alert" *ngIf="p.alert_type == 'Standard'"> 
+                                        <div class="alert alert-success" role="alert" *ngIf="p.alert_type == 'Standard'">
                                             <div style="display: flex; width: 100%; justify-content: flex-end;">
                                                 <button class="clear-notif" style="border: none;" (click)="deleteAlert(p._id)">
                                                     <mat-icon>clear</mat-icon>
@@ -413,8 +413,7 @@
 
         <!-- PARENT ITEM PROJECT PROFILE DISPLAY -->
         <!-- ONLY FOR PARENT ITEMS -->
-        <div class="col-md-9" *ngIf="parentplanDetails[0] && parentplanDetails[0] != '' && selectedPhase !='project' && selectedPhase != 'user'
-        && selectedPhase != 'team' && selectedPhase !== 'security' && selectedPhase != 'coaches-corner' "
+        <div class="col-md-9" *ngIf="parentIsActiveSelection && parentplanDetails[0] && parentplanDetails[0] != ''"
         [hidden]="!parentIsActiveSelection">
             <div class="page-title">
                 Project Profile
@@ -429,12 +428,12 @@
                             <button (click)="deletePlanById(parentplanDetails[0]._id)" class="btn btn-danger" style="display: flex; align-items: center; justify-content: center;">
                                 <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
                                     <path d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"/>
-                                </svg>                            
+                                </svg>
                             </button>
                             <button (click)="openFeedbackModal()" class="btn btn-primary" style="display: flex; align-items: center; justify-content: center;">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="16" height="16">
                                     <path d="M256 0c53 0 96 43 96 96v3.6c0 15.7-12.7 28.4-28.4 28.4H188.4c-15.7 0-28.4-12.7-28.4-28.4V96c0-53 43-96 96-96zM41.4 105.4c12.5-12.5 32.8-12.5 45.3 0l64 64c.7 .7 1.3 1.4 1.9 2.1c14.2-7.3 30.4-11.4 47.5-11.4H312c17.1 0 33.2 4.1 47.5 11.4c.6-.7 1.2-1.4 1.9-2.1l64-64c12.5-12.5 32.8-12.5 45.3 0s12.5 32.8 0 45.3l-64 64c-.7 .7-1.4 1.3-2.1 1.9c6.2 12 10.1 25.3 11.1 39.5H480c17.7 0 32 14.3 32 32s-14.3 32-32 32H416c0 24.6-5.5 47.8-15.4 68.6c2.2 1.3 4.2 2.9 6 4.8l64 64c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0l-63.1-63.1c-24.5 21.8-55.8 36.2-90.3 39.6V240c0-8.8-7.2-16-16-16s-16 7.2-16 16V479.2c-34.5-3.4-65.8-17.8-90.3-39.6L86.6 502.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l64-64c1.9-1.9 3.9-3.4 6-4.8C101.5 367.8 96 344.6 96 320H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H96.3c1.1-14.1 5-27.5 11.1-39.5c-.7-.6-1.4-1.2-2.1-1.9l-64-64c-12.5-12.5-12.5-32.8 0-45.3z"/>
-                                </svg>                          
+                                </svg>
                             </button>
                         </div>
                         </div>
@@ -456,7 +455,7 @@
                                             {{parentplanDetails[0].user_id.first_name}} {{parentplanDetails[0].user_id.last_name}}</div>
                                     </div>
                                 </div>
-                                
+
                                 <div style="display: flex; flex-direction: column; flex-basis: 45%;">
                                     <div style="display: flex; margin-bottom: 12px;">
                                         <div class=" parent-item-label">Start Date:</div>
@@ -503,7 +502,7 @@
                                     <div class="text-white bg-dark parent-item-val" style="width: 100%; max-width: unset; display: flex; align-items: center;" *ngIf="parentplan.key !='userid' ">
                                         {{parentplan.value}}</div>
                                 </div>
-                                
+
                             </div>
                         </div>
                     </mat-expansion-panel>
@@ -626,7 +625,7 @@
                                         target is required</label>
                                 </div>
                             </div>
-    
+
                             <div class="col-md-6 form-group" style="display: flex;">
                                 <label class="parent-item-label parent-item-label-alert">Expense Target</label>
                                 <input type="number" class="form-control" placeholder="Expense Target"
@@ -637,7 +636,7 @@
                                         required</label>
                                 </div>
                             </div>
-    
+
                             <div class="col-md-3 form-group" style="display: flex;">
                                 <label class="parent-item-label">Target Type</label>
                                 <select class="form-control" formControlName="production_type">
@@ -650,7 +649,7 @@
                                     <label *ngIf="jval.production_type.errors.required" class="error">Production type is
                                         required</label>
                                 </div>
-                            </div>   
+                            </div>
 
                             <div  class="col-md-12 form-group" style="display: flex;  margin-bottom: 12px; flex-direction: column;">
 
@@ -661,8 +660,8 @@
                                 <div *ngIf="submitted && f.description.errors" class="invalid-feedback">
                                     <div *ngIf="f.description.errors.required">Description is required</div>
                                 </div>
-                                
-                                
+
+
                                 </div>
 
                                 <div class="col-md-12 form-group" style="display: flex; padding: 0px;">
@@ -671,7 +670,7 @@
                                         <h3>Additional Fields</h3>
                                     </mat-expansion-panel-header>
                                     <div class="panel-cutom-blue" style="padding: 12px;">
-                                        <div class="panel-body">          
+                                        <div class="panel-body">
                                             <div class="row">
                                                 <div class="col-md-8 form-group">
                                                     <label>Share Goal(s) Permission To Users</label>
@@ -716,7 +715,7 @@
                                                                 required</label>
                                                         </div>
                                                     </div>
-                                                
+
                                                 </div>
                                             </div>
                                         </div>
@@ -809,7 +808,7 @@
             <div class="panel panel-cutom-blue">
                 <div class="panel-body">
                     <div class="row col-md-12">
-                        <div style="margin-bottom: 24px;">    
+                        <div style="margin-bottom: 24px;">
                             <h4 class="modal-title" id="myModalLabel">{{currentuser.role}} || <span style="color: yellow;">{{currentuser.user.first_name}} {{currentuser.user.last_name}}</span> </h4>
                         </div>
                     </div>
@@ -964,12 +963,12 @@
         <!-- IS THIS BLOCK NECESSARY? TEST LATER -->
         <div class="col-md-3" *ngIf="selectedPhase === 'B' || selectedPhase === 'I'"
             [hidden]="selectedModules && selectedModules != ''"></div>
-        
+
 
     <!-- BEGIN BLOCK: BRAINSTORM AND IMPROVE -->
         <!-- ACTIVE: selectedPhase:B || selectedPhase:I -->
         <!-- HIDDEN: Any module is selected (selectedModules:true) or if it isn't blank (selectedModules:'') -->
-        <div class="col-md-9" *ngIf="selectedPhase === 'B' || selectedPhase === 'I'" 
+        <div class="col-md-9" *ngIf="selectedPhase === 'B' || selectedPhase === 'I'"
             [hidden]="selectedModules && selectedModules != ''">
 
             <!-- ACTIVE: When parent is active (parentIsActiveSelection:true) -->
@@ -1000,7 +999,7 @@
                                                 {{childgoalDetails.long_name}}</div>
                                         </div>
                                     </div>
-                                    
+
                                     <div style="display: flex; flex-direction: column; flex-basis: 45%;">
                                         <div style="display: flex; margin-bottom: 12px;">
                                             <div class=" parent-item-label">Start Date:</div>
@@ -1080,9 +1079,9 @@
                                             <label *ngIf="jval.production_type.errors.required" class="error">Production type is
                                                 required</label>
                                         </div>
-                                    </div>   
+                                    </div>
                                 </div>
-                                
+
                                 </div>
                                 <div style="display: flex;">
                                 <div style="display: flex; flex-direction: column; margin-right: 12px;">
@@ -1123,7 +1122,7 @@
                                 </mat-expansion-panel>
 
                                 <div class="col-md-12 form-group text-right">
-                                    <button type="submit " (click)="onSubmit(); toggleEditChild()"
+                                    <button type="submit " (click)="updateGoal();"
                                         [disabled]="!checkforgoaledit && !isSharedPlanPermission"
                                         class="btn btn-primary btn-space">Save</button>
                                     <button type="reset" (click)="reset()" [disabled]="!checkforgoaledit "
@@ -1131,7 +1130,7 @@
                                 </div>
                         </div>
             </form>
-            
+
             <!-- ONLY FOR PARENT ITEMS -->
             <mat-expansion-panel class="expanse-panel" *ngIf="parentIsActiveSelection" [expanded]="true">
             <mat-expansion-panel-header class="page-title">
@@ -1167,7 +1166,7 @@
                                     </div>
                                     </div>
                                 </div>
-                            
+
                                 <div style="display: flex; flex-direction: column; flex-basis: 45%;">
                                     <div style="display: flex;  margin-bottom: 12px;">
 
@@ -1198,7 +1197,7 @@
                                         placeholder="Click to edit description" style="border-radius: 0px; border: none; border-left: 2px solid #fff; padding-left: 12px;"></textarea>
                                         <div *ngIf="submitted && f.description.errors" class="invalid-feedback">
                                             <div *ngIf="f.description.errors.required">Description is required</div>
-                                        </div>                                    
+                                        </div>
                                     </div>
                                     </div>
                                 </div>
@@ -1243,9 +1242,9 @@
                                             <label *ngIf="jval.production_type.errors.required" class="error">Production type is
                                                 required</label>
                                         </div>
-                                    </div>   
+                                    </div>
                                 </div>
-                                
+
                                 </div>
                                 <div style="display: flex;">
                                 <div style="display: flex; flex-direction: column; margin-right: 12px;">
@@ -1273,7 +1272,7 @@
                                 </mat-expansion-panel>
 
                                 <div class="col-md-12 form-group text-right">
-                                    <button type="submit " (click)="onSubmit(); toggleEditChild()"
+                                    <button type="submit " (click)="onSubmit();"
                                         [disabled]="!checkforgoaledit && !isSharedPlanPermission"
                                         class="btn btn-primary btn-space">Save</button>
                                     <button type="reset" (click)="reset()" [disabled]="!checkforgoaledit "
@@ -1370,7 +1369,7 @@
                                             {{childgoalDetails.long_name}}</div>
                                     </div>
                                 </div>
-                                
+
                                 <div style="display: flex; flex-direction: column; flex-basis: 45%;">
                                     <div style="display: flex; margin-bottom: 12px;">
                                         <div class=" parent-item-label">Start Date:</div>
@@ -1547,7 +1546,7 @@
                                                 {{childgoalDetails.long_name}}</div>
                                         </div>
                                     </div>
-                                    
+
                                     <div style="display: flex; flex-direction: column; flex-basis: 45%;">
                                         <div style="display: flex; margin-bottom: 12px;">
                                             <div class=" parent-item-label">Start Date:</div>
@@ -1621,7 +1620,7 @@
                             </div>
                         </div>
                         <div class="col-md-12 form-group text-right">
-                            <button (click)="toggleEditChild()"
+                            <button (click)="toggleEditGoal()"
                                 class="btn btn-primary btn-space">Edit</button>
                         </div>
                     </mat-expansion-panel>
@@ -1641,7 +1640,7 @@
                                 <div class="text-white bg-dark parent-item-val" style="width: 100%; max-width: unset; display: flex; align-items: center;" *ngIf="parentplan.key !='userid' ">
                                     {{parentplan.value}}</div>
                             </div>
-                            
+
                         </div>
                     </div>
                 </mat-expansion-panel>
@@ -1663,7 +1662,7 @@
                         <div class="panel-body">
                             <div style="padding: 10px;">
                                 <div style="display: flex; flex-direction: row; gap: 24px; margin-bottom: 24px;">
-    
+
                                     <div style="display: flex; flex-direction: column; flex-basis: 45%;">
                                         <div style="display: flex;  margin-bottom: 12px;">
                                         <label class="parent-item-label" for="exampleInputEmail1">Short Name<span>*</span></label>
@@ -1674,9 +1673,9 @@
                                             <div *ngIf="f.short_name.errors.required">Short name is required</div>
                                         </div>
                                         </div>
-    
+
                                         <div style="display: flex;  margin-bottom: 12px;">
-    
+
                                         <label class="parent-item-label" for="exampleInputPassword1">Long Name<span>*</span></label>
                                         <input type="text" id="long_name" formControlName="long_name" class="text-white bg-dark parent-item-val form-control form-control-spec"
                                             placeholder="Long name"
@@ -1687,10 +1686,10 @@
                                         </div>
                                     </div>
 
-                                
+
                                     <div style="display: flex; flex-direction: column; flex-basis: 45%;">
                                         <div style="display: flex;  margin-bottom: 12px;">
-    
+
                                         <label class="parent-item-label" for="exampleInputPassword1">Start Date<span>*</span></label>
                                         <div class="input-group input-append bootstrap-datepicker">
                                             <input type="text" id="date-input5" formControlName="start_date"
@@ -1712,24 +1711,24 @@
                                 </div>
                                     <div style="display: flex; flex-direction: column; flex-basis: 45%;">
                                         <div style="display: flex;  margin-bottom: 12px;">
-    
+
                                             <div class="text-white bg-dark parent-item-val-spec" style="padding: 6px;">
                                             <div class=" parent-item-label-spec">Description</div>
                                             <textarea type="text" formControlName="description" class="form-control bg-dark"
                                             placeholder="Click to edit description" style="border-radius: 0px; border: none; border-left: 2px solid #fff; padding-left: 12px;"></textarea>
                                             <div *ngIf="submitted && f.description.errors" class="invalid-feedback">
                                                 <div *ngIf="f.description.errors.required">Description is required</div>
-                                            </div>                                    
+                                            </div>
                                         </div>
                                         </div>
                                     </div>
-    
+
                                     <mat-expansion-panel  [expanded]="false">
                                     <mat-expansion-panel-header class="page-title" style="margin-bottom: 24px;" >
                                         <h3>Dashboard</h3>
                                     </mat-expansion-panel-header>
                                     <div style="display: flex; flex-direction: row; margin-bottom: 12px;">
-    
+
                                     <div style="display: flex; flex-direction: row;">
                                         <div style="display: flex; flex-direction: column;">
                                         <div style="display: flex;">
@@ -1743,7 +1742,7 @@
                                         </div>
                                         </div>
                                         <div style="display: flex;  margin-left: 12px;">
-    
+
                                         <label class="parent-item-label parent-item-label-alert" for="exampleInputPassword1">Expense Target</label>
                                         <input type="text" id="long_name" formControlName="expense_target" class="text-white bg-dark parent-item-val form-control form-control-spec"
                                             placeholder="Expense Target"
@@ -1764,9 +1763,9 @@
                                                 <label *ngIf="jval.production_type.errors.required" class="error">Production type is
                                                     required</label>
                                             </div>
-                                        </div>   
+                                        </div>
                                     </div>
-                                    
+
                                     </div>
                                     <div style="display: flex;">
                                     <div style="display: flex; flex-direction: column; margin-right: 12px;">
@@ -1782,7 +1781,7 @@
                                         <input type="number" class="text-white bg-dark parent-item-val form-control form-control-spec" placeholder="Expense weight" formControlName="expense_weight">
 
                                         </div>
-    
+
                                     </div>
                                     <div style="display: flex; flex-direction: column;">
                                         <div style="display: flex;  margin-bottom: 12px;">
@@ -1796,7 +1795,7 @@
                                     </div>
                                 </div>
                                     </mat-expansion-panel>
-    
+
                                     <div class="col-md-12 form-group text-right">
                                         <button type="submit " (click)="onSubmitSub()"
                                             [disabled]="!checkforgoaledit && !isSharedPlanPermission"
@@ -1811,8 +1810,8 @@
                     </div>
                 </form>
             </mat-expansion-panel>
-        
-        
+
+
             <!-- DISPLAYS DETAILS OF THE PARENT ITEM/ROOT ITEM -->
 
 
@@ -1822,7 +1821,7 @@
                 <mat-expansion-panel-header class="page-title">
                     <h3>View {{ textDecoration(moduleType) }} List</h3>
                 </mat-expansion-panel-header>
-    
+
                 <!-- DATA TBL ID: table-goals -->
                 <div class="panel panel-cutom-blue" *ngIf="selectedPhase == 'B' && planGoals">
                     <div class="row">
@@ -1869,7 +1868,7 @@
                         Go To Parent
                     </button>
                 </div>
-    
+
                 <!-- DISPLAYS SELECTED SUB ITEM -->
                 <div>
                     <div class="panel panel-cutom-blue">
@@ -1892,7 +1891,7 @@
                                                     {{childgoalDetails.long_name}}</div>
                                             </div>
                                         </div>
-                                        
+
                                         <div style="display: flex; flex-direction: column; flex-basis: 45%;">
                                             <div style="display: flex; margin-bottom: 12px;">
                                                 <div class=" parent-item-label">Start Date:</div>
@@ -1986,15 +1985,15 @@
                                     <div class="text-white bg-dark parent-item-val" style="width: 100%; max-width: unset; display: flex; align-items: center;" *ngIf="parentplan.key !='userid' ">
                                         {{parentplan.value}}</div>
                                 </div>
-                                
+
                             </div>
                         </div>
                     </mat-expansion-panel>
                     </div>
                 </div>
-    
+
             </div>
-    
+
                 <!-- ACTIVE FORM GROUP: CHILDPLANFROMSUB -->
                 <!-- DATE IDS: 5/6 CONFLICT PRESENT W/ CHILD 1 AND PARENT -->
                 <mat-expansion-panel [expanded]="true" class="expanse-panel" *ngIf="!parentIsActiveSelection && !editChildEnabled && selectedPhase === 'project' && selectedStage === 'create'" [hidden]="parentIsActiveSelection || editChildEnabled">
@@ -2008,7 +2007,7 @@
                             <div class="panel-body">
                                 <div style="padding: 10px;">
                                     <div style="display: flex; flex-direction: row; gap: 24px; margin-bottom: 24px;">
-        
+
                                         <div style="display: flex; flex-direction: column; flex-basis: 45%;">
                                             <div style="display: flex;  margin-bottom: 12px;">
                                             <label class="parent-item-label" for="exampleInputEmail1">Short Name<span>*</span></label>
@@ -2019,9 +2018,9 @@
                                                 <div *ngIf="f.short_name.errors.required">Short name is required</div>
                                             </div>
                                             </div>
-        
+
                                             <div style="display: flex;  margin-bottom: 12px;">
-        
+
                                             <label class="parent-item-label" for="exampleInputPassword1">Long Name<span>*</span></label>
                                             <input type="text" id="long_name" formControlName="long_name" class="text-white bg-dark parent-item-val form-control form-control-spec"
                                                 placeholder="Long name"
@@ -2031,11 +2030,11 @@
                                             </div>
                                             </div>
                                         </div>
-    
-                                    
+
+
                                         <div style="display: flex; flex-direction: column; flex-basis: 45%;">
                                             <div style="display: flex;  margin-bottom: 12px;">
-        
+
                                             <label class="parent-item-label" for="exampleInputPassword1">Start Date<span>*</span></label>
                                             <div class="input-group input-append bootstrap-datepicker">
                                                 <input type="text" id="date-input5" formControlName="start_date"
@@ -2057,24 +2056,24 @@
                                     </div>
                                         <div style="display: flex; flex-direction: column; flex-basis: 45%;">
                                             <div style="display: flex;  margin-bottom: 12px;">
-        
+
                                                 <div class="text-white bg-dark parent-item-val-spec" style="padding: 6px;">
                                                 <div class=" parent-item-label-spec">Description</div>
                                                 <textarea type="text" formControlName="description" class="form-control bg-dark"
                                                 placeholder="Click to edit description" style="border-radius: 0px; border: none; border-left: 2px solid #fff; padding-left: 12px;"></textarea>
                                                 <div *ngIf="submitted && f.description.errors" class="invalid-feedback">
                                                     <div *ngIf="f.description.errors.required">Description is required</div>
-                                                </div>                                    
+                                                </div>
                                             </div>
                                             </div>
                                         </div>
-        
+
                                         <mat-expansion-panel  [expanded]="false">
                                         <mat-expansion-panel-header class="page-title" style="margin-bottom: 24px;" >
                                             <h3>Dashboard</h3>
                                         </mat-expansion-panel-header>
                                         <div style="display: flex; flex-direction: row; margin-bottom: 12px;">
-        
+
                                         <div style="display: flex; flex-direction: row;">
                                             <div style="display: flex; flex-direction: column;">
                                             <div style="display: flex;">
@@ -2088,7 +2087,7 @@
                                             </div>
                                             </div>
                                             <div style="display: flex;  margin-left: 12px;">
-        
+
                                             <label class="parent-item-label parent-item-label-alert" for="exampleInputPassword1">Expense Target</label>
                                             <input type="text" id="long_name" formControlName="expense_target" class="text-white bg-dark parent-item-val form-control form-control-spec"
                                                 placeholder="Expense Target"
@@ -2109,9 +2108,9 @@
                                                     <label *ngIf="jval.production_type.errors.required" class="error">Production type is
                                                         required</label>
                                                 </div>
-                                            </div>   
+                                            </div>
                                         </div>
-                                        
+
                                         </div>
                                         <div style="display: flex;">
                                         <div style="display: flex; flex-direction: column; margin-right: 12px;">
@@ -2125,9 +2124,9 @@
                                             <div style="display: flex;  margin-bottom: 12px;">
                                             <label class="parent-item-label">Expense Weight</label>
                                             <input type="number" class="text-white bg-dark parent-item-val form-control form-control-spec" placeholder="Expense weight" formControlName="expense_weight">
-    
+
                                             </div>
-        
+
                                         </div>
                                         <div style="display: flex; flex-direction: column;">
                                             <div style="display: flex;  margin-bottom: 12px;">
@@ -2141,7 +2140,7 @@
                                         </div>
                                     </div>
                                         </mat-expansion-panel>
-        
+
                                         <div class="col-md-12 form-group text-right">
                                             <button type="submit " (click)="onSubmitSub()"
                                                 [disabled]="!checkforgoaledit && !isSharedPlanPermission"
@@ -2149,8 +2148,8 @@
                                             <button type="reset" (click)="reset()" [disabled]="!checkforgoaledit "
                                                 class="btn btn-default">Clear</button>
                                         </div>
-    
-    
+
+
                                 </div>
                             </div>
                         </div>
@@ -2205,7 +2204,7 @@
                                         </div>
                                         </div>
                                     </div>
-                                
+
                                     <div style="display: flex; flex-direction: column; flex-basis: 45%;">
                                         <div style="display: flex;  margin-bottom: 12px;">
 
@@ -2237,7 +2236,7 @@
                                             placeholder="Click to edit description" style="border-radius: 0px; border: none; border-left: 2px solid #fff; padding-left: 12px;"></textarea>
                                             <div *ngIf="submitted && f.description.errors" class="invalid-feedback">
                                                 <div *ngIf="f.description.errors.required">Description is required</div>
-                                            </div>                                    
+                                            </div>
                                         </div>
                                         </div>
                                     </div>
@@ -2278,7 +2277,7 @@
                                                 <option value="percentage">Percentage</option>
                                             </select>
 
-                                        </div>   
+                                        </div>
                                     </div>
 
                                     <div style="display: flex; flex-direction: column; flex-basis: 45%;">
@@ -2539,14 +2538,14 @@
                                             autocomplete="off">
                                     </div>
                                 </div>
-            
+
                                 <div class="col-md-12 page-title mt-30" *ngIf="selectedModules == 'analysis'">
                                     <h3 class="breadcrumb-header">Analysis Framework</h3>
                                 </div>
                                 <div class="col-md-12 page-title mt-30" *ngIf="selectedModules == 'intelligence'">
                                     <h3 class="breadcrumb-header">Intelligence Details</h3>
                                 </div>
-            
+
                                 <div class="col-md-12" *ngIf="selectedModules == 'analysis'">
                                     <div class="form-group">
                                         <label>Question</label>
@@ -2621,7 +2620,7 @@
                         <div class="panel-body">
                             <div style="padding: 10px;">
                                 <div style="display: flex; flex-direction: row; gap: 24px; margin-bottom: 24px;">
-    
+
                                     <div style="display: flex; flex-direction: column; flex-basis: 45%;">
                                         <div style="display: flex;  margin-bottom: 12px;">
                                         <label class="parent-item-label" for="exampleInputEmail1">Short Name<span>*</span></label>
@@ -2632,9 +2631,9 @@
                                             <div *ngIf="f.short_name.errors.required">Short name is required</div>
                                         </div>
                                         </div>
-    
+
                                         <div style="display: flex;  margin-bottom: 12px;">
-    
+
                                         <label class="parent-item-label" for="exampleInputPassword1">Long Name<span>*</span></label>
                                         <input type="text" id="long_name" formControlName="long_name" class="text-white bg-dark parent-item-val form-control form-control-spec"
                                             placeholder="Long name"
@@ -2644,10 +2643,10 @@
                                         </div>
                                         </div>
                                     </div>
-                                
+
                                     <div style="display: flex; flex-direction: column; flex-basis: 45%;">
                                         <div style="display: flex;  margin-bottom: 12px;">
-    
+
                                         <label class="parent-item-label" for="exampleInputPassword1">Start Date<span>*</span></label>
                                         <div class="input-group input-append bootstrap-datepicker">
                                             <input type="text" id="date-input5" formControlName="start_date"
@@ -2670,18 +2669,18 @@
                                     <div style="display: flex; flex-direction: column; flex-basis: 45%;">
 
                                         <div style="display: flex;  margin-bottom: 12px;">
-    
+
                                             <div class="text-white bg-dark parent-item-val-spec" style="padding: 6px;">
                                             <div class=" parent-item-label-spec">Description</div>
                                             <textarea type="text" formControlName="description" class="form-control bg-dark"
                                             placeholder="Click to edit description" style="border-radius: 0px; border: none; border-left: 2px solid #fff; padding-left: 12px;"></textarea>
                                             <div *ngIf="submitted && f.description.errors" class="invalid-feedback">
                                                 <div *ngIf="f.description.errors.required">Description is required</div>
-                                            </div>                                    
+                                            </div>
                                         </div>
                                         </div>
                                     </div>
-    
+
                                     <mat-expansion-panel  [expanded]="true">
                                     <mat-expansion-panel-header class="page-title" style="margin-bottom: 24px;" >
                                         <h3>Dashboard</h3>
@@ -2698,9 +2697,9 @@
                                             <div *ngIf="f.production_target.errors.required">Production target is required</div>
                                         </div>
                                         </div>
-    
+
                                         <div style="display: flex;  margin-bottom: 12px;">
-    
+
                                         <label class="parent-item-label parent-item-label-alert" for="exampleInputPassword1">Expense Target</label>
                                         <input type="text" id="long_name" formControlName="expense_target" class="text-white bg-dark parent-item-val form-control form-control-spec"
                                             placeholder="Long name"
@@ -2709,7 +2708,7 @@
                                             <div *ngIf="f.expense_target.errors.required">Expense target is required</div>
                                         </div>
                                         </div>
-    
+
                                         <div style="display: flex;  margin-bottom: 12px;">
                                             <label class="parent-item-label parent-item-label-alert">Target Type</label>
                                             <select class="text-white bg-dark parent-item-val form-control form-control-spec" formControlName="production_type">
@@ -2722,9 +2721,9 @@
                                                 <label *ngIf="jval.production_type.errors.required" class="error">Production type is
                                                     required</label>
                                             </div>
-                                        </div>   
+                                        </div>
                                     </div>
-    
+
                                     <div style="display: flex; flex-direction: column; flex-basis: 45%;">
                                         <div style="display: flex;  margin-bottom: 12px;">
                                         <label class="parent-item-label">Production Threshold</label>
@@ -2756,7 +2755,7 @@
                                             <label *ngIf="f.expense_weight.errors.required" class="error">Expense weight is required</label>
                                         </div>
                                         </div>
-    
+
                                     </div>
                                     </div>
                                     <div class="col-md-12 form-group text-right">
@@ -2767,7 +2766,7 @@
                                             class="btn btn-default">Clear</button>
                                     </div>
                                     </mat-expansion-panel>
-    
+
                                     <mat-expansion-panel class="expanse-panel expanse-panel-discussion">
                                         <mat-expansion-panel-header class="page-title">
                                             <h3>Communication</h3>
@@ -3330,7 +3329,7 @@
             <!-- DATA TBL ID: table-delegate -->
             <div class="panel panel-cutom-blue">
                 <div class="table-responsive">
-                    <table id="table-delegate" 
+                    <table id="table-delegate"
                         class="display table table-data-width">
                         <thead>
                             <tr>
@@ -3410,7 +3409,7 @@
 
             <!-- DATA TBL ID: table-countdown -->
             <div class="panel panel-cutom-blue">
-                <table id="table-countdown" 
+                <table id="table-countdown"
                     class="display table table-data-width">
                     <thead>
                         <tr>
@@ -3680,7 +3679,7 @@
                         <!-- GRAPHICAL DATA -->
                         <div class="col-md-12 row mt-30">
                             <div class="col-md-6">
-                                
+
                             </div>
                         </div>
 
@@ -3738,7 +3737,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>  
+                                </div>
 
                                 <div style="display: flex; flex-direction: column; flex-basis: 45%;">
                                     <div style="display: flex;  margin-bottom: 12px;">
@@ -3787,7 +3786,7 @@
                                     <div class=" parent-item-label-spec">{{selectedModules === 'motive' ? 'Motivation' : 'Module Details'}}</div>
                                     <textarea type="text" formControlName="description" class="form-control bg-dark"
                                     placeholder="Click to edit description" style="border-radius: 0px; border: none; border-left: 2px solid #fff; padding-left: 12px;"  [ngClass]="{ 'is-invalid': isModuleFormSubmitted && mf.description.errors }"
-                                    autocomplete="off"></textarea>                     
+                                    autocomplete="off"></textarea>
                                 </div>
                             </div>
 
@@ -3796,7 +3795,7 @@
                                 <h3 class="breadcrumb-header">Analysis Framework</h3>
                             </div>
 
-    
+
                             <div class="col-md-12" *ngIf="selectedModules == 'analysis'">
                                 <div class="form-group">
                                     <label class="parent-item-label-spec" style="margin-bottom: 12px !important;">Question</label>
@@ -3848,7 +3847,7 @@
                                                     autocomplete="off">
                                             </div>
                                         </div>
-                                        <div 
+                                        <div
                                             *ngIf="selectedModules == 'analysis' || selectedModules == 'intelligence'">
                                             <div class="form-group" style="display: flex; flex-direction: row; margin-bottom: 12px;">
                                                 <label class="parent-item-label" style="margin-bottom: 12px !important;">Link</label>
@@ -3860,7 +3859,7 @@
                                     </div>
                                 </div>
                             </div>
-                            </div>  
+                            </div>
 
 
                             <div class="col-md-6"
@@ -3890,14 +3889,14 @@
                 </div>
                 </mat-expansion-panel>
             <div>
-                
+
             </div>
 
             <!-- ACTIVE: A module item was selected from the tree while fulfilling above requirements -->
             <div *ngIf="moduleItemActive" class="panel panel-cutom-blue">
                 <div class="panel-body">
                     <div style="display: flex; flex-direction: row; gap: 24px; margin-bottom: 24px;">
-                        
+
                         <div style="display: flex; flex-direction: column; flex-basis: 45%;">
                             <div  style="display: flex;  margin-bottom: 12px;">
                                 <div class="parent-item-label">Short Name:</div>
@@ -3915,7 +3914,7 @@
                                     {{parentplanDetails[0].user_id.first_name}} {{parentplanDetails[0].user_id.last_name}}</div>
                             </div>
                         </div>
-                        
+
                         <div style="display: flex; flex-direction: column; flex-basis: 45%;">
                             <div style="display: flex; margin-bottom: 12px;">
                                 <div class=" parent-item-label">Start Date:</div>
@@ -4069,14 +4068,14 @@
                                         autocomplete="off">
                                 </div>
                             </div>
-    
+
                             <div class="col-md-12 page-title mt-30" *ngIf="selectedModules == 'analysis'">
                                 <h3 class="breadcrumb-header">Analysis Framework</h3>
                             </div>
                             <div class="col-md-12 page-title mt-30" *ngIf="selectedModules == 'intelligence'">
                                 <h3 class="breadcrumb-header">Intelligence Details</h3>
                             </div>
-    
+
                             <div class="col-md-12" *ngIf="selectedModules == 'analysis'">
                                 <div class="form-group">
                                     <label>Question</label>
@@ -4152,7 +4151,7 @@
             <!-- VARIOUS DATA TABLES FOR THE VARIOUS STRATEGIES HAVE RESPECTIVE IDS -->
             <div class="panel panel-cutom-blue">
                 <div class="panel-body">
-                    <table class="display table table-data-width" id="table-module" datatable *ngIf="moduleGoals.length != 0 && selectedModules == 'strategy'"> 
+                    <table class="display table table-data-width" id="table-module" datatable *ngIf="moduleGoals.length != 0 && selectedModules == 'strategy'">
                         <thead>
                             <tr>
                                 <th class="prioritize-blue">Short Name</th>
@@ -4173,7 +4172,7 @@
 
                         </tbody>
                     </table>
-                    <table class="display table table-data-width" id="table-module" datatable *ngIf="moduleGoals.length != 0 && selectedModules == 'opportunity'"> 
+                    <table class="display table table-data-width" id="table-module" datatable *ngIf="moduleGoals.length != 0 && selectedModules == 'opportunity'">
                         <thead>
                             <tr>
                                 <th class="prioritize-blue">Short Name</th>
@@ -4194,7 +4193,7 @@
 
                         </tbody>
                     </table>
-                    <table class="display table table-data-width" id="table-module" datatable *ngIf="moduleGoals.length != 0 && selectedModules == 'problem'"> 
+                    <table class="display table table-data-width" id="table-module" datatable *ngIf="moduleGoals.length != 0 && selectedModules == 'problem'">
                         <thead>
                             <tr>
                                 <th class="prioritize-blue">Short Name</th>
@@ -4215,7 +4214,7 @@
 
                         </tbody>
                     </table>
-                    <table class="display table table-data-width" id="table-module-p" datatable *ngIf="moduleGoals.length != 0 && selectedModules == 'task'"> 
+                    <table class="display table table-data-width" id="table-module-p" datatable *ngIf="moduleGoals.length != 0 && selectedModules == 'task'">
                         <thead>
                             <tr>
                                 <th class="prioritize-blue">Short Name</th>
@@ -4236,7 +4235,7 @@
 
                         </tbody>
                     </table>
-                    <table class="display table table-data-width" id="table-module-m" datatable *ngIf="moduleGoals.length != 0 && selectedModules == 'motive'"> 
+                    <table class="display table table-data-width" id="table-module-m" datatable *ngIf="moduleGoals.length != 0 && selectedModules == 'motive'">
                         <thead>
                             <tr>
                                 <th class="prioritize-blue">Short Name</th>
@@ -4255,7 +4254,7 @@
 
                         </tbody>
                     </table>
-                    <table class="display table table-data-width" id="table-module-a" datatable *ngIf="moduleGoals.length != 0 && selectedModules == 'analysis'"> 
+                    <table class="display table table-data-width" id="table-module-a" datatable *ngIf="moduleGoals.length != 0 && selectedModules == 'analysis'">
                         <thead>
                             <tr>
                                 <th class="prioritize-blue">Short Name</th>
@@ -4274,7 +4273,7 @@
 
                         </tbody>
                     </table>
-                    <table class="display table table-data-width" id="table-module-i" datatable *ngIf="moduleGoals.length != 0 && selectedModules == 'intelligence'"> 
+                    <table class="display table table-data-width" id="table-module-i" datatable *ngIf="moduleGoals.length != 0 && selectedModules == 'intelligence'">
                         <thead>
                             <tr>
                                 <th class="prioritize-blue">Short Name</th>
@@ -4348,7 +4347,7 @@
                                                 {{parentplanDetails[0].long_name}}</div>
                                         </div>
                                     </div>
-                                    
+
                                     <div style="display: flex; flex-direction: column; flex-basis: 45%;">
                                         <div style="display: flex; margin-bottom: 12px;">
                                             <div class=" parent-item-label">Start Date:</div>
@@ -4382,7 +4381,7 @@
                                 </div>
                             </div>
                             <hr>
-                            
+
                         </div>
                     </div>
                 </div>

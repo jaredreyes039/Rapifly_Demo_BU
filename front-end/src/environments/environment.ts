@@ -1,5 +1,5 @@
 export const environment = {
   production: false,
-  apiUrl: 'https://rapiflyserveplansyn.herokuapp.com/',
+  apiUrl: 'http://localhost:3000/',
   socketUrl: 'http://localhost:4000',
 };

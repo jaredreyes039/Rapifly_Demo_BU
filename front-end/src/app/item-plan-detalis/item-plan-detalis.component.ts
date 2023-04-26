@@ -210,7 +210,7 @@ export class ItemPlanDetailsComponent implements OnInit {
         backgroundColor: ['#5cb85c50'],
         borderColor: 'white',
       },
-      
+
       { // red (NEC FOR BLANK SLOT BUG FIX)
         backgroundColor: ['#bb212450'],
         borderColor: 'red',
@@ -267,7 +267,7 @@ export class ItemPlanDetailsComponent implements OnInit {
   childPlanFormSub: FormGroup;
 
   // USER STATS
-  totalParentProfiles: Number; 
+  totalParentProfiles: Number;
   totalProfiles: Number;
   totalDelegatedTasks: Number;
   launchedProfiles: Number;
@@ -703,7 +703,7 @@ export class ItemPlanDetailsComponent implements OnInit {
       $("#inviteModal").modal("show");
     }
   }
-  
+
   // NEEDS TO BE ADJUSTED AND EXPANDED TO PROPER FUNCTIONALITY
   deletePlanById(plan) {
     this.commonService.PostAPI(`plan/delete`, {
@@ -725,7 +725,7 @@ export class ItemPlanDetailsComponent implements OnInit {
   get formVal() {
     return this.inviteUserForm.controls;
   }
-  
+
   // SUBMITS THE FORM TO INVITE A USER
   // NEEDS TO BE RE-LABELED
   submit() {
@@ -811,7 +811,7 @@ export class ItemPlanDetailsComponent implements OnInit {
               a.parentIsActiveSelection = true;
               a.childgoalDetails = {}
             }
-            
+
             // SUB ITEM LEVEL 1
             else if (data.node.parent !== '#' && data.node.parents.length < 3) {
               a.getgoaldetail(data.selected[0], data.node.parent);
@@ -942,8 +942,45 @@ export class ItemPlanDetailsComponent implements OnInit {
 
   // BROKEN
   // NECESSARY FOR DISTINGUISHING EDITS FORM NEW SUBMISSIONS
-  toggleEditChild(){
+  toggleEditGoal(){
     this.editChildEnabled = !this.editChildEnabled
+    if(this.childPlanForm){
+      console.log(this.childPlanForm)
+    }
+  }
+
+  updateGoal(){
+    if(!this.parentIsActiveSelection && this.childgoalDetails){
+      let goal_id = this.childgoalDetails._id;
+      // POST TO PATCH ROUTE
+      // RETURN SUCCESS OR FAILURE TO UPDATE FORM
+
+      this.commonService.PatchAPI('goal/update/goal', {
+        _id: goal_id,
+        user_id: this.currentuser.user._id,
+        data: {
+          production_target: this.childPlanForm.value.production_target,
+          expense_target: this.childPlanForm.value.expense_target,
+          production_weight: this.childPlanForm.value.production_weight,
+          expense_weight: this.childPlanForm.value.expense_weight,
+          personal_production_variance: this.childPlanForm.value.personal_production_variance,
+          personal_expense_variance: this.childPlanForm.value.personal_expense_variance,
+          target_type: this.childPlanForm.value.production_type
+        }
+      }).then((res: any)=>{
+        if(res.status){
+          this.toastr.success(res.message, 'Success!');
+          this.editChildEnabled = !this.editChildEnabled
+          this.getgoaldetail(goal_id, this.childgoalDetails.parent_goal_id[this.childgoalDetails.parent_goal_id.length - 1])
+        }
+        else {
+          this.toastr.error(res.message, 'Error!');
+        }
+      })
+    }
+    else {
+      console.log("ERROR: Child item is not active.")
+    }
   }
 
   // PATCHES FORM VALS WITH SELECTED GOALS DETAILS
@@ -1096,7 +1133,7 @@ export class ItemPlanDetailsComponent implements OnInit {
   onSubmit() {
     // THIS IS WHERE RESET() IS NECESSARY
     this.submitted = true;
-    
+
     // NEED TO REVIEW INVALIDITY AND HANDLING OF ERRORS
     if (this.childPlanForm.invalid) {
       return;
@@ -1534,7 +1571,7 @@ export class ItemPlanDetailsComponent implements OnInit {
     })
   }
 
-/* 
+/*
   RENDERING CHARTS: A GUIDE
   ----
   1. MUST use validator to control the UI appearing
@@ -1579,7 +1616,7 @@ export class ItemPlanDetailsComponent implements OnInit {
         if (response.status && response.data && response.data.length > 0) {
           this.reportGoals = response.data.filter(report => {return report.element.isReportReady});
           let reports = response.data.map(report => {return {end_date: report.element.end_date, actual_expense: report.actual_expense, actual_production: report.actual_production}})
-         
+
           // Sum of actual expenses AND production
           // Sort does NOT matter here
           this.actualExpenseSum = response.data.reduce((reportA, reportB)=> {
@@ -1649,7 +1686,7 @@ export class ItemPlanDetailsComponent implements OnInit {
           expResult.sort((reportA: any, reportB: any)=>{
                         return new Date(reportA.end_date).getDate() - new Date(reportB.end_date).getDate()
           })
-          
+
           for(let i: any = 0; i < this.reportGoals.length; i++){
             this.datasetProd.push(this.reportGoals[i].actual_production)
             this.datasetExp.push(this.reportGoals[i].actual_expense)
@@ -1747,7 +1784,7 @@ export class ItemPlanDetailsComponent implements OnInit {
           console.log(response.data)
           if(this.parentIsActiveSelection){
 
-            // When a parent item is selected, this will filter out items nested deeper than 
+            // When a parent item is selected, this will filter out items nested deeper than
             this.priorityGoals = response.data.filter((goal)=>{return goal.parent_goal_id.length === 1});
           }
           else {
@@ -2205,7 +2242,7 @@ export class ItemPlanDetailsComponent implements OnInit {
             if (verifiedTimesArr.includes('XX')){
               this.launchGoals[index]['total_time'] = 'Ahead of start date, check back later!';
             }
-            else { 
+            else {
               this.launchGoals[index]['total_time'] = verifiedTimesArr[0] + 'D:' + verifiedTimesArr[1] + 'H:' + verifiedTimesArr[2] + 'M';
             }
           }
@@ -2271,7 +2308,7 @@ export class ItemPlanDetailsComponent implements OnInit {
 
           this.isReportFormSubmitted = false;
           this.ReportForm.reset();
-          
+
           $("#reportModal").modal("hide");
         } else {
           this.toastr.error(response.message, "Error");
@@ -2357,7 +2394,7 @@ export class ItemPlanDetailsComponent implements OnInit {
           this.showSelectedTree(type)
           this.getModules();
           this.ref.detectChanges();
-          
+
           $('#module-start-date').datepicker({
             dateFormat: "mm-dd-yy",
             setDate: new Date(),
@@ -2368,15 +2405,15 @@ export class ItemPlanDetailsComponent implements OnInit {
             todayHighlight: true,
             startDate: new Date(this.parentplanDetails[0].start_date),
           });
-    
+
           $('#module-start-date').datepicker().on('changeDate', function (e) {
             $('#module-start-date').datepicker('hide');
           });
-    
+
           $('#module-end-date').datepicker().on('changeDate', function (e) {
             $('#module-end-date').datepicker('hide');
           });
-    
+
           this.selectPhase(this.selectedPhase);
           this.getPlanGoals(this.planId);
         } else {
@@ -2412,7 +2449,7 @@ export class ItemPlanDetailsComponent implements OnInit {
         } else {
           if (new Date(this.planstartdate) <= new Date(startDate) && new Date(this.planenddate) > new Date(startDate) && new Date(this.planstartdate) < new Date(endDate) && new Date(this.planenddate) >= new Date(endDate)) {
             var data = this.ModuleForm.value;
-            
+
             data.plan_id = this.childgoalDetails ? this.childgoalDetails._id : this.planId
             data.user_id = this.currentuser.user._id
             data.status = 0;
@@ -2471,7 +2508,7 @@ export class ItemPlanDetailsComponent implements OnInit {
     this.isModuleFormSubmitted = true;
     if (this.ModuleFormSub.invalid) {
       return;
-    } 
+    }
     else {
             var data = this.ModuleFormSub.value;
             data.parent_goal_id = this.currentModuleDetails._id
@@ -2832,7 +2869,7 @@ export class ItemPlanDetailsComponent implements OnInit {
       }
     }
   }
-  // remove form control plan form 
+  // remove form control plan form
   removeData(i) {
     /*
     * remove key of element from formfield array
@@ -2898,7 +2935,7 @@ export class ItemPlanDetailsComponent implements OnInit {
           data.plan_id = 1;
           data.add = this.final;
           data.start_date = $('#date-input5').val();
-          data.end_date = $('#date-input6').val();  
+          data.end_date = $('#date-input6').val();
           if (this.selectedSharedPlanUser && this.selectedSharedPlanUser.length > 0) {
             data.shared_permission_users = this.selectedSharedPlanUser.map(data => data.id);
           } else {
