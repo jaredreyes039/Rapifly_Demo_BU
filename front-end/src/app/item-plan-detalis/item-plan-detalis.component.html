@@ -1667,7 +1667,7 @@
                 </mat-expansion-panel-header>
 
                 <!-- DATA TBL ID: table-goals -->
-                <div class="panel panel-cutom-blue" *ngIf="selectedPhase == 'B' && planGoals">
+                <div class="panel panel-cutom-blue" *ngIf="selectedPhase == 'B' && planGoals.length !== 0">
                     <div class="row">
                         <table id="table-goals" datatable [dtOptions]="dtOptionsPlanGoals"
                             class="display table table-data-width">
@@ -1694,6 +1694,11 @@
                                 </tr>
                             </tbody>
                         </table>
+                    </div>
+                </div>
+                <div class="panel panel-cutom-blue" *ngIf="selectedPhase == 'B' && planGoals.length === 0">
+                    <div class="row">
+                        <p>No data available, create a child item to view your goal list.</p>
                     </div>
                 </div>
             </mat-expansion-panel>

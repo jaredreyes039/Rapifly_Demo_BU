@@ -846,7 +846,7 @@ export class ItemPlanDetailsComponent implements OnInit {
             a.selectedModules = '';
             a.moduleType = 'goal';
             a.showSelectedTree(a.selectedModules);
-            a.getPlanGoals(data.selected[0]);
+            a.getPlanGoals(plan_id);
             a.dataTableAfterViewInit()
           }
         );
@@ -886,6 +886,16 @@ export class ItemPlanDetailsComponent implements OnInit {
     this.commonService.PostAPI(`goal/getgoals/bypid`, { id: planid, module_type: this.moduleType }).then((response: any) => {
       if (response.status && response.data && response.data.length > 0) {
         this.planGoals = response.data;
+        if(!this.parentIsActiveSelection && this.childgoalDetails.length !== 0){
+          this.planGoals = this.planGoals.filter((goal)=>{return goal.parent_goal_id[goal.parent_goal_id.length - 1] === this.childgoalDetails._id})
+        }
+        else {
+          this.planGoals = this.planGoals.filter((goal)=>{
+            if(goal.plan_id === this.planId){
+              return goal.parent_goal_id.length === 1
+            }
+          })
+        }
       } else {
         this.planGoals = [];
       }
@@ -1451,13 +1461,13 @@ export class ItemPlanDetailsComponent implements OnInit {
     this.selectedModules = '';
     this.moduleItemActive = false;
     this.moduleType = 'goal'
-    this.planGoals = []
     if(type === 'create'){
+      this.planGoals = []
       this.parentIsActiveSelection = false;
       this.childgoalDetails = {}
       this.parentplanDetails = []
+      this.getPlanDetails()
     }
-    this.getPlanDetails()
     if(this.parentplanDetails.length >= 1){
       this.getPlanGoals(this.parentplanDetails[0]._id)
     }
@@ -2195,7 +2205,16 @@ export class ItemPlanDetailsComponent implements OnInit {
             this.countdownGoals[index]['total_time'] = days + 'D:' + finalhours + 'H:' + finalminutes + 'M';
           }
         })
-
+        if(!this.parentIsActiveSelection && this.childgoalDetails.length !== 0){
+          this.countdownGoals = this.countdownGoals.filter((goal)=>{return goal.parent_goal_id[goal.parent_goal_id.length - 1] === this.childgoalDetails._id})
+        }
+        else {
+          this.countdownGoals = this.countdownGoals.filter((goal)=>{
+            if(goal.plan_id === this.planId){
+              return goal.parent_goal_id.length === 1
+            }
+          })
+        }
         this.dividearrayintothreepart = 1
         if(!this.initGrabCD) {
           this.dtTriggerCountdown.next();
@@ -2242,6 +2261,17 @@ export class ItemPlanDetailsComponent implements OnInit {
             }
           }
         });
+
+        if(!this.parentIsActiveSelection && this.childgoalDetails.length !== 0){
+          this.launchGoals = this.launchGoals.filter((goal)=>{return goal.parent_goal_id[goal.parent_goal_id.length - 1] === this.childgoalDetails._id})
+        }
+        else {
+          this.launchGoals = this.launchGoals.filter((goal)=>{
+            if(goal.plan_id === this.planId){
+              return goal.parent_goal_id.length === 1
+            }
+          })
+        }
       } else {
         this.launchGoals = [];
       }
