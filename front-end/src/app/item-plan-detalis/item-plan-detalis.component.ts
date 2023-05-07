@@ -24,6 +24,15 @@ declare var $: any;
 })
 export class ItemPlanDetailsComponent implements OnInit {
 
+
+  // TRIGGER DISPLAY'S
+  itemSelected: boolean = false;
+  challengeSelected: boolean = false;
+  moduleSelected: boolean = false;
+  challengeItemSelected: boolean = false;
+  challengeView: String = 'problem'
+  moduleView: String = 'strategy'
+
   // VARS
   childPlanForm: FormGroup;
   submitted: boolean = false;
@@ -87,6 +96,7 @@ export class ItemPlanDetailsComponent implements OnInit {
   selected = [];
   selectedPhase: any = 'B';
   selectedStage: any = 'create';
+  selectedChallenge: String = 'problem';
 
   // DEACTIVATE VARS
   goals: any = [];
@@ -228,6 +238,7 @@ export class ItemPlanDetailsComponent implements OnInit {
   selectedModules: any = '';
   isSelectedChallange: boolean = false;
   ModuleForm: FormGroup;
+  ModuleFormChallenge: FormGroup;
   ModuleFormSub: FormGroup;
   isModuleFormSubmitted: boolean = false;
   opportunityDetails: any = [];
@@ -297,7 +308,6 @@ export class ItemPlanDetailsComponent implements OnInit {
   instructionBoxOpen: Boolean = false;
   InviteUserForm: FormGroup;
   isInviteUserFormValid = false;
-
 
 
   constructor(
@@ -399,6 +409,29 @@ export class ItemPlanDetailsComponent implements OnInit {
       manager_production_variance: [0]
     })
     this.ModuleForm = this.formBuilder.group({
+      short_name: ['', Validators.required],
+      long_name: ['', Validators.required],
+      start_date: [''],
+      end_date: [''],
+      description: [''],
+      production_target: [0],
+      production_weight: [0],
+      expense_target: [0],
+      expense_weight: [0],
+      security: ['public'],
+      question: [''],
+      answer: [''],
+      source: [''],
+      link: [''],
+      intelligence_value: [''],
+      intelligence_response: [''],
+      attachments: [''],
+      personal_expense_variance: [0],
+      personal_production_variance: [0],
+      manager_expense_variance: [0],
+      manager_production_variance: [0]
+    });
+    this.ModuleFormChallenge = this.formBuilder.group({
       short_name: ['', Validators.required],
       long_name: ['', Validators.required],
       start_date: [''],
@@ -644,6 +677,7 @@ export class ItemPlanDetailsComponent implements OnInit {
   // FEEDBACK FUNCTIONALITY STORED IN THIS MODAL
   openFeedbackModal() {
     this.feedbackModalOpen = !this.feedbackModalOpen;
+    this.commonService.PostAPI('users/get/user', 'ehi@planningsynergies.com')
   }
   clearFeedback() {
     this.FeedbackForm.reset()
@@ -676,26 +710,6 @@ export class ItemPlanDetailsComponent implements OnInit {
     })
   }
 
-
-  // getInviteDesignations() {
-  //   if (this.currentuser.role == "Admin") {
-  //     this.commonService.PostAPI(`hierarchy/get/designation`, { parent_user_id: this.parent_user_id }).then((response: any) => {
-  //       if (response.status) {
-  //         this.designations = response.data;
-  //       } else {
-  //         this.toastr.error(response.message, 'Error');
-  //       }
-  //     });
-  //   } else {
-  //     this.commonService.PostAPI(`hierarchy/get/child/designation`, { user_id: this.currentUserId }).then((response: any) => {
-  //       if (response.status) {
-  //         this.designations = response.data;
-  //       } else {
-  //         this.toastr.error(response.message, 'Error');
-  //       }
-  //     });
-  //   }
-  // }
 
   onRecipient(e) {
     if (e.target.value && e.target.value === "invite") {
@@ -750,6 +764,43 @@ export class ItemPlanDetailsComponent implements OnInit {
     }
   }
 
+  // NEW CHALLENGES FUNCTIONS
+
+  toggleChallengeTreeView(type: String){
+    let selection = $('#challenge-type-selector-tree').val();
+    this.challengeView = type !== '' ? type : selection;
+    this.getChallengeTreeDetails(this.challengeView)
+  }
+
+  toggleModuleTreeView(type: String){
+    let selection = $('#module-type-selector-tree').val();
+    this.moduleView = type !== '' ? type : selection;
+    this.getModuleTreeDetails(this.moduleView)
+  }
+
+  toggleChallengeForm(){
+    let selection = $('#challenge-type-selector').val();
+    if(selection !== ''){
+      this.challengeSelected = true;
+      this.selectChallenge(selection)
+      this.toggleChallengeTreeView(selection)
+    }
+    $('#challenge-type-selector-tree').val(selection);
+  }
+
+  toggleModuleForm(){
+    let selection = $('#module-type-selector').val();
+
+    if(selection !== ''){
+      this.moduleSelected = true;
+      this.selectModule(selection);
+      this.toggleModuleTreeView(selection)
+    }
+    $('#module-type-selector-tree').val(selection);
+  }
+
+
+
   // BUILDS PROJECT TREE BASED ON CURRENT USER PLANS AND GOALS
   getPlanDetails() {
     // Used for building tree
@@ -802,15 +853,20 @@ export class ItemPlanDetailsComponent implements OnInit {
           function (evt, data) {
             var plan_id;
             this.childgoalDetails = []
-            // PREVENTS EDIT UI
+            this.itemSelected = true;
             a.editChildEnabled = false;
+
             // ROOT ITEM
             if (data.node.parent == "#") {
               a.getplandetail(data.selected[0]);
               a.getGoalReportByPlan(data.selected[0]);
               plan_id = data.selected[0];
+              a.planId = plan_id;
               a.parentIsActiveSelection = true;
               a.childgoalDetails = {}
+              a.itemSelected = true;
+              a.moduleItemActive = false;
+              a.challengeItemSelected = false;
             }
 
             // SUB ITEM LEVEL 1
@@ -819,11 +875,16 @@ export class ItemPlanDetailsComponent implements OnInit {
               a.getGoalReportByPlan(data.node.parent);
               a.parentIsActiveSelection = false;
               plan_id = data.node.parent;
+              a.planId = plan_id;
               a.goalid = ""
               a.childParentId = data.node.parent
               a.getGoalAttachments(data.selected[0]);
               a.getGoalSharedUsers(data.selected[0]);
               a.checkPlanForGoalSharePermission(plan_id);
+              a.itemSelected = true;
+              a.moduleItemActive = false;
+              a.selectedModules = ''
+              a.challengeItemSelected = false;
             }
 
             // SUB ITEM LEVEL n+1
@@ -834,20 +895,42 @@ export class ItemPlanDetailsComponent implements OnInit {
               a.childParentId = data.node.parent
               a.goalid = data.selected[0]
               plan_id = data.node.parents[data.node.parents.length - 2]
+              a.planId = plan_id;
               a.getGoalAttachments(data.selected[0]);
               a.getGoalSharedUsers(data.selected[0]);
               a.checkPlanForGoalSharePermission(plan_id);
+              a.itemSelected = true;
+              a.moduleItemActive = false;
+              a.selectedModules = ''
+              a.challengeItemSelected = false;
             }
 
             // CLEAN UP
-            a.planId = plan_id;
             a.getHeadUpToDisplayDetails(plan_id);
             a.selectedPhase = 'B';
-            a.selectedModules = '';
             a.moduleType = 'goal';
-            a.showSelectedTree(a.selectedModules);
-            a.getPlanGoals(plan_id);
+            a.challengeView = 'problem';
+            a.moduleView = 'strategy'
+            a.getModuleTreeDetails('strategy');
+            a.getChallengeTreeDetails('problem');
+            $('#module-type-selector-tree').val('strategy');
+            $('#challenge-type-selector-tree').val('problem');
+            a.selectedModules = '';
+            a.selectedChallenge = ''
+            a.moduleItemActive = false;
+            a.challengeItemSelected = false;
+            a.getPlanGoals(plan_id, 'goal');
             a.dataTableAfterViewInit()
+
+            console.log(a.moduleItemActive, a.challengeItemSelected)
+            if(a.challengeSelected){
+              a.challengeSelected = false;
+              $('#challenge-type-selector').val('')
+            }
+            if(a.moduleSelected){
+              a.moduleSelected = false;
+              $('#module-type-selector').val('')
+            }
           }
         );
 
@@ -876,14 +959,24 @@ export class ItemPlanDetailsComponent implements OnInit {
         return this.toastr.error(res.message, "Error")
       }
     })
-    this.getLaunchGoals(this.planId)
+    let type: String;
+    if(this.challengeItemSelected){
+      type = this.selectedChallenge
+    }
+    else if(this.moduleItemActive){
+      type = this.selectedModules
+    }
+    else {
+      type = 'goal'
+    }
+    this.getLaunchGoals(this.planId, type)
   }
 
   // SHOULD USE THE CURRENT PLAN ID IF DISPLAYING W/ TREE
   // SHOULD USE 'SELECTED' PLAN ID IF DISPLAYING SELECTED OUTSIDE OF TREE
   // LOADS planGoals VAR
-  getPlanGoals(planid) {
-    this.commonService.PostAPI(`goal/getgoals/bypid`, { id: planid, module_type: this.moduleType }).then((response: any) => {
+  getPlanGoals(planid, type: any) {
+    this.commonService.PostAPI(`goal/getgoals/bypid`, { id: planid, module_type: type }).then((response: any) => {
       if (response.status && response.data && response.data.length > 0) {
         this.planGoals = response.data;
         if(!this.parentIsActiveSelection && this.childgoalDetails.length !== 0){
@@ -969,20 +1062,13 @@ export class ItemPlanDetailsComponent implements OnInit {
       this.commonService.PatchAPI('goal/update/goal', {
         _id: goal_id,
         user_id: this.currentuser.user._id,
-        data: {
-          production_target: this.childPlanForm.value.production_target,
-          expense_target: this.childPlanForm.value.expense_target,
-          production_weight: this.childPlanForm.value.production_weight,
-          expense_weight: this.childPlanForm.value.expense_weight,
-          personal_production_variance: this.childPlanForm.value.personal_production_variance,
-          personal_expense_variance: this.childPlanForm.value.personal_expense_variance,
-          target_type: this.childPlanForm.value.production_type
-        }
+        data: this.childPlanForm.value
       }).then((res: any)=>{
         if(res.status){
           this.toastr.success(res.message, 'Success!');
           this.editChildEnabled = !this.editChildEnabled
           this.getgoaldetail(goal_id, this.childgoalDetails.parent_goal_id[this.childgoalDetails.parent_goal_id.length - 1])
+          this.getPlanDetails()
         }
         else {
           this.toastr.error(res.message, 'Error!');
@@ -1090,6 +1176,26 @@ export class ItemPlanDetailsComponent implements OnInit {
         this.goalplanid = this.parentplanDetails[0]._id;
         this.golaplanname = this.parentplanDetails[0].short_name;
         this.plansecurity = this.parentplanDetails[0].security;
+        this.ModuleForm.reset();
+
+        $('#module-start-date-challenge').datepicker({
+          dateFormat: "mm-dd-yy",
+          setDate: new Date(),
+          todayHighlight: true,
+        });
+        $('#module-end-date-challenge').datepicker({
+          setDate: new Date(),
+          todayHighlight: true,
+          startDate: new Date(this.parentplanDetails[0].start_date),
+        });
+
+        $('#module-start-date-challenge').datepicker().on('changeDate', function (e) {
+          $('#module-start-date-challenge').datepicker('hide');
+        });
+
+        $('#module-end-date-challenge').datepicker().on('changeDate', function (e) {
+          $('#module-end-date-challenge').datepicker('hide');
+        });
 
         // VALS SET HERE WILL BE DEFAULT FOR THE FIRST CHILD ITEM FORM
         this.childPlanForm.reset();
@@ -1128,71 +1234,47 @@ export class ItemPlanDetailsComponent implements OnInit {
   // convenience getter for easy access to form fields
   get f() { return this.childPlanForm.controls; }
 
-  /*
-    WARNING
-    ---------
-    * This function submits the following form group and its data
-    at activation: childPlanForm
 
-    - If this function is touched in any way, any items that impact
-    the current values of the childplanForm must also be inspected for potential
-    bugs and errors
-    - Note that overlapping calls to current data may result in incorrect plan items
-    or child items
-  */
-  // These functions cover submission of main child and deeply nested child items
   onSubmit() {
     // THIS IS WHERE RESET() IS NECESSARY
     this.submitted = true;
-
+    this.challengeSelected = false;
     // NEED TO REVIEW INVALIDITY AND HANDLING OF ERRORS
     if (this.childPlanForm.invalid) {
       return;
     } else {
       // IF getplandetail2() FOUND A RESP
       if (this.goalplanid != undefined) {
-        // CHECK FOR BLAN VALS FOR NOW, BUT LOGIC MUST BE IMPROVED IN THE FUTURE
         if ($('#date-input5').val() != '' && $('#date-input6').val() != '') {
-          // data IS THE OBJECT TO BUILD THE SUBMITTED FORM AND SEND IT TO THE BACKEND FOR STORAGE
-          // THIS IS WHERE IT IS CRITICAL THAT THE CHILDPLANFORM BE ACCURATE AT SUBMIT
           var data = this.childPlanForm.value;
-            // EDIT FUNCTIONALITY DEEPLY NEEDS REPAIR
-            // THE EDITID SHOULD DENOTE IF A GOAL IS BEING EDITED OR CREATED
             data.editid = ""
           data.user_id = this.currentuser.user._id;
           data.plan_id = this.goalplanid;
           data.status = 0;
           data.numbers = 0;
-          // THESE INPUTS MUST MUST MUST BE ACCURATE AND NOT REPEAT THEMSELVES
-          // BE WARY BECAUSE THEY ARE USED ELSEWHERE AND CAN TAKE ON NEW VALS
           data.start_date = $('#date-input5').val();
           data.end_date = $('#date-input6').val();
           data.shared_users = this.selected.map((data) => data.id);
-            // GUARANTEES A GOAL IF STMAI ARE NOT SELECTED ON CREATION
             if (this.moduleType == '') {
               this.moduleType = 'goal';
             }
-          data.module_type = this.moduleType;
+          data.module_type = 'goal';
           const formData: any = new FormData();
 
-          // ATTACHMENTS NEED TO BE EVALED BEFORE FURTHER PUBLISHING
           const files: Array<File> = this.attachments;
           for (let i = 0; i < files.length; i++) {
             formData.append("attachments", files[i], files[i]['name']);
           }
-          // COVERS ADDITIONAL FIELDS AND PREPS FORMDATA FOR SUBMISSION
           for (const key in data) {
             const element = data[key];
             formData.append(key.toString(), element);
           }
 
-          // SEND FORMDATA FOR STORAGE
           this.commonService.PostAPI(`goal/create`, formData).then((response: any) => {
             if (response.status) {
               this.toastr.success(response.message, "Success");
               this.getPlanDetails();
-              // Investigate the need of this function here
-              this.getPlanGoals(this.goalplanid);
+              this.getPlanGoals(this.goalplanid, 'goal');
               this.reset();
             } else {
               this.toastr.error(response.message, "Error");
@@ -1235,9 +1317,7 @@ export class ItemPlanDetailsComponent implements OnInit {
               data.end_date = $('#date-input6').val();
               data.shared_users = this.selected.map((data) => data.id);
               console.log(data)
-              if (this.moduleType == '') {
-                this.moduleType = 'goal';
-              }
+             this.moduleType = 'goal';
 
               data.module_type = this.moduleType;
 
@@ -1261,7 +1341,7 @@ export class ItemPlanDetailsComponent implements OnInit {
                 if (response.status) {
                   this.toastr.success(response.message, "Success");
                   this.getPlanDetails();
-                  this.getPlanGoals(this.goalplanid);
+                  this.getPlanGoals(this.goalplanid, 'goal');
                   this.childPlanFormSub.reset()
                   this.reset();
                 } else {
@@ -1458,18 +1538,16 @@ export class ItemPlanDetailsComponent implements OnInit {
   }
   selecteStage(type: any) {
     this.selectedStage = type;
-    this.selectedModules = '';
-    this.moduleItemActive = false;
-    this.moduleType = 'goal'
     if(type === 'create'){
       this.planGoals = []
       this.parentIsActiveSelection = false;
       this.childgoalDetails = {}
       this.parentplanDetails = []
       this.getPlanDetails()
+      this.itemSelected = false;
     }
     if(this.parentplanDetails.length >= 1){
-      this.getPlanGoals(this.parentplanDetails[0]._id)
+      this.getPlanGoals(this.parentplanDetails[0]._id, 'goal')
     }
     else {
       return;
@@ -1479,65 +1557,73 @@ export class ItemPlanDetailsComponent implements OnInit {
     if (this.planId && this.planId !== '') {
       // this.selectedModules = '';
       this.selectedPhase = type;
-      this.moduleItemActive = false
+      let altType: String = '';
+      console.log(altType)
+      if(this.challengeItemSelected){
+        altType = this.selectedChallenge
+      }
+      else if(this.moduleItemActive){
+        altType = this.selectedModules
+      }
+      else {
+        altType = 'goal'
+      }
+
       if (type == 'D') {
-        this.getgoal(this.planId);
-        this.selectedModules = ''
+        this.getgoal(this.planId, altType);
       }
 
       if (type == 'P') {
-        this.getPriorityGoals(this.planId);
-        this.selectedModules = ''
+        this.getPriorityGoals(this.planId, altType);
 
       }
 
       if (type == 'PR') {
-        this.getProposeGoals(this.planId);
-        this.selectedModules = ''
-
+        this.getProposeGoals(this.planId, altType);
       }
 
       if (type == 'V') {
-        this.getVoteGoals(this.planId);
-        this.selectedModules = ''
+        this.getVoteGoals(this.planId, altType);
 
       }
 
       if (type == 'S') {
-        this.getSelectGoals(this.planId);
-        this.selectedModules = ''
+        this.getSelectGoals(this.planId, altType);
 
       }
 
       if (type == 'DG') {
-        this.getDelegateGoals(this.planId);
+        this.getDelegateGoals(this.planId, altType);
         this.getalldelegategoals();
-        this.selectedModules = ''
 
       }
 
       if (type == 'C') {
-        this.getCountdownGoals(this.planId);
-        this.selectedModules = ''
+        this.getCountdownGoals(this.planId, altType);
       }
 
       if (type == 'L') {
-        this.selectedModules = ''
 
-        this.getLaunchGoals(this.planId);
+        this.getLaunchGoals(this.planId, altType);
       }
 
       if (type == 'R') {
-        this.selectedModules = ''
 
         this.getReportGoals(this.planId);
       }
 
       if (type == 'M') {
-        this.selectedModules = ''
-        this.getPlanGoalDetails();
-        this.getReportSum(this.parentplanDetails[0]._id);
-        this.initMeasureCharts(true)
+        if(this.parentIsActiveSelection && !this.challengeItemSelected && !this.moduleItemActive){
+          // this.getPlanGoalDetails();
+          // this.getReportSum(this.parentplanDetails[0]._id);
+          // this.initMeasureCharts(true)
+          this.selectedPhase = 'R'
+          this.toastr.error('That functionality is currently under construction, check back often for updates! - Rapifly Dev Team', 'Whoops')
+        }
+        else {
+          this.selectedPhase = 'R'
+          this.toastr.error('That functionality is currently under construction, check back often for updates! - Rapifly Dev Team', 'Whoops')
+        }
       }
 
       $('#date-input5').datepicker({
@@ -1615,7 +1701,7 @@ export class ItemPlanDetailsComponent implements OnInit {
     }
   }
   initMeasureCharts(validator: Boolean){
-    if(validator){
+    if(validator && !this.selectedChallenge && !this.moduleItemActive && this.parentIsActiveSelection){
       this.commonService.PostAPI(`report/get/all`, { plan_id: this.planId, user_id: this.currentuser.user._id }).then((response: any) => {
         if (response.status && response.data && response.data.length > 0) {
           this.reportGoals = response.data.filter(report => {return report.element.isReportReady});
@@ -1725,16 +1811,17 @@ export class ItemPlanDetailsComponent implements OnInit {
     }
     else {
       this.datasetTotal = []
+      this.toastr.error('That functionality is currently under construction, check back often for updates! - Rapifly Dev Team', 'Whoops')
     }
   }
 
   // Deactivate
-  getgoal(planid) {
+  getgoal(planid, type) {
     this.goals = []
     if (planid == '') {
       this.dividearrayintothreepart = 0
     } else {
-      this.commonService.PostAPI(`goal/get/all/by/plan`, { id: planid, module_type: this.moduleType }).then((response: any) => {
+      this.commonService.PostAPI(`goal/get/all/by/plan`, { id: planid, module_type: type }).then((response: any) => {
         if (response.status && response.data && response.data.length > 0) {
           this.goals = response.data;
           if(!this.parentIsActiveSelection && this.childgoalDetails.length !== 0){
@@ -1767,7 +1854,17 @@ export class ItemPlanDetailsComponent implements OnInit {
     this.commonService.PostAPI(`goal/deactivate/changebyid`, { id: id, deactivate: change }).then((response: any) => {
       if (response.status) {
         this.toastr.success(response.message, "Success");
-        this.getgoal(this.planId);
+        let type: String;
+        if(this.challengeItemSelected){
+          type = this.selectedChallenge
+        }
+        else if(this.moduleItemActive){
+          type = this.selectedModules
+        }
+        else {
+          type = 'goal'
+        }
+        this.getgoal(this.planId, type);
         this.getPlanDetails();
 
         this.showSelectedTree(this.selectedModules)
@@ -1778,12 +1875,12 @@ export class ItemPlanDetailsComponent implements OnInit {
   }
 
   // Priority
-  getPriorityGoals(planid) {
+  getPriorityGoals(planid, type: any) {
     if (planid == '') {
       this.isDevidedInParts = 0
     } else {
       console.log(planid)
-      this.commonService.PostAPI(`goal/getgoals/bypid`, { id: planid, module_type: this.moduleType }).then((response: any) => {
+      this.commonService.PostAPI(`goal/getgoals/bypid`, { id: planid, module_type: type }).then((response: any) => {
         if (response.status) {
           console.log(response.data)
           if(this.parentIsActiveSelection){
@@ -1816,7 +1913,7 @@ export class ItemPlanDetailsComponent implements OnInit {
       this.commonService.PostAPI('goal/update/priority', { goal_id: goalid, prioritize: changevalue }).then((response: any) => {
         if (response.status) {
           this.toastr.success(response.message, "Success");
-          this.getPriorityGoals(this.planId);
+          this.getPriorityGoals(this.planId, 'goal');
         } else {
           this.toastr.error(response.message, "Error");
         }
@@ -1841,8 +1938,10 @@ export class ItemPlanDetailsComponent implements OnInit {
     this.commonService.PostAPI(`goal/priority/changebyid`, data).then((response: any) => {
       if (response.status) {
         this.toastr.success(response.message, "Success");
-        this.getPriorityGoals(this.planId);
+        this.getPriorityGoals(this.planId, 'goal');
         this.getPlanDetails()
+        this.getModuleTreeDetails(this.selectedModules !== '' ? this.selectedModules : 'strategy')
+        this.getChallengeTreeDetails(this.selectedChallenge)
       } else {
         this.toastr.error(response.message, "Error");
         // this.is_disabled = false;
@@ -1851,7 +1950,7 @@ export class ItemPlanDetailsComponent implements OnInit {
   }
 
   // Propose
-  getProposeGoals(planid) {
+  getProposeGoals(planid, type: any) {
     if (planid == "") {
       this.checkboxshow = false;
       this.isProposeDevidedInParts = 0;
@@ -1859,7 +1958,7 @@ export class ItemPlanDetailsComponent implements OnInit {
       this.commonService.PostAPI(`plan/get/by/id2`, { plan_id: planid }).then((response: any) => {
         if (response.status) {
           if (response.data[0].user_id._id == this.currentuser.user._id) {
-            this.commonService.PostAPI(`propose/get/goal/by/plan`, { plan_id: planid, user_id: this.currentuser.user._id, module_type: this.moduleType }).then((response: any) => {
+            this.commonService.PostAPI(`propose/get/goal/by/plan`, { plan_id: planid, user_id: this.currentuser.user._id, module_type: type }).then((response: any) => {
               if (response.status) {
                 console.log(response.data)
                 this.proposeGoals = [];
@@ -1913,7 +2012,7 @@ export class ItemPlanDetailsComponent implements OnInit {
       } else {
         this.toastr.error(response.message, "Error");
       }
-      this.getProposeGoals(this.planId);
+      this.getProposeGoals(this.planId, 'goal');
     });
   }
   handleChange($event, id) {
@@ -1928,7 +2027,7 @@ export class ItemPlanDetailsComponent implements OnInit {
       .then((response: any) => {
         if (response.status) {
           this.toastr.success(response.message, "Success");
-          this.getProposeGoals(this.planId);
+          this.getProposeGoals(this.planId, 'goal');
         } else {
           this.toastr.error(response.message, "Error");
           // this.is_disabled = false;
@@ -1937,8 +2036,8 @@ export class ItemPlanDetailsComponent implements OnInit {
   }
 
   // Vote
-  getVoteGoals(planid) {
-    this.commonService.PostAPI(`goal/getgoals/byvote`, { id: planid, module_type: this.moduleType }).then((response: any) => {
+  getVoteGoals(planid, type: any) {
+    this.commonService.PostAPI(`goal/getgoals/byvote`, { id: planid, module_type: type }).then((response: any) => {
       if (response.status && response.data && response.data.length > 0) {
         this.voteGoals = response.data;
         if(!this.parentIsActiveSelection && this.childgoalDetails.length !== 0){
@@ -1982,7 +2081,7 @@ export class ItemPlanDetailsComponent implements OnInit {
     this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
       dtInstance.destroy();
     });
-    this.getVoteGoals(this.planId);
+    this.getVoteGoals(this.planId, 'goal');
   }
   changevote(id, change) {
     this.commonService
@@ -2002,8 +2101,8 @@ export class ItemPlanDetailsComponent implements OnInit {
   }
 
   // Select
-  getSelectGoals(planId) {
-    this.commonService.PostAPI(`goal/getgoals/byvote`, { id: planId, module_type: this.moduleType }).then((response: any) => {
+  getSelectGoals(planId, type: any) {
+    this.commonService.PostAPI(`goal/getgoals/byvote`, { id: planId, module_type: type }).then((response: any) => {
       if (response.status && response.data && response.data.length > 0) {
         this.selectGoals = response.data;
         if(!this.parentIsActiveSelection && this.childgoalDetails.length !== 0){
@@ -2047,8 +2146,8 @@ export class ItemPlanDetailsComponent implements OnInit {
   }
 
   // Delegate
-  getDelegateGoals(planid) {
-    this.commonService.PostAPI(`goal/getgoals/bydelegate`, { id: planid, module_type: this.moduleType }).then((response: any) => {
+  getDelegateGoals(planid, type) {
+    this.commonService.PostAPI(`goal/getgoals/bydelegate`, { id: planid, module_type: type }).then((response: any) => {
       if (response.status && response.data && response.data.length > 0) {
         this.delegateGoals = response.data;
         console.log(this.delegateGoals)
@@ -2174,23 +2273,14 @@ export class ItemPlanDetailsComponent implements OnInit {
   }
 
   //Countdown
-  getCountdownGoals(planid) {
-    this.commonService.PostAPI(`goal/getgoals/bycountdown`, { id: planid, module_type: this.moduleType }).then((response: any) => {
+  getCountdownGoals(planid, type) {
+    this.commonService.PostAPI(`goal/getgoals/bycountdown`, { id: planid, module_type: type }).then((response: any) => {
       if (response.status) {
         this.countdownGoals = response.data;
         this.countdownGoals.forEach((element1, index) => {
           var finalhours = 0;
           var finalminutes = 0;
           if (element1.countdown) {
-            if (new Date(this.countdownGoals[0].start_date).getTime() >= new Date().getTime()) {
-              var end_time = new Date().getTime();
-            }
-            if (new Date(this.countdownGoals[0].start_date).getTime() == new Date().getTime()) {
-              var end_time = new Date(this.countdownGoals[0].start_date).getTime();
-            }
-            if (new Date(this.countdownGoals[0].start_date).getTime() <= new Date().getTime()) {
-              var end_time = new Date(this.countdownGoals[0].start_date).getTime();
-            }
             var diff = new Date(element1.end_date).getTime() - new Date().getTime();
             var days = Math.floor(diff / (60 * 60 * 24 * 1000));
             var hours = Math.floor(diff / (60 * 60 * 1000)) - (days * 24);
@@ -2227,8 +2317,8 @@ export class ItemPlanDetailsComponent implements OnInit {
   }
 
   // Launch
-  getLaunchGoals(planid) {
-    this.commonService.PostAPI(`goal/getgoals/bycountdown`, { id: planid, module_type: this.moduleType }).then((response: any) => {
+  getLaunchGoals(planid, type) {
+    this.commonService.PostAPI(`goal/getgoals/bycountdown`, { id: planid, module_type: type }).then((response: any) => {
       if (response.status && response.data && response.data.length > 0) {
         this.launchGoals = response.data;
         this.launchGoals.forEach((element1, index) => {
@@ -2401,15 +2491,12 @@ export class ItemPlanDetailsComponent implements OnInit {
 
   // Start Modules Functionality
   selectModule(type: any) {
-    if (this.selectedPhase !== 'B') {
-      return this.toastr.error("Must be under brainstorm phase to use modules.")
-    }
-    else {
       if(this.parentIsActiveSelection || this.childgoalDetails && !this.parentIsActiveSelection){
         this.moduleItemActive = false;
         this.isSelectedChallange = false;
         this.ModuleForm.reset()
         this.ModuleFormSub.reset()
+        console.log(this.planId)
         if (this.planId || this.goalid) {
           this.selectedModules = type;
           this.moduleType = type;
@@ -2425,7 +2512,6 @@ export class ItemPlanDetailsComponent implements OnInit {
           $('#module-end-date').datepicker({
             setDate: new Date(),
             todayHighlight: true,
-            startDate: new Date(this.parentplanDetails[0].start_date),
           });
 
           $('#module-start-date').datepicker().on('changeDate', function (e) {
@@ -2437,7 +2523,51 @@ export class ItemPlanDetailsComponent implements OnInit {
           });
 
           this.selectPhase(this.selectedPhase);
-          this.getPlanGoals(this.planId);
+          if(type !== 'problem' && type !== 'opportunity'){
+            this.getPlanGoals(this.planId, type);
+          }
+        } else {
+          this.toastr.error("Something went wrong...", "Error")
+        }
+      }
+      else {
+        this.toastr.error("Please select plan item before using modules.", "Error")
+      }
+
+  }
+  selectChallenge(type: any) {
+    if (this.selectedPhase !== 'B') {
+      return this.toastr.error("Must be under brainstorm phase to use modules.")
+    }
+    else {
+      if(this.parentIsActiveSelection || this.childgoalDetails && !this.parentIsActiveSelection){
+        this.moduleItemActive = false;
+        this.ModuleFormChallenge.reset()
+        if (this.planId || this.goalid) {
+          this.getChallengeTreeDetails(type)
+          this.selectedChallenge = type;
+          this.ref.detectChanges();
+
+          $('#module-start-date-challenge').datepicker({
+            dateFormat: "mm-dd-yy",
+            setDate: new Date(),
+            todayHighlight: true,
+            startDate: new Date(this.parentplanDetails[0].start_date),
+          });
+          $('#module-end-date-challenge').datepicker({
+            setDate: new Date(),
+            todayHighlight: true,
+            startDate: new Date(this.parentplanDetails[0].start_date),
+          });
+
+          $('#module-start-date-challenge').datepicker().on('changeDate', function (e) {
+            $('#module-start-date-challenge').datepicker('hide');
+          });
+
+          $('#module-end-date-challenge').datepicker().on('changeDate', function (e) {
+            $('#module-end-date-challenge').datepicker('hide');
+          });
+
         } else {
           this.toastr.error("Something went wrong...", "Error")
         }
@@ -2447,9 +2577,7 @@ export class ItemPlanDetailsComponent implements OnInit {
       }
     }
   }
-  selectChallangeModule() {
-    this.isSelectedChallange = true;
-  }
+
 
   // Modules
   get mf() { return this.ModuleForm.controls; }
@@ -2459,24 +2587,39 @@ export class ItemPlanDetailsComponent implements OnInit {
   }
   saveModule() {
     this.isModuleFormSubmitted = true;
-    if (this.ModuleForm.invalid) {
+    if (this.ModuleForm.invalid && !this.challengeSelected) {
       return;
     } else {
-      var startDate: any = $("#module-start-date").val();
-      var endDate: any = $("#module-end-date").val();
+      if(this.challengeSelected){
+        var startDate: any = $("#module-start-date-challenge").val();
+        var endDate: any = $("#module-end-date-challenge").val();
+      }
+      else {
+        var startDate: any = $("#module-start-date").val();
+        var endDate: any = $("#module-end-date").val();
+      }
+
 
       if (startDate != '' && endDate != '') {
         if (new Date(startDate) > new Date(endDate)) {
           this.toastr.error("Start date must be smaller than end date.", "Error");
         } else {
-            var data = this.ModuleForm.value;
+          var data;
+          if(this.challengeSelected && (this.selectedChallenge === 'problem' || this.selectedChallenge === 'opportunity')){
+            data = this.ModuleFormChallenge.value
+            data.module_type = this.selectedChallenge;
+          }
+          else {
+            data = this.ModuleForm.value
+            data.module_type = this.selectedModules;
+          }
+
             data.plan_id = this.childgoalDetails._id ? this.childgoalDetails._id : this.parentplanDetails[0]._id
             data.user_id = this.currentuser.user._id
             data.status = 0;
             data.numbers = 0;
             data.start_date = startDate;
             data.end_date = endDate;
-            data.module_type = this.selectedModules;
 
             const formData: any = new FormData();
             const files: Array<File> = this.moduleAttachments;
@@ -2493,9 +2636,14 @@ export class ItemPlanDetailsComponent implements OnInit {
             this.commonService.PostAPI(`goal/create`, formData).then((response: any) => {
               if (response.status) {
                 this.toastr.success(response.message, "Success");
-                this.showSelectedTree(this.selectedModules);
-                this.isModuleFormSubmitted = false;
-                this.ModuleForm.reset();
+                if(!this.challengeSelected){
+                  this.showSelectedTree(this.selectedModules);
+                  this.isModuleFormSubmitted = false;
+                  this.ModuleForm.reset();
+                }
+                else {
+                  this.ModuleFormChallenge.reset();
+                }
               } else {
                 this.toastr.error(response.message, "Error");
               }
@@ -2510,6 +2658,7 @@ export class ItemPlanDetailsComponent implements OnInit {
       }
     }
   }
+
   getSelectedModule(id){
     this.commonService.PostAPI('module/find-selected', {_id: id}).then((res: any)=>{
       if (res.status) {
@@ -2533,7 +2682,13 @@ export class ItemPlanDetailsComponent implements OnInit {
             data.user_id = this.currentuser.user._id
             data.status = 0;
             data.numbers = 0;
-            data.module_type = this.selectedModules;
+
+            if(this.challengeItemSelected){
+              data.module_type = this.selectedChallenge;
+            }
+            else {
+              data.module_type = this.selectedModules;
+            }
 
             const formData: any = new FormData();
             const files: Array<File> = this.moduleAttachments;
@@ -2551,8 +2706,13 @@ export class ItemPlanDetailsComponent implements OnInit {
               if (response.status) {
                 this.toastr.success(response.message, "Success");
                 this.getPlanDetails()
-                this.showSelectedTree(this.selectedModules);
                 this.isModuleFormSubmitted = false;
+                if(this.challengeItemSelected){
+                  this.getChallengeTreeDetails(this.selectedChallenge)
+                }
+                else {
+                  this.getModuleTreeDetails(this.selectedModules)
+                }
               } else {
                 this.toastr.error(response.message, "Error");
               }
@@ -2563,16 +2723,15 @@ export class ItemPlanDetailsComponent implements OnInit {
   getModuleTreeDetails(type) {
     var data: any = {};
     var a = this;
-    data.plan_id = this.childgoalDetails._id ? this.childgoalDetails._id : this.planId
+    data.plan_id = this.planId
     data.user_id = this.currentuser.user._id
     data.module_type = type;
     this.commonService.PostAPI(`module/get-by-user-and-plan`, data).then((response: any) => {
       var treeArray: any = [];
       if (response.status && response.data && response.data.length > 0) {
         this.opportunityDetails = response.data;
-        console.log(response.data)
         response.data.filter((element)=>{
-          if(this.parentIsActiveSelection){
+          if(this.parentIsActiveSelection || this.moduleItemActive || this.challengeItemSelected){
             return element.plan_id === this.planId
           }
           else {
@@ -2587,21 +2746,78 @@ export class ItemPlanDetailsComponent implements OnInit {
             }
         });
       }
-      $('#jstree-module-tree').jstree("destroy");
-      $("#jstree-module-tree").on("select_node.jstree",
-        function (evt, data) {
-          a.editChildEnabled = false
-          a.getgoaldetail(data.selected[0], data.node.parent);
-          a.getSelectedModule(data.selected[0])
-          a.getGoalReportByPlan(data.node.parent);
-          a.parentIsActiveSelection = false;
-          console.log(this.goal_id, this.plan_id)
-          a.getGoalAttachments(data.selected[0]);
-          a.getGoalSharedUsers(data.selected[0]);
-          a.checkPlanForGoalSharePermission(data.plan_id);
-         }
-      );
-      $('#jstree-module-tree').jstree({ core: { data: treeArray } });
+
+        $('#jstree-module-tree').jstree("destroy");
+        $("#jstree-module-tree").on("select_node.jstree",
+          function (evt, data) {
+            console.log(a.moduleItemActive, a.challengeItemSelected)
+            a.editChildEnabled = false
+            a.getgoaldetail(data.selected[0], data.node.parent);
+            a.getSelectedModule(data.selected[0])
+            a.selectedModules = type
+            a.getGoalReportByPlan(data.node.parent);
+            a.getModules()
+            a.parentIsActiveSelection = false;
+            a.moduleItemActive = true;
+            a.getGoalAttachments(data.selected[0]);
+            a.getGoalSharedUsers(data.selected[0]);
+            a.checkPlanForGoalSharePermission(data.plan_id);
+            a.challengeItemSelected = false;
+            console.log(a.moduleItemActive, a.challengeItemSelected)
+           }
+        );
+        $('#jstree-module-tree').jstree({ core: { data: treeArray } });
+
+    });
+  }
+  getChallengeTreeDetails(type) {
+    var data: any = {};
+    var a = this;
+    data.plan_id = a.planId
+    data.user_id = this.currentuser.user._id
+    data.module_type = type;
+    a.selectedChallenge = type;
+    this.commonService.PostAPI(`module/get-by-user-and-plan`, data).then((response: any) => {
+      var treeArray: any = [];
+      if (response.status && response.data && response.data.length > 0) {
+        this.opportunityDetails = response.data;
+        response.data.filter((element)=>{
+          if(this.parentIsActiveSelection || this.challengeItemSelected){
+            return element.plan_id === this.planId
+          }
+          else {
+            return element.plan_id === this.childgoalDetails._id
+          }
+        }).forEach(element => {
+            if (element.parent_goal_id !== ''){
+              treeArray.push({ "id": element._id, "parent": element.parent_goal_id, "text": element.short_name, 'state': { 'opened': false }, "icon": "assets/images/avatars/M.png" });
+            }
+            else {
+            treeArray.push({ "id": element._id, "parent": "#", "text": element.short_name, 'state': { 'opened': false }, "icon": "assets/images/avatars/M.png" });
+            }
+        });
+      }
+        $('#jstree-challenge-tree').jstree("destroy");
+        $("#jstree-challenge-tree").on("select_node.jstree",
+          function (evt, data) {
+            a.editChildEnabled = false
+            a.getgoaldetail(data.selected[0], data.node.parent);
+            a.getSelectedModule(data.selected[0])
+            a.getGoalReportByPlan(data.node.parent);
+            a.parentIsActiveSelection = false;
+            a.getGoalAttachments(data.selected[0]);
+            a.getGoalSharedUsers(data.selected[0]);
+            a.checkPlanForGoalSharePermission(data.plan_id);
+            a.challengeItemSelected = true;
+            a.moduleItemActive = false;
+            a.selectedModules = ''
+            a.selectedChallenge = a.challengeView
+            a.getChallenges()
+           }
+        );
+
+        $('#jstree-challenge-tree').jstree({ core: { data: treeArray } });
+
     });
   }
   getModules() {
@@ -2615,7 +2831,40 @@ export class ItemPlanDetailsComponent implements OnInit {
       if (response.status && response.data && response.data.length > 0) {
         this.opportunityDetails = response.data;
         this.moduleGoals = response.data;
-        console.log(this.moduleGoals)
+      } else {
+        this.moduleGoals = [];
+      }
+
+      // this.dtTriggerModule.next();
+      if(this.selectedModules === 'task'){
+        this.tableId = 'table-module-p'
+      }
+      if(this.selectedModules === 'motive'){
+        this.tableId = 'table-module-m'
+      }
+      if(this.selectedModules === 'analysis'){
+        this.tableId = 'table-module-a'
+      }
+      if(this.selectedModules === 'intelligence'){
+        this.tableId = 'table-module-i'
+      }
+      if(this.selectedModules === 'strategy'){
+        this.tableId = 'table-module';
+      }
+      this.dataTableAfterViewInit();
+    });
+  }
+  getChallenges() {
+    var data: any = {};
+
+    data.plan_id = this.childgoalDetails._id ? this.childgoalDetails._id : this.planId
+    data.user_id = this.currentuser.user._id
+    data.module_type = this.selectedChallenge;
+
+    this.commonService.PostAPI(`module/get-by-user-and-plan`, data).then((response: any) => {
+      if (response.status && response.data && response.data.length > 0) {
+        this.opportunityDetails = response.data;
+        this.moduleGoals = response.data;
       } else {
         this.moduleGoals = [];
       }
