@@ -19,8 +19,10 @@ export class HeirarchyComponent implements OnInit {
   organizations: any = [];
   roles: any = [];
   users: any = [];
-
+  plans: any = [];
   hierarchyForm: FormGroup;
+  inviteUserForm: FormGroup;
+  sharePlanForm: FormGroup;
   isHierarchyFormValid = false;
 
   isShowSubHierarchy: boolean = false;
@@ -66,125 +68,44 @@ export class HeirarchyComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.hierarchyForm = this.formBuilder.group({
-      designation: ['', Validators.required],
-      user_id: [''],
-    });
+    this.inviteUserForm = this.formBuilder.group({
+      email: [''],
+      designation: ['']
+    })
+    this.sharePlanForm = this.formBuilder.group({
+      user: [''],
+      plan: ['']
+    })
 
-    this.getHierarchyUsers();
-    this.hierarchyDiagram();
+    this.getUserPlans();
   }
 
-  //Get users that assigned by designations
-  getHierarchyUsers() {
-    // if (this.currentuser.role === "Admin") {
-    //   this.commonService.PostAPI(`hierarchy/get/by/parent`, { parent_user_id: this.parent_user_id }).then((response: any) => {
-    //     console.log("HeirarchyComponent -> getHierarchyUsers -> response", response)
-    //     if (response.status) {
-    //       this.users = response.data;
-    //     } else {
-    //       this.toastr.error(response.message, 'Error');
-    //     }
-    //   });
-    // } else if (this.currentuser.role === "User") {
-    //   this.commonService.PostAPI(`hierarchy/get/by/user`, { user_id: this.currentUserId }).then((response: any) => {
-    //     console.log("HeirarchyComponent -> getHierarchyUsers -> responseTest", response)
-    //     if (response.status) {
-    //       this.users = response.data;
-    //     } else {
-    //       this.toastr.error(response.message, 'Error');
-    //     }
-    //   });
-    // }
-
-    this.commonService.PostAPI(`hierarchy/designations`, { parent_user_id: this.parent_user_id === "" ? this.currentUserId : this.parent_user_id}).then((response: any) => {
-        if (response.data && response.data.length > 0) {
-          this.users = response.data;
-          console.log(this.users)
-        } else {
-          this.users = [];
-        }
-      })};
+  getUserPlans(){
+    this.commonService.PostAPI('plan/get/by/user', { user_id: this.currentuser.user._id }).then((response: any) => {
+      if (response.status) {
+        // Misspelling present, but this is where the tree details seem to build?
+        this.plans = response.data;
+        console.log(response.data)
+  }})
+  }
+  sharePlanWithTeamMember(){
+    this.commonService.PostAPI(`share_plan/share`, {
+      user_id: this.currentuser.user._id,
+      plan_id: this.sharePlanForm.controls.plan.value,
+      team_member_email: this.sharePlanForm.controls.user.value,
+    }).then((res: any)=>{
+      if(res.status){
+        this.toastr.success(res.message, 'Success');
+      }
+      else {
+        this.toastr.error(res.message, 'Error')
+      }
+    })
+  }
 
   //For validation
   get formVal() {
     return this.hierarchyForm.controls;
   }
 
-  getHierarchyId(e) {
-    const id = $("#" + e.target.id + " option:selected").attr('data-hierarchy-id');
-
-    if (id) {
-      this.hierarchy_id = id;
-    }
-  }
-
-  submit() {
-    this.isHierarchyFormValid = true;
-
-    if (this.hierarchyForm.invalid) {
-      return;
-    } else {
-      const data = this.hierarchyForm.value;
-      if(this.parent_user_id === ""){
-        data.parent_user_id = this.currentUserId
-      }
-      else {
-        data.parent_user_id = this.parent_user_id;
-
-      }
-      data.parent_hierarchy_id = this.hierarchy_id;
-      console.log(data)
-      this.commonService.PostAPI(`hierarchy/save`, data).then((response: any) => {
-        if (response.status) {
-          this.hierarchyDiagram();
-          this.isShowHierarchy = true;
-          this.hierarchyForm.reset();
-          this.isHierarchyFormValid = false;
-          this.toastr.success(response.message, "Success");
-        } else {
-          this.toastr.error(response.message, "Error");
-        }
-      });
-    }
-  }
-
-  //fetch data of designations and display in organization chart
-  hierarchyDiagram() {
-    this.commonService.PostAPI(`hierarchy/designations`, { parent_user_id: this.parent_user_id === "" ? this.currentUserId : this.parent_user_id}).then((response: any) => {
-      if (response.status) {
-        if (response.data && response.data.length > 0) {
-          this.data = response.data;
-          this.isShowHierarchy = true;
-        } else {
-          this.data = [];
-          this.isShowHierarchy = false;
-        }
-      } else {
-        this.toastr.error(response.message, 'Error');
-        this.isShowHierarchy = false;
-      }
-    });
-  }
-
-  //fetch data of users and its designations and display in organization chart
-  getHierarchyDetails(event) {
-    var hierarchy_id = event.target.title;
-    console.log(this.parent_user_id)
-    this.commonService.PostAPI(`hierarchy/users`, { parent_user_id: this.parent_user_id === "" ? this.currentUserId : this.parent_user_id, hierarchy_id: hierarchy_id }).then((response: any) => {
-      console.log(response)
-      if (response.status) {
-        if (response.data && response.data.length > 0) {
-          this.userHierarchyData = response.data;
-          this.isShowSubHierarchy = true;
-        } else {
-          this.userHierarchyData = [];
-          this.isShowSubHierarchy = false;
-        }
-      } else {
-        this.toastr.error(response.message, 'Error');
-        this.isShowSubHierarchy = false;
-      }
-    });
-  }
 }
