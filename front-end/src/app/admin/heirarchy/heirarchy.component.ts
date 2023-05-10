@@ -103,6 +103,9 @@ export class HeirarchyComponent implements OnInit {
     })
   }
 
+  inviteUser(){
+    this.toastr.success('Coming soon...', 'Under Construction');
+  }
   //For validation
   get formVal() {
     return this.hierarchyForm.controls;
