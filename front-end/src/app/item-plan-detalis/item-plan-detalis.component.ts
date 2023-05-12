@@ -1151,6 +1151,10 @@ export class ItemPlanDetailsComponent implements OnInit {
           expense_weight: this.childgoalDetails.expense_weight,
         })
       }
+
+      if(this.challengeItemSelected){
+        this.getChallengeModuleTreeDetails('strategy')
+      }
       } else {
         this.toastr.error(response.message, "Error");
       }
@@ -1549,6 +1553,8 @@ export class ItemPlanDetailsComponent implements OnInit {
       $('#jstree-module-tree').jstree("destroy");
       this.getPlanDetails()
       this.itemSelected = false;
+      this.challengeItemSelected = false;
+      this.moduleItemActive = false;
     }
     if(this.parentplanDetails.length >= 1){
       this.getPlanGoals(this.parentplanDetails[0]._id, 'goal')
@@ -2812,6 +2818,48 @@ export class ItemPlanDetailsComponent implements OnInit {
         );
 
         $('#jstree-challenge-tree').jstree({ core: { data: treeArray } });
+
+    });
+  }
+  getChallengeModuleTreeDetails(type) {
+    var data: any = {};
+    var a = this;
+    data.plan_id = a.childgoalDetails._id;
+    data.user_id = this.currentuser.user._id
+    data.module_type = type;
+    a.selectedChallenge = type;
+    this.commonService.PostAPI(`module/get-by-user-and-plan`, data).then((response: any) => {
+      var treeArray: any = [];
+      if (response.status && response.data && response.data.length > 0) {
+        this.opportunityDetails = response.data;
+        console.log(response.data)
+        response.data.forEach(element => {
+            if (element.parent_goal_id !== ''){
+              treeArray.push({ "id": element._id, "parent": element.parent_goal_id, "text": element.short_name, 'state': { 'opened': false }, "icon": "assets/images/avatars/M.png" });
+            }
+            else {
+            treeArray.push({ "id": element._id, "parent": "#", "text": element.short_name, 'state': { 'opened': false }, "icon": "assets/images/avatars/M.png" });
+            }
+        });
+      }
+        $('#jstree-challenge-module-tree').jstree("destroy");
+        $("#jstree-challenge-module-tree").on("select_node.jstree",
+          function (evt, data) {
+            a.editChildEnabled = false
+            a.getgoaldetail(data.selected[0], data.node.parent);
+            a.getSelectedModule(data.selected[0])
+            a.getGoalReportByPlan(data.node.parent);
+            a.parentIsActiveSelection = false;
+            a.getGoalAttachments(data.selected[0]);
+            a.getGoalSharedUsers(data.selected[0]);
+            a.checkPlanForGoalSharePermission(data.plan_id);
+            if(a.selectedPhase !== 'B'){
+              a.selectPhase(a.selectedPhase)
+            }
+           }
+        );
+
+        $('#jstree-challenge-module-tree').jstree({ core: { data: treeArray } });
 
     });
   }

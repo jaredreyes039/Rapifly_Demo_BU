@@ -20,6 +20,35 @@ export class HeirarchyComponent implements OnInit {
   roles: any = [];
   users: any = [];
   plans: any = [];
+  members: any = [
+    {
+      _id: "uehf9839238r23wrt2r3",
+      name: "Jay Reyes",
+      email: 'jaredreyes039@gmail.com',
+      designation: "basic"
+    },
+    {
+      _id: "uehf9839238r23wrt293",
+      name: "Jane Smith",
+      email: 'janesmith@gmail.com',
+      designation: 'managerial'
+    },
+    {
+      _id: "uehf9839238r23wrtsf3",
+      name: "John Doe",
+      email: 'johndoe@gmail.com',
+      designation: 'admin'
+    },
+  ];
+  distributionList: any = [
+    {
+      name: "Jay Reyes",
+      email: "Jaredreyes039@gmail.com",
+      designation: "Basic",
+      plan_short_name: "Test",
+      plan_id: "w9hr0283rn2ufh8094"
+    }
+  ]
   hierarchyForm: FormGroup;
   inviteUserForm: FormGroup;
   sharePlanForm: FormGroup;

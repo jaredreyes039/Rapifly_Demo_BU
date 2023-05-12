@@ -8,7 +8,6 @@
         <!-- INSTRUCTION MODAL -->
         <!-- ONLY OPENS ON USER INITIAL VISIT -->
         <!-- ACCESSIBLE FROM THE ADMIN PANEL BY SELECTING 'GETTING STARTED' -->
-        <!-- LIKELY TO BE REMOVED!!!! -->
         <div *ngIf="keepGetStartedOpenOnVist" [hidden]="!instructionBoxOpen" class="modal" style="display: unset !important;" id="myModal" tabindex="-1" aria-labelledby="myModalLabel"
         [ngClass]="instructionBoxOpen ? 'backdrop-active' : ''">
         <div class="modal-dialog" style="min-width: 880px;">
@@ -287,6 +286,27 @@
                             aria-labelledby="headingTwo2" id="style-3">
                             <div class="">
                                 <div id="jstree-module-tree">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-cutom-blue" *ngIf="challengeItemSelected">
+                        <div class="panel-heading panel-green">
+                            <h4 class="panel-title" style="display: flex; justify-content: space-between; align-items: center;">
+                                <a aria-controls="collapseTwo">{{ textDecoration(moduleView) }} Tree (Challenge Level)</a>
+                                <select id="module-type-selector-tree" class="text-white bg-dark parent-item-val form-control form-control-spec" style="font-size: 12px; border-radius: 4px;" (change)="toggleModuleTreeView('')">
+                                  <option value="strategy" default>Strategy</option>
+                                  <option value="task">Task</option>
+                                  <option value="motive">Motive</option>
+                                  <option value="analysis">Analysis</option>
+                                  <option value="intelligence">Intelligence</option>
+                                </select>
+                            </h4>
+                        </div>
+                        <div id="3" class="panel-collapse collapse in projecttree" role="tabpanel"
+                            aria-labelledby="headingTwo2" id="style-3">
+                            <div class="">
+                                <div id="jstree-challenge-module-tree">
                                 </div>
                             </div>
                         </div>
@@ -3798,6 +3818,215 @@
                     </form>
                 </div>
             </mat-expansion-panel>
+
+            <mat-expansion-panel class="expanse-panel"  *ngIf="challengeItemSelected" [expanded]="false">
+              <mat-expansion-panel-header class="page-title">
+                <h3>Add Module Item</h3>
+              </mat-expansion-panel-header>
+              <div class="panel panel-cutom-blue">
+                <div style="
+                    width: 100%;
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    margin-bottom: 12px;
+                    padding: 12px;
+                    gap: 12px;
+                  ">
+                    <div  style="display: flex; flex-direction: row; align-items: center;">
+                      <label class="parent-item-label">Module Type:</label>
+                      <select id="module-type-selector" class="text-white bg-dark parent-item-val form-control form-control-spec" (change)="toggleModuleForm()">
+                        <option value="" disabled default>Select Module Type</option>
+                        <option value="strategy">Strategy</option>
+                        <option value="task">Task</option>
+                        <option value="motive">Motive</option>
+                        <option value="analysis">Analysis</option>
+                        <option value="intelligence">Intelligence</option>
+                      </select>
+                    </div>
+                </div>
+                <hr>
+                <p *ngIf="!moduleSelected">Select a module type to fill out a module item form.</p>
+                <div *ngIf="moduleSelected">
+                    <form class="p-3" [formGroup]="ModuleForm">
+                        <div>
+                            <div style="display: flex;">
+                                <div style="display: flex; flex-direction: column; flex-basis: 45%;">
+                                    <div class="col-md-6">
+                                        <div style="display: flex; flex-direction: row; margin-bottom: 12px;">
+                                            <label class="parent-item-label">Short Name<span>*</span></label>
+                                            <input type="text" formControlName="short_name" class="parent-item-val bg-dark text-white form-control form-control-spec"
+                                                placeholder="Short name"
+                                                [ngClass]="{ 'is-invalid': isModuleFormSubmitted && mf.short_name.errors }"
+                                                autocomplete="off">
+                                            <div *ngIf="isModuleFormSubmitted && mf.short_name.errors" class="invalid-feedback">
+                                                <div *ngIf="mf.short_name.errors.required">Short name is required</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div style="display: flex; flex-direction: row; margin-bottom: 12px;">
+                                            <label class="parent-item-label">Long Name<span>*</span></label>
+                                            <input type="text" formControlName="long_name" class="parent-item-val bg-dark text-white form-control form-control-spec"
+                                                placeholder="Long name"
+                                                [ngClass]="{ 'is-invalid': isModuleFormSubmitted && mf.long_name.errors }"
+                                                autocomplete="off">
+                                            <div *ngIf="isModuleFormSubmitted && mf.long_name.errors" class="invalid-feedback">
+                                                <div *ngIf="mf.long_name.errors.required">Long name is required</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div style="display: flex; flex-direction: column; flex-basis: 45%;">
+                                    <div style="display: flex;  margin-bottom: 12px;">
+
+                                    <label class="parent-item-label" for="exampleInputPassword1">Start Date<span>*</span></label>
+                                    <div class="input-group input-append bootstrap-datepicker">
+                                        <input type="text" id="module-start-date" formControlName="start_date"
+                                        class="text-white bg-dark parent-item-val form-control form-control-spec bg-dark date-picker" placeholder="Start Date" autocomplete="off">
+                                        <span style="background-color: #8869c2;" class="input-group-addon add-on"><i
+                                                class="fa fa-calendar"></i></span>
+                                    </div>
+                                    </div>
+                                    <div style="display: flex;  margin-bottom: 12px; align-items: center;">
+                                    <label class="parent-item-label" for="exampleInputPassword1">End Date<span>*</span></label>
+                                    <div class="bg-dark input-group input-append bootstrap-datepicker">
+                                        <input type="text" id="module-end-date" formControlName="end_date"
+                                        class="text-white bg-dark parent-item-val form-control form-control-spec date-picker" placeholder="End Date" autocomplete="off">
+                                        <span style="background-color: #8869c2;" class="input-group-addon add-on"><i
+                                                class="fa fa-calendar"></i></span>
+                                    </div>
+                                    </div>
+                                </div>
+
+                                <div style="display: flex; flex-direction: column; flex-basis: 45%;"  *ngIf="selectedModules !== 'motive' && selectedModules !== 'analysis' && selectedModules !== 'intelligence'" [hidden]="selectedModules === 'motive' && selectedModules === 'analysis' && selectedModules === 'intelligence'">
+                                    <div style="display: flex;  margin-bottom: 12px;">
+                                        <label class="parent-item-label parent-item-label-alert">Production Target</label>
+                                        <input type="number" formControlName="production_target" class="form-control bg-dark text-white form-control-spec parent-item-val"
+                                            placeholder="Production Target"
+                                            [ngClass]="{ 'is-invalid': isModuleFormSubmitted && mf.production_target.errors }"
+                                            autocomplete="off">
+                                    </div>
+                                    <div style="display: flex; margin-bottom: 12px;">
+                                        <label class="parent-item-label parent-item-label-alert">Expense Target</label>
+                                        <input type="number" formControlName="expense_target" class="form-control bg-dark text-white form-control-spec parent-item-val"
+                                            placeholder="Expense Target"
+                                            [ngClass]="{ 'is-invalid': isModuleFormSubmitted && mf.expense_target.errors }"
+                                            autocomplete="off">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div style="display: flex;  margin-bottom: 12px;" *ngIf="selectedModules !== 'analysis' && selectedModules !== 'intelligence'" [hidden]="selectedModules === 'analysis' && selectedModules === 'intelligence'">
+
+                                <div class="text-white bg-dark parent-item-val-spec" style="padding: 6px;">
+                                    <div class=" parent-item-label-spec">{{selectedModules === 'motive' ? 'Motivation' : 'Module Details'}}</div>
+                                    <textarea type="text" formControlName="description" class="form-control bg-dark"
+                                    placeholder="Click to edit description" style="border-radius: 0px; border: none; border-left: 2px solid #fff; padding-left: 12px;"  [ngClass]="{ 'is-invalid': isModuleFormSubmitted && mf.description.errors }"
+                                    autocomplete="off"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12 page-title" *ngIf="selectedModules == 'analysis'">
+                                <h3 class="breadcrumb-header">Analysis Framework</h3>
+                            </div>
+
+
+                            <div class="col-md-12" *ngIf="selectedModules == 'analysis'">
+                                <div class="form-group">
+                                    <label class="parent-item-label-spec" style="margin-bottom: 12px !important;">Question</label>
+                                    <textarea type="text" formControlName="question" class="form-control form-control-spec bg-dark text-white parent-item-val-spec"
+                                        placeholder="Enter guiding question here..."
+                                        [ngClass]="{ 'is-invalid': isModuleFormSubmitted && mf.question.errors }"
+                                        autocomplete="off"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12" *ngIf="selectedModules == 'analysis'">
+                                <div class="form-group">
+                                    <label class="parent-item-label-spec" style="margin-bottom: 12px !important;">Answer</label>
+                                    <textarea type="text" formControlName="answer" class="form-control form-control-spec bg-dark text-white parent-item-val-spec" placeholder="Enter best answer here..."
+                                        [ngClass]="{ 'is-invalid': isModuleFormSubmitted && mf.answer.errors }"
+                                        autocomplete="off"></textarea>
+                                </div>
+                            </div>
+
+                            <div style="display: flex; " *ngIf="selectedModules == 'intelligence'">
+                            <div style="display: flex; flex-direction: column; width: 100%;">
+                                <div class="col-md-12 page-title" *ngIf="selectedModules == 'intelligence'">
+                                    <h3 class="breadcrumb-header">Intelligence Details</h3>
+                                </div>
+                                    <div style="display: flex; column-gap: 24px;">
+                                    <div style="display: flex; flex-direction: column; flex-basis: 45%;">
+                                        <div *ngIf="selectedModules == 'intelligence'">
+                                            <div class="form-group" style="display: flex; flex-direction: row; margin-bottom: 12px;">
+                                                <label class="parent-item-label" style="margin-bottom: 12px !important;">Value</label>
+                                                <input type="text" formControlName="intelligence_value" class="form-control form-control-spec bg-dark text-white parent-item-val-mod"
+                                                    placeholder="Value" autocomplete="off">
+                                            </div>
+                                        </div>
+                                        <div *ngIf="selectedModules == 'intelligence'">
+                                            <div class="form-group" style="display: flex; flex-direction: row; margin-bottom: 12px;">
+                                                <label class="parent-item-label">Response</label>
+                                                <input type="text" formControlName="intelligence_response" class="form-control form-control-spec bg-dark text-white parent-item-val-mod"
+                                                    placeholder="Response" autocomplete="off">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div style="display: flex; flex-direction: column; flex-basis: 45%;">
+                                        <div
+                                        *ngIf="selectedModules == 'analysis' || selectedModules == 'intelligence'">
+                                            <div class="form-group" style="display: flex; flex-direction: row; margin-bottom: 12px;">
+                                                <label class="parent-item-label" style="margin-bottom: 12px !important;">Source</label>
+                                                <input type="text" formControlName="source" class="form-control form-control-spec bg-dark text-white parent-item-val-mod" placeholder="Source"
+                                                    [ngClass]="{ 'is-invalid': isModuleFormSubmitted && mf.source.errors }"
+                                                    autocomplete="off">
+                                            </div>
+                                        </div>
+                                        <div
+                                            *ngIf="selectedModules == 'analysis' || selectedModules == 'intelligence'">
+                                            <div class="form-group" style="display: flex; flex-direction: row; margin-bottom: 12px;">
+                                                <label class="parent-item-label" style="margin-bottom: 12px !important;">Link</label>
+                                                <input type="text" formControlName="link" class="form-control form-control-spec bg-dark text-white parent-item-val-mod" placeholder="Link"
+                                                    [ngClass]="{ 'is-invalid': isModuleFormSubmitted && mf.link.errors }"
+                                                    autocomplete="off">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+
+
+                            <div class="col-md-6"
+                                *ngIf="selectedModules == 'analysis'">
+                                <div class="form-group" style="display: flex; flex-direction: row; margin-bottom: 12px;">
+                                    <label class="parent-item-label" style="margin-bottom: 12px !important;">Source</label>
+                                    <input type="text" formControlName="source" class="form-control form-control-spec bg-dark text-white parent-item-val-mod" placeholder="Source"
+                                        [ngClass]="{ 'is-invalid': isModuleFormSubmitted && mf.source.errors }"
+                                        autocomplete="off">
+                                </div>
+                            </div>
+                            <div class="col-md-6"
+                                *ngIf="selectedModules == 'analysis'">
+                                <div class="form-group" style="display: flex; flex-direction: row; margin-bottom: 12px;">
+                                    <label class="parent-item-label" style="margin-bottom: 12px !important;">Link</label>
+                                    <input type="text" formControlName="link" class="form-control form-control-spec bg-dark text-white parent-item-val-mod" placeholder="Link"
+                                        [ngClass]="{ 'is-invalid': isModuleFormSubmitted && mf.link.errors }"
+                                        autocomplete="off">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group text-right">
+                            <button type="submit" (click)="saveModule()" class="btn btn-primary btn-space">Save</button>
+                            <button type="reset" (click)="resetModule()" class="btn btn-default">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+              </div>
+            </mat-expansion-panel>
+
 
 
             <!-- VIEW MODULE ITEMS LIST -->
