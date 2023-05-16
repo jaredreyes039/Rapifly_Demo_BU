@@ -32,6 +32,7 @@ export class ItemPlanDetailsComponent implements OnInit {
   challengeItemSelected: boolean = false;
   challengeView: String = 'problem'
   moduleView: String = 'strategy'
+  challengeModuleView: String = 'strategy'
 
   // VARS
   childPlanForm: FormGroup;
@@ -651,29 +652,30 @@ export class ItemPlanDetailsComponent implements OnInit {
 
 // GREETING BOX TO INTRODUCE USERS TO CEE
 // SHOULD ACTIVATE ONCE PER NEW VISIT EVER!!
-  toggleInstructionBoxOpenOnVisit(){
-    this.keepGetStartedOpenOnVist = false
-    this.commonService.PostAPI(`users/update/insBoxView`, {
-      user_id: this.currentUserId,
-      instructionBoxOpen: this.keepGetStartedOpenOnVist
-    }).then((res: any)=>{
-      if(res.status){
-        return;
-      }
-      else {
-        return;
-      }
-    })
-  }
-  toggleInstructionBox(){
-    this.toggleInstructionBoxOpenOnVisit()
-    this.instructionBoxOpen = !this.instructionBoxOpen
-    if (!this.instructionBoxOpen){
-      this.keepGetStartedOpenOnVist = this.currentuser.instructionBoxOpen
-    }
-  }
+  // toggleInstructionBoxOpenOnVisit(){
+  //   this.keepGetStartedOpenOnVist = false
+  //   this.commonService.PostAPI(`users/update/insBoxView`, {
+  //     user_id: this.currentUserId,
+  //     instructionBoxOpen: this.keepGetStartedOpenOnVist
+  //   }).then((res: any)=>{
+  //     if(res.status){
+  //       return;
+  //     }
+  //     else {
+  //       return;
+  //     }
+  //   })
+  // }
+  // toggleInstructionBox(){
+  //   this.toggleInstructionBoxOpenOnVisit()
+  //   this.instructionBoxOpen = !this.instructionBoxOpen
+  //   if (!this.instructionBoxOpen){
+  //     this.keepGetStartedOpenOnVist = this.currentuser.instructionBoxOpen
+  //   }
+  // }
 
 // FEEDBACK USED IN UX ASSESSMENT
+// LIKELY TO BE A USEFUL FEEDBACK TOOL FOR KAI
   openFeedbackModal() {
     this.feedbackModalOpen = !this.feedbackModalOpen;
     this.commonService.PostAPI('users/get/user', 'ehi@planningsynergies.com')
@@ -776,6 +778,11 @@ export class ItemPlanDetailsComponent implements OnInit {
     let selection = $('#module-type-selector-tree').val();
     this.moduleView = type !== '' ? type : selection;
     this.getModuleTreeDetails(this.moduleView)
+  }
+  toggleChallengeModuleTreeView(type: String){
+    let selection = $('#challenge-module-type-selector-tree').val();
+    this.challengeModuleView = type !== '' ? type : selection;
+    this.getChallengeModuleTreeDetails(this.challengeModuleView)
   }
 
 // ITEM FORM VIEW MANAGEMENT

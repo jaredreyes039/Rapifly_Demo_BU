@@ -8,7 +8,7 @@
         <!-- INSTRUCTION MODAL -->
         <!-- ONLY OPENS ON USER INITIAL VISIT -->
         <!-- ACCESSIBLE FROM THE ADMIN PANEL BY SELECTING 'GETTING STARTED' -->
-        <div *ngIf="keepGetStartedOpenOnVist" [hidden]="!instructionBoxOpen" class="modal" style="display: unset !important;" id="myModal" tabindex="-1" aria-labelledby="myModalLabel"
+        <!-- <div *ngIf="keepGetStartedOpenOnVist" [hidden]="!instructionBoxOpen" class="modal" style="display: unset !important;" id="myModal" tabindex="-1" aria-labelledby="myModalLabel"
         [ngClass]="instructionBoxOpen ? 'backdrop-active' : ''">
         <div class="modal-dialog" style="min-width: 880px;">
             <div class="modal-content">
@@ -97,7 +97,7 @@
                 </div>
             </div>
         </div>
-        </div>
+        </div> -->
 
         <!-- PANELS: LEFT SIDE -->
         <div class="col-md-3">
@@ -293,8 +293,8 @@
                     <div class="panel panel-cutom-blue" *ngIf="challengeItemSelected">
                         <div class="panel-heading panel-green">
                             <h4 class="panel-title" style="display: flex; justify-content: space-between; align-items: center;">
-                                <a aria-controls="collapseTwo">{{ textDecoration(moduleView) }} Tree (Challenge Level)</a>
-                                <select id="module-type-selector-tree" class="text-white bg-dark parent-item-val form-control form-control-spec" style="font-size: 12px; border-radius: 4px;" (change)="toggleModuleTreeView('')">
+                                <a aria-controls="collapseTwo">{{ textDecoration(challengeModuleView) }} Tree (Challenge Level)</a>
+                                <select id="challenge-module-type-selector-tree" class="text-white bg-dark parent-item-val form-control form-control-spec" style="font-size: 12px; border-radius: 4px;" (change)="toggleChallengeModuleTreeView('')">
                                   <option value="strategy" default>Strategy</option>
                                   <option value="task">Task</option>
                                   <option value="motive">Motive</option>
@@ -311,108 +311,6 @@
                             </div>
                         </div>
                     </div>
-
-
-                    <!-- ALERTS PANEL -->
-                    <div class="panel panel-cutom-blue ">
-                        <div>
-                            <div class="panel-heading panel-aler" role="tab" id="headingThree3">
-                                <h4 class="panel-title" style="display: flex; justify-content: space-between; align-items: center;">
-                                    <a aria-controls="collapseTwo">{{alertView === 'Launch' ? 'Launch Alerts' : alertView === 'Report' ? 'Report Alerts' : 'N/A'}}</a>
-                                    <button class="btn-primary" style="border: none;" (click)="toggleAlertView()">
-                                        <mat-icon>swap_horiz</mat-icon>
-                                    </button>
-                                </h4>
-                            </div>
-                            <div class="hud" id="style-2" style="margin-top: 12px;">
-                                <div class="col-md-12" *ngIf="filteredAlerts && filteredAlerts.length > 0 && alertView == 'Launch'">
-                                    <div *ngFor="let p of filteredAlerts;">
-                                        <div class="alert alert-caution" role="alert" *ngIf="p.alert_type == 'Moderate'">
-                                            <div style="display: flex; width: 100%; justify-content: flex-end;">
-                                                <button class="clear-notif" style="border: none;" (click)="deleteAlert(p._id)">
-                                                    <mat-icon>clear</mat-icon>
-                                                </button>
-                                            </div>
-                                            <strong>{{p.title}}</strong> launch date in less than <strong>7 days</strong>.
-                                            <br>
-                                            <strong>{{p.warning}}</strong>
-                                            <strong></strong>
-                                        </div>
-                                        <div class="alert alert-danger" role="alert" *ngIf="p.alert_type == 'Severe'">
-                                            <div style="display: flex; width: 100%; justify-content: flex-end;">
-                                                <button class="clear-notif" style="border: none;" (click)="deleteAlert(p._id)">
-                                                    <mat-icon>clear</mat-icon>
-                                                </button>
-                                            </div>
-                                            <strong>{{p.title}}</strong> launch date in less than <strong>3 days</strong>.
-                                            <br>
-                                            <strong>{{p.warning}}</strong>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-12" *ngIf="filteredAlerts && filteredAlerts.length > 0 && alertView == 'Report'">
-                                    <div *ngFor="let p of filteredAlerts;">
-                                        <div class="alert alert-caution" role="alert" *ngIf="p.alert_type == 'Moderate'">
-                                            <div style="display: flex; width: 100%; justify-content: flex-end;">
-                                                <button class="clear-notif" style="border: none;" (click)="deleteAlert(p._id)">
-                                                    <mat-icon>clear</mat-icon>
-                                                </button>
-                                            </div>
-                                            <div>
-                                                <strong>REPORT FILED: {{p.title.toUpperCase()}}</strong>
-                                                <p>{{p.warning}}</p>
-                                                <ul style="list-style: circle;">
-                                                    <li><strong>Production Threshold:</strong> {{p.prod_threshold}}</li>
-                                                    <li><strong>Expense Threshold:</strong> {{p.exp_threshold}}</li>
-                                                    <li><strong>Actual Production:</strong> {{p.actual_prod}}</li>
-                                                    <li><strong>Actual Expense:</strong> {{p.actual_exp}}</li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                        <div class="alert alert-danger" role="alert" *ngIf="p.alert_type == 'Severe'">
-                                            <div style="display: flex; width: 100%; justify-content: flex-end;">
-                                                <button class="clear-notif" style="border: none;" (click)="deleteAlert(p._id)">
-                                                    <mat-icon>clear</mat-icon>
-                                                </button>
-                                            </div>
-                                            <div>
-                                                <strong>REPORT FILED: {{p.title.toUpperCase()}}</strong>
-                                                <p>{{p.warning}}</p>
-                                                <ul style="list-style: circle;">
-                                                    <li><strong>Production Threshold:</strong> {{p.prod_threshold}}</li>
-                                                    <li><strong>Expense Threshold:</strong> {{p.exp_threshold}}</li>
-                                                    <li><strong>Actual Production:</strong> {{p.actual_prod}}</li>
-                                                    <li><strong>Actual Expense:</strong> {{p.actual_exp}}</li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                        <div class="alert alert-success" role="alert" *ngIf="p.alert_type == 'Standard'">
-                                            <div style="display: flex; width: 100%; justify-content: flex-end;">
-                                                <button class="clear-notif" style="border: none;" (click)="deleteAlert(p._id)">
-                                                    <mat-icon>clear</mat-icon>
-                                                </button>
-                                            </div>
-                                            <div>
-                                                <strong>REPORT FILED: {{p.title.toUpperCase()}}</strong>
-                                                <p>{{p.warning}}</p>
-                                                <ul style="list-style: circle;">
-                                                    <li><strong>Production Threshold:</strong> {{p.prod_threshold}}</li>
-                                                    <li><strong>Expense Threshold:</strong> {{p.exp_threshold}}</li>
-                                                    <li><strong>Actual Production:</strong> {{p.actual_prod}}</li>
-                                                    <li><strong>Actual Expense:</strong> {{p.actual_exp}}</li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-12 text-center" *ngIf="alertdata && alertdata.length == 0">
-                                    <h5>Alert not found.</h5>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-
                 </div>
             </div>
         </div>
@@ -2508,9 +2406,6 @@
 
 
     <!-- BEGIN BLOCK: DEACTIVATE -->
-    <!-- ACTIVE: selectedPhase:D -->
-    <!-- ACTIVE FROM GROUP: CHILDPLANFORM CONFLIC PRESENT (?) -->
-    <!-- DATE IDS: 5/6 CONFLICT PRESENT -->
         <div class="col-md-9" *ngIf="selectedPhase == 'D'">
             <mat-expansion-panel class="expanse-panel" [expanded]="true">
                 <mat-expansion-panel-header class="">
@@ -2666,8 +2561,6 @@
     <!-- END BLOCK: DEACTIVATE -->
 
     <!-- BEGIN BLOCK: PRIORITIZE -->
-    <!-- ACTIVE: selectedPhase:P -->
-    <!-- DIVIDES INTO PARTS? -->
         <div class="col-md-9" *ngIf="selectedPhase == 'P'">
             <mat-expansion-panel class="expanse-panel" [expanded]="true">
                 <mat-expansion-panel-header class="">
