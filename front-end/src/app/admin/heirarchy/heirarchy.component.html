@@ -5,93 +5,136 @@
     <app-top-header></app-top-header>
 
     <div class="page-inner no-page-title">
-        <div class="page-title">
-          {{currentuser.user.first_name}}'s Team
-        </div>
         <div class="row">
             <div class="col-md-12" *ngIf="currentuser.role == 'User'">
                 <a [routerLink]="['/item-plans-details']" [queryParams]="{stage:'project'}" class="btn btn-warning m-b-sm pull-right"><i class="fa fa-arrow-left"></i>&nbsp;Back</a>
             </div>
         </div>
-        <h1>Team Management</h1>
+        <h1>Your Team Invites</h1>
         <hr>
-        <div class="row" style="display: flex; gap: 12px">
-          <div class="panel panel-cutom-blue col-md-6" style="border-radius: 4px;">
-            <div class="panel-body">
-              <h2>Invite Users</h2>
-              <form [formGroup]="inviteUserForm" (submit)="inviteUser()">
-                  <div class="form-group">
-                      <label for="username">Email</label>
-                      <input type="text" class="form-control" formControlName="email" placeholder="User Email">
-                  </div>
-                  <div class="form-group">
-                      <label for="username">Designation</label>
-                      <select class="form-control" formControlName="designation">
-                        <option value="" default>Select Designation</option>
-                        <option value="basic">Base User</option>
-                        <option value="managerial">Managerial User</option>
-                        <option value="admin">Admin User</option>
-                      </select>
-                  </div>
-                  <button type="submit" class="btn btn-primary">Send Invite</button>
-              </form>
-
-              <h2>Manage Plan Access</h2>
-              <h3>Share Plans with Team Members</h3>
-              <form [formGroup]="sharePlanForm">
-                <div class="form-group">
-                  <label for="username">Team Member</label>
-                  <select class="form-control" formControlName="user">
-                    <option value="" default>Select Team Member</option>
-                    <option *ngFor="let member of members"
-                    value="{{member._id}}"
-                    >{{member.name}} ({{member.designation}})</option>
-                  </select>                </div>
-                <div class="form-group">
-                  <label for="username">Plan</label>
-                  <select class="form-control" formControlName="plan">
-                    <option value="" default>Select Plan</option>
-                    <option *ngFor="let plan of plans"
-                    value="{{plan._id}}"
-                    >{{plan.short_name}}</option>
-                  </select>
-              </div>
-              <button (click)="sharePlanWithTeamMember()" class="btn btn-primary">Submit</button>
-              </form>
-            </div>
-          </div>
-          <div class="panel panel-cutom-blue col-md-6" style="border-radius: 4px;">
-            <div class="panel-body">
-              <h2>Team Structure</h2>
-            </div>
-            <p>Under construction, check back soon for updates on how
-              you can effectively organize and manage a well-rounded,
-              well-prepared team!</p>
-            <p><em>- Rapifly Dev Team</em></p>
+        <div class="col-md-6">
+          <div class="panel panel-cutom-blue col-md-12">
+            <h2>Inbound Invites</h2>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Member</th>
+                  <th>Email</th>
+                  <th>Designation</th>
+                  <th>Accept</th>
+                  <th>Reject</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let invite of invitesList">
+                  <td>{{invite.user.first_name}} {{invite.user.last_name}}</td>
+                  <td>{{invite.user_email}}</td>
+                  <td>{{invite.member_designation}}</td>
+                  <td>
+                    <button id="{{invite.user_id}}" value="{{invite.user_email}}" class="btn btn-primary" *ngIf="!invite.accepted && !invite.rejected"
+                    (click)="acceptInvitation($event)">
+                      Accept Invite
+                    </button>
+                    <button class="btn btn-primary" *ngIf="invite.accepted || invite.rejected" disabled>
+                      Accept Invite
+                    </button>
+                  </td>
+                  <td>
+                    <button id="{{invite.user_id}}" value="{{invite.user_email}}" class="btn btn-primary" *ngIf="!invite.accepted && !invite.rejected"
+                    (click)="rejectInvitation($event)">
+                      Reject Invite
+                    </button>
+                    <button class="btn btn-primary" *ngIf="invite.rejected || invite.accepted" disabled>
+                      Reject Invite
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
-        <div class="panel panel-cutom-blue col-md-12">
-          <h2>Plan Distribution</h2>
-          <table class="table">
-            <thead>
-              <tr>
-                <th>Member</th>
-                <th>Email</th>
-                <th>Designation</th>
-                <th>Plan Name</th>
-                <th>Plan ID</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let distItem of distributionList">
-                <td>{{distItem.name}}</td>
-                <td>{{distItem.email}}</td>
-                <td>{{distItem.designation}}</td>
-                <td>{{distItem.plan_short_name}}</td>
-                <td>{{distItem.plan_id}}</td>
-              </tr>
-            </tbody>
-          </table>
+
+        <div class="col-md-12">
+          <h1>Team Management</h1>
+          <hr>
+          <div class="row" style="display: flex; gap: 12px">
+            <div class="panel panel-cutom-blue col-md-6" style="border-radius: 4px;">
+              <div class="panel-body">
+                <h2>Invite Users</h2>
+                <form [formGroup]="inviteUserForm" (submit)="inviteUser()">
+                    <div class="form-group">
+                        <label for="username">Email</label>
+                        <input type="text" class="form-control" formControlName="email" placeholder="User Email">
+                    </div>
+                    <div class="form-group">
+                        <label for="username">Designation</label>
+                        <select class="form-control" formControlName="designation">
+                          <option value="" default>Select Designation</option>
+                          <option value="basic">Base User</option>
+                          <option value="managerial">Managerial User</option>
+                          <option value="admin">Admin User</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Send Invite</button>
+                </form>
+
+                <h2>Manage Plan Access</h2>
+                <h3>Share Plans with Team Members</h3>
+                <form [formGroup]="sharePlanForm">
+                  <div class="form-group">
+                    <label for="username">Team Member</label>
+                    <select class="form-control" formControlName="user">
+                      <option value="" default>Select Team Member</option>
+                      <option *ngFor="let member of members"
+                      value="{{member.user_id}}"
+                      >{{member.first_name}} {{member.last_name}}</option>
+                    </select>                </div>
+                  <div class="form-group">
+                    <label for="username">Plan</label>
+                    <select class="form-control" formControlName="plan">
+                      <option value="" default>Select Plan</option>
+                      <option *ngFor="let plan of plans"
+                      value="{{plan._id}}"
+                      >{{plan.short_name}}</option>
+                    </select>
+                </div>
+                <button (click)="sharePlanWithTeamMember()" class="btn btn-primary">Submit</button>
+                </form>
+              </div>
+            </div>
+            <div class="panel panel-cutom-blue col-md-6" style="border-radius: 4px;">
+              <div class="panel-body">
+                <h2>Team Structure</h2>
+              </div>
+              <p>Under construction, check back soon for updates on how
+                you can effectively organize and manage a well-rounded,
+                well-prepared team!</p>
+              <p><em>- Rapifly Dev Team</em></p>
+            </div>
+          </div>
+          <div class="panel panel-cutom-blue col-md-12">
+            <h2>Plan Distribution</h2>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Member</th>
+                  <th>Email</th>
+                  <th>Designation</th>
+                  <th>Plan Name</th>
+                  <th>Plan ID</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let distItem of distributionList">
+                  <td>{{distItem.name}}</td>
+                  <td>{{distItem.email}}</td>
+                  <td>{{distItem.designation}}</td>
+                  <td>{{distItem.plan_short_name}}</td>
+                  <td>{{distItem.plan_id}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
     </div>
     <app-footer></app-footer>

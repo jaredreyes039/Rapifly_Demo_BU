@@ -1508,6 +1508,7 @@ export class ItemPlanDetailsComponent implements OnInit {
     this.commonService.PostAPI(`plan/check/user/permission`, { user_id: this.currentuser.user._id }).then((response: any) => {
       if (response.status) {
         this.sharedPlanPermission = response.data.map(data => data._id);
+        console.log(this.sharedPlanPermission, response.data)
       }
     });
   }

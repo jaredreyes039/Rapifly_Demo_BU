@@ -20,26 +20,7 @@ export class HeirarchyComponent implements OnInit {
   roles: any = [];
   users: any = [];
   plans: any = [];
-  members: any = [
-    {
-      _id: "uehf9839238r23wrt2r3",
-      name: "Jay Reyes",
-      email: 'jaredreyes039@gmail.com',
-      designation: "basic"
-    },
-    {
-      _id: "uehf9839238r23wrt293",
-      name: "Jane Smith",
-      email: 'janesmith@gmail.com',
-      designation: 'managerial'
-    },
-    {
-      _id: "uehf9839238r23wrtsf3",
-      name: "John Doe",
-      email: 'johndoe@gmail.com',
-      designation: 'admin'
-    },
-  ];
+  members: any = []
   distributionList: any = [
     {
       name: "Jay Reyes",
@@ -49,6 +30,7 @@ export class HeirarchyComponent implements OnInit {
       plan_id: "w9hr0283rn2ufh8094"
     }
   ]
+  invitesList: any = [];
   hierarchyForm: FormGroup;
   inviteUserForm: FormGroup;
   sharePlanForm: FormGroup;
@@ -107,6 +89,22 @@ export class HeirarchyComponent implements OnInit {
     })
 
     this.getUserPlans();
+    this.getInvites();
+    this.getTeamMembers()
+  }
+
+  getInvites(){
+    this.commonService.PostAPI('share_plan/get/invites', {
+      user_id: this.currentuser.user._id,
+      email: this.currentuser.user.email
+    }).then((res: any)=>{
+      if(res.status){
+        this.invitesList = res.data
+      }
+      else {
+        return this.toastr.error(res.message, 'Error')
+      }
+    })
   }
 
   getUserPlans(){
@@ -121,7 +119,7 @@ export class HeirarchyComponent implements OnInit {
     this.commonService.PostAPI(`share_plan/share`, {
       user_id: this.currentuser.user._id,
       plan_id: this.sharePlanForm.controls.plan.value,
-      team_member_email: this.sharePlanForm.controls.user.value,
+      member_id: this.sharePlanForm.controls.user.value,
     }).then((res: any)=>{
       if(res.status){
         this.toastr.success(res.message, 'Success');
@@ -133,11 +131,84 @@ export class HeirarchyComponent implements OnInit {
   }
 
   inviteUser(){
-    this.toastr.success('Coming soon...', 'Under Construction');
+    console.log(this.currentuser)
+    this.commonService.PostAPI('share_plan/invite/member', {
+      user_id: this.currentuser.user._id,
+      user_email: this.currentuser.user.email,
+      user: {
+        first_name: this.currentuser.user.first_name,
+        last_name: this.currentuser.user.last_name
+      },
+      member_designation: this.inviteUserForm.controls.designation.value,
+      member_email: this.inviteUserForm.controls.email.value,
+      accepted: false,
+    }).then((res: any)=>{
+      if(res.status){
+        this.toastr.success(res.message, 'Success');
+      }
+      else {
+        this.toastr.error("Something is wrong, connection not established", 'Error')
+      }
+    })
+
   }
   //For validation
   get formVal() {
     return this.hierarchyForm.controls;
+  }
+
+  acceptInvitation(event){
+    console.log(event.target.value)
+    this.commonService.PostAPI('share_plan/accept/invite', {
+      user_id: this.currentuser.user._id,
+      member_email: event.target.value,
+      member_id: event.target.id
+    }).then((res: any)=>{
+      if(res.status){
+        return this.toastr.success(res.message, 'Success')
+      }
+      else {
+        return this.toastr.error(res.message, 'Error')
+      }
+    })
+  }
+  rejectInvitation(event){
+    this.commonService.PostAPI('share_plan/reject/invite', {
+      user_id: this.currentuser.user._id,
+      member_email: event.target.value,
+      member_id: event.target.id
+    }).then((res: any)=>{
+      if(res.status){
+        return this.toastr.success(res.message, 'Success')
+      }
+      else {
+        return this.toastr.error(res.message, 'Error')
+      }
+    })
+  }
+
+  getTeamMembers(){
+    this.commonService.PostAPI('user_group/get/by/user', {
+      user_id: this.currentuser.user._id,
+    }).then((res: any)=>{
+      if(res.status){
+        console.log(res.data)
+        res.data[0].group_members.map((member)=>{
+          this.members.push({
+            first_name: member.user.first_name,
+            last_name: member.user.last_name,
+            email: member.user.email,
+            avatar: member.user.avatar,
+            user_id: member.user_id
+          })
+        })
+        console.log(this.members)
+        return this.toastr.success("Retrieved team information.", 'Success')
+      }
+      else {
+        return this.toastr.error(res.message, 'Error')
+      }
+    })
   }
 
 }
