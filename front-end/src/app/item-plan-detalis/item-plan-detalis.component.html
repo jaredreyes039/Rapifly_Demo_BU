@@ -1295,7 +1295,7 @@
                             <div style="display: flex;">
                               <div class="parent-item-label">Attachment</div>
                               <div class="text-white bg-dark parent-item-val" style="padding: 6px;" (click)="warnUser('Sorry, the ability to download and view attachments is undergoing an update, please check back soon!')">
-                                  {{childgoalDetails.attachments.length === 0 ? 'None' : childgoalDetails.attachments[0].attachment}}
+                                  {{childgoalDetails.attachments !== [] ? 'None' : childgoalDetails.attachments[0].attachment}}
                               </div>
                             </div>
                             <hr>
