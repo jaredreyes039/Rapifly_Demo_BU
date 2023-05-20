@@ -5,100 +5,6 @@
     <app-top-header></app-top-header>
     <div class="page-inner no-page-title">
 
-        <!-- INSTRUCTION MODAL -->
-        <!-- ONLY OPENS ON USER INITIAL VISIT -->
-        <!-- ACCESSIBLE FROM THE ADMIN PANEL BY SELECTING 'GETTING STARTED' -->
-        <!-- <div *ngIf="keepGetStartedOpenOnVist" [hidden]="!instructionBoxOpen" class="modal" style="display: unset !important;" id="myModal" tabindex="-1" aria-labelledby="myModalLabel"
-        [ngClass]="instructionBoxOpen ? 'backdrop-active' : ''">
-        <div class="modal-dialog" style="min-width: 880px;">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button (click)="toggleInstructionBox()" type="button" class="close" data-dismiss="modal" aria-label="Close"
-                    ><span
-                            aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel">Welcome || <span style="color: yellow;">{{currentuser.user.first_name}} {{currentuser.user.last_name}}</span> </h4>
-                </div>
-                <div class="modal-body" style="display: flex; flex-direction: column;">
-                    <h3 style="border-bottom: 2px solid yellow; padding-bottom: 12px;">Getting Started</h3>
-                    <p>
-                        Welcome to Rapifly, a community-centered, problem-oriented dashboard designed
-                        to find solutions through a unique methodology- Create, Execute, Evaluate <strong>(CEE)</strong>.
-                    </p>
-                    <p>To the left you have the Admin Panel, HUD, Project Tree, Module Tree (when active), and Alerts</p>
-                    <ul>
-                        <li style="margin-bottom: 12px;">The <strong>Admin Panel</strong> is a guide to all things project creation, control, security, and assistance. With access
-                            to the Coaches Corner- a contact catalogue of the latest experts across various fields- you'll find the Admin
-                            Panel will soon be one of your greatest tools.
-                        </li>
-                        <li style="margin-bottom: 12px;">
-                            The <strong>HUD</strong> is the heart of Rapifly, and here is where the beauty of the CEE methodology exists. With the
-                            ability to quickly navigate a problem-centered project/task throughout the CEE methodology, the HUD is a powerful tool
-                            that you'll soon be well acquainted with.
-                        </li>
-                        <li style="margin-bottom: 12px;">
-                            The <strong>Project</strong> and <strong>Module Trees</strong> are quick navigation views of you and your team's
-                            overall project hierarchy.
-                        </li>
-                    </ul>
-                    <p>
-                        That's a lot of power, feeling a bit overwhelmed? It's okay, getting started is incredibly simple- fill out
-                        a project profile, and soon you'll find yourself deeply invested in the power of the CEE methodology. <strong>Welcome
-                        {{currentuser.user.first_name}}, to Rapifly!</strong>
-                    </p>
-                    <br>
-                    <p style="text-align: center; background-color: #524fb1; width: 66%; border-radius: 4px; align-self: center;">
-                        To see this again, click on 'Getting Started' under the Admin Panel!
-                    </p>
-                </div>
-            </div>
-        </div>
-        </div>
-        <div *ngIf="instructionBoxOpen && !keepGetStartedOpenOnVist" [hidden]="!instructionBoxOpen || keepGetStartedOpenOnVist" class="modal" style="display: unset !important;" id="myModal" tabindex="-1" aria-labelledby="myModalLabel"
-        [ngClass]="instructionBoxOpen ? 'backdrop-active' : ''">
-        <div class="modal-dialog" style="min-width: 880px;">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button (click)="toggleInstructionBox()" type="button" class="close" data-dismiss="modal" aria-label="Close"
-                    ><span
-                            aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel">Welcome || <span style="color: yellow;">{{currentuser.user.first_name}} {{currentuser.user.last_name}}</span> </h4>
-                </div>
-                <div class="modal-body" style="display: flex; flex-direction: column;">
-                    <h3 style="border-bottom: 2px solid yellow; padding-bottom: 12px;">Getting Started</h3>
-                    <p>
-                        Welcome to Rapifly, a community-centered, problem-oriented dashboard designed
-                        to find solutions through a unique methodology- Create, Execute, Evaluate <strong>(CEE)</strong>.
-                    </p>
-                    <p>To the left you have the Admin Panel, HUD, Project Tree, Module Tree (when active), and Alerts</p>
-                    <ul>
-                        <li style="margin-bottom: 12px;">The <strong>Admin Panel</strong> is a guide to all things project creation, control, security, and assistance. With access
-                            to the Coaches Corner- a contact catalogue of the latest experts across various fields- you'll find the Admin
-                            Panel will soon be one of your greatest tools.
-                        </li>
-                        <li style="margin-bottom: 12px;">
-                            The <strong>HUD</strong> is the heart of Rapifly, and here is where the beauty of the CEE methodology exists. With the
-                            ability to quickly navigate a problem-centered project/task throughout the CEE methodology, the HUD is a powerful tool
-                            that you'll soon be well acquainted with.
-                        </li>
-                        <li style="margin-bottom: 12px;">
-                            The <strong>Project</strong> and <strong>Module Trees</strong> are quick navigation views of you and your team's
-                            overall project hierarchy.
-                        </li>
-                    </ul>
-                    <p>
-                        That's a lot of power, feeling a bit overwhelmed? It's okay, getting started is incredibly simple- fill out
-                        a project profile, and soon you'll find yourself deeply invested in the power of the CEE methodology. <strong>Welcome
-                        {{currentuser.user.first_name}}, to Rapifly!</strong>
-                    </p>
-                    <br>
-                    <p style="text-align: center; background-color: #524fb1; width: 66%; border-radius: 4px; align-self: center;">
-                        To see this again, click on 'Getting Started' under the Admin Panel!
-                    </p>
-                </div>
-            </div>
-        </div>
-        </div> -->
-
         <!-- PANELS: LEFT SIDE -->
         <div class="col-md-3">
             <div class="panel-body">
@@ -1044,7 +950,11 @@
                                     </div>
                                     </div>
                                 </div>
+                                <div style="display: flex">
+                                  <div class="parent-item-label-spec">Attachment: </div>
+                                  <input class="bg-dark" style="padding: 6px; margin-bottom: 12px" type="file" (change)="uploadFile($event.target.files)">
 
+                                </div>
                                 <mat-expansion-panel  [expanded]="true">
                                 <mat-expansion-panel-header class="page-title" style="margin-bottom: 24px;" >
                                     <h3>Dashboard</h3>
@@ -1340,7 +1250,7 @@
                             <div style="display: flex; flex-direction: row; gap: 24px; margin-bottom: 24px;">
                                     <div style="display: flex; flex-direction: column; flex-basis: 45%;">
                                         <div  style="display: flex;  margin-bottom: 12px;">
-                                            <div class="parent-item-label">Short Name Test:</div>
+                                            <div class="parent-item-label">Short Name:</div>
                                             <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
                                                 {{childgoalDetails.short_name}}</div>
                                         </div>
@@ -1381,6 +1291,12 @@
                                     <div class=" parent-item-label-spec">Description</div>
                                     <p>{{childgoalDetails.description}}</p>
                                 </div>
+                            </div>
+                            <div style="display: flex;">
+                              <div class="parent-item-label">Attachment</div>
+                              <div class="text-white bg-dark parent-item-val" style="padding: 6px;" (click)="warnUser('Sorry, the ability to download and view attachments is undergoing an update, please check back soon!')">
+                                  {{childgoalDetails.attachments.length === 0 ? 'None' : childgoalDetails.attachments[0].attachment}}
+                              </div>
                             </div>
                             <hr>
                                                 <mat-expansion-panel  [expanded]="true">

@@ -390,7 +390,8 @@ export class ItemPlanDetailsComponent implements OnInit {
       personal_expense_variance: [0],
       personal_production_variance: [0],
       manager_expense_variance: [0],
-      manager_production_variance: [0]
+      manager_production_variance: [0],
+      attachments: []
     });
     this.childPlanFormSub = this.formBuilder.group({
       short_name: ['', Validators.required],
@@ -1276,6 +1277,7 @@ export class ItemPlanDetailsComponent implements OnInit {
           const files: Array<File> = this.attachments;
           for (let i = 0; i < files.length; i++) {
             formData.append("attachments", files[i], files[i]['name']);
+            console.log(files, this.attachments)
           }
           for (const key in data) {
             const element = data[key];
@@ -1455,7 +1457,9 @@ export class ItemPlanDetailsComponent implements OnInit {
     var newString = string.replace(/_/g, " ");
     return newString.charAt(0).toUpperCase() + newString.slice(1);
   }
-
+warnUser(message){
+  return this.toastr.warning(message, 'Warning')
+}
 // Attachment related functions
   uploadFile(event) {
     this.attachments = event;
