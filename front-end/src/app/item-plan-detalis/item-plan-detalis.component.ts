@@ -651,30 +651,6 @@ export class ItemPlanDetailsComponent implements OnInit {
     return this.toastr.error(message)
   }
 
-// GREETING BOX TO INTRODUCE USERS TO CEE
-// SHOULD ACTIVATE ONCE PER NEW VISIT EVER!!
-  // toggleInstructionBoxOpenOnVisit(){
-  //   this.keepGetStartedOpenOnVist = false
-  //   this.commonService.PostAPI(`users/update/insBoxView`, {
-  //     user_id: this.currentUserId,
-  //     instructionBoxOpen: this.keepGetStartedOpenOnVist
-  //   }).then((res: any)=>{
-  //     if(res.status){
-  //       return;
-  //     }
-  //     else {
-  //       return;
-  //     }
-  //   })
-  // }
-  // toggleInstructionBox(){
-  //   this.toggleInstructionBoxOpenOnVisit()
-  //   this.instructionBoxOpen = !this.instructionBoxOpen
-  //   if (!this.instructionBoxOpen){
-  //     this.keepGetStartedOpenOnVist = this.currentuser.instructionBoxOpen
-  //   }
-  // }
-
 // FEEDBACK USED IN UX ASSESSMENT
 // LIKELY TO BE A USEFUL FEEDBACK TOOL FOR KAI
   openFeedbackModal() {
@@ -745,29 +721,6 @@ export class ItemPlanDetailsComponent implements OnInit {
     return this.inviteUserForm.controls;
   }
 
-  // SUBMITS THE FORM TO INVITE A USER
-  // NEEDS TO BE RE-LABELED
-  // submit() {
-  //   this.isInviteUserFormValid = true;
-  //   if (this.inviteUserForm.invalid) {
-  //     return;
-  //   } else {
-  //     var data = this.inviteUserForm.value;
-  //     data.current_url = this.currentUrl;
-  //     data.invited_by_user_id = this.currentuser.user._id;
-  //     data.parent_user_id = this.parent_user_id;
-  //     $("#inviteModal").modal("hide");
-  //     this.commonService.PostAPI(`users/invite`, data).then((response: any) => {
-  //       if (response.status) {
-  //         this.inviteUserForm.reset();
-  //         this.isInviteUserFormValid = false;
-  //         this.toastr.success(response.message, "Success");
-  //       } else {
-  //         this.toastr.error(response.message, "Error");
-  //       }
-  //     });
-  //   }
-  // }
 
 // TREE VIEW MANAGEMENT
   toggleChallengeTreeView(type: String){
@@ -812,12 +765,8 @@ export class ItemPlanDetailsComponent implements OnInit {
   getPlanDetails() {
     // Used for building tree
     this.finalarray = [];
-
-    // I HATE THIS, PUN NOT INTENDED, WHO USES THIS SYNTAX?!
     var a = this;
 
-    // Unknown array currently
-    // Causes the admin UI to display?
     if (this.currentchildUser == null) {
       this.currentchildUser = []
     }
@@ -825,20 +774,13 @@ export class ItemPlanDetailsComponent implements OnInit {
       this.currentparentUser = []
     }
 
-    // Currently an empty array when init page?
     var children = this.currentchildUser.concat(this.currentparentUser);
-
 
     this.commonService.PostAPI('goal/plangoal/tree', { id: this.currentuser.user._id, childids: children }).then((response: any) => {
       if (response.status) {
-        // Misspelling present, but this is where the tree details seem to build?
         this.planteeDetails = response.data;
-        // Map through resp
         this.planteeDetails.forEach(element => {
-          // That array from above
-          // For root items
           this.finalarray.push({ "id": element._id, "parent": "#", "text": element.short_name, 'state': { 'opened': true }, "icon": "assets/images/avatars/p.png"})
-          // This must be sub-children
           element.goals.forEach(element2 => {
             let parsedArr = element2.parent_goal_id
             if (element2.module_type == 'goal') {
@@ -854,7 +796,6 @@ export class ItemPlanDetailsComponent implements OnInit {
             this.finalarray = this.finalarray.sort((goalA: any, goalB: any)=> {return goalA.priority - goalB.priority})
         });
 
-        // ONCLICK FUNCTIONALITY FOR PROJECT TREE
         $('#jstree').jstree("destroy");
         $("#jstree").on("select_node.jstree",
           function (evt, data) {
@@ -882,7 +823,7 @@ export class ItemPlanDetailsComponent implements OnInit {
               a.getgoaldetail(data.selected[0], data.node.parent);
               a.getGoalReportByPlan(data.node.parent);
               a.parentIsActiveSelection = false;
-              plan_id = data.selected[0];
+              plan_id = data.node.parent;
               a.planId = plan_id;
               a.goalid = ""
               a.childParentId = data.node.parent
@@ -911,9 +852,11 @@ export class ItemPlanDetailsComponent implements OnInit {
               a.moduleItemActive = false;
               a.selectedModules = ''
               a.challengeItemSelected = false;
+              console.log(a.childgoalDetails)
             }
 
             // CLEAN UP
+            // Package into own function
             a.getHeadUpToDisplayDetails(plan_id);
             a.selectedPhase = 'B';
             a.moduleType = 'goal';
@@ -1899,6 +1842,7 @@ warnUser(message){
       this.isDevidedInParts = 0
     } else {
       console.log(planid)
+      console.log(type)
       this.commonService.PostAPI(`goal/getgoals/bypid`, { id: planid, module_type: type }).then((response: any) => {
         if (response.status) {
           console.log(response.data)
@@ -1909,7 +1853,6 @@ warnUser(message){
           }
           else {
             // When a child item is selected, this will filter out items unrelated
-            console.log(response.data)
             this.priorityGoals = response.data.filter((goal)=>{return goal.parent_goal_id[goal.parent_goal_id.length-1] === this.childgoalDetails._id})
           }
         } else {
