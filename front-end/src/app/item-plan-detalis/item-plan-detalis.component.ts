@@ -732,7 +732,13 @@ export class ItemPlanDetailsComponent implements OnInit {
   }
   // STILL NEEDS TO BE EDITED
   toggleChallengeModuleForm(){
-
+    let selection = $('#challenge-module-type-selector').val();
+    if(selection !== ''){
+      this.moduleSelected = true
+      this.selectedModules = selection
+      this.toggleChallengeModuleTreeView(selection)
+    }
+    $('#challenge-module-type-selector-tree').val(selection);
   }
 
 // BUILDS AND CLEANS PROJECT TREE BASED ON CURRENT USER PLANS AND GOALS
@@ -1028,23 +1034,23 @@ export class ItemPlanDetailsComponent implements OnInit {
         $('#date-input6').datepicker('setDate', datePipe.transform(this.childgoalDetails.end_date, 'MM/dd/yyyy'));
 
         if(this.selectedModules === '' || this.selectedModules === undefined){
-        this.childPlanForm.patchValue({
-          short_name: this.childgoalDetails.short_name,
-          long_name: this.childgoalDetails.long_name,
-          description: this.childgoalDetails.description,
-          start_date: datePipe.transform(this.childgoalDetails.start_date, 'MM/dd/yyyy'),
-          end_date: datePipe.transform(this.childgoalDetails.end_date, 'MM/dd/yyyy'),
-          expected_target: this.childgoalDetails.expected_target,
-          revenue_target: this.childgoalDetails.revenue_target,
-          shared_users: this.selected,
-          production_target: this.childgoalDetails.production_target,
-          production_type: this.childgoalDetails.production_type,
-          personal_production_variance: this.childgoalDetails.personal_production_variance,
-          personal_expense_variance: this.childgoalDetails.personal_expense_variance,
-          production_weight: this.childgoalDetails.production_weight,
-          expense_target: this.childgoalDetails.expense_target,
-          expense_weight: this.childgoalDetails.expense_weight,
-        });
+          this.childPlanForm.patchValue({
+            short_name: this.childgoalDetails.short_name,
+            long_name: this.childgoalDetails.long_name,
+            description: this.childgoalDetails.description,
+            start_date: datePipe.transform(this.childgoalDetails.start_date, 'MM/dd/yyyy'),
+            end_date: datePipe.transform(this.childgoalDetails.end_date, 'MM/dd/yyyy'),
+            expected_target: this.childgoalDetails.expected_target,
+            revenue_target: this.childgoalDetails.revenue_target,
+            shared_users: this.selected,
+            production_target: this.childgoalDetails.production_target,
+            production_type: this.childgoalDetails.production_type,
+            personal_production_variance: this.childgoalDetails.personal_production_variance,
+            personal_expense_variance: this.childgoalDetails.personal_expense_variance,
+            production_weight: this.childgoalDetails.production_weight,
+            expense_target: this.childgoalDetails.expense_target,
+            expense_weight: this.childgoalDetails.expense_weight,
+          });
         }
         else {
           this.moduleItemActive = true;
@@ -2547,6 +2553,7 @@ warnUser(message){
     }
   }
 
+  // Module tree and related individual functions
   getSelectedModule(id){
     this.commonService.PostAPI('module/find-selected', {_id: id}).then((res: any)=>{
       if (res.status) {
@@ -2665,6 +2672,7 @@ warnUser(message){
     this.selectedModules = type
   }
 
+  // Challenge and Challenge Module trees inc. their individual item functions below
   getChallengeTreeDetails(type) {
     var data: any = {};
     var a = this;
@@ -2676,8 +2684,14 @@ warnUser(message){
       var treeArray: any = [];
       if (response.status && response.data && response.data.length > 0) {
         this.opportunityDetails = response.data;
-        console.log(response.data)
-        response.data.forEach(element => {
+        response.data.filter((element)=>{
+          if(this.parentIsActiveSelection || this.moduleItemActive || this.challengeItemSelected){
+            return element.plan_id === this.planId
+          }
+          else {
+            return element.plan_id === this.childgoalDetails._id
+          }
+        }).forEach(element => {
             if (element.parent_goal_id !== ''){
               treeArray.push({ "id": element._id, "parent": element.parent_goal_id, "text": element.short_name, 'state': { 'opened': false }, "icon": "assets/images/avatars/M.png" });
             }
@@ -2696,11 +2710,12 @@ warnUser(message){
             a.parentIsActiveSelection = false;
             a.getGoalAttachments(data.selected[0]);
             a.getGoalSharedUsers(data.selected[0]);
-            a.challengeItemSelected = true;
             a.moduleItemActive = false;
             a.selectedModules = ''
             a.selectedChallenge = a.challengeView
+            a.challengeItemSelected = true;
             a.getChallenges()
+            a.getChallengeModuleTreeDetails('strategy')
             $('#jstree-module-tree').jstree("deselect_all")
             if(a.selectedPhase !== 'B'){
               a.selectPhase(a.selectedPhase)
@@ -2713,17 +2728,16 @@ warnUser(message){
     });
   }
   getChallengeModuleTreeDetails(type) {
+    console.log(type)
     var data: any = {};
     var a = this;
     data.plan_id = a.childgoalDetails._id;
     data.user_id = this.currentuser.user._id
     data.module_type = type;
-    a.selectedChallenge = type;
     this.commonService.PostAPI(`module/get-by-user-and-plan`, data).then((response: any) => {
       var treeArray: any = [];
       if (response.status && response.data && response.data.length > 0) {
         this.opportunityDetails = response.data;
-        console.log(response.data)
         response.data.forEach(element => {
             if (element.parent_goal_id !== ''){
               treeArray.push({ "id": element._id, "parent": element.parent_goal_id, "text": element.short_name, 'state': { 'opened': false }, "icon": "assets/images/avatars/M.png" });
@@ -2733,6 +2747,7 @@ warnUser(message){
             }
         });
       }
+
         $('#jstree-challenge-module-tree').jstree("destroy");
         $("#jstree-challenge-module-tree").on("select_node.jstree",
           function (evt, data) {
@@ -2821,6 +2836,8 @@ warnUser(message){
       this.dataTableAfterViewInit();
     });
   }
+
+
   uploadAttachment(event) {
     this.moduleAttachments = event;
   }
