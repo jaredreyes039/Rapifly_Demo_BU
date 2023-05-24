@@ -1054,14 +1054,6 @@
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6 form-group">
-                                                        <label>Recipients</label>
-                                                        <select class="form-control" formControlName="recipient_id" id="recipient_id" (change)="onRecipient($event)">
-                                                            <option value="">Select Recipient</option>
-                                                            <option *ngFor="let hu of users;" value="{{hu.user_id._id}}">
-                                                                {{ hu.user_id.first_name }} {{ hu.user_id.last_name }}
-                                                                ({{hu.hierarchy_id.designation}})</option>
-                                                            <option value="invite">Invite New Recipient</option>
-                                                        </select>
                                                         <div *ngIf="isSubmittedDiscussionForm && dscf.recipient_id.errors"
                                                             class="invalid-feedback">
                                                             <label *ngIf="dscf.recipient_id.errors.required" class="error">Recipient is

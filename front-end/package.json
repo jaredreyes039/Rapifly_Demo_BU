@@ -8,7 +8,8 @@
     "staging": "ng build --configuration=staging",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "startWin": "SET NODE_OPTIONS=--openssl-legacy-provider && ng serve "
   },
   "private": true,
   "dependencies": {
