@@ -358,6 +358,7 @@ export class ItemPlanDetailsComponent implements OnInit {
     this.initFormTemplates();
     this.initDTTemplates();
     this.getSharedPlans();
+    this.getSharedPlans();
 
     $(function () {
       $('button').on('click', function () {
@@ -731,14 +732,14 @@ export class ItemPlanDetailsComponent implements OnInit {
   }
   // STILL NEEDS TO BE EDITED
   toggleChallengeModuleForm(){
-    
+
   }
 
 // BUILDS AND CLEANS PROJECT TREE BASED ON CURRENT USER PLANS AND GOALS
-  getPlanDetails() {
+  async getPlanDetails() {
+    this.planTreeDetails = [];
     this.finalarray = [];
     var a = this;
-
     // Handles missing var
     // LIKELY TO BE DEPRECATED
     if (this.currentchildUser == null) {
@@ -748,9 +749,15 @@ export class ItemPlanDetailsComponent implements OnInit {
       this.currentparentUser = []
     }
 
-    this.commonService.PostAPI('goal/plangoal/tree', { id: this.currentuser.user._id, childids: [] }).then((response: any) => {
+    await this.commonService.PostAPI('goal/plangoal/tree/shared', { id: this.currentuser.user._id, childids: [] }).then((response: any) => {
+      this.planTreeDetails = response.data
+    })
+
+    await this.commonService.PostAPI('goal/plangoal/tree', { id: this.currentuser.user._id, childids: [] }).then((response: any) => {
       if (response.status) {
-        this.planTreeDetails = response.data;
+        response.data.map((item)=>{
+          this.planTreeDetails.push(item)
+        })
         this.planTreeDetails.forEach(element => {
           this.finalarray.push({ "id": element._id, "parent": "#", "text": element.short_name, 'state': { 'opened': true }, "icon": "assets/images/avatars/p.png"})
           element.goals.forEach(element2 => {
@@ -1062,7 +1069,7 @@ export class ItemPlanDetailsComponent implements OnInit {
         if(this.challengeItemSelected){
           this.getChallengeModuleTreeDetails('strategy')
         }
-      } 
+      }
       else {
         this.toastr.error(response.message, "Error");
       }
@@ -1104,6 +1111,23 @@ export class ItemPlanDetailsComponent implements OnInit {
 
         $('#module-end-date-challenge').datepicker().on('changeDate', function (e) {
           $('#module-end-date-challenge').datepicker('hide');
+        });
+
+        $('#date-input-goal').datepicker({
+          dateFormat: "mm-dd-yy",
+          setDate: new Date(),
+          todayHighlight: true,
+        });
+        $('#date-input-goal-end').datepicker({
+          setDate: new Date(),
+          todayHighlight: true,
+          startDate: new Date(this.parentplanDetails[0].start_date),
+        });
+        $('#date-input-goal').datepicker().on('changeDate', function (e) {
+          $('#date-input-goal').datepicker('hide');
+        });
+        $('#date-input-goal-end').datepicker().on('changeDate', function (e) {
+          $('#date-input-goal-end').datepicker('hide');
         });
 
         // RE-INIT CHILD PLAN FORM
@@ -1154,15 +1178,15 @@ export class ItemPlanDetailsComponent implements OnInit {
     } else {
       // IF getPlanDetailAlt() FOUND A RESP
       if (this.goalplanid != undefined) {
-        if ($('#date-input5').val() != '' && $('#date-input6').val() != '') {
+        if ($('#date-input-goal').val() != '' && $('#date-input-goal-end').val() != '') {
           var data = this.childPlanForm.value;
             data.editid = ""
           data.user_id = this.currentuser.user._id;
           data.plan_id = this.goalplanid;
           data.status = 0;
           data.numbers = 0;
-          data.start_date = $('#date-input5').val();
-          data.end_date = $('#date-input6').val();
+          data.start_date = $('#date-input-goal').val();
+          data.end_date = $('#date-input-goal-end').val();
           data.shared_users = this.selected.map((data) => data.id);
             if (this.moduleType == '') {
               this.moduleType = 'goal';
