@@ -1,7 +1,5 @@
-import { HierarchyDiagramComponent } from './hierarchy-diagram/hierarchy-diagram.component';
 import { UsersComponent } from './users/users.component';
 import { HeirarchyComponent } from './admin/heirarchy/heirarchy.component';
-import { OrganizationsComponent } from './admin/organizations/organizations.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
@@ -12,10 +10,7 @@ import { ResetPasswordComponent } from './forget/reset-password/reset-password.c
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { AuthGuard } from './helpers/auth.guard';
 import { GuestAuthGuard } from './helpers/guestAuth.guard';
-import { ItemPlanComponent } from './item-plan/item-plan.component';
 
-import { LevelsComponent } from './admin/levels/levels.component';
-import { RolesComponent } from './admin/roles/roles.component';
 import { InviteUsersComponent } from './admin/invite-users/invite-users.component';
 import { RegisterInviteUserComponent } from './register-invite-user/register-invite-user.component';
 import { AddplanComponent } from './addplan/addplan.component';
@@ -68,16 +63,6 @@ const routes: Routes = [
   {
     path: 'profile', component: ProfileComponent, canActivate: [AuthGuard], data: {
       roles: [Role.Admin, Role.User]
-    }
-  },
-  {
-    path: 'item-plans', component: ItemPlanComponent, canActivate: [AuthGuard], data: {
-      roles: [Role.User]
-    }
-  },
-  {
-    path: 'item-plans/:id', component: ItemPlanComponent, canActivate: [AuthGuard], data: {
-      roles: [Role.User]
     }
   },
   {

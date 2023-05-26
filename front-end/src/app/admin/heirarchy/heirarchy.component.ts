@@ -21,6 +21,7 @@ export class HeirarchyComponent implements OnInit {
   users: any = [];
   plans: any = [];
   members: any = []
+  userTeams: any = [];
   distributionList: any = [
     {
       name: "Jay Reyes",
@@ -34,6 +35,7 @@ export class HeirarchyComponent implements OnInit {
   hierarchyForm: FormGroup;
   inviteUserForm: FormGroup;
   sharePlanForm: FormGroup;
+  newTeamForm: FormGroup;
   isHierarchyFormValid = false;
 
   isShowSubHierarchy: boolean = false;
@@ -81,7 +83,8 @@ export class HeirarchyComponent implements OnInit {
   ngOnInit() {
     this.inviteUserForm = this.formBuilder.group({
       email: [''],
-      designation: ['']
+      designation: [''],
+      team: ['']
     })
     this.sharePlanForm = this.formBuilder.group({
       user: [''],
@@ -90,7 +93,15 @@ export class HeirarchyComponent implements OnInit {
 
     this.getUserPlans();
     this.getInvites();
-    this.getTeamMembers()
+    this.initFormGroups();
+    this.getTeams();
+  }
+
+  initFormGroups(){
+    this.newTeamForm = this.formBuilder.group({
+      name: [''],
+      description: [''],
+    })
   }
 
   getInvites(){
@@ -99,7 +110,14 @@ export class HeirarchyComponent implements OnInit {
       email: this.currentuser.user.email
     }).then((res: any)=>{
       if(res.status){
+        console.log(this.invitesList)
         this.invitesList = res.data
+        this.invitesList = this.invitesList.filter((invite)=>{
+          return invite.accepted === false
+        })
+        this.invitesList = this.invitesList.filter((invite)=>{
+          return invite.rejected === false;
+        })
       }
       else {
         return this.toastr.error(res.message, 'Error')
@@ -131,7 +149,7 @@ export class HeirarchyComponent implements OnInit {
   }
 
   inviteUser(){
-    console.log(this.currentuser)
+    console.log(this.inviteUserForm.controls.team.value)
     this.commonService.PostAPI('share_plan/invite/member', {
       user_id: this.currentuser.user._id,
       user_email: this.currentuser.user.email,
@@ -142,6 +160,7 @@ export class HeirarchyComponent implements OnInit {
       member_designation: this.inviteUserForm.controls.designation.value,
       member_email: this.inviteUserForm.controls.email.value,
       accepted: false,
+      team_id: this.inviteUserForm.controls.team.value
     }).then((res: any)=>{
       if(res.status){
         this.toastr.success(res.message, 'Success');
@@ -158,11 +177,11 @@ export class HeirarchyComponent implements OnInit {
   }
 
   acceptInvitation(event){
-    console.log(event.target.value)
-    this.commonService.PostAPI('share_plan/accept/invite', {
+    this.commonService.PostAPI('teams/accept/invite', {
       user_id: this.currentuser.user._id,
-      member_email: event.target.value,
-      member_id: event.target.id
+      user_email: this.currentuser.user.email,
+      role: event.target.value,
+      team_id: event.target.id
     }).then((res: any)=>{
       if(res.status){
         return this.toastr.success(res.message, 'Success')
@@ -187,23 +206,29 @@ export class HeirarchyComponent implements OnInit {
     })
   }
 
-  getTeamMembers(){
-    this.commonService.PostAPI('user_group/get/by/user', {
-      user_id: this.currentuser.user._id,
-    }).then((res: any)=>{
+
+
+  createTeam(){
+    let teamData = this.newTeamForm.value;
+    teamData.owner_id = this.currentuser.user._id;
+    teamData.owner_email = this.currentuser.user.email;
+
+    this.commonService.PostAPI(`teams/create`, teamData)
+    .then((res:any)=>{
+      return this.toastr.success(res.message, 'Success')
+    })
+
+    this.newTeamForm.reset();
+  }
+
+  getTeams(){
+    this.commonService.PostAPI(`teams/get/teams`, {
+      user_id: this.currentuser.user._id
+    }).then((res:any)=>{
       if(res.status){
-        console.log(res.data)
-        res.data[0].group_members.map((member)=>{
-          this.members.push({
-            first_name: member.user.first_name,
-            last_name: member.user.last_name,
-            email: member.user.email,
-            avatar: member.user.avatar,
-            user_id: member.user_id
-          })
-        })
-        console.log(this.members)
-        return this.toastr.success("Retrieved team information.", 'Success')
+        this.userTeams = res.data;
+        console.log(this.userTeams)
+        return this.toastr.success(res.message, 'Success')
       }
       else {
         return this.toastr.error(res.message, 'Error')

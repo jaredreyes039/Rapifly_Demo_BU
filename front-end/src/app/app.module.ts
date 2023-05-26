@@ -31,7 +31,6 @@ import { UsersComponent } from './users/users.component';
 import { InviteUsersComponent } from './admin/invite-users/invite-users.component';
 import { RegisterInviteUserComponent } from './register-invite-user/register-invite-user.component';
 import { OrganizationsComponent } from './admin/organizations/organizations.component';
-import { ItemPlanComponent, itemplandate } from './item-plan/item-plan.component';
 import { AddplanComponent } from './addplan/addplan.component';
 import { HeirarchyComponent } from './admin/heirarchy/heirarchy.component';
 import { ItemPlanDetailsComponent, itemplanitemdate } from './item-plan-detalis/item-plan-detalis.component';
@@ -80,14 +79,12 @@ import { ChartsModule, ThemeService } from 'ng2-charts';
     HeaderComponent,
     FooterComponent,
     TopHeaderComponent,
-    ItemPlanComponent,
     LevelsComponent,
     RolesComponent,
     UsersComponent,
     InviteUsersComponent,
     RegisterInviteUserComponent,
     OrganizationsComponent,
-    itemplandate,
     AddplanComponent,
     HeirarchyComponent,
     ItemPlanDetailsComponent,
@@ -119,7 +116,7 @@ import { ChartsModule, ThemeService } from 'ng2-charts';
     RegisterComponent,
     ListComponent,
     EditPlanComponent,
-    
+
   ],
   imports: [
     MatStepperModule,

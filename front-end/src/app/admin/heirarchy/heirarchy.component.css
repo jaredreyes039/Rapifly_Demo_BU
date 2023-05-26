@@ -22,3 +22,17 @@
     height: 420px;
     overflow-y: scroll;
 }
+
+.teams-list {
+  overflow: hidden;
+  overflow-y: visible;
+  min-height: 480px;
+  max-height: 540px;
+  height: 510px;
+}
+.teams-list > div {
+  transition: all 250ms ease-in-out;
+}
+.teams-list > div:hover {
+  filter: brightness(1.2)
+}

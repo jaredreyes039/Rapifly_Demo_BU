@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AuthenticationService } from 'src/app/services/authentication.service';
@@ -116,10 +116,6 @@ export class ItemPlanDetailsComponent implements OnInit {
   lowProposeGoals: any = []
   mediumProposeGoals: any = []
 
-  // ALERT VARS
-  alertView: String;
-  alertdata;
-  filteredAlerts: any = [];
 
   // EDIT VARS
   editChildEnabled: boolean = false;
@@ -180,8 +176,8 @@ export class ItemPlanDetailsComponent implements OnInit {
   reportGoalId: any;
   reportId: any;
   reportDetail: any;
-    // ALL GOALS BY PLAN
-    planGoals: any = [];
+  // ALL GOALS BY PLAN
+  planGoals: any = [];
   ReportForm: FormGroup;
   isReportFormSubmitted: boolean = false;
 
@@ -209,20 +205,20 @@ export class ItemPlanDetailsComponent implements OnInit {
   avgProd: any;
 
   // LINE CHART CONFIG
-    public lineChartMainLabels: Label[] = []
-    public lineChartMainConfigData: ChartDataSets[] = this.datasetTotal
-    public lineChartMainOptions: Colors[] = [
-      { // red (NEC FOR BLANK SLOT BUG FIX)
-        backgroundColor: ['#5cb85c50'],
-        borderColor: 'white',
-      },
+  public lineChartMainLabels: Label[] = []
+  public lineChartMainConfigData: ChartDataSets[] = this.datasetTotal
+  public lineChartMainOptions: Colors[] = [
+    { // red (NEC FOR BLANK SLOT BUG FIX)
+      backgroundColor: ['#5cb85c50'],
+      borderColor: 'white',
+    },
 
-      { // red (NEC FOR BLANK SLOT BUG FIX)
-        backgroundColor: ['#bb212450'],
-        borderColor: 'red',
-      },
+    { // red (NEC FOR BLANK SLOT BUG FIX)
+      backgroundColor: ['#bb212450'],
+      borderColor: 'red',
+    },
 
-    ]
+  ]
 
   // CANVAS CONFIG FOR CHART
   public canvasWidth = 400
@@ -332,13 +328,10 @@ export class ItemPlanDetailsComponent implements OnInit {
     this.fromDate = calendar.getPrev(calendar.getToday(), 'm', 1);
   }
 
+  // Init Form Construction Vars
   formfield = [{ name: '', type: '', required: '', label: '', value: '', userid: '' }]
   selectoption = [{ id: '' }]
-  data = [{}]
 
-// Any vars loaded through init need to be documented
-// Any functions called through init need to be documented, including changed var values
-// These rules apply for the global scope of this file ONLY
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
       if (params && params.stage && params.stage != '') {
@@ -354,39 +347,12 @@ export class ItemPlanDetailsComponent implements OnInit {
     });
 
     this.getPlanDetails();
-    this.launchgoalalert();
+
+
     this.initFormTemplates();
     this.initDTTemplates();
     this.getSharedPlans();
-    this.getSharedPlans();
 
-    $(function () {
-      $('button').on('click', function () {
-        $('#jstree').jstree(true).select_node('child_node_1');
-        $('#jstree').jstree('select_node', 'child_node_1');
-        $.jstree.reference('#jstree').select_node('child_node_1');
-      });
-    });
-
-    // DATA OBJECT PARENT PLAN
-    this.data[0]["numbers"] = [''];
-    this.data[0]["short_name"] = ['', Validators.required];
-    this.data[0]["long_name"] = ['', Validators.required];
-    this.data[0]["description"] = [''];
-    this.data[0]["start_date"] = ['', Validators.required];
-    this.data[0]["end_date"] = ['', Validators.required];
-    this.data[0]["security"] = ['0', Validators.required];
-    this.data[0]["share_users"] = [''];
-    this.data[0]["production_target"] = [''];
-    this.data[0]["production_type"] = [''];
-    this.data[0]["personal_expense_variance"] = [''];
-    this.data[0]["personal_production_variance"] = [''];
-    this.data[0]["expense_target"] = [''];
-    this.data[0]["manager_expense_variance"] = [''];
-    this.data[0]["manager_production_variance"] = [''];
-    this.data[0]["expense_weight"] = [''];
-    this.parentplangroup = this.formBuilder.group(this.data[0]);
-    this.parentplangroup.get('security').setValue('0');
     $('#date-input5').on('changeDate', function (ev) {
       $(this).datepicker('hide');
     });
@@ -394,6 +360,7 @@ export class ItemPlanDetailsComponent implements OnInit {
       $(this).datepicker('hide');
     });
   }
+
   initFormTemplates(){
     this.childPlanForm = this.formBuilder.group({
       short_name: ['', Validators.required],
@@ -517,25 +484,29 @@ export class ItemPlanDetailsComponent implements OnInit {
       'subject': ['', Validators.required],
       'message': ['', Validators.required],
     });
+    this.parentplangroup = this.formBuilder.group({
+      short_name: ['', Validators.required],
+      long_name: ['', Validators.required],
+      description: ['', Validators.required],
+      start_date: [''],
+      end_date: [''],
+      shared_users: [''],
+      production_target: [''],
+      production_type: [''],
+      production_weight: [''],
+      expense_target: [''],
+      expense_weight: [''],
+      personal_expense_variance: [0],
+      personal_production_variance: [0],
+      manager_expense_variance: [0],
+      manager_production_variance: [0],
+      attachments: [],
+      security: ['0'],
+      numbers: [''],
+      share_users: [''],
 
-    $('#date-input5').datepicker({
-      setDate: new Date(),
-      todayHighlight: true,
-      startDate: '-0m',
-      minDate: 0,
-    });
-    $('#date-input6').datepicker({
-      setDate: new Date(),
-      todayHighlight: true,
-      startDate: '-0m',
-      minDate: 0,
-    });
-    $('#date-input5').datepicker().on('changeDate', function (e) {
-      $('#date-input5').datepicker('hide');
-    });
-    $('#date-input6').datepicker().on('changeDate', function (e) {
-      $('#date-input6').datepicker('hide');
-    });
+    })
+    this.parentplangroup.get('security').setValue('0');
   }
   initDTTemplates(){
     // DATATABLE OPTIONS AND CONFIG
@@ -627,14 +598,10 @@ export class ItemPlanDetailsComponent implements OnInit {
       this.dtTriggerCoaches.next();
   }
 
-// Use this to throw the message in the top right corner
-// Needs to be reduced out of backend call functionalities
   throwToastrError(message: string){
     return this.toastr.error(message)
   }
 
-// FEEDBACK USED IN UX ASSESSMENT
-// LIKELY TO BE A USEFUL FEEDBACK TOOL FOR KAI
   openFeedbackModal() {
     this.feedbackModalOpen = !this.feedbackModalOpen;
     this.commonService.PostAPI('users/get/user', 'ehi@planningsynergies.com')
@@ -835,6 +802,27 @@ export class ItemPlanDetailsComponent implements OnInit {
 
         // SETS PROJECT TREE W/ finalarray VAR
         $('#jstree').jstree({ core: { data: this.finalarray } });
+
+        // Reset Plan Form Date Picker
+
+      $('#date-input5').datepicker({
+        setDate: new Date(),
+        todayHighlight: true,
+        startDate: '-0m',
+        minDate: 0,
+      });
+      $('#date-input6').datepicker({
+        setDate: new Date(),
+        todayHighlight: true,
+        startDate: '-0m',
+        minDate: 0,
+      });
+      $('#date-input5').datepicker().on('changeDate', function (e) {
+        $('#date-input5').datepicker('hide');
+      });
+      $('#date-input6').datepicker().on('changeDate', function (e) {
+        $('#date-input6').datepicker('hide');
+      });
       } else {
         this.toastr.error(response.message, "Error");
       }
@@ -885,9 +873,6 @@ export class ItemPlanDetailsComponent implements OnInit {
       goal_id: event.srcElement.id
     }).then((res: any)=>{
       if (res.status){
-        this.commonService.PostAPI(`user_alerts/create/alert/launch`, {
-          user_id: this.currentuser.user._id
-        })
         return this.toastr.success(res.message, "Success")
       }
       else {
@@ -1303,71 +1288,9 @@ export class ItemPlanDetailsComponent implements OnInit {
     }
   }
 
-// ALERT FUNCTIONALITY
-  toggleAlertView(){
-    switch(this.alertView){
-      case 'Launch':
-        this.alertView = 'Report'
-        this.reportgoalalert()
-        break;
-      case 'Report':
-        this.alertView = 'Launch'
-        this.launchgoalalert()
-        break;
-    }
-  }
-  launchgoalalert() {
-    this.commonService.PostAPI('user_alerts/get/alerts/launch', {
-      user_id: this.currentuser.user._id
-    }).then((res: any)=>{
-      if(res.status){
-        this.alertView = 'Launch'
-        this.filteredAlerts = res.data;
-      }
-      else {
-        this.toastr.error(res.message, 'Error')
-      }
-    })
-  }
-  reportgoalalert() {
-    this.filteredAlerts = []
-    let parentPlanItems = this.finalarray.filter((planItem)=>{return planItem.parent === '#'})
-    parentPlanItems.forEach((planItem)=>{
-      this.commonService.PostAPI(`user_alerts/get/alerts/report`, {
-        plan_id: planItem.id,
-        user_id: this.currentuser.user._id
-      }).then((docs: any)=>{
-        this.filteredAlerts = docs.data
-      })
 
-    })
-  }
 
-  deleteAlert(alert_id){
-    this.commonService.PostAPI('user_alerts/set/alert/deletion', {
-      _id: alert_id,
-      user_id: this.currentuser.user._id
-    }).then((res: any)=>{
-      if(res.status){
-        this.toastr.success('Notification removed.', 'Success')
-      }
-      else {
-        this.toastr.error('Failed to delete notification, please try again later.', 'Error')
-      }
-    })
 
-    this.commonService.PostAPI('user_alerts/get/alerts/launch', {
-      user_id: this.currentuser.user._id
-    }).then((res: any)=>{
-      if(res.status){
-        this.alertView = 'Launch'
-        this.filteredAlerts = res.data;
-      }
-      else {
-        this.toastr.error(res.message, 'Error')
-      }
-    })
-  }
   getGoalReportByPlan(plan_id) {
     this.commonService.PostAPI(`plan/get/goal/report`, { plan_id: plan_id }).then((response: any) => {
       if (response.status) {
@@ -2328,20 +2251,12 @@ warnUser(message){
       this.tableId = 'report-table'
       $(`#${this.tableId}`).DataTable().clear()
       this.getReportGoals(this.planId)
-      this.createReportAlert(this.planId, this.reportGoalId, this.reportId, data)
     }
     this.chartIsLoaded = false;
     this.chartRendered = false;
     this.initMeasureCharts(true)
   }
-  createReportAlert(plan_id, goal_id, report_id, data){
-    this.getReportGoals(plan_id)
-    // GETS REPORT THAT WAS JUST FILED
-    let selectedReport = this.reportGoals.filter((report)=>{return report.report_id === report_id})
-    selectedReport[0].actual_production = data.actual_production
-    selectedReport[0].actual_expense = data.actual_expense
-    this.commonService.PostAPI(`user_alerts/create/alert/report`, selectedReport)
-  }
+
 
   resetReportSearch() {
     this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
@@ -2867,13 +2782,11 @@ warnUser(message){
         } else {
           this.final.forEach(element => {
             if (element.required == "true") {
-              this.data[0][element.name] = ['', Validators.required];
+              this.parentplangroup.addControl(element.name, new FormControl(['', Validators.required]))
             } else {
-              this.data[0][element.name] = [''];
+              this.parentplangroup.addControl(element.name, new FormControl(['']))
             }
           });
-
-          this.parentplangroup = this.formBuilder.group(this.data[0]);
 
           // Need to check for edit
           if (this.editid != undefined) {
@@ -2915,9 +2828,10 @@ warnUser(message){
     /**
      * Add form control for (+ button)add new field in plan form
      */
+    let data = [];
     var test = $("#data" + i).val();
-    this.data[0][test] = [''];
-    this.parentplangroup = this.formBuilder.group(this.data[0]);
+    data[0][test] = [''];
+    this.parentplangroup = this.formBuilder.group(data[0]);
 
   }
   get jval() {
@@ -2977,13 +2891,11 @@ warnUser(message){
           valid.push(element.name);
         }
         if (element.required == "true") {
-          this.data[0][element.name] = ['', Validators.required];
+          this.parentplangroup.addControl(element.name, new FormControl(['', Validators.required]))
         } else {
-          this.data[0][element.name] = [''];
+          this.parentplangroup.addControl(element.name, new FormControl(['']))
         }
       });
-
-      this.parentplangroup = this.formBuilder.group(this.data[0]);
 
       if (i == 0) {
         if (j == 0) {
