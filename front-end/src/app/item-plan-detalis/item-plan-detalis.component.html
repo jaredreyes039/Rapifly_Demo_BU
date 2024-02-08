@@ -150,13 +150,13 @@
                         <div id="2" class="panel-collapse collapse in projecttree" role="tabpanel"
                             aria-labelledby="headingTwo2" id="style-2">
                             <div class="">
-                                <div id="jstree">
+                                <div id="project-item-tree">
                                 </div>
                             </div>
                         </div>
                     </div>
                     <!-- CHALLENGE TREE -->
-                    <div class="panel panel-cutom-blue" *ngIf="parentIsActiveSelection || challengeItemSelected || moduleItemActive || childgoalDetails">
+                    <div class="panel panel-cutom-blue" *ngIf="parentIsActiveSelection || challengeItemSelected || moduleItemActive || selectedChildGoalDetails">
                         <div class="panel-heading panel-green">
                             <h4 class="panel-title" style="display: flex; justify-content: space-between; align-items: center;">
                                 <a aria-controls="collapseTwo">Challenge Tree ({{textDecoration(challengeView)}} View)</a>
@@ -175,7 +175,7 @@
                         </div>
                     </div>
                     <!-- MODULE TREE -->
-                    <div class="panel panel-cutom-blue" *ngIf="parentIsActiveSelection || challengeItemSelected || moduleItemActive || childgoalDetails">
+                    <div class="panel panel-cutom-blue" *ngIf="parentIsActiveSelection || challengeItemSelected || moduleItemActive || selectedChildGoalDetails">
                         <div class="panel-heading panel-green">
                             <h4 class="panel-title" style="display: flex; justify-content: space-between; align-items: center;">
                                 <a aria-controls="collapseTwo">{{ textDecoration(moduleView) }} Tree</a>
@@ -224,7 +224,7 @@
         <!-- PARENT ITEM PROJECT PROFILE DISPLAY -->
         <!-- ONLY FOR PARENT ITEMS -->
         <!-- HEADER ONLY -->
-        <div class="col-md-9" *ngIf="parentIsActiveSelection && parentplanDetails[0] && parentplanDetails[0] != ''"
+        <div class="col-md-9" *ngIf="parentIsActiveSelection && selectedParentPlanDetails[0] && selectedParentPlanDetails[0] != ''"
         [hidden]="!parentIsActiveSelection">
             <div class="page-title">
                 Project Profile
@@ -235,7 +235,7 @@
                     <div style="padding: 10px;">
                       <div class="text-right" style="display: flex; margin-bottom: 24px; justify-content: flex-end;">
                         <div style="display: flex; justify-content: space-evenly; width: 20%;">
-                        <button (click)="deletePlanById(parentplanDetails[0]._id)" class="btn btn-danger" style="display: flex; align-items: center; justify-content: center;">
+                        <button (click)="deletePlanById(selectedParentPlanDetails[0]._id)" class="btn btn-danger" style="display: flex; align-items: center; justify-content: center;">
                             <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
                                 <path d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"/>
                             </svg>
@@ -252,17 +252,17 @@
                                     <div  style="display: flex;  margin-bottom: 12px;">
                                         <div class="parent-item-label">Short Name:</div>
                                         <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
-                                            {{parentplanDetails[0].short_name}}</div>
+                                            {{selectedParentPlanDetails[0].short_name}}</div>
                                     </div>
                                     <div  style="display: flex; margin-bottom: 12px;">
                                         <div class="parent-item-label">Long Name:</div>
                                         <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
-                                            {{parentplanDetails[0].long_name}}</div>
+                                            {{selectedParentPlanDetails[0].long_name}}</div>
                                     </div>
                                     <div  style="display: flex;">
                                         <div class="parent-item-label">Creator:</div>
                                         <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
-                                            {{parentplanDetails[0].user_id.first_name}} {{parentplanDetails[0].user_id.last_name}}</div>
+                                            {{selectedParentPlanDetails[0].user_id.first_name}} {{selectedParentPlanDetails[0].user_id.last_name}}</div>
                                     </div>
                                 </div>
 
@@ -270,31 +270,31 @@
                                     <div style="display: flex; margin-bottom: 12px;">
                                         <div class=" parent-item-label">Start Date:</div>
                                         <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
-                                            {{parentplanDetails[0].start_date | itemplanitemdate }}</div>
+                                            {{selectedParentPlanDetails[0].start_date | itemplanitemdate }}</div>
                                     </div>
                                     <div style="display: flex;">
                                         <div class=" parent-item-label">End Date:</div>
                                         <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
-                                            {{parentplanDetails[0].end_date | itemplanitemdate }}</div>
+                                            {{selectedParentPlanDetails[0].end_date | itemplanitemdate }}</div>
                                     </div>
                                 </div>
                                 <div style="display: flex; flex-direction: column; flex-basis: 45%;">
                                     <div style="display: flex; margin-bottom: 12px;">
                                         <div class=" parent-item-label parent-item-label-alert">Production Target:</div>
                                         <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
-                                            {{parentplanDetails[0].production_target }}</div>
+                                            {{selectedParentPlanDetails[0].production_target }}</div>
                                     </div>
                                     <div style="display: flex;">
                                         <div class=" parent-item-label parent-item-label-alert">Expense Target:</div>
                                         <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
-                                            {{parentplanDetails[0].expense_target }}</div>
+                                            {{selectedParentPlanDetails[0].expense_target }}</div>
                                     </div>
                                 </div>
                         </div>
                         <div style="display: flex; margin-bottom: 24px;">
                             <div class="text-white bg-dark parent-item-val-spec" style="padding: 6px;">
                                 <div class=" parent-item-label-spec">Description</div>
-                                <p style="border-left: 2px solid #fff; padding-left: 24px;">{{parentplanDetails[0].description}}</p>
+                                <p style="border-left: 2px solid #fff; padding-left: 24px;">{{selectedParentPlanDetails[0].description}}</p>
                             </div>
                         </div>
                     </div>
@@ -306,12 +306,12 @@
         <!-- IF PROJECT IS SELECTED -->
         <!-- DATE IDS: 5/6 -->
         <div class="col-md-9" *ngIf="selectedPhase == 'project'">
-            <form #kform="ngForm" [formGroup]="parentplangroup">
+            <form #kform="ngForm" [formGroup]="parentPlanForm">
                 <div class="page-title">
                     Create Project Profile
                 </div>
                 <div class="col-md-12 form-group text-right">
-                    <button type="button" class="btn btn-warning mt-20" (click)="fetch()">Manage Additional Fields</button>
+                    <button type="button" class="btn btn-warning mt-20" (click)="openAdditionalFieldsModal()">Manage Additional Fields</button>
                 </div>
                 <div class="panel panel-cutom-blue">
                     <div class="panel-body">
@@ -335,7 +335,7 @@
                                     [ngClass]="{ 'is-invalid': IsLoginFormValid && jval.long_name.errors }"
                                     autocomplete="off">
                                 <div *ngIf="IsLoginFormValid && jval.long_name.errors" class="invalid-feedback">
-                                    <!-- <div *ngIf="jval.long_name.errors.required">Long Name is required</div> -->
+                                    <div *ngIf="jval.long_name.errors.required">Long Name is required</div>
                                     <label *ngIf="jval.long_name.errors.required" class="error">Long Name is
                                         required</label>
                                 </div>
@@ -478,9 +478,9 @@
                             </div>
                             <div style="padding: 40px;">
                                 <div class="form-group">
-                                    <button type="submit" (click)="resetPlanForm()"
+                                    <button type="submit" (click)="resetParentPlanForm()"
                                         class="btn btn-default pull-right">Reset</button>
-                                    <button type="submit" (click)="submitPlanForm()"
+                                    <button type="submit" (click)="submitParentPlanForm()"
                                         class="btn btn-primary btn-space pull-right">Submit</button>
                                 </div>
                             </div>
@@ -492,6 +492,7 @@
             </form>
 
             <!-- COMMUNICATION PANEL (MULTI-USER) -->
+            <!-- We ideally will use a socket implementation, though that's not set in stone -->
             <mat-expansion-panel  class="expanse-panel expanse-panel-discussion">
                 <mat-expansion-panel-header class="page-title">
                     <h3>Communication</h3>
@@ -534,25 +535,8 @@
         </div>
 
     <!-- BEGIN BLOCK: ADMIN PANEL PAGES -->
-        <!-- TEAM PAGE (NEEDS SEVERE WORK) -->
-        <div class="col-md-9" *ngIf="selectedPhase == 'team'">
-            <div class="page-title">
-                <h3>Team</h3>
-            </div>
 
-            <div class="panel panel-cutom-blue">
-                <div class="panel-body">
-                    <div class="overflow-div">
-                        <google-chart style="margin: 0 auto;" #chart [title]="title" [type]="type"
-                            [data]="userHierarchyData" [columnNames]="columnNames" [options]="option" [width]="width"
-                            [height]="height">
-                        </google-chart>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- USER PAGE (NEEDS FUNCTIONALITY TIED IN TO BACKEND) -->
+        <!-- USER PAGE TO BE MOVED -->
         <div class="col-md-9" *ngIf="selectedPhase == 'user'">
             <div class="page-title">
                 User Dashboard
@@ -689,7 +673,6 @@
                     </div>
                 </div>
             </div>
-
         </div>
 
         <!-- DETERMINES WHO GETS WHAT INFORMATION -> IT'S BECOME FAIRLY OBSOLETE, DO WE WANT TO GET RID OF IT? -->
@@ -721,7 +704,7 @@
     <!-- BEGIN BLOCK: BRAINSTORM AND IMPROVE -->
         <!-- ACTIVE: selectedPhase:B || selectedPhase:I -->
         <!-- HIDDEN: Any module is selected (selectedModules:true) or if it isn't blank (selectedModules:'') -->
-        <div class="col-md-9" *ngIf="parentIsActiveSelection || moduleItemActive || challengeItemSelected || childgoalDetails.length !== 0 && childgoalDetails !== {}" [hidden]="selectedPhase!=='B'">
+        <div class="col-md-9" *ngIf="parentIsActiveSelection || moduleItemActive || challengeItemSelected || selectedChildGoalDetails.length !== 0 && selectedChildGoalDetails !== {}" [hidden]="selectedPhase!=='B'">
             <!-- EDITING ONLY -->
             <div *ngIf="editChildEnabled && !parentIsActiveSelection">
                 <div>
@@ -868,9 +851,9 @@
 
                             <div class="col-md-12 form-group text-right">
                                 <button type="submit " (click)="updateGoal();"
-                                    [disabled]="!checkforgoaledit && !isSharedPlanPermission"
+                                    [disabled]="!editingStatus && !isSharedPlanPermission"
                                     class="btn btn-primary btn-space">Save</button>
-                                <button type="reset" (click)="reset()" [disabled]="!checkforgoaledit "
+                                <button type="reset" (click)="reset()" [disabled]="!editingStatus "
                                     class="btn btn-default">Clear</button>
                             </div>
 
@@ -1026,9 +1009,9 @@
 
                                 <div class="col-md-12 form-group text-right">
                                     <button type="submit " (click)="onSubmit();"
-                                        [disabled]="!checkforgoaledit && !isSharedPlanPermission"
+                                        [disabled]="!editingStatus && !isSharedPlanPermission"
                                         class="btn btn-primary btn-space">Save</button>
-                                    <button type="reset" (click)="reset()" [disabled]="!checkforgoaledit "
+                                    <button type="reset" (click)="reset()" [disabled]="!editingStatus "
                                         class="btn btn-default">Clear</button>
                                 </div>
 
@@ -1116,7 +1099,7 @@
                 <div  style="display: flex;  margin-bottom: 12px;">
                   <div class="parent-item-label">Parent Project Profile:</div>
                   <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
-                      {{parentplanDetails[0] ? parentplanDetails[0].short_name : "N/A"}}</div>
+                      {{selectedParentPlanDetails[0] ? selectedParentPlanDetails[0].short_name : "N/A"}}</div>
                 </div>
             </div>
 
@@ -1130,17 +1113,17 @@
                           <div  style="display: flex;  margin-bottom: 12px;">
                               <div class="parent-item-label">Short Name:</div>
                               <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
-                                  {{childgoalDetails.short_name}}</div>
+                                  {{selectedChildGoalDetails.short_name}}</div>
                           </div>
                           <div  style="display: flex; margin-bottom: 12px;">
                               <div class="parent-item-label">Long Name:</div>
                               <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
-                                  {{childgoalDetails.long_name}}</div>
+                                  {{selectedChildGoalDetails.long_name}}</div>
                           </div>
                           <div  style="display: flex;">
                               <div class="parent-item-label">Creator:</div>
                               <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
-                                  {{parentplanDetails[0].user_id.first_name}} {{parentplanDetails[0].user_id.last_name}}</div>
+                                  {{selectedParentPlanDetails[0].user_id.first_name}} {{selectedParentPlanDetails[0].user_id.last_name}}</div>
                           </div>
                       </div>
 
@@ -1148,40 +1131,40 @@
                           <div style="display: flex; margin-bottom: 12px;">
                               <div class=" parent-item-label">Start Date:</div>
                               <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
-                                  {{childgoalDetails.start_date !== undefined ?  (childgoalDetails.start_date | itemplanitemdate) : "Currently not available for deeply nested items"}}</div>
+                                  {{selectedChildGoalDetails.start_date !== undefined ?  (selectedChildGoalDetails.start_date | itemplanitemdate) : "Currently not available for deeply nested items"}}</div>
                           </div>
                           <div style="display: flex;  margin-bottom: 12px;">
                               <div class=" parent-item-label">End Date:</div>
                               <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
-                                  {{childgoalDetails.end_date !== undefined ?  (childgoalDetails.end_date | itemplanitemdate) : "Currently not available for deeply nested items"}}</div>
+                                  {{selectedChildGoalDetails.end_date !== undefined ?  (selectedChildGoalDetails.end_date | itemplanitemdate) : "Currently not available for deeply nested items"}}</div>
                           </div>
                           <div style="display: flex;" *ngIf="selectedModules == 'analysis'">
                               <div class=" parent-item-label">Source:</div>
                               <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
-                                  {{childgoalDetails.source}}</div>
+                                  {{selectedChildGoalDetails.source}}</div>
                           </div>
                       </div>
                       <div style="display: flex; flex-direction: column; flex-basis: 45%;" *ngIf="selectedModules !== 'motive' && selectedModules !== 'analysis' && selectedModules !== 'intelligence'" [hidden]="selectedModules === 'motive' && selectedModules === 'analysis' && selectedModules === 'intelligence'">
                           <div style="display: flex; margin-bottom: 12px;">
                               <div class=" parent-item-label parent-item-label-alert">Production Target:</div>
                               <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
-                                  {{childgoalDetails.production_target }}</div>
+                                  {{selectedChildGoalDetails.production_target }}</div>
                           </div>
                           <div style="display: flex;">
                               <div class=" parent-item-label parent-item-label-alert">Expense Target:</div>
                               <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
-                                  {{childgoalDetails.expense_target }}</div>
+                                  {{selectedChildGoalDetails.expense_target }}</div>
                           </div>
                       </div>
               </div>
 
-              <div style="display: flex; flex-direction: column;" *ngIf="childgoalDetails.module_type == 'analysis' && selectedModules == 'analysis' ">
+              <div style="display: flex; flex-direction: column;" *ngIf="selectedChildGoalDetails.module_type == 'analysis' && selectedModules == 'analysis' ">
                   <div class="text-white bg-dark parent-item-val-spec" style="padding: 6px;">
                       <div class=" parent-item-label-spec">Framework</div>
                       <div style="display: flex; flex-direction: column; padding: 12px;">
                           <!-- <div class=" parent-item-label-spec parent-item-label-alert">Question:</div> -->
-                          <h4><strong>{{childgoalDetails.question}}</strong></h4>
-                          <p style="border-left: 2px solid #fff; padding-left: 12px;"><strong>{{childgoalDetails.answer}}</strong></p>
+                          <h4><strong>{{selectedChildGoalDetails.question}}</strong></h4>
+                          <p style="border-left: 2px solid #fff; padding-left: 12px;"><strong>{{selectedChildGoalDetails.answer}}</strong></p>
                       </div>
                   </div>
               </div>
@@ -1189,7 +1172,7 @@
               <div style="display: flex; margin-bottom: 24px;" *ngIf="selectedModules !== 'analysis' && selectedModules !== 'intelligence'" [hidden]="selectedModules == 'analysis' || selectedModules == 'intelligence'">
                   <div class="text-white bg-dark parent-item-val-spec" style="padding: 6px;" >
                       <div class=" parent-item-label-spec">{{selectedModules === 'motive' ? 'Motivation' : 'Description' }}</div>
-                      <p style="border-left: 2px solid #fff; padding-left: 24px;">{{childgoalDetails.description}}</p>
+                      <p style="border-left: 2px solid #fff; padding-left: 24px;">{{selectedChildGoalDetails.description}}</p>
                   </div>
               </div>
 
@@ -1198,36 +1181,36 @@
                       <div style="display: flex; margin-bottom: 12px;">
                           <div class=" parent-item-label parent-item-label-alert">Production HVA:</div>
                           <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
-                              {{childgoalDetails.production_high_variance_alert }}</div>
+                              {{selectedChildGoalDetails.production_high_variance_alert }}</div>
                       </div>
                       <div style="display: flex;">
                           <div class=" parent-item-label parent-item-label-alert">Expense HVA:</div>
                           <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
-                              {{childgoalDetails.expense_high_variance_alert }}</div>
+                              {{selectedChildGoalDetails.expense_high_variance_alert }}</div>
                       </div>
                   </div>
                   <div style="display: flex; flex-direction: column; flex-basis: 45%;">
                       <div style="display: flex; margin-bottom: 12px;">
                           <div class=" parent-item-label parent-item-label-alert">Production LVA:</div>
                           <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
-                              {{childgoalDetails.production_low_variance_alert }}</div>
+                              {{selectedChildGoalDetails.production_low_variance_alert }}</div>
                       </div>
                       <div style="display: flex;">
                           <div class=" parent-item-label parent-item-label-alert">Expense LVA:</div>
                           <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
-                              {{childgoalDetails.expense_low_variance_alert }}</div>
+                              {{selectedChildGoalDetails.expense_low_variance_alert }}</div>
                       </div>
                   </div>
                   <div style="display: flex; flex-direction: column; flex-basis: 45%;">
                       <div style="display: flex; margin-bottom: 12px;">
                           <div class=" parent-item-label parent-item-label-alert">Production Weight:</div>
                           <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
-                              {{childgoalDetails.production_weight }}</div>
+                              {{selectedChildGoalDetails.production_weight }}</div>
                       </div>
                       <div style="display: flex;">
                           <div class=" parent-item-label parent-item-label-alert">Expense Weight:</div>
                           <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
-                              {{childgoalDetails.expense_weight }}</div>
+                              {{selectedChildGoalDetails.expense_weight }}</div>
                       </div>
                   </div>
               </div>
@@ -1244,12 +1227,12 @@
                                         <div  style="display: flex;  margin-bottom: 12px;">
                                             <div class="parent-item-label">Short Name:</div>
                                             <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
-                                                {{childgoalDetails.short_name}}</div>
+                                                {{selectedChildGoalDetails.short_name}}</div>
                                         </div>
                                         <div  style="display: flex;">
                                             <div class="parent-item-label">Long Name:</div>
                                             <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
-                                                {{childgoalDetails.long_name}}</div>
+                                                {{selectedChildGoalDetails.long_name}}</div>
                                         </div>
                                     </div>
 
@@ -1257,37 +1240,37 @@
                                         <div style="display: flex; margin-bottom: 12px;">
                                             <div class=" parent-item-label">Start Date:</div>
                                             <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
-                                                {{childgoalDetails.start_date | itemplanitemdate }}</div>
+                                                {{selectedChildGoalDetails.start_date | itemplanitemdate }}</div>
                                         </div>
                                         <div style="display: flex;">
                                             <div class=" parent-item-label">End Date:</div>
                                             <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
-                                                {{childgoalDetails.end_date | itemplanitemdate }}</div>
+                                                {{selectedChildGoalDetails.end_date | itemplanitemdate }}</div>
                                         </div>
                                     </div>
                                     <div style="display: flex; flex-direction: column; flex-basis: 45%;">
                                         <div style="display: flex; margin-bottom: 12px;">
                                             <div class=" parent-item-label parent-item-label-alert">Production Target:</div>
                                             <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
-                                                {{childgoalDetails.production_target }}</div>
+                                                {{selectedChildGoalDetails.production_target }}</div>
                                         </div>
                                         <div style="display: flex;">
                                             <div class=" parent-item-label parent-item-label-alert">Expense Target:</div>
                                             <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
-                                                {{childgoalDetails.expense_target === "" ? 'Unspecified' : childgoalDetails.expense_target}}</div>
+                                                {{selectedChildGoalDetails.expense_target === "" ? 'Unspecified' : selectedChildGoalDetails.expense_target}}</div>
                                         </div>
                                     </div>
                             </div>
                             <div style="display: flex; margin-bottom: 12px;">
                                 <div class="text-white bg-dark parent-item-val-spec" style="padding: 6px;">
                                     <div class=" parent-item-label-spec">Description</div>
-                                    <p>{{childgoalDetails.description}}</p>
+                                    <p>{{selectedChildGoalDetails.description}}</p>
                                 </div>
                             </div>
                             <div style="display: flex;">
                               <div class="parent-item-label">Attachment</div>
                               <div class="text-white bg-dark parent-item-val" style="padding: 6px;" (click)="warnUser('Sorry, the ability to download and view attachments is undergoing an update, please check back soon!')">
-                                  {{childgoalDetails.attachments !== [] ? 'None' : childgoalDetails.attachments[0].attachment}}
+                                  {{selectedChildGoalDetails.attachments !== [] ? 'None' : selectedChildGoalDetails.attachments[0].attachment}}
                               </div>
                             </div>
                             <hr>
@@ -1300,34 +1283,34 @@
                                 <div  style="display: flex;  margin-bottom: 12px;">
                                     <div class="parent-item-label parent-item-label-alert">Production Target:</div>
                                     <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
-                                        {{childgoalDetails.production_target === 'null' ? "Edit plan to add target" : childgoalDetails.production_target}}</div>
+                                        {{selectedChildGoalDetails.production_target === 'null' ? "Edit plan to add target" : selectedChildGoalDetails.production_target}}</div>
                                 </div>
                                 <div  style="display: flex; margin-bottom: 12px;">
                                     <div class="parent-item-label">Production Weight:</div>
                                     <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
-                                        {{childgoalDetails.production_weight === 'null' ? "Edit plan to add weight" : childgoalDetails.production_weight}}</div>
+                                        {{selectedChildGoalDetails.production_weight === 'null' ? "Edit plan to add weight" : selectedChildGoalDetails.production_weight}}</div>
                                 </div>
                                 <div  style="display: flex;">
                                     <div class="parent-item-label">Expense Weight:</div>
                                     <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
-                                        {{childgoalDetails.expense_weight === 'null' ? "Edit plan to add weight" : childgoalDetails.expense_weight}}</div>
+                                        {{selectedChildGoalDetails.expense_weight === 'null' ? "Edit plan to add weight" : selectedChildGoalDetails.expense_weight}}</div>
                                 </div>
                             </div>
                             <div style="display: flex; flex-direction: column; flex-basis: 45%;">
                                 <div  style="display: flex;  margin-bottom: 12px;">
                                     <div class="parent-item-label parent-item-label-alert">Expense Target:</div>
                                     <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
-                                        {{childgoalDetails.expense_target === 'null' ? "Edit plan to add target" : childgoalDetails.expense_target}}</div>
+                                        {{selectedChildGoalDetails.expense_target === 'null' ? "Edit plan to add target" : selectedChildGoalDetails.expense_target}}</div>
                                 </div>
                                 <div  style="display: flex; margin-bottom: 12px;">
                                     <div class="parent-item-label">Production Threshold:</div>
                                     <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
-                                        {{childgoalDetails.personal_production_variance === 'null' ? "Edit plan to add production threshold" : childgoalDetails.personal_production_variance}}</div>
+                                        {{selectedChildGoalDetails.personal_production_variance === 'null' ? "Edit plan to add production threshold" : selectedChildGoalDetails.personal_production_variance}}</div>
                                 </div>
                                 <div  style="display: flex;">
                                     <div class="parent-item-label">Expense Threshold:</div>
                                     <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
-                                        {{childgoalDetails.personal_expense_variance === 'null' ? "Edit plan to add expense threshold" : childgoalDetails.personal_expense_variance}}</div>
+                                        {{selectedChildGoalDetails.personal_expense_variance === 'null' ? "Edit plan to add expense threshold" : selectedChildGoalDetails.personal_expense_variance}}</div>
                                 </div>
                             </div>
                         </div>
@@ -1342,7 +1325,7 @@
                         <mat-expansion-panel-header class="page-title">
                             <h3>Additional Fields</h3>
                         </mat-expansion-panel-header>
-                    <div  *ngFor="let parentplan of parentplanDetails[0] | keyvalue " style="padding-top: 12px;">
+                    <div  *ngFor="let parentplan of selectedParentPlanDetails[0] | keyvalue " style="padding-top: 12px;">
                         <div style="display: flex; flex-direction: column;"
                             *ngIf="parentplan.key !='_id' && parentplan.key !='shared_permission_users' && parentplan.key !='share_users' && parentplan.key !='shared_plan_users' && parentplan.key !='user_group_id' && parentplan.key !='number' && parentplan.key !='motivation' && parentplan.value && parentplan.value !== ''" [hidden]="parentplan.value==''">
                             <div style="display: flex; flex-direction: row; margin-bottom: 12px;"
@@ -1510,9 +1493,9 @@
 
                                     <div class="col-md-12 form-group text-right">
                                         <button type="submit " (click)="onSubmitSub()"
-                                            [disabled]="!checkforgoaledit && !isSharedPlanPermission"
+                                            [disabled]="!editingStatus && !isSharedPlanPermission"
                                             class="btn btn-primary btn-space">Save</button>
-                                        <button type="reset" (click)="reset()" [disabled]="!checkforgoaledit "
+                                        <button type="reset" (click)="reset()" [disabled]="!editingStatus "
                                             class="btn btn-default">Clear</button>
                                     </div>
 
@@ -1523,7 +1506,7 @@
                 </form>
             </mat-expansion-panel>
 
-            <mat-expansion-panel class="expanse-panel" *ngIf="(parentIsActiveSelection || childgoalDetails) && !challengeItemSelected && !moduleItemActive" [expanded] ="false">
+            <mat-expansion-panel class="expanse-panel" *ngIf="(parentIsActiveSelection || selectedChildGoalDetails) && !challengeItemSelected && !moduleItemActive" [expanded] ="false">
               <mat-expansion-panel-header class="page-title">
                 <h3>
                   Add Challenge Item
@@ -1541,7 +1524,7 @@
                   ">
                     <div  style="display: flex; flex-direction: row; align-items: center;">
                       <label class="parent-item-label">Challenge Type:</label>
-                      <select id="challenge-type-selector" class="text-white bg-dark parent-item-val form-control form-control-spec" (change)="toggleChallengeForm()">
+                      <select id="challenge-type-selector" class="text-white bg-dark parent-item-val form-control form-control-spec" (change)="toggleChallengeFormType()">
                         <option value="" disabled default>Select Challenge Type</option>
                         <option value="problem">Problem</option>
                         <option value="opportunity">Opportunity</option>
@@ -1635,7 +1618,7 @@
               </div>
             </mat-expansion-panel>
 
-            <mat-expansion-panel class="expanse-panel"  *ngIf="(parentIsActiveSelection || childgoalDetails) && !challengeItemSelected && !moduleItemActive" [expanded]="false">
+            <mat-expansion-panel class="expanse-panel"  *ngIf="(parentIsActiveSelection || selectedChildGoalDetails) && !challengeItemSelected && !moduleItemActive" [expanded]="false">
               <mat-expansion-panel-header class="page-title">
                 <h3>Add Module Item</h3>
               </mat-expansion-panel-header>
@@ -1651,7 +1634,7 @@
                   ">
                     <div  style="display: flex; flex-direction: row; align-items: center;">
                       <label class="parent-item-label">Module Type:</label>
-                      <select id="module-type-selector" class="text-white bg-dark parent-item-val form-control form-control-spec" (change)="toggleModuleForm()">
+                      <select id="module-type-selector" class="text-white bg-dark parent-item-val form-control form-control-spec" (change)="toggleModuleFormType()">
                         <option value="" disabled default>Select Module Type</option>
                         <option value="strategy">Strategy</option>
                         <option value="task">Task</option>
@@ -1906,7 +1889,7 @@
                     <div  style="display: flex;  margin-bottom: 12px;">
                       <div class="parent-item-label">Parent Project Profile:</div>
                       <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
-                        {{parentplanDetails[0] ? parentplanDetails[0].short_name : "N/A"}}</div>
+                        {{selectedParentPlanDetails[0] ? selectedParentPlanDetails[0].short_name : "N/A"}}</div>
                       </div>
                 </div>
 
@@ -1920,17 +1903,17 @@
                               <div  style="display: flex;  margin-bottom: 12px;">
                                   <div class="parent-item-label">Short Name:</div>
                                   <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
-                                      {{childgoalDetails.short_name}}</div>
+                                      {{selectedChildGoalDetails.short_name}}</div>
                               </div>
                               <div  style="display: flex; margin-bottom: 12px;">
                                   <div class="parent-item-label">Long Name:</div>
                                   <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
-                                      {{childgoalDetails.long_name}}</div>
+                                      {{selectedChildGoalDetails.long_name}}</div>
                               </div>
                               <div  style="display: flex;">
                                   <div class="parent-item-label">Creator:</div>
                                   <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
-                                      {{parentplanDetails[0].user_id.first_name}} {{parentplanDetails[0].user_id.last_name}}</div>
+                                      {{selectedParentPlanDetails[0].user_id.first_name}} {{selectedParentPlanDetails[0].user_id.last_name}}</div>
                               </div>
                           </div>
 
@@ -1938,40 +1921,40 @@
                               <div style="display: flex; margin-bottom: 12px;">
                                   <div class=" parent-item-label">Start Date:</div>
                                   <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
-                                      {{childgoalDetails.start_date !== undefined ?  (childgoalDetails.start_date | itemplanitemdate) : "Currently not available for deeply nested items"}}</div>
+                                      {{selectedChildGoalDetails.start_date !== undefined ?  (selectedChildGoalDetails.start_date | itemplanitemdate) : "Currently not available for deeply nested items"}}</div>
                               </div>
                               <div style="display: flex;  margin-bottom: 12px;">
                                   <div class=" parent-item-label">End Date:</div>
                                   <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
-                                      {{childgoalDetails.end_date !== undefined ?  (childgoalDetails.end_date | itemplanitemdate) : "Currently not available for deeply nested items"}}</div>
+                                      {{selectedChildGoalDetails.end_date !== undefined ?  (selectedChildGoalDetails.end_date | itemplanitemdate) : "Currently not available for deeply nested items"}}</div>
                               </div>
                               <div style="display: flex;" *ngIf="selectedModules == 'analysis'">
                                   <div class=" parent-item-label">Source:</div>
                                   <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
-                                      {{childgoalDetails.source}}</div>
+                                      {{selectedChildGoalDetails.source}}</div>
                               </div>
                           </div>
                           <div style="display: flex; flex-direction: column; flex-basis: 45%;" *ngIf="selectedModules !== 'motive' && selectedModules !== 'analysis' && selectedModules !== 'intelligence'" [hidden]="selectedModules === 'motive' && selectedModules === 'analysis' && selectedModules === 'intelligence'">
                               <div style="display: flex; margin-bottom: 12px;">
                                   <div class=" parent-item-label parent-item-label-alert">Production Target:</div>
                                   <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
-                                      {{childgoalDetails.production_target }}</div>
+                                      {{selectedChildGoalDetails.production_target }}</div>
                               </div>
                               <div style="display: flex;">
                                   <div class=" parent-item-label parent-item-label-alert">Expense Target:</div>
                                   <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
-                                      {{childgoalDetails.expense_target }}</div>
+                                      {{selectedChildGoalDetails.expense_target }}</div>
                               </div>
                           </div>
                   </div>
 
-                  <div style="display: flex; flex-direction: column;" *ngIf="childgoalDetails.module_type == 'analysis' && selectedModules == 'analysis' ">
+                  <div style="display: flex; flex-direction: column;" *ngIf="selectedChildGoalDetails.module_type == 'analysis' && selectedModules == 'analysis' ">
                       <div class="text-white bg-dark parent-item-val-spec" style="padding: 6px;">
                           <div class=" parent-item-label-spec">Framework</div>
                           <div style="display: flex; flex-direction: column; padding: 12px;">
                               <!-- <div class=" parent-item-label-spec parent-item-label-alert">Question:</div> -->
-                              <h4><strong>{{childgoalDetails.question}}</strong></h4>
-                              <p style="border-left: 2px solid #fff; padding-left: 12px;"><strong>{{childgoalDetails.answer}}</strong></p>
+                              <h4><strong>{{selectedChildGoalDetails.question}}</strong></h4>
+                              <p style="border-left: 2px solid #fff; padding-left: 12px;"><strong>{{selectedChildGoalDetails.answer}}</strong></p>
                           </div>
                       </div>
                   </div>
@@ -1979,7 +1962,7 @@
                   <div style="display: flex; margin-bottom: 24px;" *ngIf="selectedModules !== 'analysis' && selectedModules !== 'intelligence'" [hidden]="selectedModules == 'analysis' || selectedModules == 'intelligence'">
                       <div class="text-white bg-dark parent-item-val-spec" style="padding: 6px;" >
                           <div class=" parent-item-label-spec">{{selectedModules === 'motive' ? 'Motivation' : 'Description' }}</div>
-                          <p style="border-left: 2px solid #fff; padding-left: 24px;">{{childgoalDetails.description}}</p>
+                          <p style="border-left: 2px solid #fff; padding-left: 24px;">{{selectedChildGoalDetails.description}}</p>
                       </div>
                   </div>
 
@@ -1988,36 +1971,36 @@
                           <div style="display: flex; margin-bottom: 12px;">
                               <div class=" parent-item-label parent-item-label-alert">Production HVA:</div>
                               <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
-                                  {{childgoalDetails.production_high_variance_alert }}</div>
+                                  {{selectedChildGoalDetails.production_high_variance_alert }}</div>
                           </div>
                           <div style="display: flex;">
                               <div class=" parent-item-label parent-item-label-alert">Expense HVA:</div>
                               <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
-                                  {{childgoalDetails.expense_high_variance_alert }}</div>
+                                  {{selectedChildGoalDetails.expense_high_variance_alert }}</div>
                           </div>
                       </div>
                       <div style="display: flex; flex-direction: column; flex-basis: 45%;">
                           <div style="display: flex; margin-bottom: 12px;">
                               <div class=" parent-item-label parent-item-label-alert">Production LVA:</div>
                               <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
-                                  {{childgoalDetails.production_low_variance_alert }}</div>
+                                  {{selectedChildGoalDetails.production_low_variance_alert }}</div>
                           </div>
                           <div style="display: flex;">
                               <div class=" parent-item-label parent-item-label-alert">Expense LVA:</div>
                               <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
-                                  {{childgoalDetails.expense_low_variance_alert }}</div>
+                                  {{selectedChildGoalDetails.expense_low_variance_alert }}</div>
                           </div>
                       </div>
                       <div style="display: flex; flex-direction: column; flex-basis: 45%;">
                           <div style="display: flex; margin-bottom: 12px;">
                               <div class=" parent-item-label parent-item-label-alert">Production Weight:</div>
                               <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
-                                  {{childgoalDetails.production_weight }}</div>
+                                  {{selectedChildGoalDetails.production_weight }}</div>
                           </div>
                           <div style="display: flex;">
                               <div class=" parent-item-label parent-item-label-alert">Expense Weight:</div>
                               <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
-                                  {{childgoalDetails.expense_weight }}</div>
+                                  {{selectedChildGoalDetails.expense_weight }}</div>
                           </div>
                       </div>
                   </div>
@@ -2036,12 +2019,12 @@
                                             <div  style="display: flex;  margin-bottom: 12px;">
                                                 <div class="parent-item-label">Short Name:</div>
                                                 <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
-                                                    {{childgoalDetails.short_name}}</div>
+                                                    {{selectedChildGoalDetails.short_name}}</div>
                                             </div>
                                             <div  style="display: flex;">
                                                 <div class="parent-item-label">Long Name:</div>
                                                 <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
-                                                    {{childgoalDetails.long_name}}</div>
+                                                    {{selectedChildGoalDetails.long_name}}</div>
                                             </div>
                                         </div>
 
@@ -2049,31 +2032,31 @@
                                             <div style="display: flex; margin-bottom: 12px;">
                                                 <div class=" parent-item-label">Start Date:</div>
                                                 <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
-                                                    {{childgoalDetails.start_date | itemplanitemdate }}</div>
+                                                    {{selectedChildGoalDetails.start_date | itemplanitemdate }}</div>
                                             </div>
                                             <div style="display: flex;">
                                                 <div class=" parent-item-label">End Date:</div>
                                                 <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
-                                                    {{childgoalDetails.end_date | itemplanitemdate }}</div>
+                                                    {{selectedChildGoalDetails.end_date | itemplanitemdate }}</div>
                                             </div>
                                         </div>
                                         <div style="display: flex; flex-direction: column; flex-basis: 45%;">
                                             <div style="display: flex; margin-bottom: 12px;">
                                                 <div class=" parent-item-label parent-item-label-alert">Production Target:</div>
                                                 <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
-                                                    {{childgoalDetails.production_target }}</div>
+                                                    {{selectedChildGoalDetails.production_target }}</div>
                                             </div>
                                             <div style="display: flex;">
                                                 <div class=" parent-item-label parent-item-label-alert">Expense Target:</div>
                                                 <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
-                                                    {{childgoalDetails.expense_target === "" ? 'Unspecified' : childgoalDetails.expense_target}}</div>
+                                                    {{selectedChildGoalDetails.expense_target === "" ? 'Unspecified' : selectedChildGoalDetails.expense_target}}</div>
                                             </div>
                                         </div>
                                 </div>
                                 <div style="display: flex; margin-bottom: 12px;">
                                     <div class="text-white bg-dark parent-item-val-spec" style="padding: 6px;">
                                         <div class=" parent-item-label-spec">Description</div>
-                                        <p>{{childgoalDetails.description}}</p>
+                                        <p>{{selectedChildGoalDetails.description}}</p>
                                     </div>
                                 </div>
                                 <hr>
@@ -2086,34 +2069,34 @@
                                     <div  style="display: flex;  margin-bottom: 12px;">
                                         <div class="parent-item-label parent-item-label-alert">Production Target:</div>
                                         <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
-                                            {{childgoalDetails.production_target === 'null' ? "Edit plan to add target" : childgoalDetails.production_target}}</div>
+                                            {{selectedChildGoalDetails.production_target === 'null' ? "Edit plan to add target" : selectedChildGoalDetails.production_target}}</div>
                                     </div>
                                     <div  style="display: flex; margin-bottom: 12px;">
                                         <div class="parent-item-label">Production Weight:</div>
                                         <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
-                                            {{childgoalDetails.production_weight === 'null' ? "Edit plan to add weight" : childgoalDetails.production_weight}}</div>
+                                            {{selectedChildGoalDetails.production_weight === 'null' ? "Edit plan to add weight" : selectedChildGoalDetails.production_weight}}</div>
                                     </div>
                                     <div  style="display: flex;">
                                         <div class="parent-item-label">Expense Weight:</div>
                                         <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
-                                            {{childgoalDetails.expense_weight === 'null' ? "Edit plan to add weight" : childgoalDetails.expense_weight}}</div>
+                                            {{selectedChildGoalDetails.expense_weight === 'null' ? "Edit plan to add weight" : selectedChildGoalDetails.expense_weight}}</div>
                                     </div>
                                 </div>
                                 <div style="display: flex; flex-direction: column; flex-basis: 45%;">
                                     <div  style="display: flex;  margin-bottom: 12px;">
                                         <div class="parent-item-label parent-item-label-alert">Expense Target:</div>
                                         <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
-                                            {{childgoalDetails.expense_target === 'null' ? "Edit plan to add target" : childgoalDetails.expense_target}}</div>
+                                            {{selectedChildGoalDetails.expense_target === 'null' ? "Edit plan to add target" : selectedChildGoalDetails.expense_target}}</div>
                                     </div>
                                     <div  style="display: flex; margin-bottom: 12px;">
                                         <div class="parent-item-label">Production Threshold:</div>
                                         <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
-                                            {{childgoalDetails.personal_production_variance === 'null' ? "Edit plan to add production threshold" : childgoalDetails.personal_production_variance}}</div>
+                                            {{selectedChildGoalDetails.personal_production_variance === 'null' ? "Edit plan to add production threshold" : selectedChildGoalDetails.personal_production_variance}}</div>
                                     </div>
                                     <div  style="display: flex;">
                                         <div class="parent-item-label">Expense Threshold:</div>
                                         <div class="text-white bg-dark parent-item-val" style="padding: 6px;">
-                                            {{childgoalDetails.personal_expense_variance === 'null' ? "Edit plan to add expense threshold" : childgoalDetails.personal_expense_variance}}</div>
+                                            {{selectedChildGoalDetails.personal_expense_variance === 'null' ? "Edit plan to add expense threshold" : selectedChildGoalDetails.personal_expense_variance}}</div>
                                     </div>
                                 </div>
                             </div>
@@ -2128,7 +2111,7 @@
                             <mat-expansion-panel-header class="page-title">
                                 <h3>Additional Fields</h3>
                             </mat-expansion-panel-header>
-                        <div  *ngFor="let parentplan of parentplanDetails[0] | keyvalue " style="padding-top: 12px;">
+                        <div  *ngFor="let parentplan of selectedParentPlanDetails[0] | keyvalue " style="padding-top: 12px;">
                             <div style="display: flex; flex-direction: column;"
                                 *ngIf="parentplan.key !='_id' && parentplan.key !='shared_permission_users' && parentplan.key !='share_users' && parentplan.key !='shared_plan_users' && parentplan.key !='user_group_id' && parentplan.key !='number' && parentplan.key !='motivation' && parentplan.value && parentplan.value !== ''" [hidden]="parentplan.value==''">
                                 <div style="display: flex; flex-direction: row; margin-bottom: 12px;"
@@ -2296,9 +2279,9 @@
 
                                     <div class="col-md-12 form-group text-right">
                                         <button type="submit " (click)="onSubmitSub()"
-                                            [disabled]="!checkforgoaledit && !isSharedPlanPermission"
+                                            [disabled]="!editingStatus && !isSharedPlanPermission"
                                             class="btn btn-primary btn-space">Save</button>
-                                        <button type="reset" (click)="reset()" [disabled]="!checkforgoaledit "
+                                        <button type="reset" (click)="reset()" [disabled]="!editingStatus "
                                             class="btn btn-default">Clear</button>
                                     </div>
 
@@ -3009,7 +2992,7 @@
                     <div class="row">
                         <!-- TABULAR DATA -->
                         <div>
-                            <div class="col-md-6" *ngFor="let plan of parentplanDetails;">
+                            <div class="col-md-6" *ngFor="let plan of selectedParentPlanDetails;">
                                 <mat-expansion-panel class="expanse-panel" [expanded]="true">
                                     <mat-expansion-panel-header class="page-title">
                                         <h3>
@@ -3021,11 +3004,11 @@
                                             <tbody>
                                                 <tr>
                                                     <td>Expected Production Target</td>
-                                                    <td><span>{{parentplanDetails[0].production_type == 'dollars' ? '$' : ''}}</span>{{ parentplanDetails[0].production_target }}<span>{{parentplanDetails[0].production_type == 'percentage' ? '%' : parentplanDetails[0].production_type == 'units' ? ' Units' : ""}}</span></td>
+                                                    <td><span>{{selectedParentPlanDetails[0].production_type == 'dollars' ? '$' : ''}}</span>{{ selectedParentPlanDetails[0].production_target }}<span>{{selectedParentPlanDetails[0].production_type == 'percentage' ? '%' : selectedParentPlanDetails[0].production_type == 'units' ? ' Units' : ""}}</span></td>
                                                 </tr>
                                                 <tr>
                                                     <td>Expected Expense Target</td>
-                                                    <td><span>{{parentplanDetails[0].production_type == 'dollars' ? '$' : ''}}</span>{{ parentplanDetails[0].expense_target }}<span>{{parentplanDetails[0].production_type == 'percentage' ? '%' : parentplanDetails[0].production_type == 'units' ? ' Units' : ""}}</span></td>
+                                                    <td><span>{{selectedParentPlanDetails[0].production_type == 'dollars' ? '$' : ''}}</span>{{ selectedParentPlanDetails[0].expense_target }}<span>{{selectedParentPlanDetails[0].production_type == 'percentage' ? '%' : selectedParentPlanDetails[0].production_type == 'units' ? ' Units' : ""}}</span></td>
                                                 </tr>
                                                 <tr>
                                                     <td>Submitted Reports</td>
@@ -3039,15 +3022,15 @@
                                             <tbody>
                                                 <tr>
                                                     <td>Gross Burn Rate</td>
-                                                    <td><span>{{parentplanDetails[0].production_type == 'dollars' ? '$' : ''}}</span>{{ grossBurnRate }}<span>{{parentplanDetails[0].production_type == 'percentage' ? '%' : parentplanDetails[0].production_type == 'units' ? ' Units' : ""}}</span></td>
+                                                    <td><span>{{selectedParentPlanDetails[0].production_type == 'dollars' ? '$' : ''}}</span>{{ grossBurnRate }}<span>{{selectedParentPlanDetails[0].production_type == 'percentage' ? '%' : selectedParentPlanDetails[0].production_type == 'units' ? ' Units' : ""}}</span></td>
                                                 </tr>
                                                 <tr>
                                                     <td>Net Burn Rate</td>
-                                                    <td><span>{{parentplanDetails[0].production_type == 'dollars' ? '$' : ''}}</span>{{ netBurnRate }}<span>{{parentplanDetails[0].production_type == 'percentage' ? '%' : parentplanDetails[0].production_type == 'units' ? ' Units' : ""}}</span></td>
+                                                    <td><span>{{selectedParentPlanDetails[0].production_type == 'dollars' ? '$' : ''}}</span>{{ netBurnRate }}<span>{{selectedParentPlanDetails[0].production_type == 'percentage' ? '%' : selectedParentPlanDetails[0].production_type == 'units' ? ' Units' : ""}}</span></td>
                                                 </tr>
                                                 <tr>
                                                     <td>Average Production</td>
-                                                    <td><span>{{parentplanDetails[0].production_type == 'dollars' ? '$' : ''}}</span>{{ avgProd }}<span>{{parentplanDetails[0].production_type == 'percentage' ? '%' : parentplanDetails[0].production_type == 'units' ? ' Units' : ""}}</span></td>
+                                                    <td><span>{{selectedParentPlanDetails[0].production_type == 'dollars' ? '$' : ''}}</span>{{ avgProd }}<span>{{selectedParentPlanDetails[0].production_type == 'percentage' ? '%' : selectedParentPlanDetails[0].production_type == 'units' ? ' Units' : ""}}</span></td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -3064,7 +3047,7 @@
                                                     <tbody>
                                                         <tr>
                                                             <td>Actual Production</td>
-                                                            <td><span>{{parentplanDetails[0].production_type == 'dollars' ? '$' : ''}}</span>{{ actualProductionSum || "0" }}<span>{{parentplanDetails[0].production_type == 'percentage' ? '%' : parentplanDetails[0].production_type == 'units' ? ' Units' : ""}}</span></td>
+                                                            <td><span>{{selectedParentPlanDetails[0].production_type == 'dollars' ? '$' : ''}}</span>{{ actualProductionSum || "0" }}<span>{{selectedParentPlanDetails[0].production_type == 'percentage' ? '%' : selectedParentPlanDetails[0].production_type == 'units' ? ' Units' : ""}}</span></td>
                                                         </tr>
                                                         <tr *ngIf="prodHierarchy.length !== 0">
                                                             <td>Most Productive Plan</td>
@@ -3087,7 +3070,7 @@
                                                     <tbody>
                                                         <tr>
                                                             <td>Actual Expense</td>
-                                                            <td><span>{{parentplanDetails[0].production_type == 'dollars' ? '$' : ''}}</span>{{ actualExpenseSum || "0" }}<span>{{parentplanDetails[0].production_type == 'percentage' ? '%' : parentplanDetails[0].production_type == 'units' ? ' Units' : ""}}</span></td>
+                                                            <td><span>{{selectedParentPlanDetails[0].production_type == 'dollars' ? '$' : ''}}</span>{{ actualExpenseSum || "0" }}<span>{{selectedParentPlanDetails[0].production_type == 'percentage' ? '%' : selectedParentPlanDetails[0].production_type == 'units' ? ' Units' : ""}}</span></td>
                                                         </tr>
                                                         <tr *ngIf="expHierarchy.length !== 0">
                                                             <td>Most Expensive Plan</td>
@@ -3105,7 +3088,7 @@
                                 </div>
                             </div>
                             <div class="col-md-6" *ngIf="reportGoals.length != 0">
-                                <h3>{{parentplanDetails[0].short_name}}</h3>
+                                <h3>{{selectedParentPlanDetails[0].short_name}}</h3>
                                 <hr>
 
                                 <!-- Line Chart -->
@@ -3636,7 +3619,7 @@
                   ">
                     <div  style="display: flex; flex-direction: row; align-items: center;">
                       <label class="parent-item-label">Module Type:</label>
-                      <select id="challenge-module-type-selector" class="text-white bg-dark parent-item-val form-control form-control-spec" (change)="toggleChallengeModuleForm()">
+                      <select id="challenge-module-type-selector" class="text-white bg-dark parent-item-val form-control form-control-spec" (change)="toggleChallengeModuleFormType()">
                         <option value="" disabled default>Select Module Type</option>
                         <option value="strategy">Strategy</option>
                         <option value="task">Task</option>
@@ -4151,8 +4134,8 @@
             </div>
 
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" (click)="clearFeedback()">Clear</button>
-                <button type="submit" class="btn btn-success" (click)="SubmitFeedback()">Submit</button>
+                <button type="button" class="btn btn-default" (click)="clearFeedbackForm()">Clear</button>
+                <button type="submit" class="btn btn-success" (click)="submitFeedbackForm()">Submit</button>
             </div>
         </div>
     </div>
@@ -4222,43 +4205,12 @@
                     <div>
                         <button type="button" class="btn btn-default m-b-xxs" (click)="onAddData()">Add Field</button>
                     </div>
-                    <div *ngFor="let dev of formfield;index as i">
+                    <div *ngFor="let field of formfield;index as i">
                         <div class="form-group" style="padding: 3px;">
                             <input type="text" id="data{{i}}" [ngModelOptions]="{standalone: true}"
-                                [(ngModel)]="dev.name" class="form-control" placeholder="Name Of FormControl"
+                                [(ngModel)]="field.name" class="form-control" placeholder="Name Of FormControl"
                                 autocomplete="off">
                         </div>
-                        &nbsp;
-                        <div class="form-group" style="padding: 3px;">
-                            <select class="form-control" (change)="addcontrol(i)"
-                                (change)="getselectoption(selected.value,i)" #selected
-                                [ngModelOptions]="{standalone: true}" [(ngModel)]="dev.type"
-                                style="padding: 0px 0px!important">
-                                <option value="">Select FormControl</option>
-                                <option value="text">Text</option>
-                                <option value="number">Number</option>
-                                <option value="select">Select</option>
-                            </select>
-                        </div>
-                        &nbsp;
-                        <div class="form-group" style="padding: 3px;">
-                            <select class="form-control" [ngModelOptions]="{standalone: true}"
-                                [(ngModel)]="dev.required" style="padding: 0px 0px!important">
-                                <option value="">Select Required</option>
-                                <option value="true">True</option>
-                                <option value="false">False</option>
-                            </select>
-                        </div>
-                        <div class="form-group" *ngIf="dev.option && dev.option.length == 0" style="padding: 3px;">
-                            <button class="btn btn-primary" style="margin: 4px;height: 36px;" (click)="addoption(i)">Add
-                                option</button>
-                        </div>
-                        <div class="form-group" *ngIf="dev.option && dev.option.length > 0" style="padding: 3px;">
-                            <button class="btn btn-primary" style="margin: 4px;height: 36px;"
-                                (click)="addoption(i)">Modify option</button>
-                        </div>
-                        <button class="btn btn-danger" style="margin: 4px;height: 36px;"
-                            (click)="removeData(i)">X</button>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -4268,6 +4220,27 @@
             </div>
         </div>
     </div>
+</form>
+<form class="form-inline" action="javascript:void(0);">
+  <div class="modal fade" id="customFieldModal" tabindex="-1" role="dialog" aria-labelledby="fromControlModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog" style="min-width: 780px;">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                          aria-hidden="true">&times;</span></button>
+                  <h4 class="modal-title" id="fromControlModalLabel">Configure Custom Field</h4>
+              </div>
+              <div class="modal-body">
+
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                  <button type="submit" class="btn btn-success" (click)="onplanformcreate()">Save</button>
+              </div>
+          </div>
+      </div>
+  </div>
 </form>
 <!-- END BLOCK: MANAGE ADDITIONAL FORMS MODAL -->
 
