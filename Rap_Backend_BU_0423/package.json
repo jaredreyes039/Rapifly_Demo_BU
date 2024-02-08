@@ -1,0 +1,35 @@
+{
+  "name": "rapiflydevre",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "engines":{
+    "node":"18.14.2"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon index.js",
+    "start":"node index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  },
+  "dependencies": {
+    "@sendgrid/mail": "^7.7.0",
+    "async": "^3.2.4",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.20.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "express-fileupload": "^1.4.0",
+    "jsonwebtoken": "^9.0.0",
+    "moment": "^2.29.4",
+    "mongoose": "^6.8.3",
+    "morgan": "^1.10.0",
+    "socket.io": "^4.5.4",
+    "validator": "^13.7.0"
+  }
+}
